@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.sliverzfx.gothicquest"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.sliverzfx.gothicquest"
@@ -19,6 +19,10 @@ android {
 
     buildFeatures { compose = true }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
     kotlinOptions { jvmTarget = "17" }
 }
 
