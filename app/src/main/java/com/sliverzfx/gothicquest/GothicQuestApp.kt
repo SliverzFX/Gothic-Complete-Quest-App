@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.height\nimport androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -188,7 +188,7 @@ private fun ChapterQuestListScreen(chapter: Int, onBack: () -> Unit, onQuestSele
     val quests = if (chapter == 1) GothicQuestData.chapter1 else emptyList()
 
     Column(
-        Modifier.fillMaxSize().background(Color(0xFF090706)).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Text("GOTHIC — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text(if (chapter == 1) "24 QUESTS • CHRONOLOGICAL ORDER" else "QUEST DATA COMING NEXT", color = Color(0xFF9E8B70), fontSize = 12.sp)
