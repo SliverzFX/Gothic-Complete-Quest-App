@@ -88,6 +88,7 @@ fun GothicQuestApp() {
         gothicChapter != null -> "chapter:" + gothicChapter
         destination == "Gothic" -> "gothicHub"
         destination == "Gothic II Gold Edition" -> "gothic2Hub"
+        destination == "Gothic II New Balance" -> "newBalanceHub"
         destination == null -> "home"
         else -> "destination:" + destination
     }
@@ -101,7 +102,11 @@ fun GothicQuestApp() {
             screen == "splash" -> SplashScreen()
             screen.startsWith("quest:") -> {
                 val questId = screen.removePrefix("quest:")
-                val quest = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests.firstOrNull { it.id == questId } else GothicQuestData.quests.firstOrNull { it.id == questId }
+                val quest = when (destination) {
+                    "Gothic II Gold Edition" -> Gothic2QuestData.quests.firstOrNull { it.id == questId }
+                    "Gothic II New Balance" -> NewBalanceQuestData.quests.firstOrNull { it.id == questId }
+                    else -> GothicQuestData.quests.firstOrNull { it.id == questId }
+                }
                 if (quest != null) {
                     val favoriteKey = questFavoriteKey(destination, quest)
                     QuestDetailScreen(
@@ -125,18 +130,34 @@ fun GothicQuestApp() {
                 )
             }
             screen == "search" -> {
-                val quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests else GothicQuestData.quests
+                val quests = when (destination) {
+                    "Gothic II Gold Edition" -> Gothic2QuestData.quests
+                    "Gothic II New Balance" -> NewBalanceQuestData.quests
+                    else -> GothicQuestData.quests
+                }
                 SearchScreen(
-                    gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II" else "GOTHIC",
+                    gameTitle = when (destination) {
+                        "Gothic II Gold Edition" -> "GOTHIC II"
+                        "Gothic II New Balance" -> "NEW BALANCE"
+                        else -> "GOTHIC"
+                    },
                     quests = quests,
                     onBack = { showSearch = false },
                     onQuestSelected = { selectedQuest = it }
                 )
             }
             screen == "allQuests" -> {
-                val quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests else GothicQuestData.quests
+                val quests = when (destination) {
+                    "Gothic II Gold Edition" -> Gothic2QuestData.quests
+                    "Gothic II New Balance" -> NewBalanceQuestData.quests
+                    else -> GothicQuestData.quests
+                }
                 AllQuestsScreen(
-                    gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II" else "GOTHIC",
+                    gameTitle = when (destination) {
+                        "Gothic II Gold Edition" -> "GOTHIC II"
+                        "Gothic II New Balance" -> "NEW BALANCE"
+                        else -> "GOTHIC"
+                    },
                     quests = quests,
                     onBack = { showAllQuests = false },
                     onQuestSelected = { selectedQuest = it }
@@ -146,9 +167,17 @@ fun GothicQuestApp() {
                 val chapter = screen.removePrefix("chapter:").toIntOrNull()
                 if (chapter != null) {
                     ChapterQuestListScreen(
-                        gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II" else "GOTHIC",
+                        gameTitle = when (destination) {
+                            "Gothic II Gold Edition" -> "GOTHIC II"
+                            "Gothic II New Balance" -> "NEW BALANCE"
+                            else -> "GOTHIC"
+                        },
                         chapter = chapter,
-                        quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.chapter(chapter) else GothicQuestData.chapter(chapter),
+                        quests = when (destination) {
+                            "Gothic II Gold Edition" -> Gothic2QuestData.chapter(chapter)
+                            "Gothic II New Balance" -> NewBalanceQuestData.chapter(chapter)
+                            else -> GothicQuestData.chapter(chapter)
+                        },
                         onBack = { gothicChapter = null },
                         onQuestSelected = { selectedQuest = it }
                     )
@@ -161,6 +190,12 @@ fun GothicQuestApp() {
                 onSearch = { showSearch = true }
             )
             screen == "gothic2Hub" -> Gothic2HubScreen(
+                onBack = { destination = null },
+                onChapterSelected = { gothicChapter = it },
+                onAllQuests = { showAllQuests = true },
+                onSearch = { showSearch = true }
+            )
+            screen == "newBalanceHub" -> NewBalanceHubScreen(
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it },
                 onAllQuests = { showAllQuests = true },
@@ -249,6 +284,33 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
             Spacer(Modifier.height(22.dp))
             (1..6).forEach { chapter ->
                 ChapterButton(chapter, questCount = Gothic2QuestData.chapter(chapter).size) { onChapterSelected(chapter) }
+                Spacer(Modifier.height(11.dp))
+            }
+            Spacer(Modifier.height(8.dp))
+            UtilityButton("ALL QUESTS", onClick = onAllQuests)
+            Spacer(Modifier.height(10.dp))
+            UtilityButton("SEARCH", onClick = onSearch)
+            Spacer(Modifier.height(24.dp))
+            Text("‹  BACK TO MAIN MENU", color = Color(0xFFB6935B), fontSize = 13.sp,
+                modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+        }
+    }
+}
+
+@Composable
+private fun NewBalanceHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
+    BackHandler(onBack = onBack)
+    Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF1A0C08), Color(0xFF080706), Color.Black)))) {
+        Column(
+            modifier = Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("GOTHIC II", color = Color(0xFFD6B06A), fontSize = 30.sp, fontWeight = FontWeight.Bold)
+            Text("NEW BALANCE", color = Color(0xFFC79A55), fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text("COMPLETE QUEST GUIDE", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Spacer(Modifier.height(22.dp))
+            (1..6).forEach { chapter ->
+                ChapterButton(chapter, questCount = NewBalanceQuestData.chapter(chapter).size) { onChapterSelected(chapter) }
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
@@ -530,7 +592,11 @@ private fun SettingsScreen(musicEnabled: Boolean, onMusicChanged: (Boolean) -> U
 }
 
 private data class FavoriteEntry(val game: String, val quest: Quest)
-private fun questFavoriteKey(game: String?, quest: Quest): String = (if (game == "Gothic II Gold Edition") "G2" else "G1") + "|" + quest.id
+private fun questFavoriteKey(game: String?, quest: Quest): String = when (game) {
+    "Gothic II Gold Edition" -> "G2|" + quest.id
+    "Gothic II New Balance" -> "NB|" + quest.id
+    else -> "G1|" + quest.id
+}
 private fun loadFavoriteKeys(context: Context): Set<String> = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).getStringSet("favorites", emptySet())?.toSet() ?: emptySet()
 private fun toggleFavorite(context: Context, current: Set<String>, key: String): Set<String> {
     val updated = current.toMutableSet().apply { if (!add(key)) remove(key) }.toSet()
@@ -541,6 +607,7 @@ private fun buildFavoriteEntries(keys: Set<String>): List<FavoriteEntry> {
     val entries = mutableListOf<FavoriteEntry>()
     GothicQuestData.quests.filter { "G1|" + it.id in keys }.forEach { entries += FavoriteEntry("Gothic", it) }
     Gothic2QuestData.quests.filter { "G2|" + it.id in keys }.forEach { entries += FavoriteEntry("Gothic II Gold Edition", it) }
+    NewBalanceQuestData.quests.filter { "NB|" + it.id in keys }.forEach { entries += FavoriteEntry("Gothic II New Balance", it) }
     return entries
 }
 @Composable
