@@ -306,9 +306,13 @@ private fun NewBalanceHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> 
             modifier = Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("GOTHIC II", color = Color(0xFFD6B06A), fontSize = 30.sp, fontWeight = FontWeight.Bold)
-            Text("NEW BALANCE", color = Color(0xFFC79A55), fontSize = 22.sp, fontWeight = FontWeight.Bold)
-            Text("COMPLETE QUEST GUIDE", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Image(
+                painter = painterResource(R.drawable.gothic_2_new_balance_logo),
+                contentDescription = "Gothic II New Balance",
+                modifier = Modifier.width(300.dp),
+                contentScale = ContentScale.Fit
+            )
+            Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
             Spacer(Modifier.height(22.dp))
             (1..6).forEach { chapter ->
                 ChapterButton(chapter, questCount = NewBalanceQuestData.chapter(chapter).size) { onChapterSelected(chapter) }
