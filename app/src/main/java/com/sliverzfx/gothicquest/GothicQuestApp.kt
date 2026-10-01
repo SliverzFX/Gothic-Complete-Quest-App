@@ -45,9 +45,14 @@ fun GothicQuestApp() {
 
     when {
         showSplash -> SplashScreen()
-        gothicChapter != null -> ChapterPlaceholder(
+        selectedQuest != null -> QuestDetailScreen(
+            quest = selectedQuest!!,
+            onBack = { selectedQuest = null }
+        )
+        gothicChapter != null -> ChapterQuestListScreen(
             chapter = gothicChapter!!,
-            onBack = { gothicChapter = null }
+            onBack = { gothicChapter = null },
+            onQuestSelected = { selectedQuest = it }
         )
         destination == "Gothic" -> GothicHubScreen(
             onBack = { destination = null },
