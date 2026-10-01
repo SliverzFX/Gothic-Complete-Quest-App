@@ -1,40 +1,48 @@
 package com.sliverzfx.gothicquest
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.Text
 
-private val MenuGold = Color(0xFFC79A55)
-private val MenuGoldDark = Color(0xFF765225)
+private val HomeMenuGold = Color(0xFFC7A469)
+private val HomeMenuGoldPressed = Color(0xFFFFD98A)
+
+private data class HomeMenuEntry(
+    val label: String,
+    val testTag: String,
+    val action: () -> Unit
+)
 
 @Composable
 fun HomeScreen(
@@ -42,6 +50,17 @@ fun HomeScreen(
     onContinue: () -> Unit = {},
     onDestinationSelected: (String) -> Unit
 ) {
+    val entries = buildList {
+        if (hasContinue) add(HomeMenuEntry("CONTINUE", "home_continue", onContinue))
+        add(HomeMenuEntry("QUEST GUIDES", "home_quest_guides") { onDestinationSelected("Quest Guides") })
+        add(HomeMenuEntry("MARVIN CODES / CHEATS", "home_cheats") { onDestinationSelected("Marvin Codes / Cheats") })
+        add(HomeMenuEntry("FAQs", "home_faqs") { onDestinationSelected("FAQs") })
+        add(HomeMenuEntry("INFO / ABOUT", "home_about") { onDestinationSelected("Info / About") })
+        add(HomeMenuEntry("SUPPORT / BUGS", "home_support") { onDestinationSelected("Support / Bugs") })
+        add(HomeMenuEntry("DONATIONS", "home_donations") { onDestinationSelected("Donations") })
+        add(HomeMenuEntry("SETTINGS", "home_settings") { onDestinationSelected("Settings") })
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,226 +69,94 @@ fun HomeScreen(
     ) {
         Image(
             painter = painterResource(R.drawable.home_background),
-            contentDescription = null,
+            contentDescription = "Khorinis",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
 
+        // Only darken the right side enough to keep the title-menu readable.
         Box(
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            Color(0x66000000),
-                            Color(0x22000000),
-                            Color(0x55000000)
-                        )
-                    )
-                )
+                .background(Color(0x12000000))
         )
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .align(Alignment.CenterEnd)
                 .statusBarsPadding()
                 .navigationBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 118.dp)
+                .padding(end = 22.dp)
+                .widthIn(min = 205.dp, max = 260.dp),
+            horizontalAlignment = Alignment.End
         ) {
-            GamePanel(
-                imageRes = R.drawable.gothic_button_1,
-                logoRes = R.drawable.gothic_classic_logo,
-                contentDescription = "Gothic",
-                testTag = "game_gothic",
-                onClick = { onDestinationSelected("Gothic") }
-            )
-            GoldDivider()
-            GamePanel(
-                imageRes = R.drawable.gothic_button_2,
-                logoRes = R.drawable.gothic_2_gold_logo,
-                contentDescription = "Gothic II Gold Edition",
-                testTag = "game_gothic_2",
-                onClick = { onDestinationSelected("Gothic II Gold Edition") }
-            )
-            GoldDivider()
-            GamePanel(
-                imageRes = R.drawable.gothic_button_nb,
-                logoRes = R.drawable.gothic_2_new_balance_logo,
-                contentDescription = "Gothic II New Balance",
-                testTag = "game_new_balance",
-                onClick = { onDestinationSelected("Gothic II New Balance") }
-            )
-        }
-
-        Image(
-            painter = painterResource(R.drawable.menu_smoke),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .align(Alignment.TopCenter)
-                .rotate(180f)
-                .testTag("top_smoke"),
-            contentScale = ContentScale.FillBounds
-        )
-
-        Image(
-            painter = painterResource(R.drawable.menu_smoke),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .align(Alignment.BottomCenter)
-                .testTag("bottom_smoke"),
-            contentScale = ContentScale.FillBounds
-        )
-
-        BottomControls(
-            hasContinue = hasContinue,
-            onContinue = onContinue,
-            onFavorites = { onDestinationSelected("Favorites") },
-            onSettings = { onDestinationSelected("Settings") },
-            onAbout = { onDestinationSelected("About") },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
-    }
-}
-
-@Composable
-private fun BottomControls(
-    hasContinue: Boolean,
-    onContinue: () -> Unit,
-    onFavorites: () -> Unit,
-    onSettings: () -> Unit,
-    onAbout: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .height(if (hasContinue) 140.dp else 96.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 12.dp, vertical = 18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (hasContinue) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(42.dp)
-                        .background(Color(0xDD17110C), RoundedCornerShape(5.dp))
-                        .border(1.dp, MenuGold, RoundedCornerShape(5.dp))
-                        .clickable(onClick = onContinue)
-                        .testTag("continue"),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "CONTINUE",
-                        color = Color(0xFFE2C184),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp
-                    )
-                }
-                Spacer(Modifier.height(8.dp))
-            }
-
-            androidx.compose.foundation.layout.Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                ControlButton("★  FAVORITES", "favorites", onFavorites)
-                ControlButton("⚙  SETTINGS", "settings", onSettings)
-                ControlButton("ⓘ  ABOUT", "about", onAbout)
+            entries.forEachIndexed { index, entry ->
+                GothicMenuItem(entry)
+                if (index != entries.lastIndex) Spacer(Modifier.height(13.dp))
             }
         }
     }
 }
 
 @Composable
-private fun ControlButton(label: String, tag: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .height(36.dp)
-            .clickable(onClick = onClick)
-            .padding(horizontal = 8.dp)
-            .testTag(tag),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            label,
-            color = Color(0xFFD5B273),
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-}
-
-@Composable
-private fun GamePanel(
-    imageRes: Int,
-    logoRes: Int,
-    contentDescription: String,
-    testTag: String,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(220.dp)
-            .clickable(onClick = onClick)
-            .testTag(testTag),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(imageRes),
-            contentDescription = contentDescription,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        listOf(Color(0x22000000), Color.Transparent, Color(0x66000000))
-                    )
-                )
-        )
-        Image(
-            painter = painterResource(logoRes),
-            contentDescription = null,
-            modifier = Modifier
-                .width(165.dp)
-                .padding(end = 14.dp, bottom = 12.dp)
-                .shadow(6.dp),
-            contentScale = ContentScale.Fit
-        )
-    }
-}
-
-@Composable
-private fun GoldDivider() {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .height(2.dp)
-            .background(
-                Brush.horizontalGradient(
-                    listOf(
-                        Color.Transparent,
-                        MenuGoldDark,
-                        MenuGold,
-                        MenuGoldDark,
-                        Color.Transparent
-                    )
-                )
-            )
+private fun GothicMenuItem(entry: HomeMenuEntry) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val color by animateColorAsState(
+        targetValue = if (pressed) HomeMenuGoldPressed else HomeMenuGold,
+        animationSpec = tween(110),
+        label = "menuTextColor"
     )
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) 1.035f else 1f,
+        animationSpec = tween(110),
+        label = "menuTextScale"
+    )
+
+    Row(
+        modifier = Modifier
+            .scale(scale)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = entry.action
+            )
+            .padding(horizontal = 4.dp, vertical = 3.dp)
+            .testTag(entry.testTag),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        GothicSelectionRune(visible = pressed)
+        Text(
+            text = entry.label,
+            color = color,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.7.sp,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = if (pressed) Color(0xD9D09A44) else Color(0x88000000),
+                    blurRadius = if (pressed) 13f else 3f
+                )
+            )
+        )
+    }
+}
+
+@Composable
+private fun GothicSelectionRune(visible: Boolean) {
+    Box(
+        modifier = Modifier.widthIn(min = 23.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        if (visible) {
+            Text(
+                text = "✦",
+                color = HomeMenuGoldPressed,
+                fontSize = 15.sp,
+                style = TextStyle(
+                    shadow = Shadow(color = Color(0xD9D09A44), blurRadius = 10f)
+                )
+            )
+        }
+    }
 }
