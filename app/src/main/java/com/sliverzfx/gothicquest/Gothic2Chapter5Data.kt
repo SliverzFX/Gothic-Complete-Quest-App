@@ -1,6 +1,9 @@
 package com.sliverzfx.gothicquest
-
-object Gothic2Chapter5Data {
-    val quests = listOf(
-    )
-}
+object Gothic2Chapter5Data { val quests = listOf(
+g2later("G2G-C05-003",5,1,"Return to the Tower","Main Quest","Xardas’ Tower","Main / Lore","Stage 1 — After the Dragon Hunt","Investigate Xardas’s disappearance.","After the dragon hunt, speak to Pyrokar and travel to Xardas’s tower. Search the tower, read/collect the message left behind and report what you learn.","Leads into the final Beliar/Irdorath revelations."),
+g2later("G2G-C05-005",5,2,"Sekob's Missing Wife","Side Quest","Sekob’s Farm","General","Stage 1 — After the Dragon Hunt","Find Rosi after she leaves Sekob.","Speak to Sekob. Search the route toward the Dead Harpy/Sun Circle area, find Rosi and Till, decide how to handle their escape, then return to Sekob if appropriate.","Overlaps Rosi’s Escape; complete both before sailing."),
+g2later("G2G-C05-004",5,3,"Rosi's Escape","Side Quest","Sekob’s Farm / countryside","General","Stage 1 — After the Dragon Hunt","Escort Rosi and Till away from Sekob.","Find Rosi and Till on the road/forest after they leave the farm. Agree to escort them to a safe destination, clear the path and bring them there.","Destination/dialogue can vary with faction and prior relationships."),
+g2later("G2G-C05-001",5,4,"I Need a Ship","Main Quest","Khorinis Harbor","Main quest","Stage 2 — Prepare the expedition to Irdorath","Secure a seaworthy ship for the voyage to Irdorath.","After reading the sea chart in the monastery’s secret library, go to the harbor. Gain access to the Paladins’ ship using your faction-specific solution—authority, persuasion, theft or Torlof’s plan—then confirm the vessel is yours to use.","Do not sail until you finish all desired Khorinis/Jharkendar side quests."),
+g2later("G2G-C05-006",5,5,"Who Will Be My Captain","Main Quest","Khorinis","Main quest","Stage 2 — Prepare the expedition to Irdorath","Choose a captain for the voyage to Irdorath.","Recruit one of the eligible captains—commonly Jack, Jorgen or Torlof depending on choices—and complete any prerequisite favor they require. Tell the chosen captain to report to the ship.","The captain choice can alter how you secure the ship and what happens in Khorinis."),
+g2later("G2G-C05-002",5,6,"No Crew, No Journey","Main Quest","Khorinis","Main quest","Stage 2 — Prepare the expedition to Irdorath","Recruit a crew for the expedition to Irdorath.","Ask Milten and your allies who is willing to sail. Recruit eligible companions around Khorinis, Onar’s farm and the monastery, ensuring you have the roles you want (fighters, mage, smith/trainer, etc.). Return to the ship when satisfied.","Crew slots are limited; the app version should later list every recruitable NPC and benefit.")
+)}
