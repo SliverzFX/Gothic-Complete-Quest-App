@@ -36,7 +36,8 @@ import kotlinx.coroutines.delay
 fun GothicQuestApp() {
     var showSplash by remember { mutableStateOf(true) }
     var destination by remember { mutableStateOf<String?>(null) }
-    var gothicChapter by remember { mutableStateOf<Int?>(null) }\n    var selectedQuest by remember { mutableStateOf<Quest?>(null) }
+    var gothicChapter by remember { mutableStateOf<Int?>(null) }
+    var selectedQuest by remember { mutableStateOf<Quest?>(null) }
 
     LaunchedEffect(Unit) {
         delay(2200)
