@@ -317,41 +317,97 @@ private fun ChapterQuestListScreen(gameTitle: String, chapter: Int, quests: List
 private fun QuestDetailScreen(quest: Quest, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     Column(
-        Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding()
+            .verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
-        Text("‹  BACK TO QUESTS", color = Color(0xFFB6935B), fontSize = 12.sp, modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
-        Spacer(Modifier.height(4.dp))
-        Text(quest.id, color = Color(0xFF8F806A), fontSize = 12.sp)
+        Text("‹  BACK TO QUESTS", color = Color(0xFFB6935B), fontSize = 12.sp,
+            modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(6.dp))
+        Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
         Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        if (quest.aliases.isNotEmpty()) Text("Also: " + quest.aliases.joinToString(), color = Color(0xFF9E8B70), fontSize = 12.sp)
-        Spacer(Modifier.height(16.dp))
-        DetailLine("TYPE", quest.category)
-        DetailLine("QUEST GIVER", quest.giver)
-        DetailLine("LOCATION", quest.location)
-        DetailLine("PREREQUISITE", quest.prerequisites)
-        Spacer(Modifier.height(16.dp))
-        Text(quest.summary, color = Color(0xFFE0D5C2), fontSize = 16.sp)
-        Spacer(Modifier.height(20.dp))
-        Text("WALKTHROUGH", color = Color(0xFFD7B06A), fontWeight = FontWeight.Bold)
-        quest.walkthroughSteps.forEachIndexed { index, step ->
-            Text("${index + 1}. $step", color = Color(0xFFC7B89B), fontSize = 14.sp, modifier = Modifier.padding(top = 9.dp))
+        if (quest.aliases.isNotEmpty()) {
+            Text("Also: " + quest.aliases.joinToString(), color = Color(0xFF9E8B70), fontSize = 12.sp)
         }
-        Spacer(Modifier.height(20.dp))
-        Text("REWARD", color = Color(0xFFD7B06A), fontWeight = FontWeight.Bold)
-        Text(quest.reward, color = Color(0xFFC7B89B), fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
-        Text("CHOICES / MISSABLE NOTES", color = Color(0xFFD7B06A), fontWeight = FontWeight.Bold)
-        Text(quest.warnings, color = Color(0xFFC7B89B), fontSize = 14.sp)
-        Spacer(Modifier.height(24.dp))
-        Text("‹  BACK TO QUESTS", color = Color(0xFFB6935B), modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+
+        val infoShape = RoundedCornerShape(7.dp)
+        Column(
+            Modifier.fillMaxWidth()
+                .background(Color(0xFF15100D), infoShape)
+                .border(1.dp, Color(0xFF493720), infoShape)
+                .padding(14.dp)
+        ) {
+            DetailLine("TYPE", quest.category)
+            DetailLine("QUEST GIVER", quest.giver)
+            DetailLine("LOCATION", quest.location)
+            DetailLine("PREREQUISITE", quest.prerequisites, addSpace = false)
+        }
+
+        Spacer(Modifier.height(18.dp))
+        Text("OBJECTIVE", color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(5.dp))
+        Text(quest.summary, color = Color(0xFFE0D5C2), fontSize = 16.sp)
+        Spacer(Modifier.height(22.dp))
+
+        Text("WALKTHROUGH", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(8.dp))
+        quest.walkthroughSteps.forEachIndexed { index, step ->
+            val stepShape = RoundedCornerShape(6.dp)
+            Row(
+                Modifier.fillMaxWidth()
+                    .padding(bottom = 9.dp)
+                    .background(Color(0xFF15100D), stepShape)
+                    .border(1.dp, Color(0xFF3E3020), stepShape)
+                    .padding(13.dp),
+                verticalAlignment = Alignment.Top
+            ) {
+                Text(
+                    "${index + 1}",
+                    color = Color(0xFFD7B06A),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.width(28.dp)
+                )
+                Text(step, color = Color(0xFFD4C7B1), fontSize = 14.sp, modifier = Modifier.weight(1f))
+            }
+        }
+
+        Spacer(Modifier.height(10.dp))
+        if (quest.reward.isNotBlank() && !quest.reward.startsWith("Not specified")) {
+            DetailCallout("REWARD", quest.reward, Color(0xFF3F4A2B))
+            Spacer(Modifier.height(12.dp))
+        }
+        if (quest.warnings.isNotBlank()) {
+            DetailCallout("CHOICES / MISSABLE NOTES", quest.warnings, Color(0xFF4A2D24))
+            Spacer(Modifier.height(12.dp))
+        }
+
+        Spacer(Modifier.height(12.dp))
+        Text("‹  BACK TO QUESTS", color = Color(0xFFB6935B),
+            modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
     }
 }
 
 @Composable
-private fun DetailLine(label: String, value: String) {
+private fun DetailCallout(label: String, value: String, tint: Color) {
+    val shape = RoundedCornerShape(7.dp)
+    Column(
+        Modifier.fillMaxWidth()
+            .background(tint.copy(alpha = 0.32f), shape)
+            .border(1.dp, tint.copy(alpha = 0.85f), shape)
+            .padding(14.dp)
+    ) {
+        Text(label, color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(5.dp))
+        Text(value, color = Color(0xFFD4C7B1), fontSize = 14.sp)
+    }
+}
+
+@Composable
+private fun DetailLine(label: String, value: String, addSpace: Boolean = true) {
     Text(label, color = Color(0xFF8F806A), fontSize = 10.sp, fontWeight = FontWeight.Bold)
     Text(value, color = Color(0xFFC7B89B), fontSize = 14.sp)
-    Spacer(Modifier.height(8.dp))
+    if (addSpace) Spacer(Modifier.height(8.dp))
 }
 
 
