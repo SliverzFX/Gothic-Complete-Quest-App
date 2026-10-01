@@ -1,6 +1,7 @@
 package com.sliverzfx.gothicquest
 
 import android.content.Context
+import android.media.MediaPlayer
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -28,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +56,22 @@ fun GothicQuestApp() {
     var showFavorites by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var favoriteKeys by remember { mutableStateOf(loadFavoriteKeys(context)) }
+    var musicEnabled by remember { mutableStateOf(loadMusicEnabled(context)) }
+    val musicPlayer = remember { MediaPlayer.create(context, R.raw.gothic_old_camp) }
+
+    DisposableEffect(musicPlayer) {
+        musicPlayer?.isLooping = true
+        musicPlayer?.setVolume(0.45f, 0.45f)
+        onDispose { musicPlayer?.release() }
+    }
+
+    LaunchedEffect(musicEnabled, showSplash) {
+        if (musicEnabled && !showSplash) {
+            if (musicPlayer?.isPlaying == false) musicPlayer.start()
+        } else if (musicPlayer?.isPlaying == true) {
+            musicPlayer.pause()
+        }
+    }
 
     LaunchedEffect(Unit) {
         delay(2200)
@@ -64,6 +82,7 @@ fun GothicQuestApp() {
         showSplash -> "splash"
         selectedQuest != null -> "quest:" + selectedQuest!!.id
         showFavorites -> "favorites"
+        destination == "Settings" -> "settings"
         showSearch -> "search"
         showAllQuests -> "allQuests"
         gothicChapter != null -> "chapter:" + gothicChapter
@@ -93,6 +112,11 @@ fun GothicQuestApp() {
                     )
                 }
             }
+            screen == "settings" -> SettingsScreen(
+                musicEnabled = musicEnabled,
+                onMusicChanged = { enabled -> musicEnabled = enabled; saveMusicEnabled(context, enabled) },
+                onBack = { destination = null }
+            )
             screen == "favorites" -> {
                 FavoritesScreen(
                     entries = buildFavoriteEntries(favoriteKeys),
