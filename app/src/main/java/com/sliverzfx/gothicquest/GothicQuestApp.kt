@@ -24,6 +24,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,6 +48,7 @@ fun GothicQuestApp() {
     var gothicChapter by remember { mutableStateOf<Int?>(null) }
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var showAllQuests by remember { mutableStateOf(false) }
+    var showSearch by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(2200)
@@ -55,6 +58,7 @@ fun GothicQuestApp() {
     val screenKey = when {
         showSplash -> "splash"
         selectedQuest != null -> "quest:" + selectedQuest!!.id
+        showSearch -> "search"
         showAllQuests -> "allQuests"
         gothicChapter != null -> "chapter:" + gothicChapter
         destination == "Gothic" -> "gothicHub"
@@ -80,6 +84,15 @@ fun GothicQuestApp() {
                     )
                 }
             }
+            screen == "search" -> {
+                val quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests else GothicQuestData.quests
+                SearchScreen(
+                    gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II" else "GOTHIC",
+                    quests = quests,
+                    onBack = { showSearch = false },
+                    onQuestSelected = { selectedQuest = it }
+                )
+            }
             screen == "allQuests" -> {
                 val quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests else GothicQuestData.quests
                 AllQuestsScreen(
@@ -104,7 +117,8 @@ fun GothicQuestApp() {
             screen == "gothicHub" -> GothicHubScreen(
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it },
-                onAllQuests = { showAllQuests = true }
+                onAllQuests = { showAllQuests = true },
+                onSearch = { showSearch = true }
             )
             screen == "gothic2Hub" -> Gothic2HubScreen(
                 onBack = { destination = null },
@@ -120,7 +134,7 @@ fun GothicQuestApp() {
     }
 }
 @Composable
-private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit) {
+private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
     BackHandler(onBack = onBack)
 
     Box(
@@ -157,7 +171,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
             Spacer(Modifier.height(8.dp))
             UtilityButton("ALL QUESTS", onClick = onAllQuests)
             Spacer(Modifier.height(10.dp))
-            UtilityButton("SEARCH")
+            UtilityButton("SEARCH", onClick = onSearch)
             Spacer(Modifier.height(24.dp))
             Text(
                 "‹  BACK TO MAIN MENU",
@@ -170,7 +184,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
 }
 
 @Composable
-private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit) {
+private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
     BackHandler(onBack = onBack)
     Box(
         Modifier.fillMaxSize().background(
@@ -197,7 +211,7 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
             Spacer(Modifier.height(8.dp))
             UtilityButton("ALL QUESTS", onClick = onAllQuests)
             Spacer(Modifier.height(10.dp))
-            UtilityButton("SEARCH")
+            UtilityButton("SEARCH", onClick = onSearch)
             Spacer(Modifier.height(24.dp))
             Text("‹  BACK TO MAIN MENU", color = Color(0xFFB6935B), fontSize = 13.sp,
                 modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
