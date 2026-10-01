@@ -125,14 +125,16 @@ private fun BottomControls(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(if (hasContinue) 122.dp else 78.dp)
+            .navigationBarsPadding()
+            .height(if (hasContinue) 140.dp else 96.dp)
     ) {
         Image(
             painter = painterResource(R.drawable.menu_smoke),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(155.dp)
+                .height(230.dp)
+                .offset(y = (-18).dp)
                 .align(Alignment.BottomCenter),
             contentScale = ContentScale.FillBounds
         )
@@ -140,7 +142,7 @@ private fun BottomControls(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 12.dp, vertical = 9.dp),
+                .padding(horizontal = 12.dp, vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (hasContinue) {
