@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding\nimport androidx.compose.foundation.Image\nimport androidx.compose.foundation.layout.width\nimport androidx.compose.ui.layout.ContentScale\nimport androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -84,13 +84,19 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .statusBarsPadding()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 28.dp),
+                .padding(horizontal = 20.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("GOTHIC", color = Color(0xFFE0D5C2), fontSize = 38.sp, fontWeight = FontWeight.Bold)
+            Image(
+                painter = painterResource(R.drawable.gothic_classic_logo),
+                contentDescription = "Gothic Classic",
+                modifier = Modifier.width(230.dp),
+                contentScale = ContentScale.Fit
+            )
             Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(22.dp))
 
             (1..6).forEach { chapter ->
                 ChapterButton(chapter) { onChapterSelected(chapter) }
