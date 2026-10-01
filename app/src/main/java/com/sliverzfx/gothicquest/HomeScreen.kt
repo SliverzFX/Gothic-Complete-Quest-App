@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,8 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -70,18 +69,6 @@ fun HomeScreen(
                 )
         )
 
-        Image(
-            painter = painterResource(R.drawable.menu_smoke),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(230.dp)
-                .align(Alignment.TopCenter)
-                .offset(y = (-18).dp)
-                .rotate(180f),
-            contentScale = ContentScale.FillBounds
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,30 +77,53 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 118.dp)
         ) {
-                GamePanel(
-                    imageRes = R.drawable.gothic_button_1,
-                    logoRes = R.drawable.gothic_classic_logo,
-                    contentDescription = "Gothic",
-                    testTag = "game_gothic",
-                    onClick = { onDestinationSelected("Gothic") }
-                )
-                GoldDivider()
-                GamePanel(
-                    imageRes = R.drawable.gothic_button_2,
-                    logoRes = R.drawable.gothic_2_gold_logo,
-                    contentDescription = "Gothic II Gold Edition",
-                    testTag = "game_gothic_2",
-                    onClick = { onDestinationSelected("Gothic II Gold Edition") }
-                )
-                GoldDivider()
-                GamePanel(
-                    imageRes = R.drawable.gothic_button_nb,
-                    logoRes = R.drawable.gothic_2_new_balance_logo,
-                    contentDescription = "Gothic II New Balance",
-                    testTag = "game_new_balance",
-                    onClick = { onDestinationSelected("Gothic II New Balance") }
-                )
+            GamePanel(
+                imageRes = R.drawable.gothic_button_1,
+                logoRes = R.drawable.gothic_classic_logo,
+                contentDescription = "Gothic",
+                testTag = "game_gothic",
+                onClick = { onDestinationSelected("Gothic") }
+            )
+            GoldDivider()
+            GamePanel(
+                imageRes = R.drawable.gothic_button_2,
+                logoRes = R.drawable.gothic_2_gold_logo,
+                contentDescription = "Gothic II Gold Edition",
+                testTag = "game_gothic_2",
+                onClick = { onDestinationSelected("Gothic II Gold Edition") }
+            )
+            GoldDivider()
+            GamePanel(
+                imageRes = R.drawable.gothic_button_nb,
+                logoRes = R.drawable.gothic_2_new_balance_logo,
+                contentDescription = "Gothic II New Balance",
+                testTag = "game_new_balance",
+                onClick = { onDestinationSelected("Gothic II New Balance") }
+            )
         }
+
+        Image(
+            painter = painterResource(R.drawable.menu_smoke),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .align(Alignment.TopCenter)
+                .rotate(180f)
+                .testTag("top_smoke"),
+            contentScale = ContentScale.FillBounds
+        )
+
+        Image(
+            painter = painterResource(R.drawable.menu_smoke),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .align(Alignment.BottomCenter)
+                .testTag("bottom_smoke"),
+            contentScale = ContentScale.FillBounds
+        )
 
         BottomControls(
             hasContinue = hasContinue,
@@ -141,52 +151,42 @@ private fun BottomControls(
             .navigationBarsPadding()
             .height(if (hasContinue) 140.dp else 96.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.menu_smoke),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(230.dp)
-                .offset(y = (-18).dp)
-                .align(Alignment.BottomCenter),
-            contentScale = ContentScale.FillBounds
-        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(horizontal = 12.dp, vertical = 18.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (hasContinue) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp)
-                    .background(Color(0xDD17110C), RoundedCornerShape(5.dp))
-                    .border(1.dp, MenuGold, RoundedCornerShape(5.dp))
-                    .clickable(onClick = onContinue)
-                    .testTag("continue"),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    "CONTINUE",
-                    color = Color(0xFFE2C184),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp
-                )
-            }
-            Spacer(Modifier.height(8.dp))
-        }
-
-        androidx.compose.foundation.layout.Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ControlButton("★  FAVORITES", "favorites", onFavorites)
-            ControlButton("⚙  SETTINGS", "settings", onSettings)
-            ControlButton("ⓘ  ABOUT", "about", onAbout)
+            if (hasContinue) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(42.dp)
+                        .background(Color(0xDD17110C), RoundedCornerShape(5.dp))
+                        .border(1.dp, MenuGold, RoundedCornerShape(5.dp))
+                        .clickable(onClick = onContinue)
+                        .testTag("continue"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "CONTINUE",
+                        color = Color(0xFFE2C184),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+
+            androidx.compose.foundation.layout.Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                ControlButton("★  FAVORITES", "favorites", onFavorites)
+                ControlButton("⚙  SETTINGS", "settings", onSettings)
+                ControlButton("ⓘ  ABOUT", "about", onAbout)
             }
         }
     }
@@ -200,7 +200,7 @@ private fun ControlButton(label: String, tag: String, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp)
             .testTag(tag),
-        contentAlignment = Alignment.BottomEnd
+        contentAlignment = Alignment.Center
     ) {
         Text(
             label,
