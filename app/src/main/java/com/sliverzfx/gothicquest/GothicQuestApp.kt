@@ -58,6 +58,7 @@ fun GothicQuestApp() {
     var showSearch by remember { mutableStateOf(false) }
     var showFavorites by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var resumeState by remember { mutableStateOf(loadResumeState(context)) }
     var favoriteKeys by remember { mutableStateOf(loadFavoriteKeys(context)) }
     var completedKeys by remember { mutableStateOf(loadCompletedKeys(context)) }
     var musicEnabled by remember { mutableStateOf(loadMusicEnabled(context)) }
@@ -122,6 +123,13 @@ fun GothicQuestApp() {
                         onToggleCompleted = { completedKeys = toggleCompleted(context, completedKeys, completedKey) },
                         onBack = { selectedQuest = null }
                     )
+                    LaunchedEffect(quest.id, destination) {
+                        val game = destination
+                        if (game != null) {
+                            resumeState = ResumeState(game, quest.chapter, quest.id)
+                            saveResumeState(context, resumeState!!)
+                        }
+                    }
                 }
             }
             screen == "settings" -> SettingsScreen(
@@ -186,32 +194,61 @@ fun GothicQuestApp() {
                             else -> GothicQuestData.chapter(chapter)
                         },
                         onBack = { gothicChapter = null },
-                        onQuestSelected = { selectedQuest = it }
+                        onQuestSelected = {
+                            selectedQuest = it
+                            destination?.let { game ->
+                                resumeState = ResumeState(game, it.chapter, it.id)
+                                saveResumeState(context, resumeState!!)
+                            }
+                        }
                     )
                 }
             }
             screen == "gothicHub" -> GothicHubScreen(
                 completedKeys = completedKeys,
                 onBack = { destination = null },
-                onChapterSelected = { gothicChapter = it },
+                onChapterSelected = {
+                    gothicChapter = it
+                    resumeState = ResumeState("Gothic", it, null)
+                    saveResumeState(context, resumeState!!)
+                },
                 onAllQuests = { showAllQuests = true },
                 onSearch = { showSearch = true }
             )
             screen == "gothic2Hub" -> Gothic2HubScreen(
                 completedKeys = completedKeys,
                 onBack = { destination = null },
-                onChapterSelected = { gothicChapter = it },
+                onChapterSelected = {
+                    gothicChapter = it
+                    resumeState = ResumeState("Gothic II Gold Edition", it, null)
+                    saveResumeState(context, resumeState!!)
+                },
                 onAllQuests = { showAllQuests = true },
                 onSearch = { showSearch = true }
             )
             screen == "newBalanceHub" -> NewBalanceHubScreen(
                 completedKeys = completedKeys,
                 onBack = { destination = null },
-                onChapterSelected = { gothicChapter = it },
+                onChapterSelected = {
+                    gothicChapter = it
+                    resumeState = ResumeState("Gothic II New Balance", it, null)
+                    saveResumeState(context, resumeState!!)
+                },
                 onAllQuests = { showAllQuests = true },
                 onSearch = { showSearch = true }
             )
-            screen == "home" -> HomeScreen {
+            screen == "home" -> HomeScreen(
+                hasContinue = resumeState != null,
+                onContinue = {
+                    resumeState?.let { saved ->
+                        destination = saved.game
+                        gothicChapter = saved.chapter
+                        selectedQuest = saved.questId?.let { id ->
+                            questsForGame(saved.game).firstOrNull { it.id == id }
+                        }
+                    }
+                }
+            ) {
                 if (it == "Favorites") showFavorites = true else destination = it
             }
             screen.startsWith("destination:") -> DestinationPlaceholder(
@@ -221,6 +258,33 @@ fun GothicQuestApp() {
         }
     }
 }
+
+private data class ResumeState(val game: String, val chapter: Int, val questId: String?)
+
+private fun questsForGame(game: String): List<Quest> = when (game) {
+    "Gothic II Gold Edition" -> Gothic2QuestData.quests
+    "Gothic II New Balance" -> NewBalanceQuestData.quests
+    else -> GothicQuestData.quests
+}
+
+private fun loadResumeState(context: Context): ResumeState? {
+    val prefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+    val game = prefs.getString("resume_game", null) ?: return null
+    val chapter = prefs.getInt("resume_chapter", -1)
+    if (chapter !in 1..6) return null
+    return ResumeState(game, chapter, prefs.getString("resume_quest", null))
+}
+
+private fun saveResumeState(context: Context, state: ResumeState) {
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit()
+        .putString("resume_game", state.game)
+        .putInt("resume_chapter", state.chapter)
+        .apply {
+            if (state.questId != null) putString("resume_quest", state.questId) else remove("resume_quest")
+        }
+        .apply()
+}
+
 @Composable
 private fun GothicHubScreen(completedKeys: Set<String>, onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
     BackHandler(onBack = onBack)
