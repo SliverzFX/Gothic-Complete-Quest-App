@@ -27,8 +27,6 @@ sealed interface AppRoute {
     data class Search(val game: GameId) : AppRoute
 }
 
-internal data class ResumeState(val game: String, val chapter: Int, val questId: String?)
-
 internal fun GameId.quests(): List<Quest> = when (this) {
     GameId.GOTHIC -> GothicQuestData.quests
     GameId.GOTHIC_2_GOLD -> Gothic2QuestData.quests
@@ -41,12 +39,11 @@ internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
     GameId.NEW_BALANCE -> NewBalanceQuestData.chapter(chapter)
 }
 
-internal fun ResumeState.toRouteOrNull(): AppRoute? {
+internal fun routeFromResume(game: String, chapter: Int, questId: String?): AppRoute? {
     val gameId = GameId.fromPersistedName(game) ?: return null
     if (chapter !in 1..6) return null
-    val savedQuestId = questId
-    return if (savedQuestId != null && gameId.quests().any { it.id == savedQuestId }) {
-        AppRoute.QuestDetail(gameId, savedQuestId)
+    return if (questId != null && gameId.quests().any { it.id == questId }) {
+        AppRoute.QuestDetail(gameId, questId)
     } else {
         AppRoute.Chapter(gameId, chapter)
     }
