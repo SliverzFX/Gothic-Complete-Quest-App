@@ -27,7 +27,10 @@ object NewBalanceQuestData {
         NewBalanceChapter2Part2.quests +
         NewBalanceChapter2Part3.quests +
         NewBalanceChapter2Part4.quests +
-        NewBalanceChapter2Part5.quests
+        NewBalanceChapter2Part5.quests +
+        NewBalanceChapter3Part1.quests +
+        NewBalanceChapter3Part2.quests +
+        NewBalanceChapter4Data.quests
 
     fun chapter(number: Int) = quests.filter { it.chapter == number }.sortedBy { it.playOrder }
 }
