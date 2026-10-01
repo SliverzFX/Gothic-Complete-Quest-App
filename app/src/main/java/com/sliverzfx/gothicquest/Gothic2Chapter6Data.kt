@@ -1,6 +1,6 @@
 package com.sliverzfx.gothicquest
-
-object Gothic2Chapter6Data {
-    val quests = listOf(
-    )
-}
+object Gothic2Chapter6Data { val quests = listOf(
+g2later("G2G-C06-003",6,1,"The Halls of Irdorath","Main Quest","Irdorath","Main quest","Stage 1 — The final expedition","Fight through Irdorath and defeat the Undead Dragon.","Fight through the orc corridors and defeat the orc colonel for the prison key. In the throne room pull the two torches left then right to open the secret passage; cross the lizardman cavern and kill fire dragon Feodaron. Shoot the distant switches to extend the bridge, defeat Seekers and Archol, obtain the Keymaster’s key, then solve the four switch rooms: upper-left Middle→Right→Left; lower-left Middle; upper-right Middle→Left→Right; lower-right Middle→Left→Right. Press the four raised pillars and the fifth central pillar, defeat the dark mage, read his scroll, take the Eye of Power and use it at the final gate. Defeat the Undead Dragon.","Charge the Eye of Innos before dragon fights. Pedro can be freed from the prison; Mario may betray you depending on whether he was recruited."),
+g2later("G2G-C06-002",6,2,"My Crew","Main Quest","Irdorath","Main quest","Stage 1 — The final expedition","Keep track of and interact with your recruited companions during the final expedition.","Speak to crew members aboard the ship and at their temporary positions on Irdorath. Use their training, supplies and special dialogue before the final battle, and make sure any personal quests are resolved.","The exact interactions depend on whom you recruited in Chapter 5."),
+g2later("G2G-C06-001",6,3,"Back to the Ship","Main Quest","Irdorath","Main quest","Stage 1 — The final expedition","Return to your crew after defeating the Undead Dragon.","Leave the final chamber, use the opened shortcuts/teleport route through Irdorath, fight any remaining enemies, and return to the ship. Speak with your crew and captain to trigger departure.","This closes the playable adventure.")
+)}
