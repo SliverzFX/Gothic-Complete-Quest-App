@@ -36,7 +36,7 @@ import kotlinx.coroutines.delay
 fun GothicQuestApp() {
     var showSplash by remember { mutableStateOf(true) }
     var destination by remember { mutableStateOf<String?>(null) }
-    var gothicChapter by remember { mutableStateOf<Int?>(null) }
+    var gothicChapter by remember { mutableStateOf<Int?>(null) }\n    var selectedQuest by remember { mutableStateOf<Quest?>(null) }
 
     LaunchedEffect(Unit) {
         delay(2200)
@@ -176,4 +176,72 @@ private fun DestinationPlaceholder(title: String, onBack: () -> Unit) {
             Text("Use Android Back to return to the menu.", color = Color(0xFF8F806A), fontSize = 12.sp)
         }
     }
+}@Composable
+private fun ChapterQuestListScreen(chapter: Int, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
+    BackHandler(onBack = onBack)
+    val quests = if (chapter == 1) GothicQuestData.chapter1 else emptyList()
+
+    Column(
+        Modifier.fillMaxSize().background(Color(0xFF090706)).verticalScroll(rememberScrollState()).padding(20.dp)
+    ) {
+        Text("GOTHIC — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text(if (chapter == 1) "24 QUESTS • CHRONOLOGICAL ORDER" else "QUEST DATA COMING NEXT", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Spacer(Modifier.height(18.dp))
+        quests.forEach { quest ->
+            Column(
+                Modifier.fillMaxWidth().border(1.dp, Color(0xFF5F4529), RoundedCornerShape(6.dp))
+                    .background(Color(0xFF17110E), RoundedCornerShape(6.dp))
+                    .clickable { onQuestSelected(quest) }.padding(16.dp)
+            ) {
+                Text(quest.id, color = Color(0xFF8F806A), fontSize = 11.sp)
+                Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(quest.category, color = Color(0xFF9E8B70), fontSize = 12.sp)
+                Spacer(Modifier.height(5.dp))
+                Text(quest.summary, color = Color(0xFFC7B89B), fontSize = 13.sp)
+            }
+            Spacer(Modifier.height(10.dp))
+        }
+        Text("‹  BACK TO CHAPTERS", color = Color(0xFFB6935B), modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+    }
 }
+
+@Composable
+private fun QuestDetailScreen(quest: Quest, onBack: () -> Unit) {
+    BackHandler(onBack = onBack)
+    Column(
+        Modifier.fillMaxSize().background(Color(0xFF090706)).verticalScroll(rememberScrollState()).padding(20.dp)
+    ) {
+        Text(quest.id, color = Color(0xFF8F806A), fontSize = 12.sp)
+        Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        if (quest.aliases.isNotEmpty()) Text("Also: " + quest.aliases.joinToString(), color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Spacer(Modifier.height(16.dp))
+        DetailLine("TYPE", quest.category)
+        DetailLine("QUEST GIVER", quest.giver)
+        DetailLine("LOCATION", quest.location)
+        DetailLine("PREREQUISITE", quest.prerequisites)
+        Spacer(Modifier.height(16.dp))
+        Text(quest.summary, color = Color(0xFFE0D5C2), fontSize = 16.sp)
+        Spacer(Modifier.height(20.dp))
+        Text("WALKTHROUGH", color = Color(0xFFD7B06A), fontWeight = FontWeight.Bold)
+        quest.walkthroughSteps.forEachIndexed { index, step ->
+            Text("${index + 1}. $step", color = Color(0xFFC7B89B), fontSize = 14.sp, modifier = Modifier.padding(top = 9.dp))
+        }
+        Spacer(Modifier.height(20.dp))
+        Text("REWARD", color = Color(0xFFD7B06A), fontWeight = FontWeight.Bold)
+        Text(quest.reward, color = Color(0xFFC7B89B), fontSize = 14.sp)
+        Spacer(Modifier.height(16.dp))
+        Text("CHOICES / MISSABLE NOTES", color = Color(0xFFD7B06A), fontWeight = FontWeight.Bold)
+        Text(quest.warnings, color = Color(0xFFC7B89B), fontSize = 14.sp)
+        Spacer(Modifier.height(24.dp))
+        Text("‹  BACK TO QUESTS", color = Color(0xFFB6935B), modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+    }
+}
+
+@Composable
+private fun DetailLine(label: String, value: String) {
+    Text(label, color = Color(0xFF8F806A), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+    Text(value, color = Color(0xFFC7B89B), fontSize = 14.sp)
+    Spacer(Modifier.height(8.dp))
+}
+
+
