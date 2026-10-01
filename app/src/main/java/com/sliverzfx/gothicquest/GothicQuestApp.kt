@@ -1,6 +1,8 @@
 package com.sliverzfx.gothicquest
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -49,29 +51,43 @@ fun GothicQuestApp() {
         showSplash = false
     }
 
-    when {
-        showSplash -> SplashScreen()
-        selectedQuest != null -> QuestDetailScreen(
-            quest = selectedQuest!!,
-            onBack = { selectedQuest = null }
-        )
-        gothicChapter != null -> ChapterQuestListScreen(
-            chapter = gothicChapter!!,
-            onBack = { gothicChapter = null },
-            onQuestSelected = { selectedQuest = it }
-        )
-        destination == "Gothic" -> GothicHubScreen(
-            onBack = { destination = null },
-            onChapterSelected = { gothicChapter = it }
-        )
-        destination == null -> HomeScreen { destination = it }
-        else -> DestinationPlaceholder(
-            title = destination!!,
-            onBack = { destination = null }
-        )
+    val screenKey = when {
+        showSplash -> "splash"
+        selectedQuest != null -> "quest:" + selectedQuest!!.id
+        gothicChapter != null -> "chapter:" + gothicChapter
+        destination == "Gothic" -> "gothicHub"
+        destination == null -> "home"
+        else -> "destination:" + destination
+    }
+
+    Crossfade(
+        targetState = screenKey,
+        animationSpec = tween(durationMillis = 350),
+        label = "screenCrossfade"
+    ) { screen ->
+        when {
+            screen == "splash" -> SplashScreen()
+            screen.startsWith("quest:") -> QuestDetailScreen(
+                quest = selectedQuest!!,
+                onBack = { selectedQuest = null }
+            )
+            screen.startsWith("chapter:") -> ChapterQuestListScreen(
+                chapter = gothicChapter!!,
+                onBack = { gothicChapter = null },
+                onQuestSelected = { selectedQuest = it }
+            )
+            screen == "gothicHub" -> GothicHubScreen(
+                onBack = { destination = null },
+                onChapterSelected = { gothicChapter = it }
+            )
+            screen == "home" -> HomeScreen { destination = it }
+            else -> DestinationPlaceholder(
+                title = destination!!,
+                onBack = { destination = null }
+            )
+        }
     }
 }
-
 @Composable
 private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit) {
     BackHandler(onBack = onBack)
