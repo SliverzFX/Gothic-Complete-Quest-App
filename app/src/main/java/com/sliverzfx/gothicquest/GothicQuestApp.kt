@@ -108,7 +108,8 @@ fun GothicQuestApp() {
             )
             screen == "gothic2Hub" -> Gothic2HubScreen(
                 onBack = { destination = null },
-                onChapterSelected = { gothicChapter = it }
+                onChapterSelected = { gothicChapter = it },
+                onAllQuests = { showAllQuests = true }
             )
             screen == "home" -> HomeScreen { destination = it }
             screen.startsWith("destination:") -> DestinationPlaceholder(
