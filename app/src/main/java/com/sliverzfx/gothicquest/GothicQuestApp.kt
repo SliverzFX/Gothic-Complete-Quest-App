@@ -354,7 +354,7 @@ private fun ChapterButton(chapter: Int, quests: List<Quest>, completedKeys: Set<
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(82.dp)
+            .height(72.dp)
             .border(1.dp, Color(0xFF76552E), shape)
             .background(
                 Brush.horizontalGradient(
@@ -363,7 +363,7 @@ private fun ChapterButton(chapter: Int, quests: List<Quest>, completedKeys: Set<
                 shape
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(horizontal = 20.dp, vertical = 7.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -375,16 +375,16 @@ private fun ChapterButton(chapter: Int, quests: List<Quest>, completedKeys: Set<
                 Text(
                     "$completedCount / $questCount completed • $percentage%",
                     color = Color(0xFF9E8B70),
-                    fontSize = 12.sp
+                    fontSize = 11.sp
                 )
             }
             Text("›", color = Color(0xFFD7B06A), fontSize = 32.sp)
         }
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(3.dp))
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(5.dp)
+                .height(3.dp)
                 .background(Color(0xFF0B0907), RoundedCornerShape(3.dp))
                 .border(1.dp, Color(0xFF493720), RoundedCornerShape(3.dp))
         ) {
