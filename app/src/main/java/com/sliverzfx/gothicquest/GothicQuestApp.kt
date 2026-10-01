@@ -196,13 +196,13 @@ private fun DestinationPlaceholder(title: String, onBack: () -> Unit) {
 }@Composable
 private fun ChapterQuestListScreen(chapter: Int, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
     BackHandler(onBack = onBack)
-    val quests = if (chapter == 1) GothicQuestData.chapter1 else emptyList()
+    val quests = GothicQuestData.chapter(chapter)
 
     Column(
         Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Text("GOTHIC — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text(if (chapter == 1) "24 QUESTS • CHRONOLOGICAL ORDER" else "QUEST DATA COMING NEXT", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text(if (quests.isNotEmpty()) "${quests.size} QUESTS • CHRONOLOGICAL ORDER" else "QUEST DATA COMING NEXT", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
         quests.forEach { quest ->
             Column(
