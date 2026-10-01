@@ -245,7 +245,7 @@ private fun GothicHubScreen(completedKeys: Set<String>, onBack: () -> Unit, onCh
             Image(
                 painter = painterResource(R.drawable.gothic_classic_logo),
                 contentDescription = "Gothic Classic",
-                modifier = Modifier.width(230.dp),
+                modifier = Modifier.width(300.dp),
                 contentScale = ContentScale.Fit
             )
             Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
