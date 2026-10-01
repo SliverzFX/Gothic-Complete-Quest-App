@@ -33,7 +33,7 @@ Home
   └─ Settings                     (preserves existing music control)
 ```
 
-`Favorites` remains part of the quest-guide system and must not be deleted. For this milestone it remains reachable from the Quest Guides area; its later visual redesign is out of scope.
+`Favorites` remains part of the quest-guide system and must not be deleted. For this milestone it is reachable from the Quest Guides library as a small Gothic-styled text action in the upper-right, opposite the upper-left `BACK` action. Its later visual redesign is out of scope.
 
 ## Home screen
 
@@ -71,6 +71,8 @@ When an item is pressed/active:
 - a small Gothic ornament/rune appears immediately to the left;
 - the item may use a very small scale/brightness response, but the motion must remain subtle.
 
+On touch devices the highlighted/active state is the press state and the short transition into the selected destination; there is no permanent hover state.
+
 The ornament must be implemented as a replaceable UI element so a final custom rune asset can be substituted later without rewriting menu behavior.
 
 On selection, the current global crossfade behavior is retained so the app transitions smoothly into the destination screen.
@@ -86,6 +88,7 @@ The screen uses:
 - smaller game logos positioned toward the lower-right of each panel;
 - smoke framing where useful;
 - an upper-left Gothic-styled `BACK` action;
+- an upper-right Gothic-styled `FAVORITES` text action;
 - enough bottom inset/padding that content never conflicts with Android system navigation.
 
 The current three entries are:
@@ -104,7 +107,7 @@ Marvin Codes / Cheats uses the same reusable game/mod-library component and inte
 
 The architecture must not hard-code quest-specific behavior into the reusable game selector.
 
-Final cheat-specific game artwork has not yet been supplied. Therefore this milestone creates the real Marvin Codes / Cheats route and reusable library structure, but does not invent or silently substitute final cheat artwork. Until those assets/data are provided, the section may present an intentionally minimal/empty library state with the Gothic `BACK` action.
+Final cheat-specific game artwork has not yet been supplied. Therefore this milestone creates the real Marvin Codes / Cheats route and reusable library structure, but does not invent or silently substitute final cheat artwork. Until those assets/data are provided, the section presents an intentionally minimal/empty library state with the Gothic `BACK` action.
 
 Later flow:
 
@@ -172,7 +175,7 @@ The navigation redesign must not reset or invalidate completion, favorites, resu
 
 The existing music setting must remain reachable. `Settings` therefore remains a top-level text menu item for this milestone.
 
-Favorites remain a quest-guide feature. They should be accessible from the Quest Guides area without returning to the old home-screen control-bar architecture. The exact final Favorites presentation will be redesigned later.
+Favorites remain a quest-guide feature. For this milestone the Quest Guides library exposes `FAVORITES` in the upper-right as a text-only Gothic utility action. It opens the existing Favorites screen. The exact final Favorites presentation will be redesigned later.
 
 ## Architecture
 
@@ -259,7 +262,7 @@ At minimum verify:
 6. Marvin Codes / Cheats opens its own route without fabricated cheat content.
 7. FAQs, Info / About, Support / Bugs, and Donations each open their own placeholder route and return Home with Back.
 8. Settings remains reachable and music preference behavior still works.
-9. Existing Favorites data remains intact and reachable from the Quest Guides area.
+9. Existing Favorites data remains intact and `FAVORITES` in the Quest Guides library opens the existing Favorites screen.
 10. Android system Back mirrors the visible Back behavior.
 11. Existing quest completion, favorites, and resume state are not cleared by the navigation refactor.
 12. `:app:assembleDebug` succeeds.
