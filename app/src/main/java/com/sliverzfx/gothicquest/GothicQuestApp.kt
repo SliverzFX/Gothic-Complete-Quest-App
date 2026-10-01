@@ -363,8 +363,9 @@ private fun ChapterButton(chapter: Int, quests: List<Quest>, completedKeys: Set<
                 shape
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 7.dp)
+            .padding(horizontal = 20.dp, vertical = 5.dp)
     ) {
+        Spacer(Modifier.weight(1f))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -395,6 +396,7 @@ private fun ChapterButton(chapter: Int, quests: List<Quest>, completedKeys: Set<
                     .background(Color(0xFFC79A55), RoundedCornerShape(3.dp))
             )
         }
+        Spacer(Modifier.weight(1f))
     }
 }
 
