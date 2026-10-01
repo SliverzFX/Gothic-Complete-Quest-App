@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -436,7 +437,13 @@ private fun ChapterQuestListScreen(gameTitle: String, chapter: Int, quests: List
                 Spacer(Modifier.height(3.dp))
                 Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(7.dp))
-                Text(quest.summary, color = Color(0xFFC7B89B), fontSize = 13.sp)
+                Text(
+                    quest.summary,
+                    color = Color(0xFFC7B89B),
+                    fontSize = 13.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
                 Spacer(Modifier.height(7.dp))
                 Text(quest.id, color = Color(0xFF746957), fontSize = 10.sp)
             }
