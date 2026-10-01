@@ -11,7 +11,7 @@ class AppLaunchTest {
     val composeRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun appRootExistsAfterLaunch() {
-        composeRule.onNodeWithTag("app_root").assertExists()
+    fun splashRootExistsAfterLaunch() {
+        composeRule.onNodeWithTag("splash_screen").assertExists()
     }
 }
