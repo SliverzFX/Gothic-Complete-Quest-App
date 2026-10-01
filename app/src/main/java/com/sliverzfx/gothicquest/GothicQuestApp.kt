@@ -461,6 +461,50 @@ private fun DetailLine(label: String, value: String, addSpace: Boolean = true) {
 }
 
 
+private data class FavoriteEntry(val game: String, val quest: Quest)
+private fun questFavoriteKey(game: String?, quest: Quest): String = (if (game == "Gothic II Gold Edition") "G2" else "G1") + "|" + quest.id
+private fun loadFavoriteKeys(context: Context): Set<String> = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).getStringSet("favorites", emptySet())?.toSet() ?: emptySet()
+private fun toggleFavorite(context: Context, current: Set<String>, key: String): Set<String> {
+    val updated = current.toMutableSet().apply { if (!add(key)) remove(key) }.toSet()
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit().putStringSet("favorites", updated).apply()
+    return updated
+}
+private fun buildFavoriteEntries(keys: Set<String>): List<FavoriteEntry> {
+    val entries = mutableListOf<FavoriteEntry>()
+    GothicQuestData.quests.filter { "G1|" + it.id in keys }.forEach { entries += FavoriteEntry("Gothic", it) }
+    Gothic2QuestData.quests.filter { "G2|" + it.id in keys }.forEach { entries += FavoriteEntry("Gothic II Gold Edition", it) }
+    return entries
+}
+@Composable
+private fun FavoritesScreen(entries: List<FavoriteEntry>, onBack: () -> Unit, onQuestSelected: (String, Quest) -> Unit) {
+    BackHandler(onBack = onBack)
+    Column(Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)) {
+        Text("‹  BACK TO MAIN MENU", color = Color(0xFFB6935B), fontSize = 12.sp, modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(4.dp))
+        Text("FAVORITES", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text("${entries.size} SAVED QUESTS", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Spacer(Modifier.height(18.dp))
+        if (entries.isEmpty()) {
+            Text("No favorites yet. Open any quest and tap ☆ to save it here.", color = Color(0xFFC7B89B), fontSize = 14.sp)
+        } else {
+            entries.forEach { entry ->
+                val quest = entry.quest
+                val shape = RoundedCornerShape(7.dp)
+                Column(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape)
+                    .border(1.dp, Color(0xFF5F4529), shape).clickable { onQuestSelected(entry.game, quest) }.padding(horizontal = 16.dp, vertical = 14.dp)) {
+                    Text((if (entry.game == "Gothic") "GOTHIC" else "GOTHIC II") + "  •  CHAPTER ${quest.chapter}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        Text("★", color = Color(0xFFD7B06A), fontSize = 20.sp)
+                    }
+                    Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                }
+                Spacer(Modifier.height(10.dp))
+            }
+        }
+    }
+}
+
 @Composable
 private fun SearchScreen(gameTitle: String, quests: List<Quest>, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
     BackHandler(onBack = onBack)
