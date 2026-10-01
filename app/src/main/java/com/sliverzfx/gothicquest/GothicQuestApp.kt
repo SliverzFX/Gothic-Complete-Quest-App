@@ -215,7 +215,7 @@ private fun ChapterQuestListScreen(chapter: Int, onBack: () -> Unit, onQuestSele
 private fun QuestDetailScreen(quest: Quest, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     Column(
-        Modifier.fillMaxSize().background(Color(0xFF090706)).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Text(quest.id, color = Color(0xFF8F806A), fontSize = 12.sp)
         Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
