@@ -45,6 +45,7 @@ fun GothicQuestApp() {
     var destination by remember { mutableStateOf<String?>(null) }
     var gothicChapter by remember { mutableStateOf<Int?>(null) }
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
+    var showAllQuests by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         delay(2200)
@@ -54,6 +55,7 @@ fun GothicQuestApp() {
     val screenKey = when {
         showSplash -> "splash"
         selectedQuest != null -> "quest:" + selectedQuest!!.id
+        showAllQuests -> "allQuests"
         gothicChapter != null -> "chapter:" + gothicChapter
         destination == "Gothic" -> "gothicHub"
         destination == "Gothic II Gold Edition" -> "gothic2Hub"
@@ -78,6 +80,15 @@ fun GothicQuestApp() {
                     )
                 }
             }
+            screen == "allQuests" -> {
+                val quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests else GothicQuestData.quests
+                AllQuestsScreen(
+                    gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II" else "GOTHIC",
+                    quests = quests,
+                    onBack = { showAllQuests = false },
+                    onQuestSelected = { selectedQuest = it }
+                )
+            }
             screen.startsWith("chapter:") -> {
                 val chapter = screen.removePrefix("chapter:").toIntOrNull()
                 if (chapter != null) {
@@ -92,7 +103,8 @@ fun GothicQuestApp() {
             }
             screen == "gothicHub" -> GothicHubScreen(
                 onBack = { destination = null },
-                onChapterSelected = { gothicChapter = it }
+                onChapterSelected = { gothicChapter = it },
+                onAllQuests = { showAllQuests = true }
             )
             screen == "gothic2Hub" -> Gothic2HubScreen(
                 onBack = { destination = null },
@@ -107,7 +119,7 @@ fun GothicQuestApp() {
     }
 }
 @Composable
-private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit) {
+private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit) {
     BackHandler(onBack = onBack)
 
     Box(
@@ -142,7 +154,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
             }
 
             Spacer(Modifier.height(8.dp))
-            UtilityButton("ALL QUESTS")
+            UtilityButton("ALL QUESTS", onClick = onAllQuests)
             Spacer(Modifier.height(10.dp))
             UtilityButton("SEARCH")
             Spacer(Modifier.height(24.dp))
@@ -157,7 +169,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
 }
 
 @Composable
-private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit) {
+private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit) {
     BackHandler(onBack = onBack)
     Box(
         Modifier.fillMaxSize().background(
@@ -182,7 +194,7 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
-            UtilityButton("ALL QUESTS")
+            UtilityButton("ALL QUESTS", onClick = onAllQuests)
             Spacer(Modifier.height(10.dp))
             UtilityButton("SEARCH")
             Spacer(Modifier.height(24.dp))
@@ -220,13 +232,14 @@ private fun ChapterButton(chapter: Int, questCount: Int, onClick: () -> Unit) {
 }
 
 @Composable
-private fun UtilityButton(label: String) {
+private fun UtilityButton(label: String, onClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
             .border(1.dp, Color(0xFF4D4030), RoundedCornerShape(5.dp))
-            .background(Color(0xFF11100E), RoundedCornerShape(5.dp)),
+            .background(Color(0xFF11100E), RoundedCornerShape(5.dp))
+            .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(label, color = Color(0xFFBDA47A), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
@@ -410,4 +423,40 @@ private fun DetailLine(label: String, value: String, addSpace: Boolean = true) {
     if (addSpace) Spacer(Modifier.height(8.dp))
 }
 
+
+@Composable
+private fun AllQuestsScreen(gameTitle: String, quests: List<Quest>, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
+    BackHandler(onBack = onBack)
+    Column(
+        Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding()
+            .verticalScroll(rememberScrollState()).padding(20.dp)
+    ) {
+        Text("‹  BACK TO CHAPTERS", color = Color(0xFFB6935B), fontSize = 12.sp,
+            modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(4.dp))
+        Text("$gameTitle — ALL QUESTS", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text("${quests.size} QUESTS • CHRONOLOGICAL BY CHAPTER", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Spacer(Modifier.height(18.dp))
+        quests.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder }).forEach { quest ->
+            val shape = RoundedCornerShape(7.dp)
+            Column(
+                Modifier.fillMaxWidth()
+                    .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape)
+                    .border(1.dp, Color(0xFF5F4529), shape)
+                    .clickable { onQuestSelected(quest) }
+                    .padding(horizontal = 16.dp, vertical = 14.dp)
+            ) {
+                Text("CHAPTER ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
+                }
+                Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+            }
+            Spacer(Modifier.height(10.dp))
+        }
+        Text("‹  BACK TO CHAPTERS", color = Color(0xFFB6935B),
+            modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+    }
+}
 
