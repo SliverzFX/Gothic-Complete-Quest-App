@@ -2,8 +2,8 @@ package com.sliverzfx.gothicquest
 
 import androidx.compose.ui.test.assertExists
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,7 +19,7 @@ class SplashFlowTest {
     @Test
     fun homeAppearsAfterSplash() {
         composeRule.waitUntil(timeoutMillis = 5000) {
-            composeRule.onAllNodesWithText("Gothic").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithTag("home_screen").assertExists()
     }
