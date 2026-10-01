@@ -14,3 +14,12 @@ object Gothic2QuestData {
 
     fun chapter(number: Int) = quests.filter { it.chapter == number }.sortedBy { it.playOrder }
 }
+
+object NewBalanceQuestData {
+    val quests = NewBalanceChapter1Part1.quests +
+        NewBalanceChapter1Part2.quests +
+        NewBalanceChapter1Part3.quests +
+        NewBalanceChapter1Part4.quests
+
+    fun chapter(number: Int) = quests.filter { it.chapter == number }.sortedBy { it.playOrder }
+}
