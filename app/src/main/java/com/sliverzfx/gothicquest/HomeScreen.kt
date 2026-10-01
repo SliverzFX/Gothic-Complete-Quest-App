@@ -1,5 +1,8 @@
 package com.sliverzfx.gothicquest
 
+import android.net.Uri
+import android.view.View
+import android.widget.VideoView
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -18,7 +21,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,13 +32,14 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Text
+import androidx.compose.ui.viewinterop.AndroidView
 
 private val HomeMenuGold = Color(0xFFC7A469)
 private val HomeMenuGoldPressed = Color(0xFFFFD98A)
@@ -50,6 +56,31 @@ fun HomeScreen(
     onContinue: () -> Unit = {},
     onDestinationSelected: (String) -> Unit
 ) {
+    val context = LocalContext.current
+    val backgroundVideo = remember(context) {
+        VideoView(context).apply {
+            setVideoURI(
+                Uri.parse("android.resource://${context.packageName}/${R.raw.home_menu_loop}")
+            )
+            setOnPreparedListener { mediaPlayer ->
+                mediaPlayer.isLooping = true
+                mediaPlayer.setVolume(0f, 0f)
+                start()
+            }
+            setOnErrorListener { _, _, _ ->
+                visibility = View.GONE
+                true
+            }
+            start()
+        }
+    }
+
+    DisposableEffect(backgroundVideo) {
+        onDispose {
+            backgroundVideo.stopPlayback()
+        }
+    }
+
     val entries = buildList {
         if (hasContinue) add(HomeMenuEntry("CONTINUE", "home_continue", onContinue))
         add(HomeMenuEntry("QUEST GUIDES", "home_quest_guides") { onDestinationSelected("Quest Guides") })
@@ -67,11 +98,24 @@ fun HomeScreen(
             .background(Color.Black)
             .testTag("home_screen")
     ) {
+        // Static fallback stays underneath the video in case playback is unavailable on a device.
         Image(
             painter = painterResource(R.drawable.home_background),
             contentDescription = "Khorinis",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
+        )
+
+        AndroidView(
+            factory = { backgroundVideo },
+            update = { videoView ->
+                if (videoView.visibility == View.VISIBLE && !videoView.isPlaying) {
+                    videoView.start()
+                }
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("home_background_video")
         )
 
         // Only darken the right side enough to keep the title-menu readable.
