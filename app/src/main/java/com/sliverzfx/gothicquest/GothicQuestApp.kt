@@ -438,7 +438,7 @@ private fun AllQuestsScreen(gameTitle: String, quests: List<Quest>, onBack: () -
         Text("$gameTitle — ALL QUESTS", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text("${quests.size} QUESTS • CHRONOLOGICAL BY CHAPTER", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
-        quests.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder }).forEach { quest ->
+        quests.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder }).forEachIndexed { index, quest ->
             val shape = RoundedCornerShape(7.dp)
             Column(
                 Modifier.fillMaxWidth()
@@ -449,7 +449,7 @@ private fun AllQuestsScreen(gameTitle: String, quests: List<Quest>, onBack: () -
             ) {
                 Text("CHAPTER ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    Text("\${index + 1}.  \${quest.title}", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                     Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
                 }
                 Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
