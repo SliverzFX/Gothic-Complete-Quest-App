@@ -449,7 +449,7 @@ private fun AllQuestsScreen(gameTitle: String, quests: List<Quest>, onBack: () -
             ) {
                 Text("CHAPTER ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text("\${index + 1}.  \${quest.title}", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    Text("${index + 1}.  ${quest.title}", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                     Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
                 }
                 Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
