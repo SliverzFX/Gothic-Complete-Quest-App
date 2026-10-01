@@ -84,11 +84,21 @@ fun GothicQuestApp() {
                 val questId = screen.removePrefix("quest:")
                 val quest = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests.firstOrNull { it.id == questId } else GothicQuestData.quests.firstOrNull { it.id == questId }
                 if (quest != null) {
+                    val favoriteKey = questFavoriteKey(destination, quest)
                     QuestDetailScreen(
                         quest = quest,
+                        isFavorite = favoriteKey in favoriteKeys,
+                        onToggleFavorite = { favoriteKeys = toggleFavorite(context, favoriteKeys, favoriteKey) },
                         onBack = { selectedQuest = null }
                     )
                 }
+            }
+            screen == "favorites" -> {
+                FavoritesScreen(
+                    entries = buildFavoriteEntries(favoriteKeys),
+                    onBack = { showFavorites = false },
+                    onQuestSelected = { game, quest -> destination = game; selectedQuest = quest }
+                )
             }
             screen == "search" -> {
                 val quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests else GothicQuestData.quests
@@ -361,7 +371,10 @@ private fun QuestDetailScreen(quest: Quest, isFavorite: Boolean, onToggleFavorit
             modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
         Spacer(Modifier.height(6.dp))
         Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
-        Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(if (isFavorite) "★" else "☆", color = if (isFavorite) Color(0xFFD7B06A) else Color(0xFF8F806A), fontSize = 32.sp, modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp))
+        }
         if (quest.aliases.isNotEmpty()) {
             Text("Also: " + quest.aliases.joinToString(), color = Color(0xFF9E8B70), fontSize = 12.sp)
         }
