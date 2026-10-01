@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.Image
@@ -57,6 +59,7 @@ fun GothicQuestApp() {
     var showFavorites by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var favoriteKeys by remember { mutableStateOf(loadFavoriteKeys(context)) }
+    var completedKeys by remember { mutableStateOf(loadCompletedKeys(context)) }
     var musicEnabled by remember { mutableStateOf(loadMusicEnabled(context)) }
     val musicPlayer = remember { MediaPlayer.create(context, R.raw.gothic_old_camp) }
 
@@ -110,10 +113,13 @@ fun GothicQuestApp() {
                 }
                 if (quest != null) {
                     val favoriteKey = questFavoriteKey(destination, quest)
+                    val completedKey = questCompletedKey(destination, quest)
                     QuestDetailScreen(
                         quest = quest,
                         isFavorite = favoriteKey in favoriteKeys,
+                        isCompleted = completedKey in completedKeys,
                         onToggleFavorite = { favoriteKeys = toggleFavorite(context, favoriteKeys, favoriteKey) },
+                        onToggleCompleted = { completedKeys = toggleCompleted(context, completedKeys, completedKey) },
                         onBack = { selectedQuest = null }
                     )
                 }
@@ -185,18 +191,21 @@ fun GothicQuestApp() {
                 }
             }
             screen == "gothicHub" -> GothicHubScreen(
+                completedKeys = completedKeys,
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it },
                 onAllQuests = { showAllQuests = true },
                 onSearch = { showSearch = true }
             )
             screen == "gothic2Hub" -> Gothic2HubScreen(
+                completedKeys = completedKeys,
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it },
                 onAllQuests = { showAllQuests = true },
                 onSearch = { showSearch = true }
             )
             screen == "newBalanceHub" -> NewBalanceHubScreen(
+                completedKeys = completedKeys,
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it },
                 onAllQuests = { showAllQuests = true },
@@ -213,7 +222,7 @@ fun GothicQuestApp() {
     }
 }
 @Composable
-private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
+private fun GothicHubScreen(completedKeys: Set<String>, onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
     BackHandler(onBack = onBack)
 
     Box(
@@ -243,7 +252,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
             Spacer(Modifier.height(22.dp))
 
             (1..6).forEach { chapter ->
-                ChapterButton(chapter, questCount = GothicQuestData.chapter(chapter).size) { onChapterSelected(chapter) }
+                ChapterButton(chapter, quests = GothicQuestData.chapter(chapter), completedKeys = completedKeys, gamePrefix = "G1") { onChapterSelected(chapter) }
                 Spacer(Modifier.height(11.dp))
             }
 
@@ -263,7 +272,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
 }
 
 @Composable
-private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
+private fun Gothic2HubScreen(completedKeys: Set<String>, onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
     BackHandler(onBack = onBack)
     Box(
         Modifier.fillMaxSize().background(
@@ -284,7 +293,7 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
             Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
             Spacer(Modifier.height(22.dp))
             (1..6).forEach { chapter ->
-                ChapterButton(chapter, questCount = Gothic2QuestData.chapter(chapter).size) { onChapterSelected(chapter) }
+                ChapterButton(chapter, quests = Gothic2QuestData.chapter(chapter), completedKeys = completedKeys, gamePrefix = "G2") { onChapterSelected(chapter) }
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
@@ -299,7 +308,7 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
 }
 
 @Composable
-private fun NewBalanceHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
+private fun NewBalanceHubScreen(completedKeys: Set<String>, onBack: () -> Unit, onChapterSelected: (Int) -> Unit, onAllQuests: () -> Unit, onSearch: () -> Unit) {
     BackHandler(onBack = onBack)
     Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF1A0C08), Color(0xFF080706), Color.Black)))) {
         Column(
@@ -315,7 +324,7 @@ private fun NewBalanceHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> 
             Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
             Spacer(Modifier.height(22.dp))
             (1..6).forEach { chapter ->
-                ChapterButton(chapter, questCount = NewBalanceQuestData.chapter(chapter).size) { onChapterSelected(chapter) }
+                ChapterButton(chapter, quests = NewBalanceQuestData.chapter(chapter), completedKeys = completedKeys, gamePrefix = "NB") { onChapterSelected(chapter) }
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
@@ -330,12 +339,22 @@ private fun NewBalanceHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> 
 }
 
 @Composable
-private fun ChapterButton(chapter: Int, questCount: Int, onClick: () -> Unit) {
+private fun ChapterButton(chapter: Int, quests: List<Quest>, completedKeys: Set<String>, gamePrefix: String, onClick: () -> Unit) {
     val shape = RoundedCornerShape(6.dp)
-    Row(
+    val questCount = quests.size
+    val completedCount = quests.count { "$gamePrefix|${it.id}" in completedKeys }
+    val targetProgress = if (questCount == 0) 0f else completedCount.toFloat() / questCount.toFloat()
+    val progress by animateFloatAsState(
+        targetValue = targetProgress,
+        animationSpec = tween(durationMillis = 500),
+        label = "chapterProgress"
+    )
+    val percentage = (targetProgress * 100).toInt()
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .height(82.dp)
             .border(1.dp, Color(0xFF76552E), shape)
             .background(
                 Brush.horizontalGradient(
@@ -344,15 +363,38 @@ private fun ChapterButton(chapter: Int, questCount: Int, onClick: () -> Unit) {
                 shape
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
-        Column {
-            Text("CHAPTER $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text("$questCount quests • walkthroughs", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text("CHAPTER $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    "$completedCount / $questCount completed • $percentage%",
+                    color = Color(0xFF9E8B70),
+                    fontSize = 12.sp
+                )
+            }
+            Text("›", color = Color(0xFFD7B06A), fontSize = 32.sp)
         }
-        Text("›", color = Color(0xFFD7B06A), fontSize = 32.sp)
+        Spacer(Modifier.height(6.dp))
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(5.dp)
+                .background(Color(0xFF0B0907), RoundedCornerShape(3.dp))
+                .border(1.dp, Color(0xFF493720), RoundedCornerShape(3.dp))
+        ) {
+            Box(
+                Modifier
+                    .fillMaxWidth(progress.coerceIn(0f, 1f))
+                    .fillMaxHeight()
+                    .background(Color(0xFFC79A55), RoundedCornerShape(3.dp))
+            )
+        }
     }
 }
 
@@ -458,7 +500,7 @@ private fun ChapterQuestListScreen(gameTitle: String, chapter: Int, quests: List
 }
 
 @Composable
-private fun QuestDetailScreen(quest: Quest, isFavorite: Boolean, onToggleFavorite: () -> Unit, onBack: () -> Unit) {
+private fun QuestDetailScreen(quest: Quest, isFavorite: Boolean, isCompleted: Boolean, onToggleFavorite: () -> Unit, onToggleCompleted: () -> Unit, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     Column(
         Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding()
@@ -470,6 +512,12 @@ private fun QuestDetailScreen(quest: Quest, isFavorite: Boolean, onToggleFavorit
         Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(
+                if (isCompleted) "✓" else "○",
+                color = if (isCompleted) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                fontSize = 30.sp,
+                modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
+            )
             Text(if (isFavorite) "★" else "☆", color = if (isFavorite) Color(0xFFD7B06A) else Color(0xFF8F806A), fontSize = 32.sp, modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp))
         }
         if (quest.aliases.isNotEmpty()) {
@@ -609,6 +657,17 @@ private fun questFavoriteKey(game: String?, quest: Quest): String = when (game) 
     else -> "G1|" + quest.id
 }
 private fun loadFavoriteKeys(context: Context): Set<String> = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).getStringSet("favorites", emptySet())?.toSet() ?: emptySet()
+private fun questCompletedKey(game: String?, quest: Quest): String = when (game) {
+    "Gothic II Gold Edition" -> "G2|" + quest.id
+    "Gothic II New Balance" -> "NB|" + quest.id
+    else -> "G1|" + quest.id
+}
+private fun loadCompletedKeys(context: Context): Set<String> = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).getStringSet("completed", emptySet())?.toSet() ?: emptySet()
+private fun toggleCompleted(context: Context, current: Set<String>, key: String): Set<String> {
+    val updated = current.toMutableSet().apply { if (!add(key)) remove(key) }.toSet()
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit().putStringSet("completed", updated).apply()
+    return updated
+}
 private fun toggleFavorite(context: Context, current: Set<String>, key: String): Set<String> {
     val updated = current.toMutableSet().apply { if (!add(key)) remove(key) }.toSet()
     context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit().putStringSet("favorites", updated).apply()
