@@ -201,6 +201,8 @@ private fun ChapterQuestListScreen(chapter: Int, onBack: () -> Unit, onQuestSele
     Column(
         Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
+        Text("‹  BACK TO CHAPTERS", color = Color(0xFFB6935B), fontSize = 12.sp, modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(4.dp))
         Text("GOTHIC — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text(if (quests.isNotEmpty()) "${quests.size} QUESTS • CHRONOLOGICAL ORDER" else "QUEST DATA COMING NEXT", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
