@@ -137,7 +137,7 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
             Spacer(Modifier.height(22.dp))
 
             (1..6).forEach { chapter ->
-                ChapterButton(chapter) { onChapterSelected(chapter) }
+                ChapterButton(chapter, questCount = GothicQuestData.chapter(chapter).size) { onChapterSelected(chapter) }
                 Spacer(Modifier.height(11.dp))
             }
 
@@ -178,7 +178,7 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
             Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
             Spacer(Modifier.height(22.dp))
             (1..6).forEach { chapter ->
-                ChapterButton(chapter) { onChapterSelected(chapter) }
+                ChapterButton(chapter, questCount = Gothic2QuestData.chapter(chapter).size) { onChapterSelected(chapter) }
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
@@ -193,7 +193,7 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
 }
 
 @Composable
-private fun ChapterButton(chapter: Int, onClick: () -> Unit) {
+private fun ChapterButton(chapter: Int, questCount: Int, onClick: () -> Unit) {
     val shape = RoundedCornerShape(6.dp)
     Row(
         modifier = Modifier
@@ -213,7 +213,7 @@ private fun ChapterButton(chapter: Int, onClick: () -> Unit) {
     ) {
         Column {
             Text("CHAPTER $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text("Quest walkthroughs", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Text("$questCount quests • walkthroughs", color = Color(0xFF9E8B70), fontSize = 12.sp)
         }
         Text("›", color = Color(0xFFD7B06A), fontSize = 32.sp)
     }
