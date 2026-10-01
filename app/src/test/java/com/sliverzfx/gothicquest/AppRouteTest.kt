@@ -7,24 +7,24 @@ import org.junit.Test
 class AppRouteTest {
     @Test
     fun resumeChapterMapsToChapterRoute() {
-        val route = ResumeState("Gothic", 2, null).toRouteOrNull()
+        val route = routeFromResume("Gothic", 2, null)
         assertEquals(AppRoute.Chapter(GameId.GOTHIC, 2), route)
     }
 
     @Test
     fun existingSavedQuestMapsToQuestDetailRoute() {
-        val route = ResumeState("Gothic II Gold Edition", 1, "G2G-C01-070").toRouteOrNull()
+        val route = routeFromResume("Gothic II Gold Edition", 1, "G2G-C01-070")
         assertEquals(AppRoute.QuestDetail(GameId.GOTHIC_2_GOLD, "G2G-C01-070"), route)
     }
 
     @Test
     fun unknownGameFallsBackSafely() {
-        assertNull(ResumeState("Unknown Game", 1, null).toRouteOrNull())
+        assertNull(routeFromResume("Unknown Game", 1, null))
     }
 
     @Test
     fun missingSavedQuestFallsBackToChapter() {
-        val route = ResumeState("Gothic II Gold Edition", 3, "missing-id").toRouteOrNull()
+        val route = routeFromResume("Gothic II Gold Edition", 3, "missing-id")
         assertEquals(AppRoute.Chapter(GameId.GOTHIC_2_GOLD, 3), route)
     }
 }
