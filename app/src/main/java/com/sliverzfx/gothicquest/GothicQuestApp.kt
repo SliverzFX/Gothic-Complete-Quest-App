@@ -246,6 +246,8 @@ private fun QuestDetailScreen(quest: Quest, onBack: () -> Unit) {
     Column(
         Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
+        Text("‹  BACK TO QUESTS", color = Color(0xFFB6935B), fontSize = 12.sp, modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(4.dp))
         Text(quest.id, color = Color(0xFF8F806A), fontSize = 12.sp)
         Text(quest.title, color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
         if (quest.aliases.isNotEmpty()) Text("Also: " + quest.aliases.joinToString(), color = Color(0xFF9E8B70), fontSize = 12.sp)
