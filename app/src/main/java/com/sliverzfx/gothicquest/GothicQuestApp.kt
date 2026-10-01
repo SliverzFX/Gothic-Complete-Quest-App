@@ -56,6 +56,7 @@ fun GothicQuestApp() {
         selectedQuest != null -> "quest:" + selectedQuest!!.id
         gothicChapter != null -> "chapter:" + gothicChapter
         destination == "Gothic" -> "gothicHub"
+        destination == "Gothic II Gold Edition" -> "gothic2Hub"
         destination == null -> "home"
         else -> "destination:" + destination
     }
@@ -69,7 +70,7 @@ fun GothicQuestApp() {
             screen == "splash" -> SplashScreen()
             screen.startsWith("quest:") -> {
                 val questId = screen.removePrefix("quest:")
-                val quest = GothicQuestData.quests.firstOrNull { it.id == questId }
+                val quest = if (destination == "Gothic II Gold Edition") Gothic2QuestData.quests.firstOrNull { it.id == questId } else GothicQuestData.quests.firstOrNull { it.id == questId }
                 if (quest != null) {
                     QuestDetailScreen(
                         quest = quest,
@@ -81,13 +82,19 @@ fun GothicQuestApp() {
                 val chapter = screen.removePrefix("chapter:").toIntOrNull()
                 if (chapter != null) {
                     ChapterQuestListScreen(
+                        gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II GOLD EDITION" else "GOTHIC",
                         chapter = chapter,
+                        quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.chapter(chapter) else GothicQuestData.chapter(chapter),
                         onBack = { gothicChapter = null },
                         onQuestSelected = { selectedQuest = it }
                     )
                 }
             }
             screen == "gothicHub" -> GothicHubScreen(
+                onBack = { destination = null },
+                onChapterSelected = { gothicChapter = it }
+            )
+            screen == "gothic2Hub" -> Gothic2HubScreen(
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it }
             )
@@ -150,6 +157,37 @@ private fun GothicHubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit
 }
 
 @Composable
+private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Unit) {
+    BackHandler(onBack = onBack)
+    Box(
+        Modifier.fillMaxSize().background(
+            Brush.verticalGradient(listOf(Color(0xFF1A0C08), Color(0xFF080706), Color.Black))
+        )
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp, vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("GOTHIC II", color = Color(0xFFD6B06A), fontSize = 36.sp, fontWeight = FontWeight.Bold)
+            Text("GOLD EDITION • COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
+            Spacer(Modifier.height(22.dp))
+            (1..6).forEach { chapter ->
+                ChapterButton(chapter) { onChapterSelected(chapter) }
+                Spacer(Modifier.height(11.dp))
+            }
+            Spacer(Modifier.height(8.dp))
+            UtilityButton("ALL QUESTS")
+            Spacer(Modifier.height(10.dp))
+            UtilityButton("SEARCH")
+            Spacer(Modifier.height(24.dp))
+            Text("‹  BACK TO MAIN MENU", color = Color(0xFFB6935B), fontSize = 13.sp,
+                modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+        }
+    }
+}
+
+@Composable
 private fun ChapterButton(chapter: Int, onClick: () -> Unit) {
     val shape = RoundedCornerShape(6.dp)
     Row(
@@ -198,7 +236,7 @@ private fun ChapterPlaceholder(chapter: Int, onBack: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("GOTHIC — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+            Text("$gameTitle — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(12.dp))
             Text("Quest list comes next.", color = Color(0xFFC7B89B), fontSize = 16.sp)
             Spacer(Modifier.height(24.dp))
@@ -221,9 +259,8 @@ private fun DestinationPlaceholder(title: String, onBack: () -> Unit) {
         }
     }
 }@Composable
-private fun ChapterQuestListScreen(chapter: Int, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
+private fun ChapterQuestListScreen(gameTitle: String, chapter: Int, quests: List<Quest>, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
     BackHandler(onBack = onBack)
-    val quests = GothicQuestData.chapter(chapter)
 
     Column(
         Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)
