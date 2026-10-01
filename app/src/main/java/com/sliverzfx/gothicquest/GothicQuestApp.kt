@@ -82,7 +82,7 @@ fun GothicQuestApp() {
                 val chapter = screen.removePrefix("chapter:").toIntOrNull()
                 if (chapter != null) {
                     ChapterQuestListScreen(
-                        gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II GOLD EDITION" else "GOTHIC",
+                        gameTitle = if (destination == "Gothic II Gold Edition") "GOTHIC II" else "GOTHIC",
                         chapter = chapter,
                         quests = if (destination == "Gothic II Gold Edition") Gothic2QuestData.chapter(chapter) else GothicQuestData.chapter(chapter),
                         onBack = { gothicChapter = null },
@@ -169,8 +169,13 @@ private fun Gothic2HubScreen(onBack: () -> Unit, onChapterSelected: (Int) -> Uni
                 .padding(horizontal = 20.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("GOTHIC II", color = Color(0xFFD6B06A), fontSize = 36.sp, fontWeight = FontWeight.Bold)
-            Text("GOLD EDITION • COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
+            Image(
+                painter = painterResource(R.drawable.gothic_2_gold_logo),
+                contentDescription = "Gothic II Gold Edition",
+                modifier = Modifier.width(300.dp),
+                contentScale = ContentScale.Fit
+            )
+            Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
             Spacer(Modifier.height(22.dp))
             (1..6).forEach { chapter ->
                 ChapterButton(chapter) { onChapterSelected(chapter) }
