@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -73,21 +74,9 @@ fun HomeScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
                 .navigationBarsPadding()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 118.dp)
         ) {
-            TopControls(
-                hasContinue = hasContinue,
-                onContinue = onContinue,
-                onFavorites = { onDestinationSelected("Favorites") },
-                onSettings = { onDestinationSelected("Settings") },
-                onAbout = { onDestinationSelected("About") }
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-            ) {
                 GamePanel(
                     imageRes = R.drawable.gothic_button_1,
                     logoRes = R.drawable.gothic_classic_logo,
@@ -111,25 +100,47 @@ fun HomeScreen(
                     testTag = "game_new_balance",
                     onClick = { onDestinationSelected("Gothic II New Balance") }
                 )
-            }
         }
+
+        BottomControls(
+            hasContinue = hasContinue,
+            onContinue = onContinue,
+            onFavorites = { onDestinationSelected("Favorites") },
+            onSettings = { onDestinationSelected("Settings") },
+            onAbout = { onDestinationSelected("About") },
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 
 @Composable
-private fun TopControls(
+private fun BottomControls(
     hasContinue: Boolean,
     onContinue: () -> Unit,
     onFavorites: () -> Unit,
     onSettings: () -> Unit,
-    onAbout: () -> Unit
+    onAbout: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier
+    Box(
+        modifier = modifier
             .fillMaxWidth()
-            .background(Color(0xB80A0806))
-            .border(width = 1.dp, color = MenuGoldDark)
-            .padding(horizontal = 12.dp, vertical = 9.dp),
+            .height(if (hasContinue) 122.dp else 78.dp)
+    ) {
+        Image(
+            painter = painterResource(R.drawable.menu_smoke),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(155.dp)
+                .align(Alignment.BottomCenter),
+            contentScale = ContentScale.FillBounds
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = 12.dp, vertical = 9.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (hasContinue) {
@@ -161,6 +172,7 @@ private fun TopControls(
             ControlButton("★  FAVORITES", "favorites", onFavorites)
             ControlButton("⚙  SETTINGS", "settings", onSettings)
             ControlButton("ⓘ  ABOUT", "about", onAbout)
+            }
         }
     }
 }
@@ -173,7 +185,7 @@ private fun ControlButton(label: String, tag: String, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp)
             .testTag(tag),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.BottomEnd
     ) {
         Text(
             label,
@@ -219,8 +231,9 @@ private fun GamePanel(
             painter = painterResource(logoRes),
             contentDescription = null,
             modifier = Modifier
-                .width(245.dp)
-                .shadow(8.dp),
+                .width(165.dp)
+                .padding(end = 14.dp, bottom = 12.dp)
+                .shadow(6.dp),
             contentScale = ContentScale.Fit
         )
     }
