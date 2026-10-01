@@ -1,5 +1,6 @@
 package com.sliverzfx.gothicquest
 
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -33,6 +34,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -49,6 +51,9 @@ fun GothicQuestApp() {
     var selectedQuest by remember { mutableStateOf<Quest?>(null) }
     var showAllQuests by remember { mutableStateOf(false) }
     var showSearch by remember { mutableStateOf(false) }
+    var showFavorites by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    var favoriteKeys by remember { mutableStateOf(loadFavoriteKeys(context)) }
 
     LaunchedEffect(Unit) {
         delay(2200)
@@ -58,6 +63,7 @@ fun GothicQuestApp() {
     val screenKey = when {
         showSplash -> "splash"
         selectedQuest != null -> "quest:" + selectedQuest!!.id
+        showFavorites -> "favorites"
         showSearch -> "search"
         showAllQuests -> "allQuests"
         gothicChapter != null -> "chapter:" + gothicChapter
@@ -126,7 +132,9 @@ fun GothicQuestApp() {
                 onAllQuests = { showAllQuests = true },
                 onSearch = { showSearch = true }
             )
-            screen == "home" -> HomeScreen { destination = it }
+            screen == "home" -> HomeScreen {
+                if (it == "Favorites") showFavorites = true else destination = it
+            }
             screen.startsWith("destination:") -> DestinationPlaceholder(
                 title = screen.removePrefix("destination:"),
                 onBack = { destination = null }
@@ -343,7 +351,7 @@ private fun ChapterQuestListScreen(gameTitle: String, chapter: Int, quests: List
 }
 
 @Composable
-private fun QuestDetailScreen(quest: Quest, onBack: () -> Unit) {
+private fun QuestDetailScreen(quest: Quest, isFavorite: Boolean, onToggleFavorite: () -> Unit, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     Column(
         Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding()
