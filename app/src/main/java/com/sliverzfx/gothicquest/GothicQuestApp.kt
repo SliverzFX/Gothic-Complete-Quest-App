@@ -67,22 +67,33 @@ fun GothicQuestApp() {
     ) { screen ->
         when {
             screen == "splash" -> SplashScreen()
-            screen.startsWith("quest:") -> QuestDetailScreen(
-                quest = selectedQuest!!,
-                onBack = { selectedQuest = null }
-            )
-            screen.startsWith("chapter:") -> ChapterQuestListScreen(
-                chapter = gothicChapter!!,
-                onBack = { gothicChapter = null },
-                onQuestSelected = { selectedQuest = it }
-            )
+            screen.startsWith("quest:") -> {
+                val questId = screen.removePrefix("quest:")
+                val quest = GothicQuestData.quests.firstOrNull { it.id == questId }
+                if (quest != null) {
+                    QuestDetailScreen(
+                        quest = quest,
+                        onBack = { selectedQuest = null }
+                    )
+                }
+            }
+            screen.startsWith("chapter:") -> {
+                val chapter = screen.removePrefix("chapter:").toIntOrNull()
+                if (chapter != null) {
+                    ChapterQuestListScreen(
+                        chapter = chapter,
+                        onBack = { gothicChapter = null },
+                        onQuestSelected = { selectedQuest = it }
+                    )
+                }
+            }
             screen == "gothicHub" -> GothicHubScreen(
                 onBack = { destination = null },
                 onChapterSelected = { gothicChapter = it }
             )
             screen == "home" -> HomeScreen { destination = it }
-            else -> DestinationPlaceholder(
-                title = destination!!,
+            screen.startsWith("destination:") -> DestinationPlaceholder(
+                title = screen.removePrefix("destination:"),
                 onBack = { destination = null }
             )
         }
