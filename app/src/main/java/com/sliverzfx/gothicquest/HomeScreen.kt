@@ -37,7 +37,7 @@ fun HomeScreen(onDestinationSelected: (String) -> Unit) {
             MenuHitbox(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .offset(y = 220.dp)
+                    .offset(y = 230.dp)
                     .size(width = 390.dp, height = 170.dp)
                     .testTag("game_gothic"),
                 onClick = { onDestinationSelected("Gothic") }
@@ -45,7 +45,7 @@ fun HomeScreen(onDestinationSelected: (String) -> Unit) {
             MenuHitbox(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .offset(y = 400.dp)
+                    .offset(y = 415.dp)
                     .size(width = 390.dp, height = 170.dp)
                     .testTag("game_gothic_2"),
                 onClick = { onDestinationSelected("Gothic II Gold Edition") }
@@ -53,7 +53,7 @@ fun HomeScreen(onDestinationSelected: (String) -> Unit) {
             MenuHitbox(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .offset(y = 580.dp)
+                    .offset(y = 600.dp)
                     .size(width = 390.dp, height = 170.dp)
                     .testTag("game_new_balance"),
                 onClick = { onDestinationSelected("Gothic II New Balance") }
