@@ -485,6 +485,50 @@ private fun DetailLine(label: String, value: String, addSpace: Boolean = true) {
 }
 
 
+private fun loadMusicEnabled(context: Context): Boolean =
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).getBoolean("music_enabled", true)
+
+private fun saveMusicEnabled(context: Context, enabled: Boolean) {
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit().putBoolean("music_enabled", enabled).apply()
+}
+
+@Composable
+private fun SettingsScreen(musicEnabled: Boolean, onMusicChanged: (Boolean) -> Unit, onBack: () -> Unit) {
+    BackHandler(onBack = onBack)
+    Column(
+        Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().padding(20.dp)
+    ) {
+        Text("‹  BACK TO MAIN MENU", color = Color(0xFFB6935B), fontSize = 12.sp,
+            modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(8.dp))
+        Text("SETTINGS", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text("APP PREFERENCES", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Spacer(Modifier.height(24.dp))
+
+        val shape = RoundedCornerShape(7.dp)
+        Row(
+            Modifier.fillMaxWidth()
+                .background(Color(0xFF15100D), shape)
+                .border(1.dp, Color(0xFF5F4529), shape)
+                .clickable { onMusicChanged(!musicEnabled) }
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text("BACKGROUND MUSIC", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(4.dp))
+                Text("Gothic ambient soundtrack", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            }
+            Text(if (musicEnabled) "ON" else "OFF",
+                color = if (musicEnabled) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                fontSize = 14.sp, fontWeight = FontWeight.Bold)
+        }
+        Spacer(Modifier.height(12.dp))
+        Text("Test track: Old Camp • loops continuously", color = Color(0xFF746957), fontSize = 11.sp)
+    }
+}
+
 private data class FavoriteEntry(val game: String, val quest: Quest)
 private fun questFavoriteKey(game: String?, quest: Quest): String = (if (game == "Gothic II Gold Edition") "G2" else "G1") + "|" + quest.id
 private fun loadFavoriteKeys(context: Context): Set<String> = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).getStringSet("favorites", emptySet())?.toSet() ?: emptySet()
