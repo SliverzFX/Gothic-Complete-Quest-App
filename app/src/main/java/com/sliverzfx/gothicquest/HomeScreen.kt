@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -67,6 +68,18 @@ fun HomeScreen(
                         )
                     )
                 )
+        )
+
+        Image(
+            painter = painterResource(R.drawable.menu_smoke),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(230.dp)
+                .align(Alignment.TopCenter)
+                .offset(y = (-18).dp)
+                .rotate(180f),
+            contentScale = ContentScale.FillBounds
         )
 
         Column(
