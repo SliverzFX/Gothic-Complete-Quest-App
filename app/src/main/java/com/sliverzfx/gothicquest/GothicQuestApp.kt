@@ -440,6 +440,60 @@ private fun DetailLine(label: String, value: String, addSpace: Boolean = true) {
 
 
 @Composable
+private fun SearchScreen(gameTitle: String, quests: List<Quest>, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
+    BackHandler(onBack = onBack)
+    var query by remember { mutableStateOf("") }
+    val normalized = query.trim()
+    val results = if (normalized.isBlank()) emptyList() else quests.filter { quest ->
+        listOf(quest.id, quest.title, quest.aliases.joinToString(" "), quest.category, quest.giver, quest.location, quest.summary, quest.searchTags.joinToString(" "))
+            .any { it.contains(normalized, ignoreCase = true) }
+    }.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder })
+
+    Column(Modifier.fillMaxSize().background(Color(0xFF090706)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(20.dp)) {
+        Text("‹  BACK TO CHAPTERS", color = Color(0xFFB6935B), fontSize = 12.sp, modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp))
+        Spacer(Modifier.height(4.dp))
+        Text("${gameTitle} — SEARCH", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text("SEARCH ALL QUEST DATA", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Spacer(Modifier.height(16.dp))
+        OutlinedTextField(
+            value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth(), singleLine = true,
+            label = { Text("Quest, NPC, location, ID...") },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color(0xFFE0D5C2), unfocusedTextColor = Color(0xFFE0D5C2),
+                focusedBorderColor = Color(0xFFD7B06A), unfocusedBorderColor = Color(0xFF5F4529),
+                focusedLabelColor = Color(0xFFD7B06A), unfocusedLabelColor = Color(0xFF9E8B70), cursorColor = Color(0xFFD7B06A)
+            )
+        )
+        Spacer(Modifier.height(14.dp))
+        if (normalized.isBlank()) {
+            Text("Type something to search ${quests.size} quests.", color = Color(0xFF9E8B70), fontSize = 14.sp)
+        } else if (results.isEmpty()) {
+            Text("No quests found.", color = Color(0xFF9E8B70), fontSize = 14.sp)
+        } else {
+            Text("${results.size} RESULTS", color = Color(0xFFC79A55), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(10.dp))
+            results.forEach { quest ->
+                val shape = RoundedCornerShape(7.dp)
+                Column(Modifier.fillMaxWidth().background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape)
+                    .border(1.dp, Color(0xFF5F4529), shape).clickable { onQuestSelected(quest) }.padding(horizontal = 16.dp, vertical = 13.dp)) {
+                    Text("CHAPTER ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
+                    }
+                    Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(5.dp))
+                    Text("${quest.giver} • ${quest.location}", color = Color(0xFF9E8B70), fontSize = 11.sp)
+                }
+                Spacer(Modifier.height(10.dp))
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+        Text("‹  BACK TO CHAPTERS", color = Color(0xFFB6935B), modifier = Modifier.clickable(onClick = onBack).padding(12.dp))
+    }
+}
+
+@Composable
 private fun AllQuestsScreen(gameTitle: String, quests: List<Quest>, onBack: () -> Unit, onQuestSelected: (Quest) -> Unit) {
     BackHandler(onBack = onBack)
     Column(
