@@ -34,4 +34,10 @@ class HomeMenuTest {
         composeRule.onNodeWithTag("game_gothic_2").assertDoesNotExist()
         composeRule.onNodeWithTag("game_new_balance").assertDoesNotExist()
     }
+
+    @Test
+    fun homeUsesLoopingVideoBackground() {
+        waitForHome()
+        composeRule.onNodeWithTag("home_background_video").assertExists()
+    }
 }
