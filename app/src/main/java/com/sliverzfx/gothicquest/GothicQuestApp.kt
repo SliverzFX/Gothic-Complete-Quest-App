@@ -275,17 +275,37 @@ private fun ChapterQuestListScreen(gameTitle: String, chapter: Int, quests: List
         Text("$gameTitle — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text(if (quests.isNotEmpty()) "${quests.size} QUESTS • CHRONOLOGICAL ORDER" else "QUEST DATA COMING NEXT", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
-        quests.forEach { quest ->
+        quests.forEachIndexed { index, quest ->
+            val shape = RoundedCornerShape(7.dp)
             Column(
-                Modifier.fillMaxWidth().border(1.dp, Color(0xFF5F4529), RoundedCornerShape(6.dp))
-                    .background(Color(0xFF17110E), RoundedCornerShape(6.dp))
-                    .clickable { onQuestSelected(quest) }.padding(16.dp)
+                Modifier.fillMaxWidth()
+                    .background(
+                        Brush.horizontalGradient(
+                            listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))
+                        ), shape
+                    )
+                    .border(1.dp, Color(0xFF5F4529), shape)
+                    .clickable { onQuestSelected(quest) }
+                    .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
-                Text(quest.id, color = Color(0xFF8F806A), fontSize = 11.sp)
-                Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Text(quest.category, color = Color(0xFF9E8B70), fontSize = 12.sp)
-                Spacer(Modifier.height(5.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        "${index + 1}.  ${quest.title}",
+                        color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
+                }
+                Spacer(Modifier.height(3.dp))
+                Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(7.dp))
                 Text(quest.summary, color = Color(0xFFC7B89B), fontSize = 13.sp)
+                Spacer(Modifier.height(7.dp))
+                Text(quest.id, color = Color(0xFF746957), fontSize = 10.sp)
             }
             Spacer(Modifier.height(10.dp))
         }
