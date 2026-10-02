@@ -26,6 +26,7 @@ class QuestGuidesLibraryTest {
         composeRule.onNodeWithTag("game_gothic").assertExists()
         composeRule.onNodeWithTag("game_gothic_2").assertExists()
         composeRule.onNodeWithTag("game_new_balance").assertExists()
+        composeRule.onNodeWithTag("game_gothic_3").assertExists()
         composeRule.onNodeWithTag("library_back").assertExists()
         composeRule.onNodeWithText("FAVORITES").assertExists()
     }
