@@ -12,4 +12,12 @@ class GothicVisualThemeTest {
         assertFalse(GameId.NEW_BALANCE.usesStoneTheme)
         assertFalse(GameId.GOTHIC_3.usesStoneTheme)
     }
+
+    @Test
+    fun bloodThemeIsScopedToNewBalance() {
+        assertFalse(GameId.GOTHIC.usesBloodTheme)
+        assertFalse(GameId.GOTHIC_2_GOLD.usesBloodTheme)
+        assertTrue(GameId.NEW_BALANCE.usesBloodTheme)
+        assertFalse(GameId.GOTHIC_3.usesBloodTheme)
+    }
 }
