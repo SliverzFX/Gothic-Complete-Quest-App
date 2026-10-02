@@ -175,9 +175,9 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 painter = painterResource(logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(165.dp)
+                    .width(190.dp)
                     .padding(end = 14.dp, bottom = 12.dp)
-                    .shadow(6.dp),
+                    .shadow(11.dp),
                 contentScale = ContentScale.Fit
             )
         }
