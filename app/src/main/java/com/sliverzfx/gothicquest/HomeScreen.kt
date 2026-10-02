@@ -142,16 +142,16 @@ fun HomeScreen(
                 .statusBarsPadding()
                 .navigationBarsPadding()
                 .padding(end = 24.dp)
-                .widthIn(min = 210.dp, max = 270.dp),
+                .widthIn(min = 235.dp, max = 310.dp),
             horizontalAlignment = Alignment.End
         ) {
             entries.forEachIndexed { index, entry ->
                 GothicMenuItem(entry)
                 if (index != entries.lastIndex) {
-                    Spacer(Modifier.height(5.dp))
+                    Spacer(Modifier.height(8.dp))
                     Box(
                         modifier = Modifier
-                            .width(185.dp)
+                            .width(210.dp)
                             .height(1.dp)
                             .background(
                                 Brush.horizontalGradient(
@@ -182,7 +182,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         label = "menuTextScale"
     )
     val verticalPadding by animateDpAsState(
-        targetValue = if (pressed) 11.dp else 3.dp,
+        targetValue = if (pressed) 14.dp else 5.dp,
         animationSpec = tween(170),
         label = "menuItemSpacing"
     )
@@ -221,9 +221,9 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         GothicSelectionRune(visible = pressed)
         Text(
             text = entry.label,
-            fontSize = 21.sp,
+            fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
-            letterSpacing = 0.8.sp,
+            letterSpacing = 1.0.sp,
             style = TextStyle(
                 brush = goldBrush,
                 shadow = Shadow(
