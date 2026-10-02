@@ -5,6 +5,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,6 +30,15 @@ class QuestGuidesLibraryTest {
         composeRule.onNodeWithTag("game_gothic_3").assertExists()
         composeRule.onNodeWithTag("library_back").assertExists()
         composeRule.onNodeWithText("FAVORITES").assertExists()
+    }
+
+    @Test
+    fun gothic3UsesPartsInsteadOfChapters() {
+        waitForHome()
+        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithTag("game_gothic_3").performScrollTo().performClick()
+        composeRule.onNodeWithText("PART 1").assertExists()
+        composeRule.onNodeWithText("PART 7").assertExists()
     }
 
     @Test
