@@ -21,7 +21,7 @@ class TopLevelSectionsTest {
     @Test
     fun cheatsOpensEmptyLibraryWithoutInventedEntries() {
         waitForHome()
-        composeRule.onNodeWithText("MARVIN CODES / CHEATS").performClick()
+        composeRule.onNodeWithText("MARVIN").performClick()
         composeRule.onNodeWithTag("game_library_screen").assertExists()
         composeRule.onNodeWithText("MARVIN CODES / CHEATS").assertExists()
         composeRule.onNodeWithTag("game_gothic").assertDoesNotExist()
@@ -42,10 +42,14 @@ class TopLevelSectionsTest {
     @Test
     fun aboutSupportAndDonationsHaveRealRoutes() {
         waitForHome()
-        listOf("INFO / ABOUT", "SUPPORT / BUGS", "DONATIONS").forEach { label ->
-            composeRule.onNodeWithText(label).performClick()
+        listOf(
+            "ABOUT" to "INFO / ABOUT",
+            "SUPPORT" to "SUPPORT / BUGS",
+            "DONATIONS" to "DONATIONS"
+        ).forEach { (menuLabel, sectionTitle) ->
+            composeRule.onNodeWithText(menuLabel).performClick()
             composeRule.onNodeWithTag("section_placeholder").assertExists()
-            composeRule.onNodeWithText(label).assertExists()
+            composeRule.onNodeWithText(sectionTitle).assertExists()
             composeRule.onNodeWithTag("section_back").performClick()
         }
     }
