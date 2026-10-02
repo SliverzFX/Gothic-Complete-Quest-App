@@ -58,3 +58,7 @@ internal fun routeFromResume(game: String, chapter: Int, questId: String?): AppR
         AppRoute.Chapter(gameId, chapter)
     }
 }
+
+
+internal val GameId.usesStoneTheme: Boolean
+    get() = this == GameId.GOTHIC
