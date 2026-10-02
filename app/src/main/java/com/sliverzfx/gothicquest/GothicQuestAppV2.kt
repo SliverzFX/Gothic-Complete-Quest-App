@@ -57,8 +57,8 @@ private data class ResumeSnapshot(
 private data class NavFavoriteEntry(val game: GameId, val quest: Quest)
 
 private fun navBackgroundBrush(game: GameId): Brush =
-    if (game.usesStoneTheme) {
-        Brush.verticalGradient(
+    when {
+        game.usesStoneTheme -> Brush.verticalGradient(
             listOf(
                 Color(0xFF292A29),
                 Color(0xFF1B1D1D),
@@ -66,13 +66,22 @@ private fun navBackgroundBrush(game: GameId): Brush =
                 Color(0xFF080909)
             )
         )
-    } else {
-        Brush.verticalGradient(listOf(Color(0xFF1A0C08), Color(0xFF080706), Color.Black))
+        game.usesBloodTheme -> Brush.verticalGradient(
+            listOf(
+                Color(0xFF260708),
+                Color(0xFF170506),
+                Color(0xFF0D0505),
+                Color(0xFF050303)
+            )
+        )
+        else -> Brush.verticalGradient(
+            listOf(Color(0xFF1A0C08), Color(0xFF080706), Color.Black)
+        )
     }
 
 private fun navCardBrush(game: GameId): Brush =
-    if (game.usesStoneTheme) {
-        Brush.horizontalGradient(
+    when {
+        game.usesStoneTheme -> Brush.horizontalGradient(
             listOf(
                 Color(0xFF252625),
                 Color(0xFF343534),
@@ -80,16 +89,53 @@ private fun navCardBrush(game: GameId): Brush =
                 Color(0xFF171918)
             )
         )
-    } else {
-        Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D)))
+        game.usesBloodTheme -> Brush.horizontalGradient(
+            listOf(
+                Color(0xFF21090A),
+                Color(0xFF3A0B0E),
+                Color(0xFF260708),
+                Color(0xFF130607)
+            )
+        )
+        else -> Brush.horizontalGradient(
+            listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))
+        )
     }
 
 private fun navCardBorder(game: GameId): Color =
-    if (game.usesStoneTheme) Color(0xFF6F6D66) else Color(0xFF5F4529)
+    when {
+        game.usesStoneTheme -> Color(0xFF6F6D66)
+        game.usesBloodTheme -> Color(0xFF76252A)
+        else -> Color(0xFF5F4529)
+    }
 
 private fun navInsetColor(game: GameId): Color =
-    if (game.usesStoneTheme) Color(0xFF1D1F1E) else Color(0xFF15100D)
+    when {
+        game.usesStoneTheme -> Color(0xFF1D1F1E)
+        game.usesBloodTheme -> Color(0xFF190708)
+        else -> Color(0xFF15100D)
+    }
 
+private fun navUtilityBorder(game: GameId): Color =
+    when {
+        game.usesStoneTheme -> Color(0xFF64645F)
+        game.usesBloodTheme -> Color(0xFF652126)
+        else -> Color(0xFF4D4030)
+    }
+
+private fun navUtilityBackground(game: GameId): Color =
+    when {
+        game.usesStoneTheme -> Color(0xFF171918)
+        game.usesBloodTheme -> Color(0xFF160607)
+        else -> Color(0xFF11100E)
+    }
+
+private fun navProgressBorder(game: GameId): Color =
+    when {
+        game.usesStoneTheme -> Color(0xFF5C5D59)
+        game.usesBloodTheme -> Color(0xFF642126)
+        else -> Color(0xFF493720)
+    }
 
 @Composable
 fun GothicQuestAppV2() {
@@ -467,9 +513,17 @@ private fun NavChapterButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(72.dp)
-            .border(1.dp, if (game.usesStoneTheme) Color(0xFF77746C) else Color(0xFF76552E), shape)
+            .border(
+                1.dp,
+                when {
+                    game.usesStoneTheme -> Color(0xFF77746C)
+                    game.usesBloodTheme -> Color(0xFF81272D)
+                    else -> Color(0xFF76552E)
+                },
+                shape
+            )
             .background(
-                if (game.usesStoneTheme) navCardBrush(game)
+                if (game.usesStoneTheme || game.usesBloodTheme) navCardBrush(game)
                 else Brush.horizontalGradient(listOf(Color(0xFF211712), Color(0xFF35160F), Color(0xFF17110E))),
                 shape
             )
@@ -498,7 +552,7 @@ private fun NavChapterButton(
                 .fillMaxWidth()
                 .height(3.dp)
                 .background(Color(0xFF0B0907), RoundedCornerShape(3.dp))
-                .border(1.dp, if (game.usesStoneTheme) Color(0xFF5C5D59) else Color(0xFF493720), RoundedCornerShape(3.dp))
+                .border(1.dp, navProgressBorder(game), RoundedCornerShape(3.dp))
         ) {
             Box(
                 Modifier
@@ -517,8 +571,8 @@ private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
-            .border(1.dp, if (game.usesStoneTheme) Color(0xFF64645F) else Color(0xFF4D4030), RoundedCornerShape(5.dp))
-            .background(if (game.usesStoneTheme) Color(0xFF171918) else Color(0xFF11100E), RoundedCornerShape(5.dp))
+            .border(1.dp, navUtilityBorder(game), RoundedCornerShape(5.dp))
+            .background(navUtilityBackground(game), RoundedCornerShape(5.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
