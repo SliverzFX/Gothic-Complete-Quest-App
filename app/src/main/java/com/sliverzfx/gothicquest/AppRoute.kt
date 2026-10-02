@@ -20,6 +20,7 @@ sealed interface AppRoute {
     data object Donations : AppRoute
     data object Settings : AppRoute
     data object Favorites : AppRoute
+    data class GamePreview(val title: String) : AppRoute
     data class GameHub(val game: GameId) : AppRoute
     data class Chapter(val game: GameId, val chapter: Int) : AppRoute
     data class QuestDetail(val game: GameId, val questId: String) : AppRoute
