@@ -508,16 +508,16 @@ private fun NavChapterQuestListScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavBackText("‹  BACK TO CHAPTERS", onBack)
+        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
         Spacer(Modifier.height(4.dp))
-        Text("${game.displayTitle} — CHAPTER $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text("${quests.size} QUESTS • CHRONOLOGICAL ORDER", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
         quests.forEachIndexed { index, quest ->
             NavQuestListCard(index + 1, quest) { onQuestSelected(quest) }
             Spacer(Modifier.height(10.dp))
         }
-        NavBackText("‹  BACK TO CHAPTERS", onBack)
+        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
     }
 }
 
@@ -706,10 +706,10 @@ private fun NavAllQuestsScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavBackText("‹  BACK TO CHAPTERS", onBack)
+        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
         Spacer(Modifier.height(4.dp))
         Text("${game.displayTitle} — ALL QUESTS", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text("${quests.size} QUESTS • CHRONOLOGICAL BY CHAPTER", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text("${quests.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
         sorted.forEachIndexed { index, quest ->
             val shape = RoundedCornerShape(7.dp)
@@ -721,7 +721,7 @@ private fun NavAllQuestsScreen(
                     .clickable { onQuestSelected(quest) }
                     .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
-                Text("CHAPTER ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         "${index + 1}.  ${quest.title}",
@@ -736,7 +736,7 @@ private fun NavAllQuestsScreen(
             }
             Spacer(Modifier.height(10.dp))
         }
-        NavBackText("‹  BACK TO CHAPTERS", onBack)
+        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
     }
 }
 
@@ -771,7 +771,7 @@ private fun NavSearchScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavBackText("‹  BACK TO CHAPTERS", onBack)
+        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
         Spacer(Modifier.height(4.dp))
         Text("${game.displayTitle} — SEARCH", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text("SEARCH ALL QUEST DATA", color = Color(0xFF9E8B70), fontSize = 12.sp)
@@ -800,18 +800,18 @@ private fun NavSearchScreen(
                 Text("${results.size} RESULTS", color = Color(0xFFC79A55), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(10.dp))
                 results.forEach { quest ->
-                    NavSearchCard(quest) { onQuestSelected(quest) }
+                    NavSearchCard(game, quest) { onQuestSelected(quest) }
                     Spacer(Modifier.height(10.dp))
                 }
             }
         }
         Spacer(Modifier.height(16.dp))
-        NavBackText("‹  BACK TO CHAPTERS", onBack)
+        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
     }
 }
 
 @Composable
-private fun NavSearchCard(quest: Quest, onClick: () -> Unit) {
+private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
     val shape = RoundedCornerShape(7.dp)
     Column(
         Modifier
@@ -821,7 +821,7 @@ private fun NavSearchCard(quest: Quest, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 13.dp)
     ) {
-        Text("CHAPTER ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
+        Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
@@ -866,7 +866,7 @@ private fun NavFavoritesScreen(
                         .clickable { onQuestSelected(entry.game, quest) }
                         .padding(horizontal = 16.dp, vertical = 14.dp)
                 ) {
-                    Text("${entry.game.displayTitle}  •  CHAPTER ${quest.chapter}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                    Text("${entry.game.displayTitle}  •  ${entry.game.sectionLabel} ${quest.chapter}", color = Color(0xFF8F806A), fontSize = 10.sp)
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                         Text("★", color = Color(0xFFD7B06A), fontSize = 20.sp)
