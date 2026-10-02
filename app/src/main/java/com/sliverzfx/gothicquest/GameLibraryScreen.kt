@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -180,7 +181,8 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                     .width(190.dp)
                     .padding(end = 14.dp, bottom = 12.dp)
                     .offset(x = 5.dp, y = 6.dp)
-                    .alpha(0.78f),
+                    .blur(6.dp)
+                    .alpha(0.68f),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(Color.Black)
             )
@@ -191,7 +193,8 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                     .width(190.dp)
                     .padding(end = 14.dp, bottom = 12.dp)
                     .offset(x = 2.dp, y = 3.dp)
-                    .alpha(0.58f),
+                    .blur(2.5.dp)
+                    .alpha(0.52f),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.tint(Color.Black)
             )
