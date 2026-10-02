@@ -127,8 +127,7 @@ fun GothicQuestAppV2() {
                 AppRoute.QuestGuides -> GameLibraryScreen(
                     title = "QUEST GUIDES",
                     entries = questGuideLibraryEntries(
-                        onGameSelected = { game -> route = AppRoute.GameHub(game) },
-                        onGothic3Selected = { route = AppRoute.GamePreview("GOTHIC 3") }
+                        onGameSelected = { game -> route = AppRoute.GameHub(game) }
                     ),
                     onBack = { route = AppRoute.Home },
                     topRightActionLabel = "FAVORITES",
@@ -253,8 +252,7 @@ fun GothicQuestAppV2() {
 }
 
 private fun questGuideLibraryEntries(
-    onGameSelected: (GameId) -> Unit,
-    onGothic3Selected: () -> Unit
+    onGameSelected: (GameId) -> Unit
 ): List<GameLibraryEntry> = listOf(
     GameLibraryEntry(
         id = "gothic",
@@ -286,7 +284,7 @@ private fun questGuideLibraryEntries(
         panelRes = R.drawable.gothic_button_3,
         logoRes = R.drawable.gothic_3_logo,
         testTag = "game_gothic_3",
-        onClick = onGothic3Selected
+        onClick = { onGameSelected(GameId.GOTHIC_3) }
     )
 )
 
@@ -294,7 +292,7 @@ private fun loadResumeSnapshot(context: Context): ResumeSnapshot? {
     val prefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
     val game = prefs.getString("resume_game", null) ?: return null
     val chapter = prefs.getInt("resume_chapter", -1)
-    if (chapter !in 1..6) return null
+    if (chapter !in 1..7) return null
     return ResumeSnapshot(game, chapter, prefs.getString("resume_quest", null))
 }
 
@@ -338,6 +336,7 @@ private fun navGamePrefix(game: GameId): String = when (game) {
     GameId.GOTHIC -> "G1"
     GameId.GOTHIC_2_GOLD -> "G2"
     GameId.NEW_BALANCE -> "NB"
+    GameId.GOTHIC_3 -> "G3"
 }
 
 private fun navQuestKey(game: GameId, quest: Quest): String = "${navGamePrefix(game)}|${quest.id}"
@@ -363,6 +362,7 @@ private fun NavGameHubScreen(
         GameId.GOTHIC -> R.drawable.gothic_classic_logo
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_gold_logo
         GameId.NEW_BALANCE -> R.drawable.gothic_2_new_balance_logo
+        GameId.GOTHIC_3 -> R.drawable.gothic_3_logo
     }
 
     Box(
@@ -395,7 +395,7 @@ private fun NavGameHubScreen(
             )
             Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
             Spacer(Modifier.height(22.dp))
-            (1..6).forEach { chapter ->
+            (1..game.sectionCount).forEach { chapter ->
                 NavChapterButton(
                     chapter = chapter,
                     quests = game.chapterQuests(chapter),
@@ -448,7 +448,7 @@ private fun NavChapterButton(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(Modifier.weight(1f)) {
-                Text("CHAPTER $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(
                     "$completedCount / $questCount completed • $percentage%",
                     color = Color(0xFF9E8B70),
