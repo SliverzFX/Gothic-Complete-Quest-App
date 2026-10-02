@@ -3,7 +3,7 @@ package com.sliverzfx.gothicquest
 import android.net.Uri
 import android.view.View
 import android.widget.VideoView
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
@@ -145,7 +146,26 @@ fun HomeScreen(
         ) {
             entries.forEachIndexed { index, entry ->
                 GothicMenuItem(entry)
-                if (index != entries.lastIndex) Spacer(Modifier.height(14.dp))
+                if (index != entries.lastIndex) {
+                    Spacer(Modifier.height(5.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(185.dp)
+                            .height(1.dp)
+                            .background(
+                                Brush.horizontalGradient(
+                                    listOf(
+                                        Color.Transparent,
+                                        Color(0x66A67C32),
+                                        Color(0xB8E0BD69),
+                                        Color(0x66A67C32),
+                                        Color.Transparent
+                                    )
+                                )
+                            )
+                    )
+                    Spacer(Modifier.height(5.dp))
+                }
             }
         }
     }
@@ -155,16 +175,35 @@ fun HomeScreen(
 private fun GothicMenuItem(entry: HomeMenuEntry) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val color by animateColorAsState(
-        targetValue = if (pressed) HomeMenuGoldPressed else HomeMenuGold,
-        animationSpec = tween(110),
-        label = "menuTextColor"
-    )
     val scale by animateFloatAsState(
-        targetValue = if (pressed) 1.035f else 1f,
-        animationSpec = tween(110),
+        targetValue = if (pressed) 1.16f else 1f,
+        animationSpec = tween(170),
         label = "menuTextScale"
     )
+    val verticalPadding by animateDpAsState(
+        targetValue = if (pressed) 11.dp else 3.dp,
+        animationSpec = tween(170),
+        label = "menuItemSpacing"
+    )
+    val goldBrush = if (pressed) {
+        Brush.verticalGradient(
+            listOf(
+                Color(0xFFFFF0B0),
+                Color(0xFFFFD66F),
+                Color(0xFFD89B2B),
+                Color(0xFFFFDF82)
+            )
+        )
+    } else {
+        Brush.verticalGradient(
+            listOf(
+                Color(0xFFF4D88A),
+                Color(0xFFD5AD54),
+                Color(0xFF9C6C20),
+                Color(0xFFE1BD65)
+            )
+        )
+    }
 
     Row(
         modifier = Modifier
@@ -174,21 +213,21 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
                 indication = null,
                 onClick = entry.action
             )
-            .padding(horizontal = 4.dp, vertical = 3.dp)
+            .padding(horizontal = 4.dp, vertical = verticalPadding)
             .testTag(entry.testTag),
         verticalAlignment = Alignment.CenterVertically
     ) {
         GothicSelectionRune(visible = pressed)
         Text(
             text = entry.label,
-            color = color,
             fontSize = 21.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 0.8.sp,
             style = TextStyle(
+                brush = goldBrush,
                 shadow = Shadow(
-                    color = if (pressed) Color(0xD9D09A44) else Color(0xB0000000),
-                    blurRadius = if (pressed) 13f else 4f
+                    color = if (pressed) Color(0xE0D09A44) else Color(0xB0000000),
+                    blurRadius = if (pressed) 15f else 4f
                 )
             )
         )
