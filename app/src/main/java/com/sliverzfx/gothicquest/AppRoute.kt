@@ -62,3 +62,7 @@ internal fun routeFromResume(game: String, chapter: Int, questId: String?): AppR
 
 internal val GameId.usesStoneTheme: Boolean
     get() = this == GameId.GOTHIC
+
+
+internal val GameId.usesBloodTheme: Boolean
+    get() = this == GameId.NEW_BALANCE
