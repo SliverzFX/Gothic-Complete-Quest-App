@@ -22,13 +22,17 @@ class HomeMenuTest {
         waitForHome()
         listOf(
             "QUEST GUIDES",
-            "MARVIN CODES / CHEATS",
+            "MARVIN",
             "FAQs",
-            "INFO / ABOUT",
-            "SUPPORT / BUGS",
+            "ABOUT",
+            "SUPPORT",
             "DONATIONS",
             "SETTINGS"
         ).forEach { composeRule.onNodeWithText(it).assertExists() }
+
+        composeRule.onNodeWithText("MARVIN CODES / CHEATS").assertDoesNotExist()
+        composeRule.onNodeWithText("INFO / ABOUT").assertDoesNotExist()
+        composeRule.onNodeWithText("SUPPORT / BUGS").assertDoesNotExist()
 
         composeRule.onNodeWithTag("game_gothic").assertDoesNotExist()
         composeRule.onNodeWithTag("game_gothic_2").assertDoesNotExist()
@@ -39,5 +43,11 @@ class HomeMenuTest {
     fun homeUsesLoopingVideoBackground() {
         waitForHome()
         composeRule.onNodeWithTag("home_background_video").assertExists()
+    }
+
+    @Test
+    fun homeUsesVerticalSmokeBehindMenu() {
+        waitForHome()
+        composeRule.onNodeWithTag("home_menu_smoke").assertExists()
     }
 }
