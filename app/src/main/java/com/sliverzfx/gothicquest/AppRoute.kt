@@ -3,7 +3,8 @@ package com.sliverzfx.gothicquest
 enum class GameId(val persistedName: String, val displayTitle: String) {
     GOTHIC("Gothic", "GOTHIC"),
     GOTHIC_2_GOLD("Gothic II Gold Edition", "GOTHIC II"),
-    NEW_BALANCE("Gothic II New Balance", "NEW BALANCE");
+    NEW_BALANCE("Gothic II New Balance", "NEW BALANCE"),
+    GOTHIC_3("Gothic 3", "GOTHIC 3");
 
     companion object {
         fun fromPersistedName(value: String): GameId? = entries.firstOrNull { it.persistedName == value }
@@ -32,17 +33,25 @@ internal fun GameId.quests(): List<Quest> = when (this) {
     GameId.GOTHIC -> GothicQuestData.quests
     GameId.GOTHIC_2_GOLD -> Gothic2QuestData.quests
     GameId.NEW_BALANCE -> NewBalanceQuestData.quests
+    GameId.GOTHIC_3 -> Gothic3QuestData.quests
 }
 
 internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
     GameId.GOTHIC -> GothicQuestData.chapter(chapter)
     GameId.GOTHIC_2_GOLD -> Gothic2QuestData.chapter(chapter)
     GameId.NEW_BALANCE -> NewBalanceQuestData.chapter(chapter)
+    GameId.GOTHIC_3 -> Gothic3QuestData.part(chapter)
 }
+
+internal val GameId.sectionCount: Int
+    get() = if (this == GameId.GOTHIC_3) 7 else 6
+
+internal val GameId.sectionLabel: String
+    get() = if (this == GameId.GOTHIC_3) "PART" else "CHAPTER"
 
 internal fun routeFromResume(game: String, chapter: Int, questId: String?): AppRoute? {
     val gameId = GameId.fromPersistedName(game) ?: return null
-    if (chapter !in 1..6) return null
+    if (chapter !in 1..gameId.sectionCount) return null
     return if (questId != null && gameId.quests().any { it.id == questId }) {
         AppRoute.QuestDetail(gameId, questId)
     } else {
