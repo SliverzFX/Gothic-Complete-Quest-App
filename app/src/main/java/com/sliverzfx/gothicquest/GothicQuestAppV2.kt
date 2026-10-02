@@ -440,9 +440,9 @@ private fun NavGameHubScreen(
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
-            NavUtilityButton("ALL QUESTS", onAllQuests)
+            NavUtilityButton(game, "ALL QUESTS", onAllQuests)
             Spacer(Modifier.height(10.dp))
-            NavUtilityButton("SEARCH", onSearch)
+            NavUtilityButton(game, "SEARCH", onSearch)
             Spacer(Modifier.height(24.dp))
         }
     }
@@ -498,7 +498,7 @@ private fun NavChapterButton(
                 .fillMaxWidth()
                 .height(3.dp)
                 .background(Color(0xFF0B0907), RoundedCornerShape(3.dp))
-                .border(1.dp, Color(0xFF493720), RoundedCornerShape(3.dp))
+                .border(1.dp, if (game.usesStoneTheme) Color(0xFF5C5D59) else Color(0xFF493720), RoundedCornerShape(3.dp))
         ) {
             Box(
                 Modifier
@@ -512,13 +512,13 @@ private fun NavChapterButton(
 }
 
 @Composable
-private fun NavUtilityButton(label: String, onClick: () -> Unit) {
+private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
-            .border(1.dp, Color(0xFF4D4030), RoundedCornerShape(5.dp))
-            .background(Color(0xFF11100E), RoundedCornerShape(5.dp))
+            .border(1.dp, if (game.usesStoneTheme) Color(0xFF64645F) else Color(0xFF4D4030), RoundedCornerShape(5.dp))
+            .background(if (game.usesStoneTheme) Color(0xFF171918) else Color(0xFF11100E), RoundedCornerShape(5.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
