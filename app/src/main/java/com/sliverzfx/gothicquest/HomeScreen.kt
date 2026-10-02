@@ -12,14 +12,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +31,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -84,10 +89,10 @@ fun HomeScreen(
     val entries = buildList {
         if (hasContinue) add(HomeMenuEntry("CONTINUE", "home_continue", onContinue))
         add(HomeMenuEntry("QUEST GUIDES", "home_quest_guides") { onDestinationSelected("Quest Guides") })
-        add(HomeMenuEntry("MARVIN CODES / CHEATS", "home_cheats") { onDestinationSelected("Marvin Codes / Cheats") })
+        add(HomeMenuEntry("MARVIN", "home_cheats") { onDestinationSelected("Marvin Codes / Cheats") })
         add(HomeMenuEntry("FAQs", "home_faqs") { onDestinationSelected("FAQs") })
-        add(HomeMenuEntry("INFO / ABOUT", "home_about") { onDestinationSelected("Info / About") })
-        add(HomeMenuEntry("SUPPORT / BUGS", "home_support") { onDestinationSelected("Support / Bugs") })
+        add(HomeMenuEntry("ABOUT", "home_about") { onDestinationSelected("Info / About") })
+        add(HomeMenuEntry("SUPPORT", "home_support") { onDestinationSelected("Support / Bugs") })
         add(HomeMenuEntry("DONATIONS", "home_donations") { onDestinationSelected("Donations") })
         add(HomeMenuEntry("SETTINGS", "home_settings") { onDestinationSelected("Settings") })
     }
@@ -98,7 +103,6 @@ fun HomeScreen(
             .background(Color.Black)
             .testTag("home_screen")
     ) {
-        // Static fallback stays underneath the video in case playback is unavailable on a device.
         Image(
             painter = painterResource(R.drawable.home_background),
             contentDescription = "Khorinis",
@@ -118,25 +122,44 @@ fun HomeScreen(
                 .testTag("home_background_video")
         )
 
-        // Only darken the right side enough to keep the title-menu readable.
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0x12000000))
+                .background(Color(0x10000000))
         )
+
+        BoxWithConstraints(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .fillMaxHeight()
+                .width(300.dp)
+                .testTag("home_menu_smoke")
+        ) {
+            Image(
+                painter = painterResource(R.drawable.menu_smoke),
+                contentDescription = null,
+                modifier = Modifier
+                    .width(maxHeight)
+                    .height(300.dp)
+                    .align(Alignment.Center)
+                    .rotate(90f)
+                    .alpha(0.88f),
+                contentScale = ContentScale.FillBounds
+            )
+        }
 
         Column(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .statusBarsPadding()
                 .navigationBarsPadding()
-                .padding(end = 22.dp)
-                .widthIn(min = 205.dp, max = 260.dp),
+                .padding(end = 24.dp)
+                .widthIn(min = 210.dp, max = 270.dp),
             horizontalAlignment = Alignment.End
         ) {
             entries.forEachIndexed { index, entry ->
                 GothicMenuItem(entry)
-                if (index != entries.lastIndex) Spacer(Modifier.height(13.dp))
+                if (index != entries.lastIndex) Spacer(Modifier.height(14.dp))
             }
         }
     }
@@ -173,13 +196,13 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         Text(
             text = entry.label,
             color = color,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 0.7.sp,
+            fontSize = 21.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 0.8.sp,
             style = TextStyle(
                 shadow = Shadow(
-                    color = if (pressed) Color(0xD9D09A44) else Color(0x88000000),
-                    blurRadius = if (pressed) 13f else 3f
+                    color = if (pressed) Color(0xD9D09A44) else Color(0xB0000000),
+                    blurRadius = if (pressed) 13f else 4f
                 )
             )
         )
@@ -189,14 +212,14 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
 @Composable
 private fun GothicSelectionRune(visible: Boolean) {
     Box(
-        modifier = Modifier.widthIn(min = 23.dp),
+        modifier = Modifier.widthIn(min = 25.dp),
         contentAlignment = Alignment.Center
     ) {
         if (visible) {
             Text(
                 text = "✦",
                 color = HomeMenuGoldPressed,
-                fontSize = 15.sp,
+                fontSize = 16.sp,
                 style = TextStyle(
                     shadow = Shadow(color = Color(0xD9D09A44), blurRadius = 10f)
                 )
