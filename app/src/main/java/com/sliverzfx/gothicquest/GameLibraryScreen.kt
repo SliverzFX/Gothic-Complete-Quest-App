@@ -1,9 +1,13 @@
 package com.sliverzfx.gothicquest
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +24,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -150,11 +156,28 @@ fun GameLibraryScreen(
 
 @Composable
 private fun GameLibraryPanel(entry: GameLibraryEntry) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val panelHeight by animateDpAsState(
+        targetValue = if (pressed) 275.dp else 220.dp,
+        animationSpec = tween(180),
+        label = "gamePanelHeight"
+    )
+    val logoWidth by animateDpAsState(
+        targetValue = if (pressed) 210.dp else 190.dp,
+        animationSpec = tween(180),
+        label = "gameLogoWidth"
+    )
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(220.dp)
-            .clickable(onClick = entry.onClick)
+            .height(panelHeight)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = entry.onClick
+            )
             .testTag(entry.testTag),
         contentAlignment = Alignment.BottomEnd
     ) {
@@ -178,7 +201,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 painter = painterResource(logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(190.dp)
+                    .width(logoWidth)
                     .padding(end = 14.dp, bottom = 12.dp)
                     .offset(x = 5.dp, y = 6.dp)
                     .blur(6.dp)
@@ -190,7 +213,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 painter = painterResource(logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(190.dp)
+                    .width(logoWidth)
                     .padding(end = 14.dp, bottom = 12.dp)
                     .offset(x = 2.dp, y = 3.dp)
                     .blur(2.5.dp)
@@ -202,7 +225,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 painter = painterResource(logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .width(190.dp)
+                    .width(logoWidth)
                     .padding(end = 14.dp, bottom = 12.dp),
                 contentScale = ContentScale.Fit
             )
