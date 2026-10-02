@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.GothicQuest" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:colorAccent">#C59A52</item>
+    </style>
+</resources>
