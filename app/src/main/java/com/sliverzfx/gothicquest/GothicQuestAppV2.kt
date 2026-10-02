@@ -126,7 +126,10 @@ fun GothicQuestAppV2() {
 
                 AppRoute.QuestGuides -> GameLibraryScreen(
                     title = "QUEST GUIDES",
-                    entries = questGuideLibraryEntries { game -> route = AppRoute.GameHub(game) },
+                    entries = questGuideLibraryEntries(
+                        onGameSelected = { game -> route = AppRoute.GameHub(game) },
+                        onGothic3Selected = { route = AppRoute.GamePreview("GOTHIC 3") }
+                    ),
                     onBack = { route = AppRoute.Home },
                     topRightActionLabel = "FAVORITES",
                     onTopRightAction = { route = AppRoute.Favorites }
@@ -151,6 +154,10 @@ fun GothicQuestAppV2() {
                     },
                     onBack = { route = AppRoute.Home }
                 )
+
+                is AppRoute.GamePreview -> SectionPlaceholderScreen(currentRoute.title) {
+                    route = AppRoute.QuestGuides
+                }
 
                 AppRoute.Favorites -> NavFavoritesScreen(
                     entries = buildNavFavoriteEntries(favoriteKeys),
@@ -245,7 +252,10 @@ fun GothicQuestAppV2() {
     }
 }
 
-private fun questGuideLibraryEntries(onGameSelected: (GameId) -> Unit): List<GameLibraryEntry> = listOf(
+private fun questGuideLibraryEntries(
+    onGameSelected: (GameId) -> Unit,
+    onGothic3Selected: () -> Unit
+): List<GameLibraryEntry> = listOf(
     GameLibraryEntry(
         id = "gothic",
         title = "Gothic",
@@ -269,6 +279,14 @@ private fun questGuideLibraryEntries(onGameSelected: (GameId) -> Unit): List<Gam
         logoRes = R.drawable.gothic_2_new_balance_logo,
         testTag = "game_new_balance",
         onClick = { onGameSelected(GameId.NEW_BALANCE) }
+    ),
+    GameLibraryEntry(
+        id = "gothic_3",
+        title = "Gothic 3",
+        panelRes = R.drawable.gothic_button_3,
+        logoRes = R.drawable.gothic_3_logo,
+        testTag = "game_gothic_3",
+        onClick = onGothic3Selected
     )
 )
 
