@@ -19,10 +19,14 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
@@ -42,6 +46,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -143,6 +149,24 @@ private fun navProgressBorder(game: GameId): Color =
 @Composable
 fun GothicQuestAppV2() {
     val context = LocalContext.current
+    var textSize by remember { mutableStateOf(loadAppTextSize(context)) }
+    ProvideAppTextSize(textSize) {
+        GothicQuestAppContent(
+            textSize = textSize,
+            onTextSizeChanged = { size ->
+                textSize = size
+                saveAppTextSize(context, size)
+            }
+        )
+    }
+}
+
+@Composable
+private fun GothicQuestAppContent(
+    textSize: AppTextSize,
+    onTextSizeChanged: (AppTextSize) -> Unit
+) {
+    val context = LocalContext.current
     var showSplash by remember { mutableStateOf(true) }
     var route by remember { mutableStateOf<AppRoute>(AppRoute.Home) }
     var questReturnRoute by remember { mutableStateOf<AppRoute?>(null) }
@@ -234,6 +258,8 @@ fun GothicQuestAppV2() {
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
+                    textSize = textSize,
+                    onTextSizeChanged = onTextSizeChanged,
                     musicEnabled = musicEnabled,
                     onMusicChanged = { enabled ->
                         musicEnabled = enabled
@@ -554,7 +580,7 @@ private fun NavChapterButton(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .heightIn(min = 72.dp)
             .border(
                 1.dp,
                 when {
@@ -571,7 +597,7 @@ private fun NavChapterButton(
                 alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 5.dp)
+            .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
         Spacer(Modifier.weight(1f))
         Row(
@@ -614,10 +640,11 @@ private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(52.dp)
+            .heightIn(min = 52.dp)
             .border(1.dp, navUtilityBorder(game), RoundedCornerShape(5.dp))
             .background(navUtilityBackground(game).copy(alpha = NavBoxOpacity), RoundedCornerShape(5.dp))
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(label, color = Color(0xFFBDA47A), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
@@ -1028,6 +1055,8 @@ private fun NavFavoritesScreen(
 
 @Composable
 private fun NavSettingsScreen(
+    textSize: AppTextSize,
+    onTextSizeChanged: (AppTextSize) -> Unit,
     musicEnabled: Boolean,
     onMusicChanged: (Boolean) -> Unit,
     onBack: () -> Unit
@@ -1038,6 +1067,8 @@ private fun NavSettingsScreen(
             .fillMaxSize()
             .background(Color(0xFF090706))
             .statusBarsPadding()
+            .navigationBarsPadding()
+            .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
         NavBackText("‹  BACK TO MAIN MENU", onBack)
@@ -1046,6 +1077,59 @@ private fun NavSettingsScreen(
         Text("APP PREFERENCES", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(24.dp))
         val shape = RoundedCornerShape(7.dp)
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF15100D), shape)
+                .border(1.dp, Color(0xFF5F4529), shape)
+                .padding(16.dp)
+        ) {
+            Text("TEXT SIZE", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(12.dp))
+            Row(
+                Modifier.fillMaxWidth().selectableGroup(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                AppTextSize.entries.forEach { size ->
+                    val selected = textSize == size
+                    val optionShape = RoundedCornerShape(5.dp)
+                    Box(
+                        Modifier
+                            .weight(1f)
+                            .heightIn(min = 48.dp)
+                            .background(
+                                if (selected) Color(0xFF49351F) else Color(0xFF0E0B08),
+                                optionShape
+                            )
+                            .border(
+                                1.dp,
+                                if (selected) Color(0xFFD7B06A) else Color(0xFF5F4529),
+                                optionShape
+                            )
+                            .selectable(
+                                selected = selected,
+                                role = Role.RadioButton,
+                                onClick = { onTextSizeChanged(size) }
+                            )
+                            .testTag("text_size_${size.name.lowercase()}")
+                            .padding(horizontal = 4.dp, vertical = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(size.label, color = Color(0xFFD7B06A), fontSize = 14.sp)
+                    }
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+            Text(
+                "Quest guide text preview.",
+                color = Color(0xFFE0D5C2),
+                fontSize = 16.sp,
+                modifier = Modifier.testTag("text_size_preview")
+            )
+            Spacer(Modifier.height(6.dp))
+            Text("Applies throughout the app.", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        }
+        Spacer(Modifier.height(16.dp))
         Row(
             Modifier
                 .fillMaxWidth()
