@@ -435,6 +435,7 @@ private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
     val backdropRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_mask_bg
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_bg
+        GameId.NEW_BALANCE -> R.drawable.gothic_2_nb_bg
         else -> null
     }
     Box(Modifier.fillMaxSize().background(navBackgroundBrush(game))) {
