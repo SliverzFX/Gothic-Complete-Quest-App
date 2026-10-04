@@ -57,7 +57,7 @@ private data class ResumeSnapshot(
 
 private data class NavFavoriteEntry(val game: GameId, val quest: Quest)
 
-private const val NavBoxOpacity = 0.85f
+private const val NavBoxOpacity = 0.65f
 
 private fun navBackgroundBrush(game: GameId): Brush =
     when {
