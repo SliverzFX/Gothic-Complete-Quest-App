@@ -463,6 +463,14 @@ private fun questGuideLibraryEntries(
         logoRes = R.drawable.risen_1_logo,
         testTag = "game_risen_1",
         onClick = { onGameSelected(GameId.RISEN) }
+    ),
+    GameLibraryEntry(
+        id = "risen_2",
+        title = "Risen 2",
+        panelRes = R.drawable.risen_2_button,
+        logoRes = R.drawable.risen_2_logo,
+        testTag = "game_risen_2",
+        onClick = { onGameSelected(GameId.RISEN_2) }
     )
 )
 
@@ -516,6 +524,7 @@ private fun navGamePrefix(game: GameId): String = when (game) {
     GameId.NEW_BALANCE -> "NB"
     GameId.GOTHIC_3 -> "G3"
     GameId.RISEN -> "R1"
+    GameId.RISEN_2 -> "R2"
 }
 
 private fun navQuestKey(game: GameId, quest: Quest): String = "${navGamePrefix(game)}|${quest.id}"
@@ -568,6 +577,7 @@ private fun NavGameHubScreen(
         GameId.NEW_BALANCE -> R.drawable.gothic_2_new_balance_logo
         GameId.GOTHIC_3 -> R.drawable.gothic_3_logo
         GameId.RISEN -> R.drawable.risen_1_logo
+        GameId.RISEN_2 -> R.drawable.risen_2_logo
     }
 
     NavGuideBackground(game) {
@@ -587,7 +597,7 @@ private fun NavGameHubScreen(
                 contentScale = ContentScale.Fit
             )
             Text(
-                if (game == GameId.RISEN) "QUEST GUIDE" else "COMPLETE QUEST GUIDE",
+                if (game == GameId.RISEN || game == GameId.RISEN_2) "QUEST GUIDE" else "COMPLETE QUEST GUIDE",
                 color = Color(0xFFC79A55),
                 fontSize = 13.sp
             )
@@ -603,9 +613,11 @@ private fun NavGameHubScreen(
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
-            NavUtilityButton(game, "ALL QUESTS", onAllQuests)
-            Spacer(Modifier.height(10.dp))
-            NavUtilityButton(game, "SEARCH", onSearch)
+            if (game.quests().isNotEmpty()) {
+                NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+                Spacer(Modifier.height(10.dp))
+                NavUtilityButton(game, "SEARCH", onSearch)
+            }
             Spacer(Modifier.height(24.dp))
         }
     }
@@ -657,7 +669,8 @@ private fun NavChapterButton(
             Column(Modifier.weight(1f)) {
                 Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(
-                    "$completedCount / $questCount completed • $percentage%",
+                    if (game == GameId.RISEN_2 && questCount == 0) "Quest guide coming soon"
+                    else "$completedCount / $questCount completed • $percentage%",
                     color = Color(0xFF9E8B70),
                     fontSize = 11.sp
                 )
@@ -726,6 +739,14 @@ private fun NavChapterQuestListScreen(
                 fontSize = 12.sp
             )
             Spacer(Modifier.height(18.dp))
+            if (game == GameId.RISEN_2 && quests.isEmpty()) {
+                Text(
+                    "The quest guide for this chapter is coming soon.",
+                    color = Color(0xFFC7B89B),
+                    fontSize = 16.sp
+                )
+                Spacer(Modifier.height(18.dp))
+            }
             val guideNotes = if (game == GameId.RISEN) RisenQuestData.notes(chapter) else emptyList()
             val notesByOrder = guideNotes.groupBy { it.beforeQuestOrder }
             quests.forEachIndexed { index, quest ->
