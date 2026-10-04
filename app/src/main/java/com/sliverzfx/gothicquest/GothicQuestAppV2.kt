@@ -565,7 +565,7 @@ private fun NavGameHubScreen(
                 contentScale = ContentScale.Fit
             )
             Text(
-                if (game == GameId.RISEN) "QUEST GUIDE • COMING SOON" else "COMPLETE QUEST GUIDE",
+                if (game == GameId.RISEN) "QUEST GUIDE" else "COMPLETE QUEST GUIDE",
                 color = Color(0xFFC79A55),
                 fontSize = 13.sp
             )
@@ -581,11 +581,9 @@ private fun NavGameHubScreen(
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
-            if (game != GameId.RISEN || game.quests().isNotEmpty()) {
-                NavUtilityButton(game, "ALL QUESTS", onAllQuests)
-                Spacer(Modifier.height(10.dp))
-                NavUtilityButton(game, "SEARCH", onSearch)
-            }
+            NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+            Spacer(Modifier.height(10.dp))
+            NavUtilityButton(game, "SEARCH", onSearch)
             Spacer(Modifier.height(24.dp))
         }
     }
@@ -637,8 +635,7 @@ private fun NavChapterButton(
             Column(Modifier.weight(1f)) {
                 Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(
-                    if (game == GameId.RISEN && questCount == 0) "GUIDE COMING SOON"
-                    else "$completedCount / $questCount completed • $percentage%",
+                    "$completedCount / $questCount completed • $percentage%",
                     color = Color(0xFF9E8B70),
                     fontSize = 11.sp
                 )
@@ -702,23 +699,36 @@ private fun NavChapterQuestListScreen(
             Spacer(Modifier.height(4.dp))
             Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
             Text(
-                if (game == GameId.RISEN && quests.isEmpty()) "QUEST GUIDE COMING SOON"
-                else "${quests.size} QUESTS • CHRONOLOGICAL ORDER",
+                "${quests.size} QUESTS • CHRONOLOGICAL ORDER",
                 color = Color(0xFF9E8B70),
                 fontSize = 12.sp
             )
-            if (game == GameId.RISEN && quests.isEmpty()) {
-                Spacer(Modifier.height(18.dp))
-                Text("This chapter's quest guide will be added soon.", color = Color(0xFFC7B89B), fontSize = 15.sp)
-            }
             Spacer(Modifier.height(18.dp))
+            val guideNotes = if (game == GameId.RISEN) RisenQuestData.notes(chapter) else emptyList()
+            val notesByOrder = guideNotes.groupBy { it.beforeQuestOrder }
             quests.forEachIndexed { index, quest ->
+                notesByOrder[quest.playOrder].orEmpty().forEach { note ->
+                    NavRisenGuideNote(game, note)
+                }
                 NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
                 Spacer(Modifier.height(10.dp))
+            }
+            notesByOrder[quests.size + 1].orEmpty().forEach { note ->
+                NavRisenGuideNote(game, note)
             }
             NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
         }
     }
+}
+
+@Composable
+private fun NavRisenGuideNote(game: GameId, note: RisenGuideNote) {
+    if (note.paragraphs.isEmpty()) {
+        Text(note.title, color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+    } else {
+        NavDetailCallout(note.title, note.paragraphs.joinToString("\n\n"), navInsetColor(game))
+    }
+    Spacer(Modifier.height(14.dp))
 }
 
 @Composable
