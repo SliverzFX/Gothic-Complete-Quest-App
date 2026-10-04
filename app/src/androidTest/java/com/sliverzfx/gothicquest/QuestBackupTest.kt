@@ -9,7 +9,7 @@ import org.junit.Test
 class QuestBackupTest {
     private fun sample() = QuestAppBackup(setOf("G1|Q1", "R2|R2-C4-001"),
         setOf("NB|CH1-001"), "LARGE", 80, 60, "HIDE", false, true,
-        "Risen 2", 4, "R2-C4-001")
+        "Risen 2", 4, "R2-C4-001", reduceAnimations = true)
 
     @Test fun backupRoundTripAndRestoreIncludeAllSavedFields() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -46,6 +46,17 @@ class QuestBackupTest {
             try { QuestBackupCodec.decode(text) } catch (_: Exception) { rejected = true }
             assertTrue(rejected)
         }
+    }
+
+    @Test fun olderBackupsDefaultToNormalAnimations() {
+        val old = JSONObject(QuestBackupCodec.encode(sample()))
+        old.getJSONObject("settings").remove("reduce_animations")
+        assertFalse(QuestBackupCodec.decode(old.toString()).reduceAnimations)
+        val invalid = JSONObject(QuestBackupCodec.encode(sample()))
+        invalid.getJSONObject("settings").put("reduce_animations", "yes")
+        var rejected = false
+        try { QuestBackupCodec.decode(invalid.toString()) } catch (_: Exception) { rejected = true }
+        assertTrue(rejected)
     }
 
     @Test fun resetOnlyRemovesSelectedGameCompletionMarks() {

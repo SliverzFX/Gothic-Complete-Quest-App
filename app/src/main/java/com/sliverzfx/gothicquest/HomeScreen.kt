@@ -59,8 +59,9 @@ fun HomeScreen(
     onContinue: () -> Unit = {},
     onDestinationSelected: (String) -> Unit
 ) {
+    val reduceAnimations = LocalReduceAnimations.current
     val context = LocalContext.current
-    val backgroundVideo = remember(context) {
+    val backgroundVideo = if (reduceAnimations) null else remember(context) {
         VideoView(context).apply {
             setVideoURI(
                 Uri.parse("android.resource://${context.packageName}/${R.raw.home_menu_loop}")
@@ -81,7 +82,7 @@ fun HomeScreen(
 
     DisposableEffect(backgroundVideo) {
         onDispose {
-            backgroundVideo.stopPlayback()
+            backgroundVideo?.stopPlayback()
         }
     }
 
@@ -109,17 +110,19 @@ fun HomeScreen(
             contentScale = ContentScale.Crop
         )
 
-        AndroidView(
-            factory = { backgroundVideo },
-            update = { videoView ->
-                if (videoView.visibility == View.VISIBLE && !videoView.isPlaying) {
-                    videoView.start()
-                }
-            },
-            modifier = Modifier
-                .fillMaxSize()
-                .testTag("home_background_video")
-        )
+        if (backgroundVideo != null) {
+            AndroidView(
+                factory = { backgroundVideo },
+                update = { videoView ->
+                    if (videoView.visibility == View.VISIBLE && !videoView.isPlaying) {
+                        videoView.start()
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("home_background_video")
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -177,14 +180,15 @@ fun HomeScreen(
 private fun GothicMenuItem(entry: HomeMenuEntry) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
+    val reduceAnimations = LocalReduceAnimations.current
     val scale by animateFloatAsState(
-        targetValue = if (pressed) 1.16f else 1f,
-        animationSpec = tween(170),
+        targetValue = if (pressed && !reduceAnimations) 1.16f else 1f,
+        animationSpec = tween(if (reduceAnimations) 0 else 170),
         label = "menuTextScale"
     )
     val verticalPadding by animateDpAsState(
-        targetValue = if (pressed) 14.dp else 5.dp,
-        animationSpec = tween(170),
+        targetValue = if (pressed && !reduceAnimations) 14.dp else 5.dp,
+        animationSpec = tween(if (reduceAnimations) 0 else 170),
         label = "menuItemSpacing"
     )
     val goldBrush = if (pressed) {

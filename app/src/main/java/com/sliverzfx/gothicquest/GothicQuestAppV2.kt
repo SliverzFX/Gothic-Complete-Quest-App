@@ -245,6 +245,10 @@ private fun GothicQuestAppContent(
                 .getString("completed_quest_display", null)
         ))
     }
+    var reduceAnimations by remember {
+        mutableStateOf(context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+            .getBoolean("reduce_animations", false))
+    }
     var musicEnabled by remember { mutableStateOf(loadNavMusicEnabled(context)) }
     var keepScreenAwake by remember {
         mutableStateOf(
@@ -280,12 +284,13 @@ private fun GothicQuestAppContent(
     }
 
     CompositionLocalProvider(
+        LocalReduceAnimations provides reduceAnimations,
         LocalCompletedDisplay provides completedDisplay,
         LocalCompletedKeys provides completedKeys
     ) {
     Crossfade(
         targetState = showSplash to route,
-        animationSpec = tween(durationMillis = 350),
+        animationSpec = tween(durationMillis = if (reduceAnimations) 0 else 350),
         label = "screenCrossfadeV2"
     ) { (isSplash, currentRoute) ->
         if (isSplash) {
@@ -342,6 +347,12 @@ private fun GothicQuestAppContent(
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
+                    reduceAnimations = reduceAnimations,
+                    onReduceAnimationsChanged = { reduced ->
+                        reduceAnimations = reduced
+                        context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit()
+                            .putBoolean("reduce_animations", reduced).apply()
+                    },
                     onRestored = {
                         resumeSnapshot = loadResumeSnapshot(context)
                         favoriteKeys = loadNavStringSet(context, "favorites")
@@ -349,6 +360,7 @@ private fun GothicQuestAppContent(
                         musicEnabled = loadNavMusicEnabled(context)
                         val prefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
                         keepScreenAwake = prefs.getBoolean("keep_screen_awake", false)
+                        reduceAnimations = prefs.getBoolean("reduce_animations", false)
                         completedDisplay = CompletedQuestDisplay.fromStoredValue(
                             prefs.getString("completed_quest_display", null))
                         questReturnRoute = null
@@ -708,7 +720,7 @@ private fun NavChapterButton(
     val questCount = quests.size
     val completedCount = quests.count { navQuestKey(game, it) in completedKeys }
     val targetProgress = if (questCount == 0) 0f else completedCount.toFloat() / questCount.toFloat()
-    val progress by animateFloatAsState(targetProgress, tween(500), label = "navChapterProgress")
+    val progress by animateFloatAsState(targetProgress, tween(if (LocalReduceAnimations.current) 0 else 500), label = "navChapterProgress")
     val percentage = (targetProgress * 100).toInt()
 
     Column(
@@ -1243,6 +1255,8 @@ private fun NavFavoritesScreen(
 
 @Composable
 private fun NavSettingsScreen(
+    reduceAnimations: Boolean,
+    onReduceAnimationsChanged: (Boolean) -> Unit,
     onRestored: () -> Unit,
     onResetGame: (GameId) -> Boolean,
     backgroundBrightness: Int,
@@ -1466,64 +1480,49 @@ private fun NavSettingsScreen(
             }
         }
         Spacer(Modifier.height(16.dp))
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF15100D), shape)
-                .border(1.dp, Color(0xFF5F4529), shape)
-                .clickable { onMusicChanged(!musicEnabled) }
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(Modifier.weight(1f)) {
-                Text("BACKGROUND MUSIC", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(4.dp))
-                Text("Gothic ambient soundtrack", color = Color(0xFF9E8B70), fontSize = 12.sp)
-            }
-            Text(
-                if (musicEnabled) "ON" else "OFF",
-                color = if (musicEnabled) Color(0xFFD7B06A) else Color(0xFF8F806A),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Text("APP OPTIONS", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(12.dp))
-        Text("Test track: Old Camp • loops continuously", color = Color(0xFF746957), fontSize = 11.sp)
-        Spacer(Modifier.height(16.dp))
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF15100D), shape)
-                .border(1.dp, Color(0xFF5F4529), shape)
-                .toggleable(
-                    value = keepScreenAwake,
-                    role = Role.Switch,
-                    onValueChange = onKeepScreenAwakeChanged
-                )
-                .testTag("keep_screen_awake_toggle")
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(Modifier.weight(1f).padding(end = 12.dp)) {
-                Text("KEEP SCREEN AWAKE", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    "Keep the screen lit while this app is open.",
-                    color = Color(0xFF9E8B70),
-                    fontSize = 12.sp
-                )
-            }
-            Text(
-                if (keepScreenAwake) "ON" else "OFF",
-                color = if (keepScreenAwake) Color(0xFFD7B06A) else Color(0xFF8F806A),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            NavCompactToggle("Music", musicEnabled, onMusicChanged, "music_toggle", Modifier.weight(1f))
+            NavCompactToggle("Keep screen awake", keepScreenAwake, onKeepScreenAwakeChanged,
+                "keep_screen_awake_toggle", Modifier.weight(1f))
         }
+        Spacer(Modifier.height(8.dp))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            NavCompactToggle("Reduce animations", reduceAnimations, onReduceAnimationsChanged,
+                "reduce_animations_toggle", Modifier.weight(1f))
+            Spacer(Modifier.weight(1f))
+        }
+        Spacer(Modifier.height(8.dp))
+        Text("Reduce animations uses a still menu and instant transitions.",
+            color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(16.dp))
         BackupSettingsSection(onRestored = onRestored, onResetGame = onResetGame)
+    }
+}
+
+@Composable
+private fun NavCompactToggle(
+    label: String,
+    enabled: Boolean,
+    onChanged: (Boolean) -> Unit,
+    tag: String,
+    modifier: Modifier = Modifier
+) {
+    val shape = RoundedCornerShape(7.dp)
+    Column(
+        modifier.heightIn(min = 72.dp)
+            .background(Color(0xFF15100D), shape)
+            .border(1.dp, Color(0xFF5F4529), shape)
+            .toggleable(value = enabled, role = Role.Switch, onValueChange = onChanged)
+            .testTag(tag)
+            .padding(horizontal = 12.dp, vertical = 12.dp)
+    ) {
+        Text(label, color = Color(0xFFD7B06A), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(6.dp))
+        Text(if (enabled) "ON" else "OFF",
+            color = if (enabled) Color(0xFFD7B06A) else Color(0xFF8F806A),
+            fontSize = 12.sp, fontWeight = FontWeight.Bold)
     }
 }
 

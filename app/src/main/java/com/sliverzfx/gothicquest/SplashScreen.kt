@@ -23,10 +23,15 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen() {
-    val opacity = remember { Animatable(0f) }
+    val reduceAnimations = LocalReduceAnimations.current
+    val opacity = remember { Animatable(if (reduceAnimations) 1f else 0f) }
     var fadingOut by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(reduceAnimations) {
+        if (reduceAnimations) {
+            opacity.snapTo(1f)
+            return@LaunchedEffect
+        }
         opacity.animateTo(1f, tween(550))
         delay(900)
         fadingOut = true

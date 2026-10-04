@@ -158,14 +158,15 @@ fun GameLibraryScreen(
 private fun GameLibraryPanel(entry: GameLibraryEntry) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
+    val reduceAnimations = LocalReduceAnimations.current
     val panelHeight by animateDpAsState(
-        targetValue = if (pressed) 275.dp else 220.dp,
-        animationSpec = tween(180),
+        targetValue = if (pressed && !reduceAnimations) 275.dp else 220.dp,
+        animationSpec = tween(if (reduceAnimations) 0 else 180),
         label = "gamePanelHeight"
     )
     val logoWidth by animateDpAsState(
-        targetValue = if (pressed) 210.dp else 190.dp,
-        animationSpec = tween(180),
+        targetValue = if (pressed && !reduceAnimations) 210.dp else 190.dp,
+        animationSpec = tween(if (reduceAnimations) 0 else 180),
         label = "gameLogoWidth"
     )
 
