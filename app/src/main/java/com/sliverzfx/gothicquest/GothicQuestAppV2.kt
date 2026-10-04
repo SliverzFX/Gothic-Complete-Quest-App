@@ -57,6 +57,8 @@ private data class ResumeSnapshot(
 
 private data class NavFavoriteEntry(val game: GameId, val quest: Quest)
 
+private const val NavBoxOpacity = 0.85f
+
 private fun navBackgroundBrush(game: GameId): Brush =
     when {
         game.usesStoneTheme -> Brush.verticalGradient(
@@ -559,7 +561,8 @@ private fun NavChapterButton(
             .background(
                 if (game.usesStoneTheme || game.usesBloodTheme) navCardBrush(game)
                 else Brush.horizontalGradient(listOf(Color(0xFF211712), Color(0xFF35160F), Color(0xFF17110E))),
-                shape
+                shape,
+                alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 5.dp)
@@ -606,7 +609,7 @@ private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
             .fillMaxWidth()
             .height(52.dp)
             .border(1.dp, navUtilityBorder(game), RoundedCornerShape(5.dp))
-            .background(navUtilityBackground(game), RoundedCornerShape(5.dp))
+            .background(navUtilityBackground(game).copy(alpha = NavBoxOpacity), RoundedCornerShape(5.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
@@ -652,7 +655,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
     Column(
         Modifier
             .fillMaxWidth()
-            .background(navCardBrush(game), shape)
+            .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
             .border(1.dp, navCardBorder(game), shape)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 14.dp)
@@ -739,7 +742,7 @@ private fun NavQuestDetailScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .background(navInsetColor(game), infoShape)
+                    .background(navInsetColor(game).copy(alpha = NavBoxOpacity), infoShape)
                     .border(1.dp, navCardBorder(game), infoShape)
                     .padding(14.dp)
             ) {
@@ -761,7 +764,7 @@ private fun NavQuestDetailScreen(
                     Modifier
                         .fillMaxWidth()
                         .padding(bottom = 9.dp)
-                        .background(navInsetColor(game), stepShape)
+                        .background(navInsetColor(game).copy(alpha = NavBoxOpacity), stepShape)
                         .border(1.dp, navCardBorder(game).copy(alpha = 0.72f), stepShape)
                         .padding(13.dp),
                     verticalAlignment = Alignment.Top
@@ -804,7 +807,7 @@ private fun NavDetailCallout(label: String, value: String, tint: Color) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(tint.copy(alpha = 0.32f), shape)
+            .background(tint.copy(alpha = NavBoxOpacity), shape)
             .border(1.dp, tint.copy(alpha = 0.85f), shape)
             .padding(14.dp)
     ) {
@@ -842,7 +845,7 @@ private fun NavAllQuestsScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .background(navCardBrush(game), shape)
+                    .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
                     .border(1.dp, navCardBorder(game), shape)
                     .clickable { onQuestSelected(quest) }
                     .padding(horizontal = 16.dp, vertical = 14.dp)
@@ -943,7 +946,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(navCardBrush(game), shape)
+            .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
             .border(1.dp, navCardBorder(game), shape)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 13.dp)
@@ -989,7 +992,7 @@ private fun NavFavoritesScreen(
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape)
+                        .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape, alpha = NavBoxOpacity)
                         .border(1.dp, Color(0xFF5F4529), shape)
                         .clickable { onQuestSelected(entry.game, quest) }
                         .padding(horizontal = 16.dp, vertical = 14.dp)
