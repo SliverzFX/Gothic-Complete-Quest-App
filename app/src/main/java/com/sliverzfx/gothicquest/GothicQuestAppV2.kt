@@ -431,6 +431,22 @@ private fun buildNavFavoriteEntries(keys: Set<String>): List<NavFavoriteEntry> =
 }
 
 @Composable
+private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
+    Box(Modifier.fillMaxSize().background(navBackgroundBrush(game))) {
+        if (game == GameId.GOTHIC) {
+            Image(
+                painter = painterResource(R.drawable.gothic_mask_bg),
+                contentDescription = null,
+                modifier = Modifier.matchParentSize(),
+                contentScale = ContentScale.Crop,
+                alpha = 0.30f
+            )
+        }
+        content()
+    }
+}
+
+@Composable
 private fun NavGameHubScreen(
     game: GameId,
     completedKeys: Set<String>,
@@ -447,9 +463,7 @@ private fun NavGameHubScreen(
         GameId.GOTHIC_3 -> R.drawable.gothic_3_logo
     }
 
-    Box(
-        Modifier.fillMaxSize().background(navBackgroundBrush(game))
-    ) {
+    NavGuideBackground(game) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -661,95 +675,96 @@ private fun NavQuestDetailScreen(
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(navBackgroundBrush(game))
-            .statusBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(20.dp)
-    ) {
-        NavBackText("‹  BACK TO QUESTS", onBack)
-        Spacer(Modifier.height(6.dp))
-        Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                quest.title,
-                color = Color(0xFFD6B06A),
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                if (isCompleted) "✓" else "○",
-                color = if (isCompleted) Color(0xFFD7B06A) else Color(0xFF8F806A),
-                fontSize = 30.sp,
-                modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
-            )
-            Text(
-                if (isFavorite) "★" else "☆",
-                color = if (isFavorite) Color(0xFFD7B06A) else Color(0xFF8F806A),
-                fontSize = 32.sp,
-                modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
-            )
-        }
-        if (quest.aliases.isNotEmpty()) {
-            Text("Also: ${quest.aliases.joinToString()}", color = Color(0xFF9E8B70), fontSize = 12.sp)
-        }
-        Spacer(Modifier.height(16.dp))
-
-        val infoShape = RoundedCornerShape(7.dp)
+    NavGuideBackground(game) {
         Column(
             Modifier
-                .fillMaxWidth()
-                .background(navInsetColor(game), infoShape)
-                .border(1.dp, navCardBorder(game), infoShape)
-                .padding(14.dp)
+                .fillMaxSize()
+                .statusBarsPadding()
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp)
         ) {
-            NavDetailLine("TYPE", quest.category)
-            NavDetailLine("QUEST GIVER", quest.giver)
-            NavDetailLine("LOCATION", quest.location)
-            NavDetailLine("PREREQUISITE", quest.prerequisites, false)
-        }
-        Spacer(Modifier.height(18.dp))
-        Text("OBJECTIVE", color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(5.dp))
-        Text(quest.summary, color = Color(0xFFE0D5C2), fontSize = 16.sp)
-        Spacer(Modifier.height(22.dp))
-        Text("WALKTHROUGH", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(8.dp))
-        quest.walkthroughSteps.forEachIndexed { index, step ->
-            val stepShape = RoundedCornerShape(6.dp)
-            Row(
+            NavBackText("‹  BACK TO QUESTS", onBack)
+            Spacer(Modifier.height(6.dp))
+            Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    quest.title,
+                    color = Color(0xFFD6B06A),
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    if (isCompleted) "✓" else "○",
+                    color = if (isCompleted) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                    fontSize = 30.sp,
+                    modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
+                )
+                Text(
+                    if (isFavorite) "★" else "☆",
+                    color = if (isFavorite) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                    fontSize = 32.sp,
+                    modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
+                )
+            }
+            if (quest.aliases.isNotEmpty()) {
+                Text("Also: ${quest.aliases.joinToString()}", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            }
+            Spacer(Modifier.height(16.dp))
+
+            val infoShape = RoundedCornerShape(7.dp)
+            Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 9.dp)
-                    .background(navInsetColor(game), stepShape)
-                    .border(1.dp, navCardBorder(game).copy(alpha = 0.72f), stepShape)
-                    .padding(13.dp),
-                verticalAlignment = Alignment.Top
+                    .background(navInsetColor(game), infoShape)
+                    .border(1.dp, navCardBorder(game), infoShape)
+                    .padding(14.dp)
             ) {
-                Text(
-                    "${index + 1}",
-                    color = Color(0xFFD7B06A),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.width(28.dp)
-                )
-                Text(step, color = Color(0xFFD4C7B1), fontSize = 14.sp, modifier = Modifier.weight(1f))
+                NavDetailLine("TYPE", quest.category)
+                NavDetailLine("QUEST GIVER", quest.giver)
+                NavDetailLine("LOCATION", quest.location)
+                NavDetailLine("PREREQUISITE", quest.prerequisites, false)
             }
-        }
-        Spacer(Modifier.height(10.dp))
-        if (quest.reward.isNotBlank() && !quest.reward.startsWith("Not specified")) {
-            NavDetailCallout("REWARD", quest.reward, Color(0xFF3F4A2B))
+            Spacer(Modifier.height(18.dp))
+            Text("OBJECTIVE", color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(5.dp))
+            Text(quest.summary, color = Color(0xFFE0D5C2), fontSize = 16.sp)
+            Spacer(Modifier.height(22.dp))
+            Text("WALKTHROUGH", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(8.dp))
+            quest.walkthroughSteps.forEachIndexed { index, step ->
+                val stepShape = RoundedCornerShape(6.dp)
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 9.dp)
+                        .background(navInsetColor(game), stepShape)
+                        .border(1.dp, navCardBorder(game).copy(alpha = 0.72f), stepShape)
+                        .padding(13.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text(
+                        "${index + 1}",
+                        color = Color(0xFFD7B06A),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.width(28.dp)
+                    )
+                    Text(step, color = Color(0xFFD4C7B1), fontSize = 14.sp, modifier = Modifier.weight(1f))
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+            if (quest.reward.isNotBlank() && !quest.reward.startsWith("Not specified")) {
+                NavDetailCallout("REWARD", quest.reward, Color(0xFF3F4A2B))
+                Spacer(Modifier.height(12.dp))
+            }
+            if (quest.warnings.isNotBlank()) {
+                NavDetailCallout("CHOICES / MISSABLE NOTES", quest.warnings, Color(0xFF4A2D24))
+                Spacer(Modifier.height(12.dp))
+            }
             Spacer(Modifier.height(12.dp))
+            NavBackText("‹  BACK TO QUESTS", onBack)
         }
-        if (quest.warnings.isNotBlank()) {
-            NavDetailCallout("CHOICES / MISSABLE NOTES", quest.warnings, Color(0xFF4A2D24))
-            Spacer(Modifier.height(12.dp))
-        }
-        Spacer(Modifier.height(12.dp))
-        NavBackText("‹  BACK TO QUESTS", onBack)
     }
 }
 
