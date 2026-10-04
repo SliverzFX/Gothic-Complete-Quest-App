@@ -32,8 +32,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,6 +58,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 
 private data class ResumeSnapshot(
     val game: String,
@@ -63,7 +68,19 @@ private data class ResumeSnapshot(
 
 private data class NavFavoriteEntry(val game: GameId, val quest: Quest)
 
-private const val NavBoxOpacity = 0.65f
+private val LocalBoxOpacity = staticCompositionLocalOf { 0.65f }
+
+private val NavBoxOpacity: Float
+    @Composable get() = LocalBoxOpacity.current
+
+private fun loadBoxOpacity(context: Context): Int =
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+        .getInt("box_opacity_percent", 65).coerceIn(20, 100)
+
+private fun saveBoxOpacity(context: Context, percent: Int) {
+    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+        .edit().putInt("box_opacity_percent", percent.coerceIn(20, 100)).apply()
+}
 
 private fun navBackgroundBrush(game: GameId): Brush =
     when {
@@ -150,21 +167,30 @@ private fun navProgressBorder(game: GameId): Color =
 fun GothicQuestAppV2() {
     val context = LocalContext.current
     var textSize by remember { mutableStateOf(loadAppTextSize(context)) }
-    ProvideAppTextSize(textSize) {
-        GothicQuestAppContent(
-            textSize = textSize,
-            onTextSizeChanged = { size ->
-                textSize = size
-                saveAppTextSize(context, size)
-            }
-        )
+    var boxOpacity by remember { mutableStateOf(loadBoxOpacity(context)) }
+    CompositionLocalProvider(LocalBoxOpacity provides (boxOpacity / 100f)) {
+        ProvideAppTextSize(textSize) {
+            GothicQuestAppContent(
+                textSize = textSize,
+                onTextSizeChanged = { size ->
+                    textSize = size
+                    saveAppTextSize(context, size)
+                },
+                boxOpacity = boxOpacity,
+                onBoxOpacityChanged = { boxOpacity = it.coerceIn(20, 100) },
+                onBoxOpacityChangeFinished = { saveBoxOpacity(context, boxOpacity) }
+            )
+        }
     }
 }
 
 @Composable
 private fun GothicQuestAppContent(
     textSize: AppTextSize,
-    onTextSizeChanged: (AppTextSize) -> Unit
+    onTextSizeChanged: (AppTextSize) -> Unit,
+    boxOpacity: Int,
+    onBoxOpacityChanged: (Int) -> Unit,
+    onBoxOpacityChangeFinished: () -> Unit
 ) {
     val context = LocalContext.current
     var showSplash by remember { mutableStateOf(true) }
@@ -260,6 +286,9 @@ private fun GothicQuestAppContent(
                 AppRoute.Settings -> NavSettingsScreen(
                     textSize = textSize,
                     onTextSizeChanged = onTextSizeChanged,
+                    boxOpacity = boxOpacity,
+                    onBoxOpacityChanged = onBoxOpacityChanged,
+                    onBoxOpacityChangeFinished = onBoxOpacityChangeFinished,
                     musicEnabled = musicEnabled,
                     onMusicChanged = { enabled ->
                         musicEnabled = enabled
@@ -1057,6 +1086,9 @@ private fun NavFavoritesScreen(
 private fun NavSettingsScreen(
     textSize: AppTextSize,
     onTextSizeChanged: (AppTextSize) -> Unit,
+    boxOpacity: Int,
+    onBoxOpacityChanged: (Int) -> Unit,
+    onBoxOpacityChangeFinished: () -> Unit,
     musicEnabled: Boolean,
     onMusicChanged: (Boolean) -> Unit,
     onBack: () -> Unit
@@ -1128,6 +1160,65 @@ private fun NavSettingsScreen(
             )
             Spacer(Modifier.height(6.dp))
             Text("Applies throughout the app.", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        }
+        Spacer(Modifier.height(16.dp))
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF15100D), shape)
+                .border(1.dp, Color(0xFF5F4529), shape)
+                .padding(16.dp)
+        ) {
+            Text(
+                "BOX OPACITY • $boxOpacity%",
+                color = Color(0xFFD7B06A),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(Modifier.height(6.dp))
+            Text(
+                "Chapter and quest boxes. Text stays fully visible.",
+                color = Color(0xFF9E8B70),
+                fontSize = 12.sp
+            )
+            Slider(
+                value = boxOpacity.toFloat(),
+                onValueChange = { onBoxOpacityChanged(it.roundToInt()) },
+                onValueChangeFinished = onBoxOpacityChangeFinished,
+                valueRange = 20f..100f,
+                modifier = Modifier.fillMaxWidth().testTag("box_opacity_slider"),
+                colors = SliderDefaults.colors(
+                    thumbColor = Color(0xFFD7B06A),
+                    activeTrackColor = Color(0xFFC79A55),
+                    inactiveTrackColor = Color(0xFF49351F)
+                )
+            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("20%", color = Color(0xFF9E8B70), fontSize = 12.sp)
+                Text("100%", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            }
+            Spacer(Modifier.height(12.dp))
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Brush.horizontalGradient(listOf(Color(0xFF927449), Color(0xFF40564A))),
+                        shape
+                    )
+                    .padding(10.dp)
+            ) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(navCardBrush(GameId.GOTHIC_2_GOLD), shape, alpha = NavBoxOpacity)
+                        .border(1.dp, Color(0xFF76552E), shape)
+                        .padding(14.dp)
+                ) {
+                    Text("QUEST BOX PREVIEW", color = Color(0xFFD7B06A), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(4.dp))
+                    Text("See more of the background.", color = Color(0xFFE0D5C2), fontSize = 13.sp)
+                }
+            }
         }
         Spacer(Modifier.height(16.dp))
         Row(
