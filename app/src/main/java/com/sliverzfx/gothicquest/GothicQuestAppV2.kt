@@ -28,6 +28,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -143,6 +144,10 @@ fun GothicQuestAppV2() {
     var showSplash by remember { mutableStateOf(true) }
     var route by remember { mutableStateOf<AppRoute>(AppRoute.Home) }
     var questReturnRoute by remember { mutableStateOf<AppRoute?>(null) }
+    val onGuideHome: () -> Unit = {
+        questReturnRoute = null
+        route = AppRoute.Home
+    }
     var resumeSnapshot by remember { mutableStateOf(loadResumeSnapshot(context)) }
     var favoriteKeys by remember { mutableStateOf(loadNavStringSet(context, "favorites")) }
     var completedKeys by remember { mutableStateOf(loadNavStringSet(context, "completed")) }
@@ -240,6 +245,7 @@ fun GothicQuestAppV2() {
                 }
 
                 AppRoute.Favorites -> NavFavoritesScreen(
+                    onHome = onGuideHome,
                     entries = buildNavFavoriteEntries(favoriteKeys),
                     onBack = { route = AppRoute.QuestGuides },
                     onQuestSelected = { game, quest ->
@@ -249,6 +255,7 @@ fun GothicQuestAppV2() {
                 )
 
                 is AppRoute.GameHub -> NavGameHubScreen(
+                    onHome = onGuideHome,
                     game = currentRoute.game,
                     completedKeys = completedKeys,
                     onBack = { route = AppRoute.QuestGuides },
@@ -263,6 +270,7 @@ fun GothicQuestAppV2() {
                 )
 
                 is AppRoute.Chapter -> NavChapterQuestListScreen(
+                    onHome = onGuideHome,
                     game = currentRoute.game,
                     chapter = currentRoute.chapter,
                     quests = currentRoute.game.chapterQuests(currentRoute.chapter),
@@ -286,6 +294,7 @@ fun GothicQuestAppV2() {
                         val favoriteKey = navQuestKey(currentRoute.game, quest)
                         val completedKey = navQuestKey(currentRoute.game, quest)
                         NavQuestDetailScreen(
+                            onHome = onGuideHome,
                             game = currentRoute.game,
                             quest = quest,
                             isFavorite = favoriteKey in favoriteKeys,
@@ -310,6 +319,7 @@ fun GothicQuestAppV2() {
                 }
 
                 is AppRoute.AllQuests -> NavAllQuestsScreen(
+                    onHome = onGuideHome,
                     game = currentRoute.game,
                     quests = currentRoute.game.quests(),
                     onBack = { route = AppRoute.GameHub(currentRoute.game) },
@@ -320,6 +330,7 @@ fun GothicQuestAppV2() {
                 )
 
                 is AppRoute.Search -> NavSearchScreen(
+                    onHome = onGuideHome,
                     game = currentRoute.game,
                     quests = currentRoute.game.quests(),
                     onBack = { route = AppRoute.GameHub(currentRoute.game) },
@@ -456,6 +467,7 @@ private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
 private fun NavGameHubScreen(
     game: GameId,
     completedKeys: Set<String>,
+    onHome: () -> Unit,
     onBack: () -> Unit,
     onChapterSelected: (Int) -> Unit,
     onAllQuests: () -> Unit,
@@ -478,15 +490,7 @@ private fun NavGameHubScreen(
                 .padding(horizontal = 20.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                "‹  BACK TO QUEST GUIDES",
-                color = Color(0xFFB6935B),
-                fontSize = 12.sp,
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .clickable(onClick = onBack)
-                    .padding(vertical = 8.dp)
-            )
+            NavGuideHeader("‹  BACK TO QUEST GUIDES", onBack, onHome)
             Image(
                 painter = painterResource(logoRes),
                 contentDescription = game.persistedName,
@@ -605,6 +609,7 @@ private fun NavChapterQuestListScreen(
     game: GameId,
     chapter: Int,
     quests: List<Quest>,
+    onHome: () -> Unit,
     onBack: () -> Unit,
     onQuestSelected: (Quest) -> Unit
 ) {
@@ -617,7 +622,7 @@ private fun NavChapterQuestListScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
+            NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
             Spacer(Modifier.height(4.dp))
             Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
             Text("${quests.size} QUESTS • CHRONOLOGICAL ORDER", color = Color(0xFF9E8B70), fontSize = 12.sp)
@@ -679,6 +684,7 @@ private fun NavQuestDetailScreen(
     isCompleted: Boolean,
     onToggleFavorite: () -> Unit,
     onToggleCompleted: () -> Unit,
+    onHome: () -> Unit,
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
@@ -690,7 +696,7 @@ private fun NavQuestDetailScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            NavBackText("‹  BACK TO QUESTS", onBack)
+            NavGuideHeader("‹  BACK TO QUESTS", onBack, onHome)
             Spacer(Modifier.height(6.dp))
             Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -802,6 +808,7 @@ private fun NavDetailCallout(label: String, value: String, tint: Color) {
 private fun NavAllQuestsScreen(
     game: GameId,
     quests: List<Quest>,
+    onHome: () -> Unit,
     onBack: () -> Unit,
     onQuestSelected: (Quest) -> Unit
 ) {
@@ -815,7 +822,7 @@ private fun NavAllQuestsScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
+        NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("${game.displayTitle} — ALL QUESTS", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text("${quests.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = Color(0xFF9E8B70), fontSize = 12.sp)
@@ -853,6 +860,7 @@ private fun NavAllQuestsScreen(
 private fun NavSearchScreen(
     game: GameId,
     quests: List<Quest>,
+    onHome: () -> Unit,
     onBack: () -> Unit,
     onQuestSelected: (Quest) -> Unit
 ) {
@@ -880,7 +888,7 @@ private fun NavSearchScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
+        NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("${game.displayTitle} — SEARCH", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
         Text("SEARCH ALL QUEST DATA", color = Color(0xFF9E8B70), fontSize = 12.sp)
@@ -944,6 +952,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
 @Composable
 private fun NavFavoritesScreen(
     entries: List<NavFavoriteEntry>,
+    onHome: () -> Unit,
     onBack: () -> Unit,
     onQuestSelected: (GameId, Quest) -> Unit
 ) {
@@ -956,7 +965,7 @@ private fun NavFavoritesScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavBackText("‹  BACK TO QUEST GUIDES", onBack)
+        NavGuideHeader("‹  BACK TO QUEST GUIDES", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("FAVORITES", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Text("${entries.size} SAVED QUESTS", color = Color(0xFF9E8B70), fontSize = 12.sp)
@@ -1032,6 +1041,27 @@ private fun NavSettingsScreen(
         }
         Spacer(Modifier.height(12.dp))
         Text("Test track: Old Camp • loops continuously", color = Color(0xFF746957), fontSize = 11.sp)
+    }
+}
+
+@Composable
+private fun NavGuideHeader(backLabel: String, onBack: () -> Unit, onHome: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            backLabel,
+            color = Color(0xFFB6935B),
+            fontSize = 12.sp,
+            modifier = Modifier
+                .weight(1f)
+                .clickable(onClick = onBack)
+                .padding(vertical = 8.dp)
+        )
+        TextButton(onClick = onHome) {
+            Text("HOME", color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        }
     }
 }
 
