@@ -202,6 +202,12 @@ fun GothicQuestAppV2() {
                     context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit()
                         .putInt("background_brightness_percent", backgroundBrightness).apply()
                 },
+                onPreferencesRestored = {
+                    textSize = loadAppTextSize(context)
+                    boxOpacity = loadBoxOpacity(context)
+                    backgroundBrightness = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                        .getInt("background_brightness_percent", 30).coerceIn(0, 80)
+                },
                 boxOpacity = boxOpacity,
                 onBoxOpacityChanged = { boxOpacity = it.coerceIn(20, 100) },
                 onBoxOpacityChangeFinished = { saveBoxOpacity(context, boxOpacity) }
@@ -212,6 +218,7 @@ fun GothicQuestAppV2() {
 
 @Composable
 private fun GothicQuestAppContent(
+    onPreferencesRestored: () -> Unit,
     backgroundBrightness: Int,
     onBackgroundBrightnessChanged: (Int) -> Unit,
     onBackgroundBrightnessChangeFinished: () -> Unit,
@@ -335,6 +342,25 @@ private fun GothicQuestAppContent(
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
+                    onRestored = {
+                        resumeSnapshot = loadResumeSnapshot(context)
+                        favoriteKeys = loadNavStringSet(context, "favorites")
+                        completedKeys = loadNavStringSet(context, "completed")
+                        musicEnabled = loadNavMusicEnabled(context)
+                        val prefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                        keepScreenAwake = prefs.getBoolean("keep_screen_awake", false)
+                        completedDisplay = CompletedQuestDisplay.fromStoredValue(
+                            prefs.getString("completed_quest_display", null))
+                        questReturnRoute = null
+                        onPreferencesRestored()
+                    },
+                    onResetGame = { game ->
+                        val updated = progressWithoutGame(completedKeys, navGamePrefix(game))
+                        val saved = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                            .edit().putStringSet("completed", updated).commit()
+                        if (saved) completedKeys = updated
+                        saved
+                    },
                     backgroundBrightness = backgroundBrightness,
                     onBackgroundBrightnessChanged = onBackgroundBrightnessChanged,
                     onBackgroundBrightnessChangeFinished = onBackgroundBrightnessChangeFinished,
@@ -1217,6 +1243,8 @@ private fun NavFavoritesScreen(
 
 @Composable
 private fun NavSettingsScreen(
+    onRestored: () -> Unit,
+    onResetGame: (GameId) -> Boolean,
     backgroundBrightness: Int,
     onBackgroundBrightnessChanged: (Int) -> Unit,
     onBackgroundBrightnessChangeFinished: () -> Unit,
@@ -1494,6 +1522,8 @@ private fun NavSettingsScreen(
                 fontWeight = FontWeight.Bold
             )
         }
+        Spacer(Modifier.height(16.dp))
+        BackupSettingsSection(onRestored = onRestored, onResetGame = onResetGame)
     }
 }
 
