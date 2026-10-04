@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -69,6 +70,13 @@ private data class ResumeSnapshot(
 )
 
 private data class NavFavoriteEntry(val game: GameId, val quest: Quest)
+
+private val LocalCompletedDisplay = staticCompositionLocalOf { CompletedQuestDisplay.SHOW }
+private val LocalCompletedKeys = staticCompositionLocalOf<Set<String>> { emptySet() }
+
+@Composable
+private fun questOpacity(game: GameId, quest: Quest): Float =
+    LocalCompletedDisplay.current.opacity(navQuestKey(game, quest) in LocalCompletedKeys.current)
 
 private val LocalBoxOpacity = staticCompositionLocalOf { 0.65f }
 
@@ -205,6 +213,12 @@ private fun GothicQuestAppContent(
     var resumeSnapshot by remember { mutableStateOf(loadResumeSnapshot(context)) }
     var favoriteKeys by remember { mutableStateOf(loadNavStringSet(context, "favorites")) }
     var completedKeys by remember { mutableStateOf(loadNavStringSet(context, "completed")) }
+    var completedDisplay by remember {
+        mutableStateOf(CompletedQuestDisplay.fromStoredValue(
+            context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                .getString("completed_quest_display", null)
+        ))
+    }
     var musicEnabled by remember { mutableStateOf(loadNavMusicEnabled(context)) }
     var keepScreenAwake by remember {
         mutableStateOf(
@@ -239,6 +253,10 @@ private fun GothicQuestAppContent(
         showSplash = false
     }
 
+    CompositionLocalProvider(
+        LocalCompletedDisplay provides completedDisplay,
+        LocalCompletedKeys provides completedKeys
+    ) {
     Crossfade(
         targetState = showSplash to route,
         animationSpec = tween(durationMillis = 350),
@@ -298,6 +316,12 @@ private fun GothicQuestAppContent(
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
+                    completedDisplay = completedDisplay,
+                    onCompletedDisplayChanged = { display ->
+                        completedDisplay = display
+                        context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                            .edit().putString("completed_quest_display", display.name).apply()
+                    },
                     textSize = textSize,
                     onTextSizeChanged = onTextSizeChanged,
                     boxOpacity = boxOpacity,
@@ -418,6 +442,7 @@ private fun GothicQuestAppContent(
                 )
             }
         }
+    }
     }
 }
 
@@ -722,6 +747,9 @@ private fun NavChapterQuestListScreen(
     onQuestSelected: (Quest) -> Unit
 ) {
     BackHandler(onBack = onBack)
+    val display = LocalCompletedDisplay.current
+    val completed = LocalCompletedKeys.current
+    val visibleCount = quests.count { display.isVisible(navQuestKey(game, it) in completed) }
     NavGuideBackground(game) {
         Column(
             Modifier
@@ -734,7 +762,8 @@ private fun NavChapterQuestListScreen(
             Spacer(Modifier.height(4.dp))
             Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
             Text(
-                "${quests.size} QUESTS • CHRONOLOGICAL ORDER",
+                if (visibleCount == quests.size) "${quests.size} QUESTS • CHRONOLOGICAL ORDER"
+                else "$visibleCount / ${quests.size} QUESTS VISIBLE • CHRONOLOGICAL ORDER",
                 color = Color(0xFF9E8B70),
                 fontSize = 12.sp
             )
@@ -747,14 +776,21 @@ private fun NavChapterQuestListScreen(
                 )
                 Spacer(Modifier.height(18.dp))
             }
+            if (quests.isNotEmpty() && visibleCount == 0) {
+                Text("All quests in this chapter are completed and hidden. Change Completed quests in Settings to show them.",
+                    color = Color(0xFFC7B89B), fontSize = 14.sp)
+                Spacer(Modifier.height(18.dp))
+            }
             val guideNotes = if (game == GameId.RISEN) RisenQuestData.notes(chapter) else emptyList()
             val notesByOrder = guideNotes.groupBy { it.beforeQuestOrder }
             quests.forEachIndexed { index, quest ->
                 notesByOrder[quest.playOrder].orEmpty().forEach { note ->
                     NavRisenGuideNote(game, note)
                 }
-                NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
-                Spacer(Modifier.height(10.dp))
+                if (display.isVisible(navQuestKey(game, quest) in completed)) {
+                    NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
+                    Spacer(Modifier.height(10.dp))
+                }
             }
             notesByOrder[quests.size + 1].orEmpty().forEach { note ->
                 NavRisenGuideNote(game, note)
@@ -780,6 +816,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
     Column(
         Modifier
             .fillMaxWidth()
+            .alpha(questOpacity(game, quest))
             .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
             .border(1.dp, navCardBorder(game), shape)
             .clickable(onClick = onClick)
@@ -951,7 +988,9 @@ private fun NavAllQuestsScreen(
     onQuestSelected: (Quest) -> Unit
 ) {
     BackHandler(onBack = onBack)
-    val sorted = quests.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder })
+    val display = LocalCompletedDisplay.current
+    val completed = LocalCompletedKeys.current
+    val sorted = quests.filter { display.isVisible(navQuestKey(game, it) in completed) }.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder })
     Column(
         Modifier
             .fillMaxSize()
@@ -963,13 +1002,19 @@ private fun NavAllQuestsScreen(
         NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("${game.displayTitle} — ALL QUESTS", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text("${quests.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text("${sorted.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
+        if (sorted.isEmpty() && quests.isNotEmpty()) {
+            Text("All quests are completed and hidden. Change Completed quests in Settings to show them.",
+                color = Color(0xFFC7B89B), fontSize = 14.sp)
+            Spacer(Modifier.height(14.dp))
+        }
         sorted.forEachIndexed { index, quest ->
             val shape = RoundedCornerShape(7.dp)
             Column(
                 Modifier
                     .fillMaxWidth()
+                    .alpha(questOpacity(game, quest))
                     .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
                     .border(1.dp, navCardBorder(game), shape)
                     .clickable { onQuestSelected(quest) }
@@ -1003,9 +1048,12 @@ private fun NavSearchScreen(
     onQuestSelected: (Quest) -> Unit
 ) {
     BackHandler(onBack = onBack)
+    val display = LocalCompletedDisplay.current
+    val completed = LocalCompletedKeys.current
     var query by remember { mutableStateOf("") }
     val normalized = query.trim()
-    val results = if (normalized.isBlank()) emptyList() else quests.filter { quest ->
+    val visibleQuests = quests.filter { display.isVisible(navQuestKey(game, it) in completed) }
+    val results = if (normalized.isBlank()) emptyList() else visibleQuests.filter { quest ->
         listOf(
             quest.id,
             quest.title,
@@ -1049,7 +1097,7 @@ private fun NavSearchScreen(
         )
         Spacer(Modifier.height(14.dp))
         when {
-            normalized.isBlank() -> Text("Type something to search ${quests.size} quests.", color = Color(0xFF9E8B70), fontSize = 14.sp)
+            normalized.isBlank() -> Text("Type something to search ${visibleQuests.size} quests.", color = Color(0xFF9E8B70), fontSize = 14.sp)
             results.isEmpty() -> Text("No quests found.", color = Color(0xFF9E8B70), fontSize = 14.sp)
             else -> {
                 Text("${results.size} RESULTS", color = Color(0xFFC79A55), fontSize = 11.sp, fontWeight = FontWeight.Bold)
@@ -1071,6 +1119,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
+            .alpha(questOpacity(game, quest))
             .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
             .border(1.dp, navCardBorder(game), shape)
             .clickable(onClick = onClick)
@@ -1095,6 +1144,9 @@ private fun NavFavoritesScreen(
     onQuestSelected: (GameId, Quest) -> Unit
 ) {
     BackHandler(onBack = onBack)
+    val display = LocalCompletedDisplay.current
+    val completed = LocalCompletedKeys.current
+    val visibleEntries = entries.filter { display.isVisible(navQuestKey(it.game, it.quest) in completed) }
     Column(
         Modifier
             .fillMaxSize()
@@ -1106,17 +1158,19 @@ private fun NavFavoritesScreen(
         NavGuideHeader("‹  BACK TO QUEST GUIDES", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("FAVORITES", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Text("${entries.size} SAVED QUESTS", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text("${visibleEntries.size} VISIBLE • ${entries.size} SAVED QUESTS", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
-        if (entries.isEmpty()) {
-            Text("No favorites yet. Open any quest and tap ☆ to save it here.", color = Color(0xFFC7B89B), fontSize = 14.sp)
+        if (visibleEntries.isEmpty()) {
+            Text(if (entries.isEmpty()) "No favorites yet. Open any quest and tap ☆ to save it here."
+                else "Completed favorites are hidden. Change Completed quests in Settings to show them.", color = Color(0xFFC7B89B), fontSize = 14.sp)
         } else {
-            entries.forEach { entry ->
+            visibleEntries.forEach { entry ->
                 val quest = entry.quest
                 val shape = RoundedCornerShape(7.dp)
                 Column(
                     Modifier
                         .fillMaxWidth()
+                        .alpha(questOpacity(entry.game, quest))
                         .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape, alpha = NavBoxOpacity)
                         .border(1.dp, Color(0xFF5F4529), shape)
                         .clickable { onQuestSelected(entry.game, quest) }
@@ -1137,6 +1191,8 @@ private fun NavFavoritesScreen(
 
 @Composable
 private fun NavSettingsScreen(
+    completedDisplay: CompletedQuestDisplay,
+    onCompletedDisplayChanged: (CompletedQuestDisplay) -> Unit,
     textSize: AppTextSize,
     onTextSizeChanged: (AppTextSize) -> Unit,
     boxOpacity: Int,
@@ -1272,6 +1328,37 @@ private fun NavSettingsScreen(
                     Text("QUEST BOX PREVIEW", color = Color(0xFFD7B06A), fontSize = 14.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(4.dp))
                     Text("See more of the background.", color = Color(0xFFE0D5C2), fontSize = 13.sp)
+                }
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+        Column(
+            Modifier.fillMaxWidth()
+                .background(Color(0xFF15100D), shape)
+                .border(1.dp, Color(0xFF5F4529), shape)
+                .padding(16.dp)
+        ) {
+            Text("COMPLETED QUESTS", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(6.dp))
+            Text("Applies to quest lists, search and favorites. Your progress stays saved.",
+                color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Spacer(Modifier.height(12.dp))
+            Row(Modifier.fillMaxWidth().selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                CompletedQuestDisplay.entries.forEach { display ->
+                    val selected = display == completedDisplay
+                    val optionShape = RoundedCornerShape(5.dp)
+                    Box(
+                        Modifier.weight(1f).heightIn(min = 48.dp)
+                            .background(if (selected) Color(0xFF49351F) else Color(0xFF0E0B08), optionShape)
+                            .border(1.dp, if (selected) Color(0xFFD7B06A) else Color(0xFF5F4529), optionShape)
+                            .selectable(selected = selected, role = Role.RadioButton,
+                                onClick = { onCompletedDisplayChanged(display) })
+                            .testTag("completed_quests_${display.name.lowercase()}")
+                            .padding(horizontal = 4.dp, vertical = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(display.label, color = Color(0xFFD7B06A), fontSize = 14.sp)
+                    }
                 }
             }
         }
