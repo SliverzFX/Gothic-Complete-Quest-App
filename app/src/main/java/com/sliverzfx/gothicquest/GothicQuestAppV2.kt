@@ -177,7 +177,7 @@ private fun navProgressBorder(game: GameId): Color =
     }
 
 @Composable
-fun GothicQuestAppV2() {
+fun GothicQuestAppV2(onExit: () -> Unit = {}) {
     val context = LocalContext.current
     var textSize by remember { mutableStateOf(loadAppTextSize(context)) }
     var backgroundBrightness by remember {
@@ -191,6 +191,7 @@ fun GothicQuestAppV2() {
     ) {
         ProvideAppTextSize(textSize) {
             GothicQuestAppContent(
+                onExit = onExit,
                 textSize = textSize,
                 onTextSizeChanged = { size ->
                     textSize = size
@@ -218,6 +219,7 @@ fun GothicQuestAppV2() {
 
 @Composable
 private fun GothicQuestAppContent(
+    onExit: () -> Unit,
     onPreferencesRestored: () -> Unit,
     backgroundBrightness: Int,
     onBackgroundBrightnessChanged: (Int) -> Unit,
@@ -298,6 +300,7 @@ private fun GothicQuestAppContent(
         } else {
             when (currentRoute) {
                 AppRoute.Home -> HomeScreen(
+                    onExit = onExit,
                     hasContinue = resumeSnapshot?.let {
                         routeFromResume(it.game, it.chapter, it.questId)
                     } != null,

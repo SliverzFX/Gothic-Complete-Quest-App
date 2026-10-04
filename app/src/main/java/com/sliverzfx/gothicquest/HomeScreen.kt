@@ -56,6 +56,7 @@ private data class HomeMenuEntry(
 @Composable
 fun HomeScreen(
     hasContinue: Boolean = false,
+    onExit: () -> Unit = {},
     onContinue: () -> Unit = {},
     onDestinationSelected: (String) -> Unit
 ) {
@@ -95,6 +96,7 @@ fun HomeScreen(
         add(HomeMenuEntry("SUPPORT", "home_support") { onDestinationSelected("Support / Bugs") })
         add(HomeMenuEntry("DONATIONS", "home_donations") { onDestinationSelected("Donations") })
         add(HomeMenuEntry("SETTINGS", "home_settings") { onDestinationSelected("Settings") })
+        add(HomeMenuEntry("EXIT", "home_exit", onExit))
     }
 
     Box(
