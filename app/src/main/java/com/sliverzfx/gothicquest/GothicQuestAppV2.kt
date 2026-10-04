@@ -603,24 +603,25 @@ private fun NavChapterQuestListScreen(
     onQuestSelected: (Quest) -> Unit
 ) {
     BackHandler(onBack = onBack)
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(navBackgroundBrush(game))
-            .statusBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(20.dp)
-    ) {
-        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
-        Spacer(Modifier.height(4.dp))
-        Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text("${quests.size} QUESTS • CHRONOLOGICAL ORDER", color = Color(0xFF9E8B70), fontSize = 12.sp)
-        Spacer(Modifier.height(18.dp))
-        quests.forEachIndexed { index, quest ->
-            NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
-            Spacer(Modifier.height(10.dp))
+    NavGuideBackground(game) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp)
+        ) {
+            NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
+            Spacer(Modifier.height(4.dp))
+            Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+            Text("${quests.size} QUESTS • CHRONOLOGICAL ORDER", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Spacer(Modifier.height(18.dp))
+            quests.forEachIndexed { index, quest ->
+                NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
+                Spacer(Modifier.height(10.dp))
+            }
+            NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
         }
-        NavBackText("‹  BACK TO ${game.sectionLabel}S", onBack)
     }
 }
 
