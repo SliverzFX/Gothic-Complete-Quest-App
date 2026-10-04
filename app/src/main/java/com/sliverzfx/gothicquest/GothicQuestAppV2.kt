@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,6 +78,8 @@ private val LocalCompletedKeys = staticCompositionLocalOf<Set<String>> { emptySe
 @Composable
 private fun questOpacity(game: GameId, quest: Quest): Float =
     LocalCompletedDisplay.current.opacity(navQuestKey(game, quest) in LocalCompletedKeys.current)
+
+private val LocalBackgroundBrightness = staticCompositionLocalOf { 0.30f }
 
 private val LocalBoxOpacity = staticCompositionLocalOf { 0.65f }
 
@@ -177,14 +180,27 @@ private fun navProgressBorder(game: GameId): Color =
 fun GothicQuestAppV2() {
     val context = LocalContext.current
     var textSize by remember { mutableStateOf(loadAppTextSize(context)) }
+    var backgroundBrightness by remember {
+        mutableStateOf(context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+            .getInt("background_brightness_percent", 30).coerceIn(0, 80))
+    }
     var boxOpacity by remember { mutableStateOf(loadBoxOpacity(context)) }
-    CompositionLocalProvider(LocalBoxOpacity provides (boxOpacity / 100f)) {
+    CompositionLocalProvider(
+        LocalBoxOpacity provides (boxOpacity / 100f),
+        LocalBackgroundBrightness provides (backgroundBrightness / 100f)
+    ) {
         ProvideAppTextSize(textSize) {
             GothicQuestAppContent(
                 textSize = textSize,
                 onTextSizeChanged = { size ->
                     textSize = size
                     saveAppTextSize(context, size)
+                },
+                backgroundBrightness = backgroundBrightness,
+                onBackgroundBrightnessChanged = { backgroundBrightness = it.coerceIn(0, 80) },
+                onBackgroundBrightnessChangeFinished = {
+                    context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit()
+                        .putInt("background_brightness_percent", backgroundBrightness).apply()
                 },
                 boxOpacity = boxOpacity,
                 onBoxOpacityChanged = { boxOpacity = it.coerceIn(20, 100) },
@@ -196,6 +212,9 @@ fun GothicQuestAppV2() {
 
 @Composable
 private fun GothicQuestAppContent(
+    backgroundBrightness: Int,
+    onBackgroundBrightnessChanged: (Int) -> Unit,
+    onBackgroundBrightnessChangeFinished: () -> Unit,
     textSize: AppTextSize,
     onTextSizeChanged: (AppTextSize) -> Unit,
     boxOpacity: Int,
@@ -316,6 +335,9 @@ private fun GothicQuestAppContent(
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
+                    backgroundBrightness = backgroundBrightness,
+                    onBackgroundBrightnessChanged = onBackgroundBrightnessChanged,
+                    onBackgroundBrightnessChangeFinished = onBackgroundBrightnessChangeFinished,
                     completedDisplay = completedDisplay,
                     onCompletedDisplayChanged = { display ->
                         completedDisplay = display
@@ -578,7 +600,7 @@ private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
                 contentDescription = null,
                 modifier = Modifier.matchParentSize(),
                 contentScale = ContentScale.Crop,
-                alpha = 0.30f
+                alpha = LocalBackgroundBrightness.current
             )
         }
         content()
@@ -1195,6 +1217,9 @@ private fun NavFavoritesScreen(
 
 @Composable
 private fun NavSettingsScreen(
+    backgroundBrightness: Int,
+    onBackgroundBrightnessChanged: (Int) -> Unit,
+    onBackgroundBrightnessChangeFinished: () -> Unit,
     completedDisplay: CompletedQuestDisplay,
     onCompletedDisplayChanged: (CompletedQuestDisplay) -> Unit,
     textSize: AppTextSize,
@@ -1333,6 +1358,52 @@ private fun NavSettingsScreen(
                     Spacer(Modifier.height(4.dp))
                     Text("See more of the background.", color = Color(0xFFE0D5C2), fontSize = 13.sp)
                 }
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+        Column(
+            Modifier.fillMaxWidth()
+                .background(Color(0xFF15100D), shape)
+                .border(1.dp, Color(0xFF5F4529), shape)
+                .padding(16.dp)
+        ) {
+            Text("BACKGROUND BRIGHTNESS • $backgroundBrightness%",
+                color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(6.dp))
+            Text("Chapter and quest artwork. 0% hides it; 80% makes it clearer.",
+                color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Slider(
+                value = backgroundBrightness.toFloat(),
+                onValueChange = { onBackgroundBrightnessChanged(it.roundToInt()) },
+                onValueChangeFinished = onBackgroundBrightnessChangeFinished,
+                valueRange = 0f..80f,
+                modifier = Modifier.fillMaxWidth().testTag("background_brightness_slider"),
+                colors = SliderDefaults.colors(
+                    thumbColor = Color(0xFFD7B06A),
+                    activeTrackColor = Color(0xFFC79A55),
+                    inactiveTrackColor = Color(0xFF49351F)
+                )
+            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("0%", color = Color(0xFF9E8B70), fontSize = 12.sp)
+                Text("80%", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            }
+            Spacer(Modifier.height(12.dp))
+            Box(
+                Modifier.fillMaxWidth().height(140.dp)
+                    .background(Color(0xFF090706), shape)
+                    .clip(shape),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.gothic_mask_bg),
+                    contentDescription = null,
+                    modifier = Modifier.matchParentSize(),
+                    contentScale = ContentScale.Crop,
+                    alpha = LocalBackgroundBrightness.current
+                )
+                Text("BACKGROUND PREVIEW", color = Color(0xFFD7B06A),
+                    fontSize = 14.sp, fontWeight = FontWeight.Bold)
             }
         }
         Spacer(Modifier.height(16.dp))
