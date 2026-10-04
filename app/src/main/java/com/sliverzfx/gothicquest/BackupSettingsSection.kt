@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -105,10 +108,33 @@ internal fun BackupSettingsSection(
         Spacer(Modifier.height(6.dp))
         Text("Clear completion marks for one game. Favorites and other games stay saved.",
             color = Color(0xFF9E8B70), fontSize = 12.sp)
-        GameId.entries.forEach { game ->
-            TextButton(enabled = !busy, onClick = { resetGame = game },
-                modifier = Modifier.fillMaxWidth().testTag("reset_progress_${game.name.lowercase()}")) {
-                Text(game.persistedName, color = gold)
+        Spacer(Modifier.height(12.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            GameId.entries.chunked(3).forEach { games ->
+                Row(
+                    Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    games.forEach { game ->
+                        OutlinedButton(
+                            enabled = !busy,
+                            onClick = { resetGame = game },
+                            modifier = Modifier.weight(1f).fillMaxHeight().heightIn(min = 56.dp)
+                                .testTag("reset_progress_${game.name.lowercase()}"),
+                            shape = RoundedCornerShape(5.dp),
+                            border = BorderStroke(1.dp, Color(0xFF76552E)),
+                            contentPadding = PaddingValues(horizontal = 6.dp, vertical = 10.dp)
+                        ) {
+                            Text(
+                                game.displayTitle,
+                                color = if (busy) Color(0xFF746957) else gold,
+                                fontSize = 13.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                    repeat(3 - games.size) { Spacer(Modifier.weight(1f)) }
+                }
             }
         }
     }
