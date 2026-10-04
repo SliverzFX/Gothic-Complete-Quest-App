@@ -213,7 +213,8 @@ fun GothicQuestAppV2() {
                 AppRoute.QuestGuides -> GameLibraryScreen(
                     title = "QUEST GUIDES",
                     entries = questGuideLibraryEntries(
-                        onGameSelected = { game -> route = AppRoute.GameHub(game) }
+                        onGameSelected = { game -> route = AppRoute.GameHub(game) },
+                        onRisenSelected = { route = AppRoute.GamePreview("RISEN") }
                     ),
                     onBack = { route = AppRoute.Home },
                     topRightActionLabel = "FAVORITES",
@@ -345,7 +346,8 @@ fun GothicQuestAppV2() {
 }
 
 private fun questGuideLibraryEntries(
-    onGameSelected: (GameId) -> Unit
+    onGameSelected: (GameId) -> Unit,
+    onRisenSelected: () -> Unit
 ): List<GameLibraryEntry> = listOf(
     GameLibraryEntry(
         id = "gothic",
@@ -378,6 +380,14 @@ private fun questGuideLibraryEntries(
         logoRes = R.drawable.gothic_3_logo,
         testTag = "game_gothic_3",
         onClick = { onGameSelected(GameId.GOTHIC_3) }
+    ),
+    GameLibraryEntry(
+        id = "risen_1",
+        title = "Risen",
+        panelRes = R.drawable.risen_button_1,
+        logoRes = R.drawable.risen_1_logo,
+        testTag = "game_risen_1",
+        onClick = onRisenSelected
     )
 )
 
