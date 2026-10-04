@@ -4,7 +4,8 @@ enum class GameId(val persistedName: String, val displayTitle: String) {
     GOTHIC("Gothic", "GOTHIC"),
     GOTHIC_2_GOLD("Gothic II Gold Edition", "GOTHIC II"),
     NEW_BALANCE("Gothic II New Balance", "NEW BALANCE"),
-    GOTHIC_3("Gothic 3", "GOTHIC 3");
+    GOTHIC_3("Gothic 3", "GOTHIC 3"),
+    RISEN("Risen", "RISEN");
 
     companion object {
         fun fromPersistedName(value: String): GameId? = entries.firstOrNull { it.persistedName == value }
@@ -34,6 +35,7 @@ internal fun GameId.quests(): List<Quest> = when (this) {
     GameId.GOTHIC_2_GOLD -> Gothic2QuestData.quests
     GameId.NEW_BALANCE -> NewBalanceQuestData.quests
     GameId.GOTHIC_3 -> Gothic3QuestData.quests
+    GameId.RISEN -> emptyList()
 }
 
 internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
@@ -41,10 +43,15 @@ internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
     GameId.GOTHIC_2_GOLD -> Gothic2QuestData.chapter(chapter)
     GameId.NEW_BALANCE -> NewBalanceQuestData.chapter(chapter)
     GameId.GOTHIC_3 -> Gothic3QuestData.part(chapter)
+    GameId.RISEN -> emptyList()
 }
 
 internal val GameId.sectionCount: Int
-    get() = if (this == GameId.GOTHIC_3) 7 else 6
+    get() = when (this) {
+        GameId.GOTHIC_3 -> 7
+        GameId.RISEN -> 4
+        else -> 6
+    }
 
 internal val GameId.sectionLabel: String
     get() = if (this == GameId.GOTHIC_3) "PART" else "CHAPTER"

@@ -215,8 +215,7 @@ fun GothicQuestAppV2() {
                 AppRoute.QuestGuides -> GameLibraryScreen(
                     title = "QUEST GUIDES",
                     entries = questGuideLibraryEntries(
-                        onGameSelected = { game -> route = AppRoute.GameHub(game) },
-                        onRisenSelected = { route = AppRoute.GamePreview("RISEN") }
+                        onGameSelected = { game -> route = AppRoute.GameHub(game) }
                     ),
                     onBack = { route = AppRoute.Home },
                     topRightActionLabel = "FAVORITES",
@@ -348,8 +347,7 @@ fun GothicQuestAppV2() {
 }
 
 private fun questGuideLibraryEntries(
-    onGameSelected: (GameId) -> Unit,
-    onRisenSelected: () -> Unit
+    onGameSelected: (GameId) -> Unit
 ): List<GameLibraryEntry> = listOf(
     GameLibraryEntry(
         id = "gothic",
@@ -389,7 +387,7 @@ private fun questGuideLibraryEntries(
         panelRes = R.drawable.risen_button_1,
         logoRes = R.drawable.risen_1_logo,
         testTag = "game_risen_1",
-        onClick = onRisenSelected
+        onClick = { onGameSelected(GameId.RISEN) }
     )
 )
 
@@ -442,6 +440,7 @@ private fun navGamePrefix(game: GameId): String = when (game) {
     GameId.GOTHIC_2_GOLD -> "G2"
     GameId.NEW_BALANCE -> "NB"
     GameId.GOTHIC_3 -> "G3"
+    GameId.RISEN -> "R1"
 }
 
 private fun navQuestKey(game: GameId, quest: Quest): String = "${navGamePrefix(game)}|${quest.id}"
@@ -491,6 +490,7 @@ private fun NavGameHubScreen(
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_gold_logo
         GameId.NEW_BALANCE -> R.drawable.gothic_2_new_balance_logo
         GameId.GOTHIC_3 -> R.drawable.gothic_3_logo
+        GameId.RISEN -> R.drawable.risen_1_logo
     }
 
     NavGuideBackground(game) {
@@ -509,7 +509,11 @@ private fun NavGameHubScreen(
                 modifier = Modifier.width(300.dp),
                 contentScale = ContentScale.Fit
             )
-            Text("COMPLETE QUEST GUIDE", color = Color(0xFFC79A55), fontSize = 13.sp)
+            Text(
+                if (game == GameId.RISEN) "QUEST GUIDE • COMING SOON" else "COMPLETE QUEST GUIDE",
+                color = Color(0xFFC79A55),
+                fontSize = 13.sp
+            )
             Spacer(Modifier.height(22.dp))
             (1..game.sectionCount).forEach { chapter ->
                 NavChapterButton(
@@ -522,9 +526,11 @@ private fun NavGameHubScreen(
                 Spacer(Modifier.height(11.dp))
             }
             Spacer(Modifier.height(8.dp))
-            NavUtilityButton(game, "ALL QUESTS", onAllQuests)
-            Spacer(Modifier.height(10.dp))
-            NavUtilityButton(game, "SEARCH", onSearch)
+            if (game != GameId.RISEN || game.quests().isNotEmpty()) {
+                NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+                Spacer(Modifier.height(10.dp))
+                NavUtilityButton(game, "SEARCH", onSearch)
+            }
             Spacer(Modifier.height(24.dp))
         }
     }
@@ -576,7 +582,8 @@ private fun NavChapterButton(
             Column(Modifier.weight(1f)) {
                 Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(
-                    "$completedCount / $questCount completed • $percentage%",
+                    if (game == GameId.RISEN && questCount == 0) "GUIDE COMING SOON"
+                    else "$completedCount / $questCount completed • $percentage%",
                     color = Color(0xFF9E8B70),
                     fontSize = 11.sp
                 )
@@ -638,7 +645,16 @@ private fun NavChapterQuestListScreen(
             NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
             Spacer(Modifier.height(4.dp))
             Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-            Text("${quests.size} QUESTS • CHRONOLOGICAL ORDER", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Text(
+                if (game == GameId.RISEN && quests.isEmpty()) "QUEST GUIDE COMING SOON"
+                else "${quests.size} QUESTS • CHRONOLOGICAL ORDER",
+                color = Color(0xFF9E8B70),
+                fontSize = 12.sp
+            )
+            if (game == GameId.RISEN && quests.isEmpty()) {
+                Spacer(Modifier.height(18.dp))
+                Text("This chapter's quest guide will be added soon.", color = Color(0xFFC7B89B), fontSize = 15.sp)
+            }
             Spacer(Modifier.height(18.dp))
             quests.forEachIndexed { index, quest ->
                 NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
