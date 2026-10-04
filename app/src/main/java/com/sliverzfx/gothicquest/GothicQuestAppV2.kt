@@ -432,10 +432,15 @@ private fun buildNavFavoriteEntries(keys: Set<String>): List<NavFavoriteEntry> =
 
 @Composable
 private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
+    val backdropRes = when (game) {
+        GameId.GOTHIC -> R.drawable.gothic_mask_bg
+        GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_bg
+        else -> null
+    }
     Box(Modifier.fillMaxSize().background(navBackgroundBrush(game))) {
-        if (game == GameId.GOTHIC) {
+        if (backdropRes != null) {
             Image(
-                painter = painterResource(R.drawable.gothic_mask_bg),
+                painter = painterResource(backdropRes),
                 contentDescription = null,
                 modifier = Modifier.matchParentSize(),
                 contentScale = ContentScale.Crop,
