@@ -66,6 +66,7 @@ fun HomeScreen(
                 Uri.parse("android.resource://${context.packageName}/${R.raw.home_menu_loop}")
             )
             setOnPreparedListener { mediaPlayer ->
+                mediaPlayer.setScreenOnWhilePlaying(false)
                 mediaPlayer.isLooping = true
                 mediaPlayer.setVolume(0f, 0f)
                 start()

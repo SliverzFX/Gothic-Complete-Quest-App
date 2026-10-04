@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
@@ -50,6 +51,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.painterResource
@@ -204,6 +206,18 @@ private fun GothicQuestAppContent(
     var favoriteKeys by remember { mutableStateOf(loadNavStringSet(context, "favorites")) }
     var completedKeys by remember { mutableStateOf(loadNavStringSet(context, "completed")) }
     var musicEnabled by remember { mutableStateOf(loadNavMusicEnabled(context)) }
+    var keepScreenAwake by remember {
+        mutableStateOf(
+            context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                .getBoolean("keep_screen_awake", false)
+        )
+    }
+    val appView = LocalView.current
+    DisposableEffect(appView, keepScreenAwake) {
+        val previousKeepScreenOn = appView.keepScreenOn
+        appView.keepScreenOn = keepScreenAwake
+        onDispose { appView.keepScreenOn = previousKeepScreenOn }
+    }
     val musicPlayer = remember { MediaPlayer.create(context, R.raw.gothic_old_camp) }
 
     DisposableEffect(musicPlayer) {
@@ -289,6 +303,12 @@ private fun GothicQuestAppContent(
                     boxOpacity = boxOpacity,
                     onBoxOpacityChanged = onBoxOpacityChanged,
                     onBoxOpacityChangeFinished = onBoxOpacityChangeFinished,
+                    keepScreenAwake = keepScreenAwake,
+                    onKeepScreenAwakeChanged = { enabled ->
+                        keepScreenAwake = enabled
+                        context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+                            .edit().putBoolean("keep_screen_awake", enabled).apply()
+                    },
                     musicEnabled = musicEnabled,
                     onMusicChanged = { enabled ->
                         musicEnabled = enabled
@@ -1101,6 +1121,8 @@ private fun NavSettingsScreen(
     boxOpacity: Int,
     onBoxOpacityChanged: (Int) -> Unit,
     onBoxOpacityChangeFinished: () -> Unit,
+    keepScreenAwake: Boolean,
+    onKeepScreenAwakeChanged: (Boolean) -> Unit,
     musicEnabled: Boolean,
     onMusicChanged: (Boolean) -> Unit,
     onBack: () -> Unit
@@ -1257,6 +1279,38 @@ private fun NavSettingsScreen(
         }
         Spacer(Modifier.height(12.dp))
         Text("Test track: Old Camp • loops continuously", color = Color(0xFF746957), fontSize = 11.sp)
+        Spacer(Modifier.height(16.dp))
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF15100D), shape)
+                .border(1.dp, Color(0xFF5F4529), shape)
+                .toggleable(
+                    value = keepScreenAwake,
+                    role = Role.Switch,
+                    onValueChange = onKeepScreenAwakeChanged
+                )
+                .testTag("keep_screen_awake_toggle")
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(Modifier.weight(1f).padding(end = 12.dp)) {
+                Text("KEEP SCREEN AWAKE", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    "Keep the screen lit while this app is open.",
+                    color = Color(0xFF9E8B70),
+                    fontSize = 12.sp
+                )
+            }
+            Text(
+                if (keepScreenAwake) "ON" else "OFF",
+                color = if (keepScreenAwake) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
