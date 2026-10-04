@@ -781,7 +781,11 @@ private fun NavChapterQuestListScreen(
                     color = Color(0xFFC7B89B), fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
             }
-            val guideNotes = if (game == GameId.RISEN) RisenQuestData.notes(chapter) else emptyList()
+            val guideNotes = when (game) {
+                GameId.RISEN -> RisenQuestData.notes(chapter)
+                GameId.RISEN_2 -> Risen2QuestData.notes(chapter)
+                else -> emptyList()
+            }
             val notesByOrder = guideNotes.groupBy { it.beforeQuestOrder }
             quests.forEachIndexed { index, quest ->
                 notesByOrder[quest.playOrder].orEmpty().forEach { note ->

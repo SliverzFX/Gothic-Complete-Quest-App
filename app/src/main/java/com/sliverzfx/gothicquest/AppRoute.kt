@@ -37,7 +37,7 @@ internal fun GameId.quests(): List<Quest> = when (this) {
     GameId.NEW_BALANCE -> NewBalanceQuestData.quests
     GameId.GOTHIC_3 -> Gothic3QuestData.quests
     GameId.RISEN -> RisenQuestData.quests
-    GameId.RISEN_2 -> emptyList()
+    GameId.RISEN_2 -> Risen2QuestData.quests
 }
 
 internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
@@ -46,7 +46,7 @@ internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
     GameId.NEW_BALANCE -> NewBalanceQuestData.chapter(chapter)
     GameId.GOTHIC_3 -> Gothic3QuestData.part(chapter)
     GameId.RISEN -> RisenQuestData.chapter(chapter)
-    GameId.RISEN_2 -> emptyList()
+    GameId.RISEN_2 -> Risen2QuestData.chapter(chapter)
 }
 
 internal val GameId.sectionCount: Int
