@@ -41,10 +41,9 @@ class TopLevelSectionsTest {
     }
 
     @Test
-    fun supportAndDonationsHaveRealRoutes() {
+    fun donationsPlaceholderReturnsHome() {
         waitForHome()
         listOf(
-            "SUPPORT" to "SUPPORT / BUGS",
             "DONATIONS" to "DONATIONS"
         ).forEach { (menuLabel, sectionTitle) ->
             composeRule.onNodeWithText(menuLabel).performClick()
@@ -64,6 +63,19 @@ class TopLevelSectionsTest {
         composeRule.onNodeWithTag("about_youtube").performScrollTo().assertExists()
         composeRule.onNodeWithTag("about_discord").performScrollTo().assertExists()
         composeRule.onNodeWithTag("about_home").performClick()
+        composeRule.onNodeWithTag("home_screen").assertExists()
+    }
+
+    @Test
+    fun supportCopiesReportAndReturnsHome() {
+        waitForHome()
+        composeRule.onNodeWithText("SUPPORT").performClick()
+        composeRule.onNodeWithTag("support_screen").assertExists()
+        composeRule.onNodeWithText("SUPPORT / BUGS").assertExists()
+        composeRule.onNodeWithTag("support_copy_report").performScrollTo().performClick()
+        composeRule.onNodeWithText("Report copied. Paste it into Discord and fill in the details.").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("support_discord").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("support_home").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
     }
 
