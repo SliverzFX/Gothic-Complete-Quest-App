@@ -5,6 +5,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import org.junit.Rule
 import org.junit.Test
 
@@ -40,10 +41,9 @@ class TopLevelSectionsTest {
     }
 
     @Test
-    fun aboutSupportAndDonationsHaveRealRoutes() {
+    fun supportAndDonationsHaveRealRoutes() {
         waitForHome()
         listOf(
-            "ABOUT" to "INFO / ABOUT",
             "SUPPORT" to "SUPPORT / BUGS",
             "DONATIONS" to "DONATIONS"
         ).forEach { (menuLabel, sectionTitle) ->
@@ -53,4 +53,18 @@ class TopLevelSectionsTest {
             composeRule.onNodeWithTag("section_back").performClick()
         }
     }
+
+    @Test
+    fun aboutShowsCreatorAndCommunityLinksAndReturnsHome() {
+        waitForHome()
+        composeRule.onNodeWithText("ABOUT").performClick()
+        composeRule.onNodeWithTag("about_screen").assertExists()
+        composeRule.onNodeWithText("INFO / ABOUT").assertExists()
+        composeRule.onNodeWithText("Created by SliverZFX").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("about_youtube").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("about_discord").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("about_home").performClick()
+        composeRule.onNodeWithTag("home_screen").assertExists()
+    }
+
 }
