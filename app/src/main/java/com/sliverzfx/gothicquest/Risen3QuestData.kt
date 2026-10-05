@@ -1,11 +1,23 @@
 package com.sliverzfx.gothicquest
 
 internal object Risen3QuestData {
-    // Guide content will be populated from the supplied chapter notes.
-    val quests: List<Quest> = emptyList()
+    val quests: List<Quest> = buildList {
+        addAll(Risen3Chapter1Data.quests)
+        addAll(Risen3Chapter2Data.quests)
+        addAll(Risen3Chapter3Data.quests)
+        addAll(Risen3Chapter4Data.quests)
+    }
 
-    fun chapter(chapter: Int): List<Quest> =
-        quests.filter { it.chapter == chapter }.sortedBy { it.playOrder }
+    private val guideNotes: List<RisenGuideNote> = buildList {
+        addAll(Risen3Chapter1Data.notes)
+        addAll(Risen3Chapter2Data.notes)
+        addAll(Risen3Chapter3Data.notes)
+        addAll(Risen3Chapter4Data.notes)
+    }
 
-    fun notes(chapter: Int): List<RisenGuideNote> = emptyList()
+    fun chapter(number: Int): List<Quest> =
+        quests.filter { it.chapter == number }.sortedBy { it.playOrder }
+
+    fun notes(chapter: Int): List<RisenGuideNote> =
+        guideNotes.filter { it.chapter == chapter }
 }
