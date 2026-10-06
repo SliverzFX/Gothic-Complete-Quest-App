@@ -5,6 +5,8 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.performScrollTo
 import org.junit.Rule
 import org.junit.Test
@@ -31,12 +33,33 @@ class TopLevelSectionsTest {
     }
 
     @Test
-    fun faqPlaceholderReturnsHome() {
+    fun faqsExpandCollapseAndReturnHome() {
         waitForHome()
         composeRule.onNodeWithText("FAQs").performClick()
-        composeRule.onNodeWithTag("section_placeholder").assertExists()
-        composeRule.onNodeWithText("FAQs").assertExists()
-        composeRule.onNodeWithTag("section_back").performClick()
+        composeRule.onNodeWithTag("faq_screen").assertExists()
+        composeRule.onNodeWithTag("faq_answer_what_is_questbound").assertDoesNotExist()
+        composeRule.onNodeWithTag("faq_question_what_is_questbound").performClick()
+        composeRule.onNodeWithTag("faq_answer_what_is_questbound").assertExists()
+        composeRule.onNodeWithTag("faq_question_offline").performClick()
+        composeRule.onNodeWithTag("faq_answer_offline").assertExists()
+        composeRule.onNodeWithTag("faq_answer_what_is_questbound").assertDoesNotExist()
+        composeRule.onNodeWithTag("faq_question_offline").performClick()
+        composeRule.onNodeWithTag("faq_answer_offline").assertDoesNotExist()
+        composeRule.onNodeWithTag("faq_home").performClick()
+        composeRule.onNodeWithTag("home_screen").assertExists()
+    }
+
+    @Test
+    fun faqsShowCurrentGameCoverageAndLinkToSupport() {
+        waitForHome()
+        composeRule.onNodeWithText("FAQs").performClick()
+        composeRule.onNodeWithTag("faq_list").performScrollToNode(hasTestTag("faq_question_supported_games"))
+        composeRule.onNodeWithTag("faq_question_supported_games").performClick()
+        composeRule.onNodeWithTag("faq_answer_supported_games").assertExists()
+        composeRule.onNodeWithTag("faq_list").performScrollToNode(hasTestTag("faq_support"))
+        composeRule.onNodeWithTag("faq_support").performClick()
+        composeRule.onNodeWithTag("support_screen").assertExists()
+        composeRule.onNodeWithTag("support_home").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
     }
 

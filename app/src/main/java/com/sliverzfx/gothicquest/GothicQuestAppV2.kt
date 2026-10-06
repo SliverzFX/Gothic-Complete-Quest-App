@@ -339,7 +339,10 @@ private fun GothicQuestAppContent(
                     onBack = { route = AppRoute.Home }
                 )
 
-                AppRoute.Faqs -> SectionPlaceholderScreen("FAQs") { route = AppRoute.Home }
+                AppRoute.Faqs -> FaqScreen(
+                    onBack = { route = AppRoute.Home },
+                    onSupport = { route = AppRoute.Support }
+                )
                 AppRoute.About -> AboutScreen(onBack = onGuideHome)
                 AppRoute.Support -> SupportScreen(onBack = onGuideHome)
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
