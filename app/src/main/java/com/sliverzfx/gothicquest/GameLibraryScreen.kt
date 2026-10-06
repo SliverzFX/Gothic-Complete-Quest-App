@@ -20,16 +20,33 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -58,75 +75,111 @@ fun GameLibraryScreen(
     entries: List<GameLibraryEntry>,
     onBack: () -> Unit,
     topRightActionLabel: String? = null,
-    onTopRightAction: (() -> Unit)? = null
+    onTopRightAction: (() -> Unit)? = null,
+    enableGameSearch: Boolean = false
 ) {
-    BackHandler(onBack = onBack)
+    var searchVisible by rememberSaveable { mutableStateOf(false) }
+    var query by rememberSaveable { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    val listState = rememberLazyListState()
+    val closeSearch: () -> Unit = {
+        searchVisible = false
+        query = ""
+        focusManager.clearFocus()
+        keyboard?.hide()
+    }
+    BackHandler {
+        if (searchVisible) closeSearch() else onBack()
+    }
+    LaunchedEffect(searchVisible) {
+        if (searchVisible) focusRequester.requestFocus()
+    }
+    LaunchedEffect(query) { listState.scrollToItem(0) }
+    val filteredEntries = if (!enableGameSearch || query.isBlank()) entries else {
+        val search = query.trim().lowercase()
+            .replace(Regex("\\biii\\b"), "3")
+            .replace(Regex("\\bii\\b"), "2")
+            .replace(Regex("\\bi\\b"), "1")
+            .replace(Regex("\\s+"), "")
+        entries.filter { entry ->
+            val gameName = entry.title.lowercase()
+                .replace(Regex("\\biii\\b"), "3")
+                .replace(Regex("\\bii\\b"), "2")
+                .replace(Regex("\\bi\\b"), "1")
+                .replace(Regex("\\s+"), "")
+            gameName.contains(search) || entry.id.lowercase().replace("_", "").contains(search) ||
+                (entry.id == "gothic" && "gothic1".contains(search))
+        }
+    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-            .testTag("game_library_screen")
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .navigationBarsPadding()
-                .padding(top = 56.dp, bottom = 92.dp)
-        ) {
-            if (entries.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(280.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = title,
-                        color = Color(0xFFB6935B),
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
+    Column(Modifier.fillMaxSize().background(Color.Black)
+        .statusBarsPadding().navigationBarsPadding().imePadding()
+        .testTag("game_library_screen")) {
+        Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            TextButton(onClick = onBack, modifier = Modifier.testTag("library_back")) {
+                Text("‹  BACK", color = Color(0xFFD3B071), fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold)
+            }
+            if (enableGameSearch) {
+                TextButton(onClick = {
+                    if (searchVisible) closeSearch() else searchVisible = true
+                }, modifier = Modifier.testTag("library_search_toggle")) {
+                    Text(if (searchVisible) "CLOSE SEARCH" else "SEARCH",
+                        color = Color(0xFFD3B071), fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold)
                 }
-            } else {
-                entries.forEachIndexed { index, entry ->
-                    GameLibraryPanel(entry)
-                    if (index != entries.lastIndex) GoldDivider()
+            }
+            if (topRightActionLabel != null && onTopRightAction != null) {
+                TextButton(onClick = onTopRightAction,
+                    modifier = Modifier.testTag("library_top_right_action")) {
+                    Text(topRightActionLabel, color = Color(0xFFD3B071), fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold)
                 }
             }
         }
-
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .fillMaxWidth()
-                .statusBarsPadding()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "‹  BACK",
-                color = Color(0xFFD3B071),
-                fontSize = 13.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .clickable(onClick = onBack)
-                    .padding(8.dp)
-                    .testTag("library_back")
-            )
-            if (topRightActionLabel != null && onTopRightAction != null) {
-                Text(
-                    text = topRightActionLabel,
-                    color = Color(0xFFD3B071),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .clickable(onClick = onTopRightAction)
-                        .padding(8.dp)
-                        .testTag("library_top_right_action")
-                )
+        if (enableGameSearch && searchVisible) {
+            OutlinedTextField(value = query, onValueChange = { query = it }, singleLine = true,
+                label = { Text("Search games") },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+                    .focusRequester(focusRequester).testTag("library_game_search"),
+                trailingIcon = {
+                    if (query.isNotEmpty()) TextButton(onClick = { query = "" },
+                        modifier = Modifier.testTag("library_clear_search")) {
+                        Text("CLEAR", color = LibraryGold, fontSize = 12.sp)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(onSearch = {
+                    focusManager.clearFocus()
+                    keyboard?.hide()
+                }),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color(0xFFE5D5B5), unfocusedTextColor = Color(0xFFE5D5B5),
+                    focusedBorderColor = LibraryGold, unfocusedBorderColor = LibraryGoldDark,
+                    focusedLabelColor = LibraryGold, unfocusedLabelColor = LibraryGold,
+                    cursorColor = LibraryGold))
+        }
+        GoldDivider(Modifier.testTag("library_header_divider"))
+        // Separate clipped viewport: cards cannot draw over the fixed header or divider.
+        LazyColumn(state = listState,
+            modifier = Modifier.weight(1f).fillMaxWidth().clipToBounds().testTag("library_game_list")) {
+            if (filteredEntries.isEmpty()) {
+                item {
+                    Box(Modifier.fillMaxWidth().height(180.dp), contentAlignment = Alignment.Center) {
+                        Text(if (entries.isEmpty()) title else "No games found.",
+                            color = Color(0xFFB6935B), fontSize = 17.sp,
+                            fontWeight = FontWeight.SemiBold)
+                    }
+                }
+            } else {
+                itemsIndexed(filteredEntries, key = { _, entry -> entry.id }) { index, entry ->
+                    GameLibraryPanel(entry)
+                    if (index != filteredEntries.lastIndex) GoldDivider()
+                }
             }
         }
     }
@@ -213,9 +266,9 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
 }
 
 @Composable
-private fun GoldDivider() {
+private fun GoldDivider(modifier: Modifier = Modifier) {
     Box(
-        Modifier
+        modifier
             .fillMaxWidth()
             .height(2.dp)
             .background(

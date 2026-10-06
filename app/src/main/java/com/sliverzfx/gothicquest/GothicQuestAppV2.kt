@@ -324,6 +324,7 @@ private fun GothicQuestAppContent(
 
                 AppRoute.QuestGuides -> GameLibraryScreen(
                     title = "QUEST GUIDES",
+                    enableGameSearch = true,
                     entries = questGuideLibraryEntries(
                         onGameSelected = { game -> route = AppRoute.GameHub(game) }
                     ),
