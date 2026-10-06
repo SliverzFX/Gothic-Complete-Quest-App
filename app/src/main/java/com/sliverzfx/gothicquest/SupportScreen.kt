@@ -33,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -75,7 +74,7 @@ internal fun SupportScreen(onBack: () -> Unit) {
     var message by remember { mutableStateOf<String?>(null) }
 
     Column(Modifier.fillMaxSize()
-        .background(Brush.verticalGradient(listOf(Color(0xFF17100C), Color(0xFF090706), Color.Black)))
+
         .statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp)
         .testTag("support_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,

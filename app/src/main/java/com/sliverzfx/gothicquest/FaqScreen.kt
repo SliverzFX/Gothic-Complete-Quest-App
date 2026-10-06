@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
@@ -46,7 +45,7 @@ internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
     var expandedId by rememberSaveable { mutableStateOf<String?>(null) }
 
     Column(Modifier.fillMaxSize()
-        .background(Brush.verticalGradient(listOf(Color(0xFF17100C), Color(0xFF090706), Color.Black)))
+
         .statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp)
         .testTag("faq_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,

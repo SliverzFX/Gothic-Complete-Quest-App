@@ -30,7 +30,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,7 +44,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -53,7 +51,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
@@ -69,48 +66,43 @@ private data class HomeMenuEntry(
 )
 
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     hasContinue: Boolean = false,
     playIntro: Boolean = false,
     backgroundAnimationEnabled: Boolean = true,
+    backgroundState: MenuBackgroundState? = null,
     onIntroFinished: () -> Unit = {},
     onExit: () -> Unit = {},
     onContinue: () -> Unit = {},
     onDestinationSelected: (String) -> Unit
 ) {
     val reduceAnimations = LocalReduceAnimations.current
-    val context = LocalContext.current
+    val backdrop = backgroundState ?: remember { MenuBackgroundState() }
     val animateBackground = backgroundAnimationEnabled && !reduceAnimations
     // Capture once: finishing the intro does not restart the sequence on recomposition.
     val introRequested = remember { playIntro && !reduceAnimations }
     var titleVisible by remember { mutableStateOf(!introRequested) }
     var titleAtTop by remember { mutableStateOf(!introRequested) }
     var menuVisible by remember { mutableStateOf(!introRequested) }
-    var playbackRequested by remember { mutableStateOf(!introRequested && animateBackground) }
-    var videoReady by remember(animateBackground) { mutableStateOf(false) }
-    val backgroundVideo = remember(context, animateBackground) {
-        if (!animateBackground) null else HomeVideoView(context) { videoReady = it }
-    }
-    DisposableEffect(backgroundVideo) {
-        onDispose { backgroundVideo?.dispose() }
-    }
     LaunchedEffect(reduceAnimations, animateBackground) {
         if (introRequested && !reduceAnimations && !menuVisible) {
             delay(1000)
             titleVisible = true
             delay(2200)
-            playbackRequested = animateBackground
+            backdrop.playbackRequested = true
             // A still background needs no video handoff or frame-readiness delay.
             if (animateBackground) {
-                withTimeoutOrNull(2000) { snapshotFlow { videoReady }.first { it } }
+                withTimeoutOrNull(2000) { snapshotFlow { backdrop.frameReady }.first { it } }
             }
             titleAtTop = true
+            backdrop.revealVideo = true
             delay(900) // Crossfade and title movement finish together.
             delay(1000)
         }
         titleVisible = true
-        playbackRequested = animateBackground
+        backdrop.playbackRequested = true
         titleAtTop = true
+        backdrop.revealVideo = true
         menuVisible = true
         onIntroFinished()
     }
@@ -118,8 +110,6 @@ fun HomeScreen(
         tween(if (reduceAnimations) 0 else 650), label = "introTitleOpacity")
     val titlePosition by animateFloatAsState(if (titleAtTop) 1f else 0f,
         tween(if (reduceAnimations) 0 else 900, easing = FastOutSlowInEasing), label = "introTitlePosition")
-    val videoOpacity by animateFloatAsState(if (animateBackground && titleAtTop && videoReady) 1f else 0f,
-        tween(if (reduceAnimations) 0 else 900), label = "introVideoCrossfade")
     val menuBackdropOpacity by animateFloatAsState(if (titleAtTop) 1f else 0f,
         tween(if (reduceAnimations) 0 else 900), label = "introMenuBackdrop")
 
@@ -138,23 +128,10 @@ fun HomeScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
             .testTag("home_screen")
     ) {
-        Image(
-            painter = painterResource(R.drawable.home_background),
-            contentDescription = "Khorinis",
-            modifier = Modifier.fillMaxSize().testTag("home_background_still"),
-            contentScale = ContentScale.Crop
-        )
-
-        if (backgroundVideo != null) {
-            AndroidView(
-                factory = { backgroundVideo },
-                update = { videoView -> videoView.requestPlayback(playbackRequested) },
-                modifier = Modifier.fillMaxSize().alpha(videoOpacity)
-                    .testTag("home_background_video")
-            )
+        if (backgroundState == null) {
+            MenuBackground(backdrop, backgroundAnimationEnabled)
         }
 
         Box(

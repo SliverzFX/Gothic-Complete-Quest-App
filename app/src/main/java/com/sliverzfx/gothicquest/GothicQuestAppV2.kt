@@ -232,6 +232,7 @@ private fun GothicQuestAppContent(
 ) {
     val context = LocalContext.current
     var introPending by remember { mutableStateOf(true) }
+    val menuBackground = remember { MenuBackgroundState() }
     var route by remember { mutableStateOf<AppRoute>(AppRoute.Home) }
     var questReturnRoute by remember { mutableStateOf<AppRoute?>(null) }
     val onGuideHome: () -> Unit = {
@@ -289,6 +290,13 @@ private fun GothicQuestAppContent(
         LocalCompletedDisplay provides completedDisplay,
         LocalCompletedKeys provides completedKeys
     ) {
+    Box(Modifier.fillMaxSize()) {
+    MenuBackground(
+        state = menuBackground,
+        animationEnabled = backgroundAnimationEnabled,
+        visible = route.usesMenuBackground,
+        dimmed = route != AppRoute.Home
+    )
     Crossfade(
         targetState = route,
         animationSpec = tween(durationMillis = if (reduceAnimations) 0 else 350),
@@ -298,6 +306,7 @@ private fun GothicQuestAppContent(
                 AppRoute.Home -> HomeScreen(
                     playIntro = introPending,
                     backgroundAnimationEnabled = backgroundAnimationEnabled,
+                    backgroundState = menuBackground,
                     onIntroFinished = { introPending = false },
                     onExit = onExit,
                     hasContinue = resumeSnapshot?.let {
@@ -350,7 +359,7 @@ private fun GothicQuestAppContent(
                 )
                 AppRoute.About -> AboutScreen(onBack = onGuideHome)
                 AppRoute.Support -> SupportScreen(onBack = onGuideHome)
-                AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
+                AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS", useMenuBackground = true) { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
                     backgroundAnimationEnabled = backgroundAnimationEnabled,
@@ -514,6 +523,7 @@ private fun GothicQuestAppContent(
                     }
                 )
             }
+    }
     }
     }
 }
@@ -1316,7 +1326,6 @@ private fun NavSettingsScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .background(Color(0xFF090706))
             .statusBarsPadding()
             .navigationBarsPadding()
             .verticalScroll(rememberScrollState())
@@ -1532,7 +1541,7 @@ private fun NavSettingsScreen(
                 "background_animation_toggle", Modifier.weight(1f))
         }
         Spacer(Modifier.height(8.dp))
-        Text("Background animation plays the menu video. OFF uses the splash background image. Reduce animations also keeps the background still and uses instant transitions.",
+        Text("Background animation plays the video across the main menu and app pages. OFF uses the splash background image. Reduce animations also keeps the background still and uses instant transitions.",
             color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(16.dp))
         BackupSettingsSection(onRestored = onRestored, onResetGame = onResetGame)

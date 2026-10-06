@@ -23,16 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SectionPlaceholderScreen(title: String, onBack: () -> Unit) {
+fun SectionPlaceholderScreen(title: String, useMenuBackground: Boolean = false, onBack: () -> Unit) {
     BackHandler(onBack = onBack)
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    listOf(Color(0xFF17100C), Color(0xFF090706), Color.Black)
-                )
-            )
+            .then(if (useMenuBackground) Modifier else Modifier.background(
+                Brush.verticalGradient(listOf(Color(0xFF17100C), Color(0xFF090706), Color.Black))
+            ))
             .testTag("section_placeholder")
     ) {
         Text(
