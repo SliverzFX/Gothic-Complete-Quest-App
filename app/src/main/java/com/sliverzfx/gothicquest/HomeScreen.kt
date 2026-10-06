@@ -239,25 +239,6 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         animationSpec = tween(if (reduceAnimations) 0 else 170),
         label = "menuItemSpacing"
     )
-    val goldBrush = if (pressed) {
-        Brush.verticalGradient(
-            listOf(
-                Color(0xFFFFF0B0),
-                Color(0xFFFFD66F),
-                Color(0xFFD89B2B),
-                Color(0xFFFFDF82)
-            )
-        )
-    } else {
-        Brush.verticalGradient(
-            listOf(
-                Color(0xFFF4D88A),
-                Color(0xFFD5AD54),
-                Color(0xFF9C6C20),
-                Color(0xFFE1BD65)
-            )
-        )
-    }
 
     Row(
         modifier = Modifier
@@ -272,19 +253,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         GothicSelectionRune(visible = pressed)
-        Text(
-            text = entry.label,
-            fontSize = 25.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 1.0.sp,
-            style = TextStyle(
-                brush = goldBrush,
-                shadow = Shadow(
-                    color = if (pressed) Color(0xE0D09A44) else Color(0xB0000000),
-                    blurRadius = if (pressed) 15f else 4f
-                )
-            )
-        )
+        StoneMenuText(text = entry.label, pressed = pressed)
     }
 }
 
