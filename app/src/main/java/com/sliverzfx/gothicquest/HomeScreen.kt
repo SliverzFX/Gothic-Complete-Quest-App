@@ -41,11 +41,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -241,13 +241,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         )
     }
 
-    val textShadow = with(LocalDensity.current) {
-        Shadow(
-            color = Color(0xE6000000),
-            offset = Offset(2.dp.toPx(), 3.dp.toPx()),
-            blurRadius = 3.dp.toPx()
-        )
-    }
+    val shadowBlur = with(LocalDensity.current) { 3.dp.toPx() }
 
     Row(
         modifier = Modifier
@@ -262,16 +256,25 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         GothicSelectionRune(visible = pressed)
-        Text(
-            text = entry.label,
-            fontSize = 25.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 1.0.sp,
-            style = TextStyle(
-                brush = goldBrush,
-                shadow = textShadow
+        Box {
+            // Keep the shadow separate from the gradient so it is always black.
+            Text(
+                text = entry.label,
+                color = Color.Black,
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.0.sp,
+                style = TextStyle(shadow = Shadow(color = Color.Black, blurRadius = shadowBlur)),
+                modifier = Modifier.offset(x = 2.dp, y = 3.dp).clearAndSetSemantics { }
             )
-        )
+            Text(
+                text = entry.label,
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.0.sp,
+                style = TextStyle(brush = goldBrush)
+            )
+        }
     }
 }
 
@@ -287,7 +290,7 @@ private fun GothicSelectionRune(visible: Boolean) {
                 color = HomeMenuGoldPressed,
                 fontSize = 16.sp,
                 style = TextStyle(
-                    shadow = Shadow(color = Color(0xD9D09A44), blurRadius = 10f)
+                    shadow = Shadow(color = Color.Black, blurRadius = 10f)
                 )
             )
         }
