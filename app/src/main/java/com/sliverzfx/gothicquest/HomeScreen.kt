@@ -1,8 +1,9 @@
 package com.sliverzfx.gothicquest
 
-import android.net.Uri
-import android.view.View
-import android.widget.VideoView
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -12,19 +13,27 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,7 +44,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -43,6 +54,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
+import androidx.compose.runtime.snapshotFlow
 
 private val HomeMenuGold = Color(0xFFC7A469)
 private val HomeMenuGoldPressed = Color(0xFFFFD98A)
@@ -56,36 +71,53 @@ private data class HomeMenuEntry(
 @Composable
 fun HomeScreen(
     hasContinue: Boolean = false,
+    playIntro: Boolean = false,
+    onIntroFinished: () -> Unit = {},
     onExit: () -> Unit = {},
     onContinue: () -> Unit = {},
     onDestinationSelected: (String) -> Unit
 ) {
     val reduceAnimations = LocalReduceAnimations.current
     val context = LocalContext.current
-    val backgroundVideo = if (reduceAnimations) null else remember(context) {
-        VideoView(context).apply {
-            setVideoURI(
-                Uri.parse("android.resource://${context.packageName}/${R.raw.home_menu_loop}")
-            )
-            setOnPreparedListener { mediaPlayer ->
-                mediaPlayer.setScreenOnWhilePlaying(false)
-                mediaPlayer.isLooping = true
-                mediaPlayer.setVolume(0f, 0f)
-                start()
-            }
-            setOnErrorListener { _, _, _ ->
-                visibility = View.GONE
-                true
-            }
-            start()
-        }
+    // Capture once: finishing the intro does not restart the sequence on recomposition.
+    val introRequested = remember { playIntro && !reduceAnimations }
+    var titleVisible by remember { mutableStateOf(!introRequested) }
+    var titleAtTop by remember { mutableStateOf(!introRequested) }
+    var menuVisible by remember { mutableStateOf(!introRequested) }
+    var playbackRequested by remember { mutableStateOf(!introRequested) }
+    var videoReady by remember { mutableStateOf(false) }
+    val backgroundVideo = remember(context, reduceAnimations) {
+        if (reduceAnimations) null else HomeVideoView(context) { videoReady = it }
     }
-
     DisposableEffect(backgroundVideo) {
-        onDispose {
-            backgroundVideo?.stopPlayback()
-        }
+        onDispose { backgroundVideo?.dispose() }
     }
+    LaunchedEffect(reduceAnimations) {
+        if (introRequested && !reduceAnimations && !menuVisible) {
+            delay(1000)
+            titleVisible = true
+            delay(2200)
+            playbackRequested = true
+            // Begin the handoff after a decoded frame; unsupported video must not block startup.
+            withTimeoutOrNull(2000) { snapshotFlow { videoReady }.first { it } }
+            titleAtTop = true
+            delay(900) // Crossfade and title movement finish together.
+            delay(1000)
+        }
+        titleVisible = true
+        playbackRequested = true
+        titleAtTop = true
+        menuVisible = true
+        onIntroFinished()
+    }
+    val titleOpacity by animateFloatAsState(if (titleVisible) 1f else 0f,
+        tween(if (reduceAnimations) 0 else 650), label = "introTitleOpacity")
+    val titlePosition by animateFloatAsState(if (titleAtTop) 1f else 0f,
+        tween(if (reduceAnimations) 0 else 900, easing = FastOutSlowInEasing), label = "introTitlePosition")
+    val videoOpacity by animateFloatAsState(if (titleAtTop && videoReady) 1f else 0f,
+        tween(if (reduceAnimations) 0 else 900), label = "introVideoCrossfade")
+    val menuBackdropOpacity by animateFloatAsState(if (titleAtTop) 1f else 0f,
+        tween(if (reduceAnimations) 0 else 900), label = "introMenuBackdrop")
 
     val entries = buildList {
         if (hasContinue) add(HomeMenuEntry("CONTINUE", "home_continue", onContinue))
@@ -115,13 +147,8 @@ fun HomeScreen(
         if (backgroundVideo != null) {
             AndroidView(
                 factory = { backgroundVideo },
-                update = { videoView ->
-                    if (videoView.visibility == View.VISIBLE && !videoView.isPlaying) {
-                        videoView.start()
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxSize()
+                update = { videoView -> videoView.requestPlayback(playbackRequested) },
+                modifier = Modifier.fillMaxSize().alpha(videoOpacity)
                     .testTag("home_background_video")
             )
         }
@@ -129,7 +156,7 @@ fun HomeScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0x10000000))
+                .background(Color(0x10000000)).alpha(menuBackdropOpacity)
         )
 
         Image(
@@ -137,41 +164,53 @@ fun HomeScreen(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
-                .alpha(0.88f)
+                .alpha(0.88f * menuBackdropOpacity)
                 .testTag("home_menu_smoke"),
             contentScale = ContentScale.FillBounds
         )
 
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .padding(end = 24.dp)
-                .widthIn(min = 235.dp, max = 310.dp),
-            horizontalAlignment = Alignment.End
-        ) {
-            entries.forEachIndexed { index, entry ->
-                GothicMenuItem(entry)
-                if (index != entries.lastIndex) {
-                    Spacer(Modifier.height(8.dp))
-                    Box(
-                        modifier = Modifier
-                            .width(210.dp)
-                            .height(1.dp)
-                            .background(
-                                Brush.horizontalGradient(
-                                    listOf(
-                                        Color.Transparent,
-                                        Color(0x66A67C32),
-                                        Color(0xB8E0BD69),
-                                        Color(0x66A67C32),
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
-                    Spacer(Modifier.height(5.dp))
+        BoxWithConstraints(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
+            val density = LocalDensity.current
+            var titleHeight by remember { mutableStateOf(100.dp) }
+            val centeredY = ((maxHeight - titleHeight) / 2).coerceAtLeast(16.dp)
+            val titleY = centeredY + (16.dp - centeredY) * titlePosition
+            QuestboundBrand(
+                modifier = Modifier.align(Alignment.TopCenter).offset(y = titleY)
+                    .fillMaxWidth().padding(horizontal = 20.dp).alpha(titleOpacity)
+                    .onSizeChanged { titleHeight = with(density) { it.height.toDp() } },
+                headingSize = 40f - 8f * titlePosition
+            )
+            if (!menuVisible) {
+                Box(Modifier.fillMaxSize().testTag("splash_screen"))
+            }
+            Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp, bottom = 12.dp)) {
+                Column(
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                        .padding(end = 24.dp).widthIn(min = 235.dp, max = 310.dp)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    entries.forEachIndexed { index, entry ->
+                        AnimatedVisibility(
+                            visible = menuVisible,
+                            enter = fadeIn(tween(if (reduceAnimations) 0 else 400,
+                                delayMillis = if (reduceAnimations) 0 else index * 65)) +
+                                slideInHorizontally(tween(if (reduceAnimations) 0 else 450,
+                                    delayMillis = if (reduceAnimations) 0 else index * 65)) { it / 5 }
+                        ) {
+                            Column(horizontalAlignment = Alignment.End) {
+                                GothicMenuItem(entry)
+                                if (index != entries.lastIndex) {
+                                    Spacer(Modifier.height(8.dp))
+                                    Box(Modifier.width(210.dp).height(1.dp).background(
+                                        Brush.horizontalGradient(listOf(Color.Transparent,
+                                            Color(0x66A67C32), Color(0xB8E0BD69),
+                                            Color(0x66A67C32), Color.Transparent))))
+                                    Spacer(Modifier.height(5.dp))
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

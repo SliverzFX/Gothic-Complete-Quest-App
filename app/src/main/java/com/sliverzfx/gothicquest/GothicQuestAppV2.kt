@@ -231,7 +231,7 @@ private fun GothicQuestAppContent(
     onBoxOpacityChangeFinished: () -> Unit
 ) {
     val context = LocalContext.current
-    var showSplash by remember { mutableStateOf(true) }
+    var introPending by remember { mutableStateOf(true) }
     var route by remember { mutableStateOf<AppRoute>(AppRoute.Home) }
     var questReturnRoute by remember { mutableStateOf<AppRoute?>(null) }
     val onGuideHome: () -> Unit = {
@@ -272,17 +272,12 @@ private fun GothicQuestAppContent(
         onDispose { musicPlayer?.release() }
     }
 
-    LaunchedEffect(musicEnabled, showSplash) {
-        if (musicEnabled && !showSplash) {
+    LaunchedEffect(musicEnabled, introPending) {
+        if (musicEnabled && !introPending) {
             if (musicPlayer?.isPlaying == false) musicPlayer.start()
         } else if (musicPlayer?.isPlaying == true) {
             musicPlayer.pause()
         }
-    }
-
-    LaunchedEffect(Unit) {
-        delay(2200)
-        showSplash = false
     }
 
     CompositionLocalProvider(
@@ -291,15 +286,14 @@ private fun GothicQuestAppContent(
         LocalCompletedKeys provides completedKeys
     ) {
     Crossfade(
-        targetState = showSplash to route,
+        targetState = route,
         animationSpec = tween(durationMillis = if (reduceAnimations) 0 else 350),
         label = "screenCrossfadeV2"
-    ) { (isSplash, currentRoute) ->
-        if (isSplash) {
-            SplashScreen()
-        } else {
+    ) { currentRoute ->
             when (currentRoute) {
                 AppRoute.Home -> HomeScreen(
+                    playIntro = introPending,
+                    onIntroFinished = { introPending = false },
                     onExit = onExit,
                     hasContinue = resumeSnapshot?.let {
                         routeFromResume(it.game, it.chapter, it.questId)
@@ -504,7 +498,6 @@ private fun GothicQuestAppContent(
                     }
                 )
             }
-        }
     }
     }
 }

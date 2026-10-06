@@ -81,7 +81,9 @@ internal fun AboutScreen(onBack: () -> Unit) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
             Text("INFO / ABOUT", color = AboutGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(20.dp))
-            AboutBlock("GOTHIC COMPLETE QUEST GUIDE") {
+            AboutBlock("QUESTBOUND") {
+                Text("RPG Quest Guides", color = AboutGold, fontSize = 16.sp)
+                Spacer(Modifier.height(8.dp))
                 Text("Quest walkthroughs for Gothic, Risen and selected mods, together in one place.",
                     color = AboutBody, fontSize = 16.sp)
                 Spacer(Modifier.height(10.dp))

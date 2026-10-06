@@ -56,7 +56,7 @@ internal fun SupportScreen(onBack: () -> Unit) {
     }
     val report = remember(version) {
         """
-            Gothic Complete Quest Guide — Bug report
+            Questbound — Bug report
             App version: ${version.ifBlank { "Unknown" }}
             Phone: ${Build.MANUFACTURER} ${Build.MODEL}
             Android: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})

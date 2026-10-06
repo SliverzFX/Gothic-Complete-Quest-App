@@ -12,7 +12,7 @@ class HomeMenuTest {
     val composeRule = createAndroidComposeRule<MainActivity>()
 
     private fun waitForHome() {
-        composeRule.waitUntil(timeoutMillis = 5000) {
+        composeRule.waitUntil(timeoutMillis = 10000) {
             composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
         }
     }
