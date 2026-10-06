@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -120,23 +121,23 @@ fun GameLibraryScreen(
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = onBack, modifier = Modifier.testTag("library_back")) {
-                Text("‹  BACK", color = Color(0xFFD3B071), fontSize = 13.sp,
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("library_back")) {
+                Text("‹  BACK", color = Color(0xFFD3B071), fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold)
             }
             if (enableGameSearch) {
                 TextButton(onClick = {
                     if (searchVisible) closeSearch() else searchVisible = true
-                }, modifier = Modifier.testTag("library_search_toggle")) {
-                    Text(if (searchVisible) "CLOSE SEARCH" else "SEARCH",
-                        color = Color(0xFFD3B071), fontSize = 13.sp,
+                }, modifier = Modifier.heightIn(min = 56.dp).testTag("library_search_toggle")) {
+                    Text(if (searchVisible) "CLOSE" else "SEARCH",
+                        color = Color(0xFFD3B071), fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold)
                 }
             }
             if (topRightActionLabel != null && onTopRightAction != null) {
                 TextButton(onClick = onTopRightAction,
-                    modifier = Modifier.testTag("library_top_right_action")) {
-                    Text(topRightActionLabel, color = Color(0xFFD3B071), fontSize = 13.sp,
+                    modifier = Modifier.heightIn(min = 56.dp).testTag("library_top_right_action")) {
+                    Text(topRightActionLabel, color = Color(0xFFD3B071), fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold)
                 }
             }
