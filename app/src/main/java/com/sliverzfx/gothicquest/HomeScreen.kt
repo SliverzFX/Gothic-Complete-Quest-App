@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -240,6 +241,14 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         )
     }
 
+    val textShadow = with(LocalDensity.current) {
+        Shadow(
+            color = Color(0xE6000000),
+            offset = Offset(2.dp.toPx(), 3.dp.toPx()),
+            blurRadius = 3.dp.toPx()
+        )
+    }
+
     Row(
         modifier = Modifier
             .scale(scale)
@@ -260,10 +269,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
             letterSpacing = 1.0.sp,
             style = TextStyle(
                 brush = goldBrush,
-                shadow = Shadow(
-                    color = if (pressed) Color(0xE0D09A44) else Color(0xB0000000),
-                    blurRadius = if (pressed) 15f else 4f
-                )
+                shadow = textShadow
             )
         )
     }
