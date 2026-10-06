@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -98,27 +97,6 @@ fun GameLibraryScreen(
             }
         }
 
-        Image(
-            painter = painterResource(R.drawable.menu_smoke),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .align(Alignment.TopCenter)
-                .rotate(180f),
-            contentScale = ContentScale.FillBounds
-        )
-
-        Image(
-            painter = painterResource(R.drawable.menu_smoke),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .align(Alignment.BottomCenter),
-            contentScale = ContentScale.FillBounds
-        )
-
         Row(
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -160,7 +138,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
     val pressed by interactionSource.collectIsPressedAsState()
     val reduceAnimations = LocalReduceAnimations.current
     val panelHeight by animateDpAsState(
-        targetValue = if (pressed && !reduceAnimations) 275.dp else 220.dp,
+        targetValue = if (pressed && !reduceAnimations) 192.5.dp else 154.dp,
         animationSpec = tween(if (reduceAnimations) 0 else 180),
         label = "gamePanelHeight"
     )
