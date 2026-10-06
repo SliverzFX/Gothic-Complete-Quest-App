@@ -171,19 +171,26 @@ fun HomeScreen(
 
         BoxWithConstraints(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
             val density = LocalDensity.current
-            var titleHeight by remember { mutableStateOf(100.dp) }
-            val centeredY = ((maxHeight - titleHeight) / 2).coerceAtLeast(16.dp)
+            var titleHeight by remember { mutableStateOf(120.dp) }
+            var creditHeight by remember { mutableStateOf(60.dp) }
+            val centeredY = ((maxHeight - titleHeight - creditHeight - 12.dp) / 2).coerceAtLeast(16.dp)
             val titleY = centeredY + (16.dp - centeredY) * titlePosition
             QuestboundBrand(
                 modifier = Modifier.align(Alignment.TopCenter).offset(y = titleY)
                     .fillMaxWidth().padding(horizontal = 20.dp).alpha(titleOpacity)
                     .onSizeChanged { titleHeight = with(density) { it.height.toDp() } },
-                headingSize = 40f - 8f * titlePosition
+                logoFraction = 0.96f - 0.08f * titlePosition
             )
+            val creditStartY = centeredY + titleHeight + 12.dp
+            val creditEndY = (maxHeight - creditHeight - 12.dp).coerceAtLeast(16.dp)
+            val creditY = creditStartY + (creditEndY - creditStartY) * titlePosition
+            QuestboundCredit(Modifier.align(Alignment.TopCenter).offset(y = creditY)
+                .width(180.dp).alpha(titleOpacity)
+                .onSizeChanged { creditHeight = with(density) { it.height.toDp() } })
             if (!menuVisible) {
                 Box(Modifier.fillMaxSize().testTag("splash_screen"))
             }
-            Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp, bottom = 12.dp)) {
+            Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp, bottom = creditHeight + 32.dp)) {
                 Column(
                     modifier = Modifier.align(Alignment.CenterEnd)
                         .padding(end = 24.dp).widthIn(min = 235.dp, max = 310.dp)

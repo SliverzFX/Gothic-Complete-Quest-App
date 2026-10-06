@@ -1,32 +1,33 @@
 package com.sliverzfx.gothicquest
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Text
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
-internal fun QuestboundBrand(modifier: Modifier = Modifier, headingSize: Float = 40f) {
-    Column(modifier.testTag("questbound_brand"), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("QUESTBOUND", color = Color(0xFFF0CE86), fontSize = headingSize.sp,
-            fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp,
-            style = TextStyle(shadow = Shadow(Color.Black, blurRadius = 10f)))
-        Spacer(Modifier.height(5.dp))
-        Text("RPG Quest Guides", color = Color(0xFFE5D6B8), fontSize = 16.sp,
-            style = TextStyle(shadow = Shadow(Color.Black, blurRadius = 6f)))
-        Spacer(Modifier.height(4.dp))
-        Text("by SliverzFX", color = Color(0xFFCAAA71), fontSize = 12.sp,
-            style = TextStyle(shadow = Shadow(Color.Black, blurRadius = 6f)))
+internal fun QuestboundBrand(modifier: Modifier = Modifier, logoFraction: Float = 1f) {
+    val logo = painterResource(R.drawable.questbound_logo)
+    Box(modifier.testTag("questbound_brand"), contentAlignment = Alignment.Center) {
+        Image(logo, contentDescription = "Questbound — RPG Quest Guide",
+            modifier = Modifier.widthIn(max = 420.dp).fillMaxWidth(logoFraction)
+                .aspectRatio(logo.intrinsicSize.width / logo.intrinsicSize.height),
+            contentScale = ContentScale.Fit)
     }
+}
+
+@Composable
+internal fun QuestboundCredit(modifier: Modifier = Modifier) {
+    val credit = painterResource(R.drawable.sliverzfx_credit)
+    Image(credit, contentDescription = "by SliverzFx",
+        modifier = modifier.aspectRatio(credit.intrinsicSize.width / credit.intrinsicSize.height)
+            .testTag("questbound_credit"), contentScale = ContentScale.Fit)
 }
