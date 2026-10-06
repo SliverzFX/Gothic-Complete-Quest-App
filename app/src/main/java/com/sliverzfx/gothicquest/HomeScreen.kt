@@ -72,6 +72,7 @@ private data class HomeMenuEntry(
 fun HomeScreen(
     hasContinue: Boolean = false,
     playIntro: Boolean = false,
+    backgroundAnimationEnabled: Boolean = true,
     onIntroFinished: () -> Unit = {},
     onExit: () -> Unit = {},
     onContinue: () -> Unit = {},
@@ -79,33 +80,36 @@ fun HomeScreen(
 ) {
     val reduceAnimations = LocalReduceAnimations.current
     val context = LocalContext.current
+    val animateBackground = backgroundAnimationEnabled && !reduceAnimations
     // Capture once: finishing the intro does not restart the sequence on recomposition.
     val introRequested = remember { playIntro && !reduceAnimations }
     var titleVisible by remember { mutableStateOf(!introRequested) }
     var titleAtTop by remember { mutableStateOf(!introRequested) }
     var menuVisible by remember { mutableStateOf(!introRequested) }
-    var playbackRequested by remember { mutableStateOf(!introRequested) }
-    var videoReady by remember { mutableStateOf(false) }
-    val backgroundVideo = remember(context, reduceAnimations) {
-        if (reduceAnimations) null else HomeVideoView(context) { videoReady = it }
+    var playbackRequested by remember { mutableStateOf(!introRequested && animateBackground) }
+    var videoReady by remember(animateBackground) { mutableStateOf(false) }
+    val backgroundVideo = remember(context, animateBackground) {
+        if (!animateBackground) null else HomeVideoView(context) { videoReady = it }
     }
     DisposableEffect(backgroundVideo) {
         onDispose { backgroundVideo?.dispose() }
     }
-    LaunchedEffect(reduceAnimations) {
+    LaunchedEffect(reduceAnimations, animateBackground) {
         if (introRequested && !reduceAnimations && !menuVisible) {
             delay(1000)
             titleVisible = true
             delay(2200)
-            playbackRequested = true
-            // Begin the handoff after a decoded frame; unsupported video must not block startup.
-            withTimeoutOrNull(2000) { snapshotFlow { videoReady }.first { it } }
+            playbackRequested = animateBackground
+            // A still background needs no video handoff or frame-readiness delay.
+            if (animateBackground) {
+                withTimeoutOrNull(2000) { snapshotFlow { videoReady }.first { it } }
+            }
             titleAtTop = true
             delay(900) // Crossfade and title movement finish together.
             delay(1000)
         }
         titleVisible = true
-        playbackRequested = true
+        playbackRequested = animateBackground
         titleAtTop = true
         menuVisible = true
         onIntroFinished()
@@ -114,7 +118,7 @@ fun HomeScreen(
         tween(if (reduceAnimations) 0 else 650), label = "introTitleOpacity")
     val titlePosition by animateFloatAsState(if (titleAtTop) 1f else 0f,
         tween(if (reduceAnimations) 0 else 900, easing = FastOutSlowInEasing), label = "introTitlePosition")
-    val videoOpacity by animateFloatAsState(if (titleAtTop && videoReady) 1f else 0f,
+    val videoOpacity by animateFloatAsState(if (animateBackground && titleAtTop && videoReady) 1f else 0f,
         tween(if (reduceAnimations) 0 else 900), label = "introVideoCrossfade")
     val menuBackdropOpacity by animateFloatAsState(if (titleAtTop) 1f else 0f,
         tween(if (reduceAnimations) 0 else 900), label = "introMenuBackdrop")
@@ -140,7 +144,7 @@ fun HomeScreen(
         Image(
             painter = painterResource(R.drawable.home_background),
             contentDescription = "Khorinis",
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().testTag("home_background_still"),
             contentScale = ContentScale.Crop
         )
 

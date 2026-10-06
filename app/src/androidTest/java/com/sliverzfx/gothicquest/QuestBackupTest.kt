@@ -79,4 +79,16 @@ class QuestBackupTest {
         assertEquals(backup, QuestBackupCodec.decode(QuestBackupCodec.encode(backup)))
         assertEquals(sample().completed, progressWithoutGame(backup.completed, "AR"))
     }
+    @Test fun backgroundAnimationRoundTripsAndOlderBackupsDefaultToEnabled() {
+        val disabled = sample().copy(backgroundAnimationEnabled = false)
+        assertEquals(disabled, QuestBackupCodec.decode(QuestBackupCodec.encode(disabled)))
+        val old = JSONObject(QuestBackupCodec.encode(disabled))
+        old.getJSONObject("settings").remove("background_animation_enabled")
+        assertTrue(QuestBackupCodec.decode(old.toString()).backgroundAnimationEnabled)
+        val invalid = JSONObject(QuestBackupCodec.encode(disabled))
+        invalid.getJSONObject("settings").put("background_animation_enabled", "false")
+        var rejected = false
+        try { QuestBackupCodec.decode(invalid.toString()) } catch (_: Exception) { rejected = true }
+        assertTrue(rejected)
+    }
 }

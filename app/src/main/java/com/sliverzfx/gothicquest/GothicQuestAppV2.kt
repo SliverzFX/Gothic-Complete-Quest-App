@@ -251,6 +251,10 @@ private fun GothicQuestAppContent(
         mutableStateOf(context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
             .getBoolean("reduce_animations", false))
     }
+    var backgroundAnimationEnabled by remember {
+        mutableStateOf(context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+            .getBoolean("background_animation_enabled", true))
+    }
     var musicEnabled by remember { mutableStateOf(loadNavMusicEnabled(context)) }
     var keepScreenAwake by remember {
         mutableStateOf(
@@ -293,6 +297,7 @@ private fun GothicQuestAppContent(
             when (currentRoute) {
                 AppRoute.Home -> HomeScreen(
                     playIntro = introPending,
+                    backgroundAnimationEnabled = backgroundAnimationEnabled,
                     onIntroFinished = { introPending = false },
                     onExit = onExit,
                     hasContinue = resumeSnapshot?.let {
@@ -348,6 +353,12 @@ private fun GothicQuestAppContent(
                 AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS") { route = AppRoute.Home }
 
                 AppRoute.Settings -> NavSettingsScreen(
+                    backgroundAnimationEnabled = backgroundAnimationEnabled,
+                    onBackgroundAnimationChanged = { enabled ->
+                        backgroundAnimationEnabled = enabled
+                        context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit()
+                            .putBoolean("background_animation_enabled", enabled).apply()
+                    },
                     reduceAnimations = reduceAnimations,
                     onReduceAnimationsChanged = { reduced ->
                         reduceAnimations = reduced
@@ -362,6 +373,7 @@ private fun GothicQuestAppContent(
                         val prefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
                         keepScreenAwake = prefs.getBoolean("keep_screen_awake", false)
                         reduceAnimations = prefs.getBoolean("reduce_animations", false)
+                        backgroundAnimationEnabled = prefs.getBoolean("background_animation_enabled", true)
                         completedDisplay = CompletedQuestDisplay.fromStoredValue(
                             prefs.getString("completed_quest_display", null))
                         questReturnRoute = null
@@ -1278,6 +1290,8 @@ private fun NavFavoritesScreen(
 
 @Composable
 private fun NavSettingsScreen(
+    backgroundAnimationEnabled: Boolean,
+    onBackgroundAnimationChanged: (Boolean) -> Unit,
     reduceAnimations: Boolean,
     onReduceAnimationsChanged: (Boolean) -> Unit,
     onRestored: () -> Unit,
@@ -1514,10 +1528,11 @@ private fun NavSettingsScreen(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             NavCompactToggle("Reduce animations", reduceAnimations, onReduceAnimationsChanged,
                 "reduce_animations_toggle", Modifier.weight(1f))
-            Spacer(Modifier.weight(1f))
+            NavCompactToggle("Background animation", backgroundAnimationEnabled, onBackgroundAnimationChanged,
+                "background_animation_toggle", Modifier.weight(1f))
         }
         Spacer(Modifier.height(8.dp))
-        Text("Reduce animations uses a still menu and instant transitions.",
+        Text("Background animation plays the menu video. OFF uses the splash background image. Reduce animations also keeps the background still and uses instant transitions.",
             color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(16.dp))
         BackupSettingsSection(onRestored = onRestored, onResetGame = onResetGame)

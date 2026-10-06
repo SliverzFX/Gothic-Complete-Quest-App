@@ -16,7 +16,8 @@ internal data class QuestAppBackup(
     val resumeGame: String?,
     val resumeChapter: Int?,
     val resumeQuest: String?,
-    val reduceAnimations: Boolean = false
+    val reduceAnimations: Boolean = false,
+    val backgroundAnimationEnabled: Boolean = true
 )
 
 internal object QuestBackupCodec {
@@ -33,7 +34,8 @@ internal object QuestBackupCodec {
         prefs.getString("resume_game", null),
         if (prefs.contains("resume_chapter")) prefs.getInt("resume_chapter", 1) else null,
         prefs.getString("resume_quest", null),
-        prefs.getBoolean("reduce_animations", false)
+        prefs.getBoolean("reduce_animations", false),
+        prefs.getBoolean("background_animation_enabled", true)
     )
 
     fun encode(backup: QuestAppBackup): String = JSONObject().apply {
@@ -49,6 +51,7 @@ internal object QuestBackupCodec {
             put("music_enabled", backup.musicEnabled)
             put("keep_screen_awake", backup.keepScreenAwake)
             put("reduce_animations", backup.reduceAnimations)
+            put("background_animation_enabled", backup.backgroundAnimationEnabled)
         })
         put("resume", if (backup.resumeGame != null && backup.resumeChapter != null) JSONObject().apply {
             put("game", backup.resumeGame)
@@ -105,7 +108,8 @@ internal object QuestBackupCodec {
             number(settings, "background_brightness_percent", 0..80), display,
             boolean(settings, "music_enabled"), boolean(settings, "keep_screen_awake"),
             gameName, chapter, quest,
-            if (settings.has("reduce_animations")) boolean(settings, "reduce_animations") else false)
+            if (settings.has("reduce_animations")) boolean(settings, "reduce_animations") else false,
+            if (settings.has("background_animation_enabled")) boolean(settings, "background_animation_enabled") else true)
     }
 
     fun restore(prefs: SharedPreferences, backup: QuestAppBackup): Boolean =
@@ -119,6 +123,7 @@ internal object QuestBackupCodec {
             .putBoolean("music_enabled", backup.musicEnabled)
             .putBoolean("keep_screen_awake", backup.keepScreenAwake)
             .putBoolean("reduce_animations", backup.reduceAnimations)
+            .putBoolean("background_animation_enabled", backup.backgroundAnimationEnabled)
             .remove("resume_game").remove("resume_chapter").remove("resume_quest")
             .apply {
                 if (backup.resumeGame != null && backup.resumeChapter != null) {
