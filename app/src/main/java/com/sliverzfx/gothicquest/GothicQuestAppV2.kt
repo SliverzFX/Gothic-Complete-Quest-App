@@ -561,6 +561,14 @@ private fun questGuideLibraryEntries(
         logoRes = R.drawable.risen_3_logo,
         testTag = "game_risen_3",
         onClick = { onGameSelected(GameId.RISEN_3) }
+    ),
+    GameLibraryEntry(
+        id = "archolos",
+        title = "The Chronicles of Myrtana: Archolos",
+        panelRes = R.drawable.archolos_button,
+        logoRes = R.drawable.archolos_logo,
+        testTag = "game_archolos",
+        onClick = { onGameSelected(GameId.ARCHOLOS) }
     )
 )
 
@@ -616,6 +624,7 @@ private fun navGamePrefix(game: GameId): String = when (game) {
     GameId.RISEN -> "R1"
     GameId.RISEN_2 -> "R2"
     GameId.RISEN_3 -> "R3"
+    GameId.ARCHOLOS -> "AR"
 }
 
 private fun navQuestKey(game: GameId, quest: Quest): String = "${navGamePrefix(game)}|${quest.id}"
@@ -671,6 +680,7 @@ private fun NavGameHubScreen(
         GameId.RISEN -> R.drawable.risen_1_logo
         GameId.RISEN_2 -> R.drawable.risen_2_logo
         GameId.RISEN_3 -> R.drawable.risen_3_logo
+        GameId.ARCHOLOS -> R.drawable.archolos_logo
     }
 
     NavGuideBackground(game) {
@@ -853,6 +863,7 @@ private fun NavChapterQuestListScreen(
                 GameId.RISEN -> RisenQuestData.notes(chapter)
                 GameId.RISEN_2 -> Risen2QuestData.notes(chapter)
                 GameId.RISEN_3 -> Risen3QuestData.notes(chapter)
+                GameId.ARCHOLOS -> ArcholosQuestData.notes(chapter)
                 else -> emptyList()
             }
             val notesByOrder = guideNotes.groupBy { it.beforeQuestOrder }

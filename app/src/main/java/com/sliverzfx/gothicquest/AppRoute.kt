@@ -7,7 +7,8 @@ enum class GameId(val persistedName: String, val displayTitle: String) {
     GOTHIC_3("Gothic 3", "GOTHIC 3"),
     RISEN("Risen", "RISEN"),
     RISEN_2("Risen 2", "RISEN II"),
-    RISEN_3("Risen 3", "RISEN III");
+    RISEN_3("Risen 3", "RISEN III"),
+    ARCHOLOS("The Chronicles of Myrtana: Archolos", "ARCHOLOS");
 
     companion object {
         fun fromPersistedName(value: String): GameId? = entries.firstOrNull { it.persistedName == value }
@@ -40,6 +41,7 @@ internal fun GameId.quests(): List<Quest> = when (this) {
     GameId.RISEN -> RisenQuestData.quests
     GameId.RISEN_2 -> Risen2QuestData.quests
     GameId.RISEN_3 -> Risen3QuestData.quests
+    GameId.ARCHOLOS -> ArcholosQuestData.quests
 }
 
 internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
@@ -50,6 +52,7 @@ internal fun GameId.chapterQuests(chapter: Int): List<Quest> = when (this) {
     GameId.RISEN -> RisenQuestData.chapter(chapter)
     GameId.RISEN_2 -> Risen2QuestData.chapter(chapter)
     GameId.RISEN_3 -> Risen3QuestData.chapter(chapter)
+    GameId.ARCHOLOS -> ArcholosQuestData.chapter(chapter)
 }
 
 internal val GameId.sectionCount: Int

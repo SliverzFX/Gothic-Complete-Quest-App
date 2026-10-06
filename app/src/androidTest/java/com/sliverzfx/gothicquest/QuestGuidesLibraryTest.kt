@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.hasTestTag
@@ -72,4 +73,17 @@ class QuestGuidesLibraryTest {
         composeRule.onNodeWithTag("library_top_right_action").assertExists()
     }
 
+    @Test
+    fun archolosSearchOpensSixChapterGuideAndFirstQuest() {
+        waitForHome()
+        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithTag("library_search_toggle").performClick()
+        composeRule.onNodeWithTag("library_game_search").performTextInput("Archolos")
+        composeRule.onNodeWithTag("game_archolos").performClick()
+        composeRule.onNodeWithText("CHAPTER 1").assertExists()
+        composeRule.onNodeWithText("CHAPTER 6").assertExists()
+        composeRule.onNodeWithText("CHAPTER 1").performClick()
+        composeRule.onNodeWithText("A Frosty Welcome").performScrollTo().performClick()
+        composeRule.onNodeWithText("A Frosty Welcome").assertExists()
+    }
 }

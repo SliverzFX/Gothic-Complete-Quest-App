@@ -66,4 +66,17 @@ class QuestBackupTest {
         assertTrue("R2|Q1" in result)
         assertEquals(marks, progressWithoutGame(marks, "missing"))
     }
+    @Test fun archolosProgressRoundTripsAndResetsIndependently() {
+        val quest = GameId.ARCHOLOS.chapterQuests(6).last()
+        val key = "AR|${quest.id}"
+        val backup = sample().copy(
+            completed = sample().completed + key,
+            favorites = sample().favorites + key,
+            resumeGame = GameId.ARCHOLOS.persistedName,
+            resumeChapter = 6,
+            resumeQuest = quest.id
+        )
+        assertEquals(backup, QuestBackupCodec.decode(QuestBackupCodec.encode(backup)))
+        assertEquals(sample().completed, progressWithoutGame(backup.completed, "AR"))
+    }
 }

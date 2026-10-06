@@ -82,7 +82,7 @@ internal object QuestBackupCodec {
             return (0 until array.length()).map { index ->
                 val value = array.get(index)
                 require(value is String && value.length <= 200 &&
-                    value.matches(Regex("(G1|G2|NB|G3|R1|R2|R3)\\|[^|\\s]+"))) { "Invalid saved quest." }
+                    value.matches(Regex("(G1|G2|NB|G3|R1|R2|R3|AR)\\|[^|\\s]+"))) { "Invalid saved quest." }
                 value
             }.toSet()
         }
