@@ -71,11 +71,11 @@ internal fun AboutScreen(onBack: () -> Unit) {
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = onBack, modifier = Modifier.testTag("about_back")) {
-                Text("‹  BACK", color = AboutGold, fontSize = 12.sp)
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("about_back")) {
+                Text("‹  BACK", color = AboutGold, fontSize = 16.sp)
             }
-            TextButton(onClick = onBack, modifier = Modifier.testTag("about_home")) {
-                Text("HOME", color = AboutGold, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("about_home")) {
+                Text("HOME", color = AboutGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
