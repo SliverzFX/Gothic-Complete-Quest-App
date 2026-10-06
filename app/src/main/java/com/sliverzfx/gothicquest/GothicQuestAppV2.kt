@@ -531,6 +531,14 @@ private fun questGuideLibraryEntries(
         onClick = { onGameSelected(GameId.NEW_BALANCE) }
     ),
     GameLibraryEntry(
+        id = "archolos",
+        title = "The Chronicles of Myrtana: Archolos",
+        panelRes = R.drawable.archolos_button,
+        logoRes = R.drawable.archolos_logo,
+        testTag = "game_archolos",
+        onClick = { onGameSelected(GameId.ARCHOLOS) }
+    ),
+    GameLibraryEntry(
         id = "gothic_3",
         title = "Gothic 3",
         panelRes = R.drawable.gothic_button_3,
@@ -561,14 +569,6 @@ private fun questGuideLibraryEntries(
         logoRes = R.drawable.risen_3_logo,
         testTag = "game_risen_3",
         onClick = { onGameSelected(GameId.RISEN_3) }
-    ),
-    GameLibraryEntry(
-        id = "archolos",
-        title = "The Chronicles of Myrtana: Archolos",
-        panelRes = R.drawable.archolos_button,
-        logoRes = R.drawable.archolos_logo,
-        testTag = "game_archolos",
-        onClick = { onGameSelected(GameId.ARCHOLOS) }
     )
 )
 
