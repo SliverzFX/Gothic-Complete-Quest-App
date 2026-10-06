@@ -794,14 +794,14 @@ private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 52.dp)
+            .heightIn(min = 56.dp)
             .border(1.dp, navUtilityBorder(game), RoundedCornerShape(5.dp))
             .background(navUtilityBackground(game).copy(alpha = NavBoxOpacity), RoundedCornerShape(5.dp))
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(label, color = Color(0xFFBDA47A), fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+        Text(label, color = Color(0xFFBDA47A), fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -1537,31 +1537,20 @@ private fun NavCompactToggle(
 
 @Composable
 private fun NavGuideHeader(backLabel: String, onBack: () -> Unit, onHome: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            backLabel,
-            color = Color(0xFFB6935B),
-            fontSize = 12.sp,
-            modifier = Modifier
-                .weight(1f)
-                .clickable(onClick = onBack)
-                .padding(vertical = 8.dp)
-        )
-        TextButton(onClick = onHome) {
-            Text("HOME", color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        TextButton(onClick = onBack, modifier = Modifier.weight(1f).heightIn(min = 56.dp)) {
+            Text(backLabel, color = Color(0xFFB6935B), fontSize = 16.sp,
+                modifier = Modifier.fillMaxWidth())
+        }
+        TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp)) {
+            Text("HOME", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
 private fun NavBackText(label: String, onBack: () -> Unit) {
-    Text(
-        label,
-        color = Color(0xFFB6935B),
-        fontSize = 12.sp,
-        modifier = Modifier.clickable(onClick = onBack).padding(vertical = 8.dp)
-    )
+    TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp)) {
+        Text(label, color = Color(0xFFB6935B), fontSize = 16.sp)
+    }
 }

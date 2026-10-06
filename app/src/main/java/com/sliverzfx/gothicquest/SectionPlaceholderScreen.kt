@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
@@ -37,12 +38,13 @@ fun SectionPlaceholderScreen(title: String, onBack: () -> Unit) {
         Text(
             text = "‹  BACK",
             color = Color(0xFFD3B071),
-            fontSize = 13.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .statusBarsPadding()
                 .padding(16.dp)
+                .heightIn(min = 56.dp)
                 .clickable(onClick = onBack)
                 .padding(8.dp)
                 .testTag("section_back")

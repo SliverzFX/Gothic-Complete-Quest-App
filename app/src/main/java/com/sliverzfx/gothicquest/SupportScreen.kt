@@ -80,11 +80,11 @@ internal fun SupportScreen(onBack: () -> Unit) {
         .testTag("support_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = onBack, modifier = Modifier.testTag("support_back")) {
-                Text("‹  BACK", color = SupportGold, fontSize = 12.sp)
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("support_back")) {
+                Text("‹  BACK", color = SupportGold, fontSize = 16.sp)
             }
-            TextButton(onClick = onBack, modifier = Modifier.testTag("support_home")) {
-                Text("HOME", color = SupportGold, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("support_home")) {
+                Text("HOME", color = SupportGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
