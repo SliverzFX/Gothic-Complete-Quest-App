@@ -132,7 +132,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         }
         LazyColumn(state = listState, modifier = Modifier.weight(1f).testTag("tool_reference_list")) {
             item {
-                Text("${filtered.size} / ${allEntries.size} entries • ${if (game == GameId.GOTHIC_2_GOLD) "curated reference" else "starter reference"}", color = body, fontSize = 13.sp)
+                Text("${filtered.size} / ${allEntries.size} entries • curated reference", color = body, fontSize = 13.sp)
                 Spacer(Modifier.height(12.dp))
             }
             items(filtered, key = { it.id }) { entry ->
@@ -175,6 +175,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         catch (_: SecurityException) { sourceError = true }
                     }, modifier = Modifier.heightIn(min = 56.dp)) {
                         Text("${index + 1}. ${when {
+                                source.contains("github.com/auronen/Gothic-1-localization") -> "Gothic script reference"
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"
