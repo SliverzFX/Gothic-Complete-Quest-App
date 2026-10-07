@@ -29,7 +29,7 @@ internal class MenuBackgroundState {
 }
 
 internal val AppRoute.usesMenuBackground: Boolean
-    get() = this == AppRoute.Home || this == AppRoute.Settings || this == AppRoute.Donations ||
+    get() = this == AppRoute.Home || this == AppRoute.ContinueHistory || this == AppRoute.Settings || this == AppRoute.Donations ||
         this == AppRoute.Support || this == AppRoute.About || this == AppRoute.Faqs ||
         this == AppRoute.GameTools || this is AppRoute.ToolGames || this is AppRoute.ToolReference
 

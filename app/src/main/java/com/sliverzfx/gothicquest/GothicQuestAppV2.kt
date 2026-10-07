@@ -240,6 +240,17 @@ private fun GothicQuestAppContent(
         route = AppRoute.Home
     }
     var resumeSnapshot by remember { mutableStateOf(loadResumeSnapshot(context)) }
+    val visitPrefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
+    var recentVisits by remember { mutableStateOf(RecentVisitsCodec.load(visitPrefs)) }
+    val saveRecentVisits: (List<RecentVisit>) -> Unit = { visits ->
+        recentVisits = visits
+        visitPrefs.edit().putString(RecentVisitsKey, RecentVisitsCodec.encode(visits)).apply()
+    }
+    val recordVisit: (RecentVisit) -> Unit = { visit ->
+        saveRecentVisits(updatedRecentVisits(recentVisits, visit))
+    }
+    LaunchedEffect(route) { recentVisitFromRoute(route)?.let(recordVisit) }
+
     var favoriteKeys by remember { mutableStateOf(loadNavStringSet(context, "favorites")) }
     var completedKeys by remember { mutableStateOf(loadNavStringSet(context, "completed")) }
     var completedDisplay by remember {
@@ -295,19 +306,8 @@ private fun GothicQuestAppContent(
                     backgroundState = menuBackground,
                     onIntroFinished = { introPending = false },
                     onExit = onExit,
-                    hasContinue = resumeSnapshot?.let {
-                        routeFromResume(it.game, it.chapter, it.questId)
-                    } != null,
-                    onContinue = {
-                        resumeSnapshot?.let { saved ->
-                            routeFromResume(saved.game, saved.chapter, saved.questId)?.let { target ->
-                                if (target is AppRoute.QuestDetail) {
-                                    questReturnRoute = AppRoute.Chapter(target.game, saved.chapter)
-                                }
-                                route = target
-                            }
-                        }
-                    },
+                    hasContinue = true,
+                    onContinue = { route = AppRoute.ContinueHistory },
                     onDestinationSelected = { destination ->
                         route = when (destination) {
                             "Quest Guides" -> AppRoute.QuestGuides
@@ -320,6 +320,17 @@ private fun GothicQuestAppContent(
                             else -> AppRoute.Home
                         }
                     }
+                )
+
+                AppRoute.ContinueHistory -> ContinueHistoryScreen(
+                    visits = recentVisits,
+                    onHome = onGuideHome,
+                    onPickGame = { route = AppRoute.QuestGuides },
+                    onResume = { visit ->
+                        if (visit.kind == "quest") questReturnRoute = AppRoute.Chapter(visit.game, visit.chapter!!)
+                        route = visit.route()
+                    },
+                    onRemove = { games -> saveRecentVisits(recentVisits.filterNot { it.game in games }) }
                 )
 
                 AppRoute.QuestGuides -> GameLibraryScreen(
@@ -380,6 +391,7 @@ private fun GothicQuestAppContent(
                     },
                     onRestored = {
                         resumeSnapshot = loadResumeSnapshot(context)
+                        recentVisits = RecentVisitsCodec.load(visitPrefs)
                         favoriteKeys = loadNavStringSet(context, "favorites")
                         completedKeys = loadNavStringSet(context, "completed")
                         musicEnabled = loadNavMusicEnabled(context)
@@ -444,6 +456,8 @@ private fun GothicQuestAppContent(
                 is AppRoute.GameHub -> NavGameHubScreen(
                     onHome = onGuideHome,
                     game = currentRoute.game,
+                    initialTab = currentRoute.tab,
+                    onTabSelected = { tab -> recordVisit(RecentVisit(currentRoute.game, "hub", tab = tab)) },
                     completedKeys = completedKeys,
                     onBack = { route = AppRoute.QuestGuides },
                     onChapterSelected = { chapter ->
@@ -693,6 +707,8 @@ private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
 @Composable
 private fun NavGameHubScreen(
     game: GameId,
+    initialTab: String,
+    onTabSelected: (String) -> Unit,
     completedKeys: Set<String>,
     onHome: () -> Unit,
     onBack: () -> Unit,
@@ -700,7 +716,8 @@ private fun NavGameHubScreen(
     onAllQuests: () -> Unit,
     onSearch: () -> Unit
 ) {
-    var selectedTab by rememberSaveable(game) { mutableStateOf("quests") }
+    var selectedTab by rememberSaveable(game, initialTab) { mutableStateOf(initialTab) }
+    LaunchedEffect(game, selectedTab) { onTabSelected(selectedTab) }
     BackHandler { if (selectedTab != "quests") selectedTab = "quests" else onBack() }
     val logoRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_classic_logo

@@ -17,7 +17,8 @@ internal data class QuestAppBackup(
     val resumeChapter: Int?,
     val resumeQuest: String?,
     val reduceAnimations: Boolean = false,
-    val backgroundAnimationEnabled: Boolean = true
+    val backgroundAnimationEnabled: Boolean = true,
+    val recentVisits: String? = null
 )
 
 internal object QuestBackupCodec {
@@ -35,7 +36,8 @@ internal object QuestBackupCodec {
         if (prefs.contains("resume_chapter")) prefs.getInt("resume_chapter", 1) else null,
         prefs.getString("resume_quest", null),
         prefs.getBoolean("reduce_animations", false),
-        prefs.getBoolean("background_animation_enabled", true)
+        prefs.getBoolean("background_animation_enabled", true),
+        prefs.getString(RecentVisitsKey, null)
     )
 
     fun encode(backup: QuestAppBackup): String = JSONObject().apply {
@@ -53,6 +55,7 @@ internal object QuestBackupCodec {
             put("reduce_animations", backup.reduceAnimations)
             put("background_animation_enabled", backup.backgroundAnimationEnabled)
         })
+        backup.recentVisits?.let { put("recent_visits", JSONArray(it)) }
         put("resume", if (backup.resumeGame != null && backup.resumeChapter != null) JSONObject().apply {
             put("game", backup.resumeGame)
             put("chapter", backup.resumeChapter)
@@ -109,7 +112,10 @@ internal object QuestBackupCodec {
             boolean(settings, "music_enabled"), boolean(settings, "keep_screen_awake"),
             gameName, chapter, quest,
             if (settings.has("reduce_animations")) boolean(settings, "reduce_animations") else false,
-            if (settings.has("background_animation_enabled")) boolean(settings, "background_animation_enabled") else true)
+            if (settings.has("background_animation_enabled")) boolean(settings, "background_animation_enabled") else true,
+            if (root.has("recent_visits")) root.getJSONArray("recent_visits").toString().also {
+                RecentVisitsCodec.decode(it)
+            } else null)
     }
 
     fun restore(prefs: SharedPreferences, backup: QuestAppBackup): Boolean =
@@ -124,8 +130,10 @@ internal object QuestBackupCodec {
             .putBoolean("keep_screen_awake", backup.keepScreenAwake)
             .putBoolean("reduce_animations", backup.reduceAnimations)
             .putBoolean("background_animation_enabled", backup.backgroundAnimationEnabled)
+            .remove(RecentVisitsKey)
             .remove("resume_game").remove("resume_chapter").remove("resume_quest")
             .apply {
+                backup.recentVisits?.let { putString(RecentVisitsKey, it) }
                 if (backup.resumeGame != null && backup.resumeChapter != null) {
                     putString("resume_game", backup.resumeGame)
                     putInt("resume_chapter", backup.resumeChapter)
