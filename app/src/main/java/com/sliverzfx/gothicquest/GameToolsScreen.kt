@@ -34,10 +34,11 @@ import androidx.compose.ui.unit.sp
 
 enum class ToolSection(val title: String, val description: String) {
     MARVIN_CODES("MARVIN CODES", "Debug mode, console commands and item insert codes."),
-    USEFUL_ITEMS("USEFUL ITEMS", "Equipment, consumables and important items to look out for.");
+    USEFUL_TIPS("USEFUL TIPS", "Normal gameplay advice, training and exploration."),
+    ITEMS("ITEMS", "Equipment, consumables and spell references.");
 
     fun titleFor(game: GameId): String = when {
-        this == USEFUL_ITEMS -> title
+        this != MARVIN_CODES -> title
         game == GameId.GOTHIC_3 || game == GameId.RISEN ||
             game == GameId.RISEN_2 || game == GameId.RISEN_3 -> "CONSOLE CODES"
         else -> title
@@ -82,6 +83,10 @@ internal fun GameToolsScreen(onBack: () -> Unit, onHome: () -> Unit,
 @Composable
 internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
     onBack: () -> Unit, onHome: () -> Unit) {
+    if (game == GameId.GOTHIC) {
+        GothicReferenceScreen(section, onBack, onHome)
+        return
+    }
     BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
         .padding(horizontal = 20.dp).testTag("tool_reference_screen")) {
@@ -96,9 +101,11 @@ internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
                 .border(1.dp, ToolsGold.copy(alpha = 0.35f), shape).padding(20.dp)) {
                 Text("Reference being prepared", color = ToolsGold, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(12.dp))
-                Text(if (section == ToolSection.USEFUL_ITEMS)
-                    "Useful item descriptions, locations and requirements for this game will appear here."
-                else "Verified commands, activation instructions and item insert codes for this game will appear here.",
+                Text(when (section) {
+                    ToolSection.ITEMS -> "Item descriptions and requirements for this game will appear here."
+                    ToolSection.USEFUL_TIPS -> "Normal gameplay tips for this game will appear here."
+                    ToolSection.MARVIN_CODES -> "Verified commands, activation instructions and item insert codes for this game will appear here."
+                },
                     color = ToolsBody, fontSize = 16.sp, lineHeight = 23.sp)
             }
         }
@@ -106,7 +113,7 @@ internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
 }
 
 @Composable
-private fun ToolsHeader(onBack: () -> Unit, onHome: () -> Unit) {
+internal fun ToolsHeader(onBack: () -> Unit, onHome: () -> Unit) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
         TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("tools_back")) {

@@ -34,9 +34,9 @@ class TopLevelSectionsTest {
         composeRule.onNodeWithTag("game_library_screen").assertExists()
         composeRule.onNodeWithTag("library_back").performClick()
         composeRule.onNodeWithTag("game_tools_screen").assertExists()
-        composeRule.onNodeWithTag("tools_category_useful_items").performClick()
+        composeRule.onNodeWithTag("tools_category_items").performClick()
         composeRule.onNodeWithTag("game_gothic_2").performClick()
-        composeRule.onNodeWithText("USEFUL ITEMS").assertExists()
+        composeRule.onNodeWithText("ITEMS").assertExists()
         composeRule.onNodeWithText("Gothic II Gold Edition").assertExists()
         composeRule.onNodeWithTag("tools_home").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
@@ -55,6 +55,25 @@ class TopLevelSectionsTest {
         composeRule.onNodeWithText("Risen 3").assertExists()
         composeRule.onNodeWithTag("tools_home").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
+    }
+
+    @Test
+    fun gothicTipsDoNotMixInCheatsAndCodeSearchFindsCommands() {
+        waitForHome()
+        composeRule.onNodeWithText("GAME TOOLS").performClick()
+        composeRule.onNodeWithTag("tools_category_useful_tips").performClick()
+        composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("tool_reference_search").performTextInput("learning")
+        composeRule.onNodeWithTag("gothic_reference_training").assertExists()
+        composeRule.onNodeWithTag("tool_copy_enable").assertDoesNotExist()
+        composeRule.onNodeWithTag("tools_home").performClick()
+        composeRule.onNodeWithText("GAME TOOLS").performClick()
+        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("tool_reference_search").performTextInput("itarscrolllight")
+        composeRule.onNodeWithTag("gothic_reference_light_insert").assertExists()
+        composeRule.onNodeWithTag("tool_copy_light_insert").performScrollTo().performClick()
+        composeRule.onNodeWithText("COPIED").assertExists()
     }
 
     @Test
