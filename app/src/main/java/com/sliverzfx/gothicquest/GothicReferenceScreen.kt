@@ -48,7 +48,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -67,7 +66,6 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     var query by rememberSaveable(game, section) { mutableStateOf("") }
     var selectedCategory by rememberSaveable(game, section) { mutableStateOf<CodeCategory?>(null) }
     var copiedId by rememberSaveable(game, section) { mutableStateOf<String?>(null) }
-    var sourceError by rememberSaveable(game, section) { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
@@ -79,7 +77,6 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     }
     BackHandler(enabled = !embedded || searchVisible) { if (searchVisible) closeSearch() else onBack() }
     val clipboard = LocalClipboardManager.current
-    val uriHandler = LocalUriHandler.current
     val allCards = remember(game, section) {
         fun entries(requested: ToolSection): List<ToolReferenceEntry> = when (game) {
             GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(requested)
@@ -198,45 +195,19 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Spacer(Modifier.height(16.dp))
             }
             item {
-                Text("REFERENCE SOURCES", color = gold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Text("REFERENCE CREDITS", color = gold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(6.dp))
+                Text(allCards.flatMap { it.sources }.map(::referenceSourceName).distinct().joinToString(" • "),
+                    color = body, fontSize = 13.sp, lineHeight = 18.sp)
                 if (game == GameId.ARCHOLOS && codesSection) {
                     Text(ArcholosCharacterCodesData.attribution, color = body, fontSize = 13.sp)
                 }
                 if (game == GameId.ARCHOLOS) {
                     Text(ArcholosAcquisitionData.attribution, color = body, fontSize = 13.sp)
-                    TextButton(onClick = {
-                        sourceError = false
-                        try { uriHandler.openUri("https://docs.google.com/spreadsheets/d/1Z5O00oK-OYpmjtniR5t3s__TxNq8eMuwzn8ftJPeNpQ/edit") }
-                        catch (_: IllegalArgumentException) { sourceError = true }
-                        catch (_: SecurityException) { sourceError = true }
-                    }, modifier = Modifier.heightIn(min = 56.dp)) {
-                        Text("Equipment and location index", color = gold, fontSize = 14.sp)
-                    }
+                    // Non-interactive publisher address retained for the index's attribution terms.
+                    Text("ID index: docs.google.com/spreadsheets/d/1LZa9KeydVJYxprMd1Qbwl09vjknEU9Jb_EU5iAX5FjA",
+                        color = body, fontSize = 11.sp, lineHeight = 16.sp)
                 }
-                allCards.flatMap { it.sources }.distinct().forEachIndexed { index, source ->
-                    TextButton(onClick = {
-                        sourceError = false
-                        try { uriHandler.openUri(source) }
-                        catch (_: IllegalArgumentException) { sourceError = true }
-                        catch (_: SecurityException) { sourceError = true }
-                    }, modifier = Modifier.heightIn(min = 56.dp)) {
-                        Text("${index + 1}. ${when {
-                                source.contains("github.com/auronen/Gothic-1-localization") ||
-                                    source.contains("github.com/auronen/Gothic-2-localization") -> "Gothic script reference"
-                                source.contains("github.com/auronen/CoM-itemlist") -> "Archolos item export v1.2.2"
-                                source.contains("docs.google.com/spreadsheets/d/1LZa9Key") -> "ID index © CrazyRaus, 2022"
-                                source.contains("docs.google.com/spreadsheets/d/1Z5O00oK") -> "Equipment / location index"
-                                source.contains("steamcommunity.com/games/1467450/announcements") -> "Official Archolos patch notes"
-                                source.contains("CP_1_70_Manual.pdf") -> "Community Patch team • CP 1.70 manual"
-                                source.contains("G3_Manual_UK.pdf") -> "Gothic 3 • official manual"
-                                source.contains("gothicz.net") -> "Gothicz.net"
-                                source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
-                                else -> "World of Gothic"
-                            }} • ${allCards.first { source in it.sources }.entry.group.lowercase()}",
-                            color = gold, fontSize = 14.sp)
-                    }
-                }
-                if (sourceError) Text("Could not open the reference website.", color = body, fontSize = 14.sp)
                 Spacer(Modifier.height(24.dp))
             }
         }
@@ -257,17 +228,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                     Text(entry.body, color = body, fontSize = 16.sp, lineHeight = 23.sp,
                         modifier = Modifier.testTag("tool_detail_body"))
                     Spacer(Modifier.height(16.dp))
-                    card.sources.forEachIndexed { index, source ->
-                        TextButton(onClick = {
-                            sourceError = false
-                            try { uriHandler.openUri(source) }
-                            catch (_: IllegalArgumentException) { sourceError = true }
-                            catch (_: SecurityException) { sourceError = true }
-                        }, modifier = Modifier.heightIn(min = 48.dp)) {
-                            Text("OPEN REFERENCE ${index + 1}", color = gold, fontSize = 14.sp)
-                        }
-                    }
-                    if (sourceError) Text("Could not open the reference website.", color = body, fontSize = 14.sp)
+                    Text("Reference: " + card.sources.map(::referenceSourceName).distinct().joinToString(" • "),
+                        color = body.copy(alpha = 0.75f), fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 entry.command?.let { command ->
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -300,4 +262,18 @@ private fun CodeCategoryChip(label: String, selected: Boolean, tag: String, onCl
         colors = FilterChipDefaults.filterChipColors(
             containerColor = Color(0xE615100D), labelColor = gold,
             selectedContainerColor = Color(0xFF594123), selectedLabelColor = Color(0xFFFFE0A0)))
+}
+
+private fun referenceSourceName(source: String): String = when {
+    source.contains("github.com/auronen/Gothic-1-localization") ||
+        source.contains("github.com/auronen/Gothic-2-localization") -> "Gothic script reference"
+    source.contains("github.com/auronen/CoM-itemlist") -> "Archolos item export v1.2.2"
+    source.contains("docs.google.com/spreadsheets/d/1LZa9Key") -> "ID index © CrazyRaus, 2022"
+    source.contains("docs.google.com/spreadsheets/d/1Z5O00oK") -> "Equipment / location index"
+    source.contains("steamcommunity.com/games/1467450/announcements") -> "Official Archolos patch notes"
+    source.contains("CP_1_70_Manual.pdf") -> "Community Patch team • CP 1.70 manual"
+    source.contains("G3_Manual_UK.pdf") -> "Gothic 3 • official manual"
+    source.contains("gothicz.net") -> "Gothicz.net"
+    source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
+    else -> "World of Gothic"
 }
