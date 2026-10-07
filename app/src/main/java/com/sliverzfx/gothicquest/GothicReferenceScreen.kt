@@ -82,6 +82,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(requested)
             GameId.ARCHOLOS -> ArcholosToolsData.entries(requested)
             GameId.GOTHIC_3 -> Gothic3ToolsData.entries(requested)
+            GameId.RISEN -> RisenToolsData.entries(requested)
             else -> GothicToolsData.entries(requested)
         }
         if (codesSection) combineToolReferences(entries(ToolSection.MARVIN_CODES), entries(ToolSection.ITEMS))
@@ -120,6 +121,9 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             "Archolos • stat source v${ArcholosToolsData.sourceVersion}"
         } else if (game == GameId.GOTHIC_3) {
             Gothic3ToolsData.sourceNote
+        } else if (game == GameId.RISEN) {
+            if (codesSection) "Risen 1 • original PC / minsky • source patch unspecified"
+            else "Risen 1 • normal gameplay"
         } else if (game == GameId.GOTHIC_2_GOLD) {
             if (codesSection) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
@@ -275,5 +279,7 @@ private fun referenceSourceName(source: String): String = when {
     source.contains("G3_Manual_UK.pdf") -> "Gothic 3 • official manual"
     source.contains("gothicz.net") -> "Gothicz.net"
     source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
+    source.contains("worldofrisen.de") -> "World of Risen • original PC reference"
+    source.contains("Risen%20Manual") -> "Risen • official PC manual"
     else -> "World of Gothic"
 }
