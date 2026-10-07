@@ -175,7 +175,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         catch (_: SecurityException) { sourceError = true }
                     }, modifier = Modifier.heightIn(min = 56.dp)) {
                         Text("${index + 1}. ${when {
-                                source.contains("github.com/auronen/Gothic-1-localization") -> "Gothic script reference"
+                                source.contains("github.com/auronen/Gothic-1-localization") ||
+                                    source.contains("github.com/auronen/Gothic-2-localization") -> "Gothic script reference"
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"
