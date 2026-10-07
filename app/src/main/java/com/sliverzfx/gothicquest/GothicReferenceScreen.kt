@@ -70,8 +70,11 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     BackHandler(enabled = !embedded || searchVisible) { if (searchVisible) closeSearch() else onBack() }
     val clipboard = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
-    val allEntries = if (game == GameId.GOTHIC_2_GOLD) Gothic2ToolsData.entries(section)
-        else GothicToolsData.entries(section)
+    val allEntries = when (game) {
+        GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(section)
+        GameId.ARCHOLOS -> ArcholosToolsData.entries(section)
+        else -> GothicToolsData.entries(section)
+    }
     val filtered = allEntries.filter { entry ->
         (section != ToolSection.MARVIN_CODES || selectedCategory == null || entry.codeCategory == selectedCategory) &&
             (query.isBlank() || listOf(entry.title, entry.group, entry.body, entry.command.orEmpty())
@@ -100,7 +103,9 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         }
         if (!embedded) Text(game.persistedName, color = body, fontSize = 18.sp)
         Spacer(Modifier.height(6.dp))
-        Text(if (game == GameId.GOTHIC_2_GOLD) {
+        Text(if (game == GameId.ARCHOLOS) {
+            "Archolos • item source v${ArcholosToolsData.sourceVersion}"
+        } else if (game == GameId.GOTHIC_2_GOLD) {
             if (section == ToolSection.MARVIN_CODES) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
         } else if (section == ToolSection.MARVIN_CODES) "Original Gothic • PC Marvin mode"
@@ -113,7 +118,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         selectedCategory = null
                     }
                 }
-                items(CodeCategory.entries, key = { it.name }) { category ->
+                items(CodeCategory.entries.filter { category -> allEntries.any { it.codeCategory == category } }, key = { it.name }) { category ->
                     CodeCategoryChip(category.title, selectedCategory == category,
                         "code_category_${category.name.lowercase()}") { selectedCategory = category }
                 }
@@ -132,7 +137,13 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         }
         LazyColumn(state = listState, modifier = Modifier.weight(1f).testTag("tool_reference_list")) {
             item {
-                Text("${filtered.size} / ${allEntries.size} entries • curated reference", color = body, fontSize = 13.sp)
+                Text("${filtered.size} / ${allEntries.size} entries • reference", color = body, fontSize = 13.sp)
+                if (game == GameId.ARCHOLOS) {
+                    Spacer(Modifier.height(6.dp))
+                    Text("Source snapshot v${ArcholosToolsData.sourceVersion}. Later patches may differ. " +
+                        "Codes include quest, NPC and legacy objects; normal acquisition is not verified.",
+                        color = body, fontSize = 13.sp, lineHeight = 18.sp)
+                }
                 Spacer(Modifier.height(12.dp))
             }
             items(filtered, key = { it.id }) { entry ->
@@ -177,6 +188,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         Text("${index + 1}. ${when {
                                 source.contains("github.com/auronen/Gothic-1-localization") ||
                                     source.contains("github.com/auronen/Gothic-2-localization") -> "Gothic script reference"
+                                source.contains("github.com/auronen/CoM-itemlist") -> "Archolos item export v1.2.2"
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"
