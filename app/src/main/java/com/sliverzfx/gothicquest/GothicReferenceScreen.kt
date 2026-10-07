@@ -49,7 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onHome: () -> Unit) {
+internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onHome: () -> Unit,
+    embedded: Boolean = false) {
     val gold = Color(0xFFD7B06A)
     val body = Color(0xFFC7B89B)
     var searchVisible by rememberSaveable(section) { mutableStateOf(false) }
@@ -66,7 +67,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         focusManager.clearFocus()
         keyboard?.hide()
     }
-    BackHandler { if (searchVisible) closeSearch() else onBack() }
+    BackHandler(enabled = !embedded || searchVisible) { if (searchVisible) closeSearch() else onBack() }
     val clipboard = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
     val allEntries = GothicToolsData.entries(section)
@@ -78,14 +79,25 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     val listState = rememberLazyListState()
     LaunchedEffect(searchVisible) { if (searchVisible) focusRequester.requestFocus() }
     LaunchedEffect(query, section, selectedCategory) { listState.scrollToItem(0) }
-    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().imePadding()
-        .padding(horizontal = 20.dp).testTag("tool_reference_screen")) {
-        ToolsHeader(onBack, onHome,
-            onSearch = { if (searchVisible) closeSearch() else searchVisible = true },
-            searchVisible = searchVisible)
-        Spacer(Modifier.height(16.dp))
-        Text(section.title, color = gold, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-        Text("Gothic", color = body, fontSize = 18.sp)
+    Column(Modifier.fillMaxSize().imePadding().then(if (embedded) Modifier else
+        Modifier.statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp))
+        .testTag("tool_reference_screen")) {
+        if (!embedded) {
+            ToolsHeader(onBack, onHome,
+                onSearch = { if (searchVisible) closeSearch() else searchVisible = true },
+                searchVisible = searchVisible)
+            Spacer(Modifier.height(16.dp))
+        }
+        Row(Modifier.fillMaxWidth()) {
+            Text(section.title, color = gold, fontSize = if (embedded) 20.sp else 26.sp,
+                fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).padding(top = 12.dp))
+            if (embedded) TextButton(onClick = {
+                if (searchVisible) closeSearch() else searchVisible = true
+            }, modifier = Modifier.heightIn(min = 48.dp).testTag("tools_search_toggle")) {
+                Text(if (searchVisible) "CLOSE" else "SEARCH", color = gold, fontSize = 14.sp)
+            }
+        }
+        if (!embedded) Text("Gothic", color = body, fontSize = 18.sp)
         Spacer(Modifier.height(6.dp))
         Text(if (section == ToolSection.MARVIN_CODES) "Original Gothic • PC Marvin mode"
             else "Original Gothic • normal gameplay", color = body, fontSize = 13.sp)

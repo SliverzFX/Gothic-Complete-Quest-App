@@ -36,7 +36,7 @@ class TextSizeSettingsTest {
 
     private fun openSettings() {
         composeRule.waitUntil(timeoutMillis = 10000) {
-            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithTag("home_settings").performClick()
         composeRule.waitForIdle()

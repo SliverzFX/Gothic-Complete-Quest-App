@@ -14,7 +14,7 @@ class SplashFlowTest {
     @Test
     fun homeAppearsWithQuestboundBrandingAfterIntro() {
         composeRule.waitUntil(timeoutMillis = 10000) {
-            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithTag("home_screen").assertExists()
         composeRule.onNodeWithContentDescription("Questbound — RPG Quest Guide").assertExists()

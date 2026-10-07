@@ -82,19 +82,20 @@ internal fun GameToolsScreen(onBack: () -> Unit, onHome: () -> Unit,
 
 @Composable
 internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
-    onBack: () -> Unit, onHome: () -> Unit) {
+    onBack: () -> Unit, onHome: () -> Unit, embedded: Boolean = false) {
     if (game == GameId.GOTHIC) {
-        GothicReferenceScreen(section, onBack, onHome)
+        GothicReferenceScreen(section, onBack, onHome, embedded)
         return
     }
-    BackHandler(onBack = onBack)
-    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-        .padding(horizontal = 20.dp).testTag("tool_reference_screen")) {
-        ToolsHeader(onBack, onHome)
+    BackHandler(enabled = !embedded, onBack = onBack)
+    Column(Modifier.fillMaxSize().then(if (embedded) Modifier else
+        Modifier.statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp))
+        .testTag("tool_reference_screen")) {
+        if (!embedded) ToolsHeader(onBack, onHome)
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = 24.dp)) {
             Text(section.titleFor(game), color = ToolsGold, fontSize = 26.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(8.dp))
-            Text(game.persistedName, color = ToolsBody, fontSize = 18.sp)
+            if (!embedded) Text(game.persistedName, color = ToolsBody, fontSize = 18.sp)
             Spacer(Modifier.height(24.dp))
             val shape = RoundedCornerShape(14.dp)
             Column(Modifier.fillMaxWidth().background(Color(0xF015100D), shape)

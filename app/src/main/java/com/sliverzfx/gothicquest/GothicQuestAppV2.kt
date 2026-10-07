@@ -42,6 +42,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
@@ -322,7 +323,7 @@ private fun GothicQuestAppContent(
                 )
 
                 AppRoute.QuestGuides -> GameLibraryScreen(
-                    title = "QUEST GUIDES",
+                    title = "PICK A GAME",
                     enableGameSearch = true,
                     entries = questGuideLibraryEntries(
                         onGameSelected = { game -> route = AppRoute.GameHub(game) }
@@ -699,7 +700,8 @@ private fun NavGameHubScreen(
     onAllQuests: () -> Unit,
     onSearch: () -> Unit
 ) {
-    BackHandler(onBack = onBack)
+    var selectedTab by rememberSaveable(game) { mutableStateOf("quests") }
+    BackHandler { if (selectedTab != "quests") selectedTab = "quests" else onBack() }
     val logoRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_classic_logo
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_gold_logo
@@ -710,46 +712,64 @@ private fun NavGameHubScreen(
         GameId.RISEN_3 -> R.drawable.risen_3_logo
         GameId.ARCHOLOS -> R.drawable.archolos_logo
     }
-
     NavGuideBackground(game) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            NavGuideHeader("‹  BACK TO QUEST GUIDES", onBack, onHome)
-            Image(
-                painter = painterResource(logoRes),
-                contentDescription = game.persistedName,
-                modifier = Modifier.width(300.dp),
-                contentScale = ContentScale.Fit
-            )
-            Text(
-                if (game == GameId.RISEN || game == GameId.RISEN_2 || game == GameId.RISEN_3) "QUEST GUIDE" else "COMPLETE QUEST GUIDE",
-                color = Color(0xFFC79A55),
-                fontSize = 13.sp
-            )
-            Spacer(Modifier.height(22.dp))
-            (1..game.sectionCount).forEach { chapter ->
-                NavChapterButton(
-                    chapter = chapter,
-                    quests = game.chapterQuests(chapter),
-                    completedKeys = completedKeys,
-                    game = game,
-                    onClick = { onChapterSelected(chapter) }
-                )
-                Spacer(Modifier.height(11.dp))
-            }
+        Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+            .padding(horizontal = 16.dp).testTag("game_hub_screen"),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            NavGuideHeader("‹  BACK TO GAMES", onBack, onHome)
+            Image(painterResource(logoRes), contentDescription = game.persistedName,
+                modifier = Modifier.width(260.dp).height(70.dp), contentScale = ContentScale.Fit)
             Spacer(Modifier.height(8.dp))
-            if (game.quests().isNotEmpty()) {
-                NavUtilityButton(game, "ALL QUESTS", onAllQuests)
-                Spacer(Modifier.height(10.dp))
-                NavUtilityButton(game, "SEARCH", onSearch)
+            Row(Modifier.fillMaxWidth().selectableGroup()) {
+                listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS", "items" to "ITEMS")
+                    .forEach { (key, label) ->
+                        Box(Modifier.weight(1f).heightIn(min = 48.dp)
+                            .background(if (selectedTab == key) Color(0xB5594123) else Color(0x8815100D))
+                            .selectable(selected = selectedTab == key, role = Role.Tab,
+                                onClick = { selectedTab = key }).testTag("game_tab_$key")
+                            .padding(vertical = 14.dp), contentAlignment = Alignment.Center) {
+                            Text(label, color = Color(0xFFD7B06A), fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold)
+                        }
+                    }
             }
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(10.dp))
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                if (selectedTab == "quests") {
+                    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                        (1..game.sectionCount).forEach { chapter ->
+                            NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game) {
+                                onChapterSelected(chapter)
+                            }
+                            if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp))
+                        }
+                        if (game.quests().isNotEmpty()) {
+                            Spacer(Modifier.height(12.dp))
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Box(Modifier.weight(1f).testTag("game_all_quests")) {
+                                    NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+                                }
+                                Box(Modifier.weight(1f).testTag("game_quest_search")) {
+                                    NavUtilityButton(game, "SEARCH", onSearch)
+                                }
+                            }
+                        }
+                        Spacer(Modifier.height(12.dp))
+                    }
+                } else {
+                    ToolReferenceScreen(
+                        section = when (selectedTab) {
+                            "codes" -> ToolSection.MARVIN_CODES
+                            "tips" -> ToolSection.USEFUL_TIPS
+                            else -> ToolSection.ITEMS
+                        },
+                        game = game,
+                        onBack = { selectedTab = "quests" },
+                        onHome = onHome,
+                        embedded = true
+                    )
+                }
+            }
         }
     }
 }
@@ -772,7 +792,8 @@ private fun NavChapterButton(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 72.dp)
+            .heightIn(min = 60.dp)
+            .testTag("chapter_button_$chapter")
             .border(
                 1.dp,
                 when {
@@ -789,16 +810,15 @@ private fun NavChapterButton(
                 alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(horizontal = 20.dp, vertical = 6.dp)
     ) {
-        Spacer(Modifier.weight(1f))
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(Modifier.weight(1f)) {
-                Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Text(
                     if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
                     else "$completedCount / $questCount completed • $percentage%",
@@ -806,7 +826,7 @@ private fun NavChapterButton(
                     fontSize = 11.sp
                 )
             }
-            Text("›", color = Color(0xFFD7B06A), fontSize = 32.sp)
+            Text("›", color = Color(0xFFD7B06A), fontSize = 26.sp)
         }
         Spacer(Modifier.height(3.dp))
         Box(
@@ -823,7 +843,6 @@ private fun NavChapterButton(
                     .background(Color(0xFFC79A55), RoundedCornerShape(3.dp))
             )
         }
-        Spacer(Modifier.weight(1f))
     }
 }
 
@@ -1267,7 +1286,7 @@ private fun NavFavoritesScreen(
             .verticalScroll(rememberScrollState())
             .padding(20.dp)
     ) {
-        NavGuideHeader("‹  BACK TO QUEST GUIDES", onBack, onHome)
+        NavGuideHeader("‹  BACK TO GAMES", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("FAVORITES", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Text("${visibleEntries.size} VISIBLE • ${entries.size} SAVED QUESTS", color = Color(0xFF9E8B70), fontSize = 12.sp)

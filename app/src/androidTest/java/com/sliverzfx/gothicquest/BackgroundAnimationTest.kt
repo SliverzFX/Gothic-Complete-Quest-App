@@ -42,7 +42,7 @@ class BackgroundAnimationTest {
 
     private fun waitForHome() {
         composeRule.waitUntil(timeoutMillis = 10000) {
-            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
     }
 

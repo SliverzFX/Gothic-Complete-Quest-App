@@ -5,6 +5,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.hasTestTag
@@ -18,59 +19,60 @@ class TopLevelSectionsTest {
 
     private fun waitForHome() {
         composeRule.waitUntil(timeoutMillis = 10000) {
-            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
     }
 
     @Test
-    fun gameToolsKeepsCategoryAndGameSelectionWhenGoingBack() {
+    fun gamePageShowsChaptersAndSwitchesToolsWithoutAnotherGamePicker() {
         waitForHome()
-        composeRule.onNodeWithText("GAME TOOLS").performClick()
-        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
+        val page = composeRule.onNodeWithTag("game_hub_screen").fetchSemanticsNode().boundsInRoot
+        (1..6).forEach { chapter ->
+            val bounds = composeRule.onNodeWithTag("chapter_button_$chapter").fetchSemanticsNode().boundsInRoot
+            org.junit.Assert.assertTrue("Chapter $chapter must fit on screen", bounds.top >= page.top && bounds.bottom <= page.bottom)
+        }
+        composeRule.onNodeWithTag("game_all_quests").assertIsDisplayed()
+        composeRule.onNodeWithTag("game_quest_search").assertIsDisplayed()
+        composeRule.onNodeWithTag("game_tab_codes").performClick()
         composeRule.onNodeWithText("MARVIN CODES").assertExists()
-        composeRule.onNodeWithText("Gothic").assertExists()
-        composeRule.onNodeWithTag("tools_back").performClick()
-        composeRule.onNodeWithTag("game_library_screen").assertExists()
-        composeRule.onNodeWithTag("library_back").performClick()
-        composeRule.onNodeWithTag("game_tools_screen").assertExists()
-        composeRule.onNodeWithTag("tools_category_items").performClick()
-        composeRule.onNodeWithTag("game_gothic_2").performClick()
-        composeRule.onNodeWithText("ITEMS").assertExists()
-        composeRule.onNodeWithText("Gothic II Gold Edition").assertExists()
-        composeRule.onNodeWithTag("tools_home").performClick()
+        composeRule.onNodeWithTag("game_tab_items").performClick()
+        composeRule.onNodeWithTag("tool_reference_screen").assertExists()
+        composeRule.onNodeWithTag("game_tab_quests").performClick()
+        composeRule.onNodeWithTag("chapter_button_6").assertIsDisplayed()
+        composeRule.onNodeWithText("HOME").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
     }
 
     @Test
     fun toolGameSearchAndDirectHomeWork() {
         waitForHome()
-        composeRule.onNodeWithText("GAME TOOLS").performClick()
-        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("library_search_toggle").performClick()
         composeRule.onNodeWithTag("library_game_search").performTextInput("Risen 3")
         composeRule.onNodeWithTag("game_gothic").assertDoesNotExist()
         composeRule.onNodeWithTag("game_risen_3").performClick()
+        composeRule.onNodeWithTag("game_tab_codes").performClick()
         composeRule.onNodeWithText("CONSOLE CODES").assertExists()
-        composeRule.onNodeWithText("Risen 3").assertExists()
-        composeRule.onNodeWithTag("tools_home").performClick()
+        composeRule.onNodeWithText("HOME").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
     }
 
     @Test
     fun gothicTipsDoNotMixInCheatsAndCodeSearchFindsCommands() {
         waitForHome()
-        composeRule.onNodeWithText("GAME TOOLS").performClick()
-        composeRule.onNodeWithTag("tools_category_useful_tips").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("game_tab_tips").performClick()
         composeRule.onNodeWithTag("tools_search_toggle").performClick()
         composeRule.onNodeWithTag("tool_reference_search").performTextInput("learning")
         composeRule.onNodeWithTag("gothic_reference_training").assertExists()
         composeRule.onNodeWithTag("tool_copy_enable").assertDoesNotExist()
-        composeRule.onNodeWithTag("tools_home").performClick()
-        composeRule.onNodeWithText("GAME TOOLS").performClick()
-        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithText("HOME").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("game_tab_codes").performClick()
         composeRule.onNodeWithTag("tools_search_toggle").performClick()
         composeRule.onNodeWithTag("tool_reference_search").performTextInput("itarscrolllight")
         composeRule.onNodeWithTag("gothic_reference_light_insert").assertExists()
@@ -83,9 +85,9 @@ class TopLevelSectionsTest {
     @Test
     fun codeCategoriesNarrowSearchAndAllCodesRestoresMatches() {
         waitForHome()
-        composeRule.onNodeWithText("GAME TOOLS").performClick()
-        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("game_tab_codes").performClick()
         composeRule.onNodeWithTag("tools_search_toggle").performClick()
         composeRule.onNodeWithTag("tool_reference_search").performTextInput("god")
         composeRule.onNodeWithTag("gothic_reference_god").assertExists()

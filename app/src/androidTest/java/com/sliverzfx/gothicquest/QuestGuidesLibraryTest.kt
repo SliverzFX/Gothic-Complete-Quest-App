@@ -19,14 +19,14 @@ class QuestGuidesLibraryTest {
 
     private fun waitForHome() {
         composeRule.waitUntil(timeoutMillis = 10000) {
-            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
     }
 
     @Test
     fun questGuidesOpensReusableGameLibrary() {
         waitForHome()
-        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("game_library_screen").assertExists()
         composeRule.onNodeWithTag("game_gothic").assertExists()
         composeRule.onNodeWithTag("game_gothic_2").assertExists()
@@ -40,7 +40,7 @@ class QuestGuidesLibraryTest {
     @Test
     fun gothic3UsesPartsInsteadOfChapters() {
         waitForHome()
-        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("library_game_list").performScrollToNode(hasTestTag("game_gothic_3"))
         composeRule.onNodeWithTag("game_gothic_3").performClick()
         composeRule.onNodeWithText("PART 1").assertExists()
@@ -50,15 +50,15 @@ class QuestGuidesLibraryTest {
     @Test
     fun gameHubBackReturnsToQuestGuidesLibrary() {
         waitForHome()
-        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
-        composeRule.onNodeWithText("‹  BACK TO QUEST GUIDES").performClick()
+        composeRule.onNodeWithText("‹  BACK TO GAMES").performClick()
         composeRule.onNodeWithTag("game_library_screen").assertExists()
     }
     @Test
     fun gameSearchFiltersGamesAndCanBeCleared() {
         waitForHome()
-        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("library_header_divider").assertExists()
         composeRule.onNodeWithTag("library_search_toggle").performClick()
         composeRule.onNodeWithTag("library_game_search").performTextInput("Risen")
@@ -76,7 +76,7 @@ class QuestGuidesLibraryTest {
     @Test
     fun archolosSearchOpensSixChapterGuideAndFirstQuest() {
         waitForHome()
-        composeRule.onNodeWithText("QUEST GUIDES").performClick()
+        composeRule.onNodeWithText("PICK A GAME").performClick()
         composeRule.onNodeWithTag("library_search_toggle").performClick()
         composeRule.onNodeWithTag("library_game_search").performTextInput("Archolos")
         composeRule.onNodeWithTag("game_archolos").performClick()

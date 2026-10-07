@@ -14,7 +14,7 @@ class HomeMenuTest {
 
     private fun waitForHome() {
         composeRule.waitUntil(timeoutMillis = 10000) {
-            composeRule.onAllNodesWithText("QUEST GUIDES").fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
     }
 
@@ -22,8 +22,7 @@ class HomeMenuTest {
     fun homeShowsTopLevelCategoriesInsteadOfGameCards() {
         waitForHome()
         listOf(
-            "QUEST GUIDES",
-            "GAME TOOLS",
+            "PICK A GAME",
             "FAQs",
             "ABOUT",
             "SUPPORT",
@@ -31,7 +30,7 @@ class HomeMenuTest {
             "SETTINGS"
         ).forEach { composeRule.onNodeWithText(it).assertExists() }
 
-        composeRule.onNodeWithText("MARVIN CODES / CHEATS").assertDoesNotExist()
+        composeRule.onNodeWithText("GAME TOOLS").assertDoesNotExist()
         composeRule.onNodeWithText("INFO / ABOUT").assertDoesNotExist()
         composeRule.onNodeWithText("SUPPORT / BUGS").assertDoesNotExist()
 
