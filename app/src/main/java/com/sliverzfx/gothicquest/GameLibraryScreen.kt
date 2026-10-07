@@ -53,7 +53,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -199,6 +199,8 @@ fun GameLibraryScreen(
 
 @Composable
 private fun GameLibraryPanel(entry: GameLibraryEntry) {
+    val imageWidth = LocalConfiguration.current.screenWidthDp.dp
+    val panelPainter = rememberLibraryImagePainter(entry.panelRes, imageWidth, 192.5.dp, crop = true)
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val reduceAnimations = LocalReduceAnimations.current
@@ -226,7 +228,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
         contentAlignment = Alignment.BottomEnd
     ) {
         Image(
-            painter = painterResource(entry.panelRes),
+            painter = panelPainter,
             contentDescription = entry.title,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -241,8 +243,10 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 )
         )
         entry.logoRes?.let { logo ->
+            // One decode and one bitmap shared by the logo and both shadow layers.
+            val logoPainter = rememberLibraryImagePainter(logo, 210.dp, 192.5.dp, crop = false)
             Image(
-                painter = painterResource(logo),
+                painter = logoPainter,
                 contentDescription = null,
                 modifier = Modifier
                     .width(logoWidth)
@@ -254,7 +258,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 colorFilter = ColorFilter.tint(Color.Black)
             )
             Image(
-                painter = painterResource(logo),
+                painter = logoPainter,
                 contentDescription = null,
                 modifier = Modifier
                     .width(logoWidth)
@@ -266,7 +270,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry) {
                 colorFilter = ColorFilter.tint(Color.Black)
             )
             Image(
-                painter = painterResource(logo),
+                painter = logoPainter,
                 contentDescription = null,
                 modifier = Modifier
                     .width(logoWidth)
