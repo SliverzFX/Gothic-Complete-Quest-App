@@ -1,0 +1,120 @@
+package com.sliverzfx.gothicquest
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+enum class ToolSection(val title: String, val description: String) {
+    MARVIN_CODES("MARVIN CODES", "Debug mode, console commands and item insert codes."),
+    USEFUL_ITEMS("USEFUL ITEMS", "Equipment, consumables and important items to look out for.");
+
+    fun titleFor(game: GameId): String = when {
+        this == USEFUL_ITEMS -> title
+        game == GameId.GOTHIC_3 || game == GameId.RISEN ||
+            game == GameId.RISEN_2 || game == GameId.RISEN_3 -> "CONSOLE CODES"
+        else -> title
+    }
+}
+
+private val ToolsGold = Color(0xFFD7B06A)
+private val ToolsBody = Color(0xFFC7B89B)
+
+@Composable
+internal fun GameToolsScreen(onBack: () -> Unit, onHome: () -> Unit,
+    onSectionSelected: (ToolSection) -> Unit) {
+    BackHandler(onBack = onBack)
+    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+        .padding(horizontal = 20.dp).testTag("game_tools_screen")) {
+        ToolsHeader(onBack, onHome)
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = 24.dp)) {
+            Text("GAME TOOLS", color = ToolsGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(8.dp))
+            Text("A little help for your next adventure.", color = ToolsBody, fontSize = 16.sp)
+            Spacer(Modifier.height(24.dp))
+            ToolSection.entries.forEach { section ->
+                val shape = RoundedCornerShape(14.dp)
+                Column(Modifier.fillMaxWidth()
+                    .background(Brush.verticalGradient(listOf(Color(0xF0241B13), Color(0xF0120F0C))), shape)
+                    .border(1.dp, ToolsGold.copy(alpha = 0.45f), shape)
+                    .clickable(role = Role.Button, onClick = { onSectionSelected(section) })
+                    .testTag("tools_category_${section.name.lowercase()}")
+                    .padding(20.dp)) {
+                    Text(section.title, color = ToolsGold, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(8.dp))
+                    Text(section.description, color = ToolsBody, fontSize = 16.sp, lineHeight = 23.sp)
+                    Spacer(Modifier.height(14.dp))
+                    Text("CHOOSE A GAME  ›", color = ToolsGold, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                }
+                Spacer(Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@Composable
+internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
+    onBack: () -> Unit, onHome: () -> Unit) {
+    BackHandler(onBack = onBack)
+    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+        .padding(horizontal = 20.dp).testTag("tool_reference_screen")) {
+        ToolsHeader(onBack, onHome)
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = 24.dp)) {
+            Text(section.titleFor(game), color = ToolsGold, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(8.dp))
+            Text(game.persistedName, color = ToolsBody, fontSize = 18.sp)
+            Spacer(Modifier.height(24.dp))
+            val shape = RoundedCornerShape(14.dp)
+            Column(Modifier.fillMaxWidth().background(Color(0xF015100D), shape)
+                .border(1.dp, ToolsGold.copy(alpha = 0.35f), shape).padding(20.dp)) {
+                Text("Reference being prepared", color = ToolsGold, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(12.dp))
+                Text(if (section == ToolSection.USEFUL_ITEMS)
+                    "Useful item descriptions, locations and requirements for this game will appear here."
+                else "Verified commands, activation instructions and item insert codes for this game will appear here.",
+                    color = ToolsBody, fontSize = 16.sp, lineHeight = 23.sp)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ToolsHeader(onBack: () -> Unit, onHome: () -> Unit) {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween) {
+        TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("tools_back")) {
+            Text("‹  BACK", color = ToolsGold, fontSize = 16.sp)
+        }
+        TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp).testTag("tools_home")) {
+            Text("HOME", color = ToolsGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+    HorizontalDivider(color = ToolsGold.copy(alpha = 0.35f))
+}

@@ -23,7 +23,7 @@ class HomeMenuTest {
         waitForHome()
         listOf(
             "QUEST GUIDES",
-            "MARVIN",
+            "GAME TOOLS",
             "FAQs",
             "ABOUT",
             "SUPPORT",

@@ -77,7 +77,9 @@ fun GameLibraryScreen(
     onBack: () -> Unit,
     topRightActionLabel: String? = null,
     onTopRightAction: (() -> Unit)? = null,
-    enableGameSearch: Boolean = false
+    enableGameSearch: Boolean = false,
+    showHeading: Boolean = false,
+    useMenuBackground: Boolean = false
 ) {
     var searchVisible by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -115,7 +117,7 @@ fun GameLibraryScreen(
         }
     }
 
-    Column(Modifier.fillMaxSize().background(Color.Black)
+    Column(Modifier.fillMaxSize().background(if (useMenuBackground) Color.Transparent else Color.Black)
         .statusBarsPadding().navigationBarsPadding().imePadding()
         .testTag("game_library_screen")) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp),
@@ -168,6 +170,15 @@ fun GameLibraryScreen(
         // Separate clipped viewport: cards cannot draw over the fixed header or divider.
         LazyColumn(state = listState,
             modifier = Modifier.weight(1f).fillMaxWidth().clipToBounds().testTag("library_game_list")) {
+            if (showHeading) {
+                item(key = "library_heading") {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp)) {
+                        Text(title, color = Color(0xFFD7B06A), fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold)
+                        Text("Choose a game", color = Color(0xFFC7B89B), fontSize = 14.sp)
+                    }
+                }
+            }
             if (filteredEntries.isEmpty()) {
                 item {
                     Box(Modifier.fillMaxWidth().height(180.dp), contentAlignment = Alignment.Center) {

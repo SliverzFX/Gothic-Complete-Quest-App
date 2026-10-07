@@ -56,7 +56,7 @@ internal object FaqContent {
             FaqEntry("game_saves", "Can Questbound fix a failed quest or restore a game save?",
                 "No. The app provides guidance and does not edit game saves, restore lost items or reset an in-game quest. Keep separate saves in the game before important decisions."),
             FaqEntry("cheats_required", "Do I need cheats to use the walkthroughs?",
-                "No. Reading a quest guide does not require cheat mode. The Marvin Codes / Cheats section is separate from the quest guides. Check what a code changes before using it in your game.")
+                "No. Reading a quest guide does not require cheat mode. Marvin and console codes live in Game Tools, separate from the quest guides. Check what a code changes before using it in your game.")
         )),
         FaqGroup("COMMUNITY & WHAT’S NEXT", listOf(
             FaqEntry("corrections", "How can I report an incorrect or missing quest step?",

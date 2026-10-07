@@ -18,7 +18,9 @@ enum class GameId(val persistedName: String, val displayTitle: String) {
 sealed interface AppRoute {
     data object Home : AppRoute
     data object QuestGuides : AppRoute
-    data object Cheats : AppRoute
+    data object GameTools : AppRoute
+    data class ToolGames(val section: ToolSection) : AppRoute
+    data class ToolReference(val section: ToolSection, val game: GameId) : AppRoute
     data object Faqs : AppRoute
     data object About : AppRoute
     data object Support : AppRoute

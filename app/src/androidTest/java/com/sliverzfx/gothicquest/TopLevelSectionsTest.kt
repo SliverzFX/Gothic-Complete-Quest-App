@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.hasTestTag
@@ -22,13 +23,37 @@ class TopLevelSectionsTest {
     }
 
     @Test
-    fun cheatsOpensEmptyLibraryWithoutInventedEntries() {
+    fun gameToolsKeepsCategoryAndGameSelectionWhenGoingBack() {
         waitForHome()
-        composeRule.onNodeWithText("MARVIN").performClick()
+        composeRule.onNodeWithText("GAME TOOLS").performClick()
+        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithText("MARVIN CODES").assertExists()
+        composeRule.onNodeWithText("Gothic").assertExists()
+        composeRule.onNodeWithTag("tools_back").performClick()
         composeRule.onNodeWithTag("game_library_screen").assertExists()
-        composeRule.onNodeWithText("MARVIN CODES / CHEATS").assertExists()
-        composeRule.onNodeWithTag("game_gothic").assertDoesNotExist()
         composeRule.onNodeWithTag("library_back").performClick()
+        composeRule.onNodeWithTag("game_tools_screen").assertExists()
+        composeRule.onNodeWithTag("tools_category_useful_items").performClick()
+        composeRule.onNodeWithTag("game_gothic_2").performClick()
+        composeRule.onNodeWithText("USEFUL ITEMS").assertExists()
+        composeRule.onNodeWithText("Gothic II Gold Edition").assertExists()
+        composeRule.onNodeWithTag("tools_home").performClick()
+        composeRule.onNodeWithTag("home_screen").assertExists()
+    }
+
+    @Test
+    fun toolGameSearchAndDirectHomeWork() {
+        waitForHome()
+        composeRule.onNodeWithText("GAME TOOLS").performClick()
+        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithTag("library_search_toggle").performClick()
+        composeRule.onNodeWithTag("library_game_search").performTextInput("Risen 3")
+        composeRule.onNodeWithTag("game_gothic").assertDoesNotExist()
+        composeRule.onNodeWithTag("game_risen_3").performClick()
+        composeRule.onNodeWithText("CONSOLE CODES").assertExists()
+        composeRule.onNodeWithText("Risen 3").assertExists()
+        composeRule.onNodeWithTag("tools_home").performClick()
         composeRule.onNodeWithTag("home_screen").assertExists()
     }
 

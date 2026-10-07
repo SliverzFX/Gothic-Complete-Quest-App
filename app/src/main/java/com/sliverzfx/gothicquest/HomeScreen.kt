@@ -117,7 +117,7 @@ internal fun HomeScreen(
     val entries = buildList {
         if (hasContinue) add(HomeMenuEntry("CONTINUE", "home_continue", onContinue))
         add(HomeMenuEntry("QUEST GUIDES", "home_quest_guides") { onDestinationSelected("Quest Guides") })
-        add(HomeMenuEntry("MARVIN", "home_cheats") { onDestinationSelected("Marvin Codes / Cheats") })
+        add(HomeMenuEntry("GAME TOOLS", "home_game_tools") { onDestinationSelected("Game Tools") })
         add(HomeMenuEntry("FAQs", "home_faqs") { onDestinationSelected("FAQs") })
         add(HomeMenuEntry("ABOUT", "home_about") { onDestinationSelected("Info / About") })
         add(HomeMenuEntry("SUPPORT", "home_support") { onDestinationSelected("Support / Bugs") })

@@ -310,7 +310,7 @@ private fun GothicQuestAppContent(
                     onDestinationSelected = { destination ->
                         route = when (destination) {
                             "Quest Guides" -> AppRoute.QuestGuides
-                            "Marvin Codes / Cheats" -> AppRoute.Cheats
+                            "Game Tools" -> AppRoute.GameTools
                             "FAQs" -> AppRoute.Faqs
                             "Info / About" -> AppRoute.About
                             "Support / Bugs" -> AppRoute.Support
@@ -332,10 +332,28 @@ private fun GothicQuestAppContent(
                     onTopRightAction = { route = AppRoute.Favorites }
                 )
 
-                AppRoute.Cheats -> GameLibraryScreen(
-                    title = "MARVIN CODES / CHEATS",
-                    entries = emptyList(),
-                    onBack = { route = AppRoute.Home }
+                AppRoute.GameTools -> GameToolsScreen(
+                    onBack = onGuideHome,
+                    onHome = onGuideHome,
+                    onSectionSelected = { route = AppRoute.ToolGames(it) }
+                )
+                is AppRoute.ToolGames -> GameLibraryScreen(
+                    title = currentRoute.section.title,
+                    entries = questGuideLibraryEntries(
+                        onGameSelected = { route = AppRoute.ToolReference(currentRoute.section, it) }
+                    ),
+                    onBack = { route = AppRoute.GameTools },
+                    topRightActionLabel = "HOME",
+                    onTopRightAction = onGuideHome,
+                    enableGameSearch = true,
+                    showHeading = true,
+                    useMenuBackground = true
+                )
+                is AppRoute.ToolReference -> ToolReferenceScreen(
+                    section = currentRoute.section,
+                    game = currentRoute.game,
+                    onBack = { route = AppRoute.ToolGames(currentRoute.section) },
+                    onHome = onGuideHome
                 )
 
                 AppRoute.Faqs -> FaqScreen(
