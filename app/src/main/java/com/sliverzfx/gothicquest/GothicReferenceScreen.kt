@@ -83,6 +83,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             GameId.ARCHOLOS -> ArcholosToolsData.entries(requested)
             GameId.GOTHIC_3 -> Gothic3ToolsData.entries(requested)
             GameId.RISEN -> RisenToolsData.entries(requested)
+            GameId.RISEN_2 -> Risen2ToolsData.entries(requested)
             else -> GothicToolsData.entries(requested)
         }
         if (codesSection) combineToolReferences(entries(ToolSection.MARVIN_CODES), entries(ToolSection.ITEMS))
@@ -121,6 +122,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             "Archolos • stat source v${ArcholosToolsData.sourceVersion}"
         } else if (game == GameId.GOTHIC_3) {
             Gothic3ToolsData.sourceNote
+        } else if (game == GameId.RISEN_2) {
+            if (codesSection) Risen2ToolsData.sourceNote else "Risen 2 • normal gameplay"
         } else if (game == GameId.RISEN) {
             if (codesSection) "Risen 1 • original PC / minsky • source patch unspecified"
             else "Risen 1 • normal gameplay"
@@ -201,7 +204,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             item {
                 Text("REFERENCE CREDITS", color = gold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(6.dp))
-                Text(allCards.flatMap { it.sources }.map(::referenceSourceName).distinct().joinToString(" • "),
+                Text(allCards.flatMap { it.sources }.flatMap { it.split(" | ") }.map(::referenceSourceName).distinct().joinToString(" • "),
                     color = body, fontSize = 13.sp, lineHeight = 18.sp)
                 if (game == GameId.ARCHOLOS && codesSection) {
                     Text(ArcholosCharacterCodesData.attribution, color = body, fontSize = 13.sp)
@@ -232,7 +235,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                     Text(entry.body, color = body, fontSize = 16.sp, lineHeight = 23.sp,
                         modifier = Modifier.testTag("tool_detail_body"))
                     Spacer(Modifier.height(16.dp))
-                    Text("Reference: " + card.sources.map(::referenceSourceName).distinct().joinToString(" • "),
+                    Text("Reference: " + card.sources.flatMap { it.split(" | ") }.map(::referenceSourceName).distinct().joinToString(" • "),
                         color = body.copy(alpha = 0.75f), fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 entry.command?.let { command ->
@@ -277,7 +280,14 @@ private fun referenceSourceName(source: String): String = when {
     source.contains("steamcommunity.com/games/1467450/announcements") -> "Official Archolos patch notes"
     source.contains("CP_1_70_Manual.pdf") -> "Community Patch team • CP 1.70 manual"
     source.contains("G3_Manual_UK.pdf") -> "Gothic 3 • official manual"
+    source.contains("gamepressure.com/risen2") -> "Gamepressure • Risen 2 walkthrough"
     source.contains("gothicz.net") -> "Gothicz.net"
+    source.contains("gamefaqs.gamespot.com/pc/622499-risen-2-dark-waters/faqs/77368") -> "ZhirC • Risen 2 item catalogue"
+    source.contains("gamefaqs.gamespot.com/pc/622499-risen-2-dark-waters/faqs/68862") -> "kamehakid9229 • Risen 2 PC item list"
+    source.contains("gamefaqs.gamespot.com/boards/622499-risen-2-dark-waters") -> "GameFAQs • Risen 2 PC console reports"
+    source.contains("supercheats.com/guides/risen-2-dark-waters") -> "CM Boots-Faubert • Risen 2 walkthrough"
+    source.contains("risen.cz/risen-2") -> "RISEN.cz • Risen 2 equipment and crafting"
+    source.contains("Risen2_PC_Manual") -> "Risen 2 • official PC manual"
     source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
     source.contains("worldofrisen.de") -> "World of Risen • original PC reference"
     source.contains("Risen%20Manual") -> "Risen • official PC manual"
