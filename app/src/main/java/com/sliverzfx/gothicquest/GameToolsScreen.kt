@@ -113,11 +113,18 @@ internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
 }
 
 @Composable
-internal fun ToolsHeader(onBack: () -> Unit, onHome: () -> Unit) {
+internal fun ToolsHeader(onBack: () -> Unit, onHome: () -> Unit,
+    onSearch: (() -> Unit)? = null, searchVisible: Boolean = false) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween) {
         TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("tools_back")) {
             Text("‹  BACK", color = ToolsGold, fontSize = 16.sp)
+        }
+        if (onSearch != null) {
+            TextButton(onClick = onSearch, modifier = Modifier.heightIn(min = 56.dp).testTag("tools_search_toggle")) {
+                Text(if (searchVisible) "CLOSE" else "SEARCH", color = ToolsGold, fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold)
+            }
         }
         TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp).testTag("tools_home")) {
             Text("HOME", color = ToolsGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)

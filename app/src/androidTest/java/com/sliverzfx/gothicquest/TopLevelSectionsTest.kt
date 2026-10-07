@@ -63,6 +63,7 @@ class TopLevelSectionsTest {
         composeRule.onNodeWithText("GAME TOOLS").performClick()
         composeRule.onNodeWithTag("tools_category_useful_tips").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("tools_search_toggle").performClick()
         composeRule.onNodeWithTag("tool_reference_search").performTextInput("learning")
         composeRule.onNodeWithTag("gothic_reference_training").assertExists()
         composeRule.onNodeWithTag("tool_copy_enable").assertDoesNotExist()
@@ -70,10 +71,13 @@ class TopLevelSectionsTest {
         composeRule.onNodeWithText("GAME TOOLS").performClick()
         composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
         composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("tools_search_toggle").performClick()
         composeRule.onNodeWithTag("tool_reference_search").performTextInput("itarscrolllight")
         composeRule.onNodeWithTag("gothic_reference_light_insert").assertExists()
         composeRule.onNodeWithTag("tool_copy_light_insert").performScrollTo().performClick()
         composeRule.onNodeWithText("COPIED").assertExists()
+        composeRule.onNodeWithTag("tools_search_toggle").performClick()
+        composeRule.onNodeWithTag("tool_reference_search").assertDoesNotExist()
     }
 
     @Test
