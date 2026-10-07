@@ -73,6 +73,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     val allEntries = when (game) {
         GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(section)
         GameId.ARCHOLOS -> ArcholosToolsData.entries(section)
+        GameId.GOTHIC_3 -> Gothic3ToolsData.entries(section)
         else -> GothicToolsData.entries(section)
     }
     val filtered = allEntries.filter { entry ->
@@ -93,7 +94,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             Spacer(Modifier.height(16.dp))
         }
         Row(Modifier.fillMaxWidth()) {
-            Text(section.title, color = gold, fontSize = if (embedded) 20.sp else 26.sp,
+            Text(section.titleFor(game), color = gold, fontSize = if (embedded) 20.sp else 26.sp,
                 fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).padding(top = 12.dp))
             if (embedded) TextButton(onClick = {
                 if (searchVisible) closeSearch() else searchVisible = true
@@ -105,6 +106,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         Spacer(Modifier.height(6.dp))
         Text(if (game == GameId.ARCHOLOS) {
             "Archolos • stat source v${ArcholosToolsData.sourceVersion}"
+        } else if (game == GameId.GOTHIC_3) {
+            Gothic3ToolsData.sourceNote
         } else if (game == GameId.GOTHIC_2_GOLD) {
             if (section == ToolSection.MARVIN_CODES) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
@@ -138,6 +141,11 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         LazyColumn(state = listState, modifier = Modifier.weight(1f).testTag("tool_reference_list")) {
             item {
                 Text("${filtered.size} / ${allEntries.size} entries • reference", color = body, fontSize = 13.sp)
+                if (game == GameId.GOTHIC_3) {
+                    Spacer(Modifier.height(6.dp))
+                    Text("Equipment versions are labelled per card. Quest Pack, Content Mod and Forsaken Gods are not included.",
+                        color = body, fontSize = 13.sp, lineHeight = 18.sp)
+                }
                 if (game == GameId.ARCHOLOS) {
                     Spacer(Modifier.height(6.dp))
                     Text("Patch notes reviewed through v${ArcholosToolsData.reviewedPatchVersion}. " +
@@ -206,6 +214,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                                 source.contains("docs.google.com/spreadsheets/d/1LZa9Key") -> "ID index © CrazyRaus, 2022"
                                 source.contains("docs.google.com/spreadsheets/d/1Z5O00oK") -> "Equipment / location index"
                                 source.contains("steamcommunity.com/games/1467450/announcements") -> "Official Archolos patch notes"
+                                source.contains("CP_1_70_Manual.pdf") -> "Community Patch team • CP 1.70 manual"
+                                source.contains("G3_Manual_UK.pdf") -> "Gothic 3 • official manual"
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"

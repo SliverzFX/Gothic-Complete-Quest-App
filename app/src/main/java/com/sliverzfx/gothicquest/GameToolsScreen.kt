@@ -83,7 +83,7 @@ internal fun GameToolsScreen(onBack: () -> Unit, onHome: () -> Unit,
 @Composable
 internal fun ToolReferenceScreen(section: ToolSection, game: GameId,
     onBack: () -> Unit, onHome: () -> Unit, embedded: Boolean = false) {
-    if (game == GameId.GOTHIC || game == GameId.GOTHIC_2_GOLD || game == GameId.ARCHOLOS) {
+    if (game == GameId.GOTHIC || game == GameId.GOTHIC_2_GOLD || game == GameId.ARCHOLOS || game == GameId.GOTHIC_3) {
         GothicReferenceScreen(section, onBack, onHome, embedded, game)
         return
     }
