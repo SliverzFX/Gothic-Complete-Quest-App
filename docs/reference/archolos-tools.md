@@ -1,53 +1,69 @@
 # Archolos game tools reference
 
-The existing Archolos game hub now opens the searchable Codes, Useful Tips and Items sections. Search includes names, groups, descriptions and insert IDs. Copy controls reuse the existing reference UI. Existing chapter/quest content is unchanged.
+Archolos uses the shared searchable Codes, Useful Tips and Items screens. Search covers names, group labels, descriptions, acquisition facts and insert commands. Copy controls retain exact insert IDs. Existing chapter and quest guides are unchanged. Maps remain outside this reference update.
 
-## Scope and source version
+## Finished reference coverage
 
-This first item-reference release uses auronen's extracted **The Chronicles of Myrtana: Archolos v1.2.2** item tables:
+- **5,557 code entries:** 2,599 item IDs, 2,952 actor IDs and six setup/base-engine commands.
+- **1,314 item/reference cards**, including equipment, consumables, spells, recipes and location cards.
+- Acquisition information is attached to **689 exact item IDs**, including base armor, upgrades, crafting diagrams, accessory sets, runes and patch-documented trophy buyers.
+- **14 distinct magic-circle volume location cards:** two volumes for I, three for II, four for III and five for IV.
+- **15 named teleport references**, with rune source and destination circle listed separately.
+- **31 useful tips**, including normal-play equipment routes and official maintenance-patch corrections.
+- **60 item-use descriptions** replace generic wording where the extracted item table explicitly establishes a use.
 
-- Source: https://github.com/auronen/CoM-itemlist
-- 2,599 unique objects with item-table records: 381 melee weapons, 107 ranged weapons, 238 armor exports, 129 accessories, 67 potions, 176 food/plants, 158 runes/scrolls, 6 ammunition objects, 674 documents/recipes and 663 miscellaneous objects.
-- Codes: 5,557 total entries: 2,599 item insert commands, 2,952 NPC/creature insert commands and 6 setup/base-engine commands.
-- Items: 1,252 selected equipment, consumable, spell and recipe references. This view excludes recognized debug props, quest-ID objects, legacy high-circle/paladin spells and most NPC armor exports. Inclusion does **not** verify normal acquisition.
-- Useful Tips: 15 original notes explaining the reference and effects represented by the tables.
-- The Characters & Creatures category includes the actor database described below. Acquisition/location catalogues, maps and a claim of complete latest-patch coverage are not included. Empty code categories are hidden rather than presented as populated.
-- The raw instance-name list also contains five un-tabulated container/group identifiers (`itmi_pocket`, `itgr_meatraw`, `itgr_vegetable`, `itgr_meat`, `itgr_meatfried`). They are not fabricated into item cards or insert commands.
+## Versions and verification limits
 
-The version is visible in the UI. The list includes quest/NPC/legacy objects and does not claim that every exported object is obtainable by the hero. Later patches may change IDs or balance. A current-version script/stat audit is still needed before removing that qualification.
+Numerical item facts come from auronen's **v1.2.2** extracted item tables: https://github.com/auronen/CoM-itemlist
 
-## Data handling
+The official Steam announcements for **1.2.3 through 1.2.11** were reviewed. They document trainer limits, trophy-sale options, apple bonus counting, hunting teaching/costs, localization and quest fixes. They do not announce numerical equipment-stat changes. The UI labels the stat export and reviewed patch versions separately. Reviewing patch notes is not a byte-for-byte comparison against later compiled game scripts, and no such comparison is claimed.
 
-Names, IDs and numeric facts are transformed into original summaries. Images and copied flavor paragraphs are not bundled. Non-English legacy/debug names have English labels, with their exact IDs retained. Variants remain separate by ID even where names match.
+Relevant verified changes are incorporated in the tips and specific trophy cards:
 
-- Trained-attribute thresholds and matching-set conditions remain attached to the additional effects that follow them. Conditional bonuses are not added to unconditional bonuses.
-- Armor protection types, equip requirements, durations, fixed vs percentage recovery, mana-scaled healing, crafting skill requirements and the single-summon limit are kept distinct.
-- Combined armor-piercing/combat-bonus fields stay combined; no assumption about doubling their numeric value is introduced.
-- Exported `Value` is labelled base value, not merchant price.
-- General console commands are identified as Gothic II engine commands and link to World of Gothic; Marvin/F2/insert setup is documented in the Archolos export README.
+- 1.2.3: Odgar teaches skilled smithing for militia; Yezegan teaches master alchemy; apple/dish strength counting corrected.
+- 1.2.4: special Gluttonous Bear skin sale to Frida and Seashark fang sale to Markus.
+- 1.2.5: Markus teaches fang extraction.
+- 1.2.6: incorrect hunting-learning prices in some dialogues corrected; historical prices are not asserted as current charges.
 
-Official English localization from https://github.com/TheChroniclesOfMyrtana/localization was consulted to interpret effect/condition labels. It is not a current item-stat script dump and was not treated as one.
+Official announcement URLs are obtained by resolving the URLs supplied by Steam's news API; internal news IDs are not guessed into announcement links. The adjacent final audit manifest records all nine announcements, source hashes and disagreements.
 
-## Validation
+The NPC/creature publisher does not specify a patch version. Those entries remain identified as exported actor references, including chapter/quest/scene variants. No runtime safety, combat statistics or automatic quest restoration is inferred from an ID.
 
-Pure Kotlin reference data is compiled with Kotlin 2.2.0 targeting JVM 17. Twelve JUnit tests check section coverage, unique IDs, safe commands, category totals, conditional summoner/set effects, upgrade values, elixir vs prop separation and search fields, plus actor aliases, exact variant IDs, source attribution, exclusions and category membership. A source-table audit checks ID coverage and numeric facts. UI integration is reviewed against the current branch source.
+## Acquisition sources and matching
 
-Full Android/Compose builds and device tests require Android Studio/SDK and have not run in this workspace.
+Acquisition index: **Tulipan / CrazyRaus**, English translation **DreXav**, contribution **HRY**.
 
-The adjacent `archolos-source-manifest.json` records SHA-256 hashes of the downloaded source tables for future comparisons.
+Website: https://docs.google.com/spreadsheets/d/1Z5O00oK-OYpmjtniR5t3s__TxNq8eMuwzn8ftJPeNpQ/edit
 
-## NPC and creature index
+Acquisition facts are kept distinct from numerical export stats. Matches use names, item type and applicable damage/equip requirements or armor protection tuples. Generated, summon, quest and cutscene duplicates are not silently treated as normally obtainable items. Ambiguous matches receive separate name-level acquisition cards instead of fabricated exact IDs.
 
-ID index **© CrazyRaus, 2022**. Website address: https://docs.google.com/spreadsheets/d/1LZa9KeydVJYxprMd1Qbwl09vjknEU9Jb_EU5iAX5FjA/edit
+Specific alias/disagreement handling:
+
+- Rusty Sword: keep the export's 10-strength requirement, not the acquisition table's 15.
+- Heavy Southerner's Armor: keep the export's 85 arrow protection, not the acquisition table's 80.
+- The Peacemaker: the acquisition note identifies its story source and inability to equip it; the guide's requirement is not invented into the export stats.
+- Light Beechwood Bow: correct the export's `Ligh` spelling without changing its ID or numbers.
+
+Diagram routes stay marked as diagram sources; they are not represented as sales of finished weapons. Upgraded armor routes explicitly identify how to acquire the base piece. Matching set headings are used for ring/amulet sources rather than joining generic “Ring (findable)” rows to unrelated sets. Circle book parsing stops at the next book series, preventing ordinary volumes from being mislabelled as circle IV.
+
+All descriptions retain separate conditional bonuses, potion durations, percentage recovery and mana-scaled healing. Base value remains labelled as distinct from a merchant price. Original item flavor paragraphs, maps and images are not bundled.
+
+## Actor source and attribution
+
+**ID index © CrazyRaus, 2022**. Website: https://docs.google.com/spreadsheets/d/1LZa9KeydVJYxprMd1Qbwl09vjknEU9Jb_EU5iAX5FjA/edit
 
 Publisher's guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2749338542
 
-The index's Introduction permits copying and distribution when its copyright notice and website address are included. Those are preserved here and linked/credited in the app's reference sources. Only factual IDs/names are used; all spawn descriptions are original.
+Its Introduction permits redistribution with copyright notice and website address; both are preserved in these references and credited/linked in the app. Only factual IDs/names are used, with original spawn descriptions.
 
-Coverage: 499 entries from the named-character index, 678 other creature exports, 41 bounty/boss entries and 1,734 other NPC exports. These are **2,952 unique actor IDs**, not 2,952 distinct story characters. Chapter, quest and scene variants remain separate. The index does not specify a patch version, so its version is not presented as v1.2.2 or as current-patch verified.
+Actor coverage: 499 named-index entries, 678 other creature exports, 41 bounty/boss entries and 1,734 other NPC exports. These are 2,952 unique actor IDs, not distinct story characters. All 2,993 raw IDs are accounted for, with 41 helper/test/hero/debug or other unlabelled internal exclusions documented in `archolos-character-source-manifest.json`.
 
-The official English localization supplies name checks for 1,255 NPC IDs/variants. A further 696 actor IDs match official English dialogue filenames. A filename match corroborates an ID; it is not a substitute for verifying its full runtime instance behavior. Additional creature names are matched to official localized NAME constants. Unmatched records retain explicit export-ID labels rather than invented identities. Named aliases are preserved (for example, `bau_2279_nirko` is Elco and `pir_6330_captain_archolos` is Beckett).
+Official English names corroborate 1,255 NPC IDs/variants; 696 IDs also match official dialogue filenames. Additional creature names are matched to localized name constants. Source: https://github.com/TheChroniclesOfMyrtana/localization
 
-41 helper/test/hero/debug or other unlabelled internal actor IDs are excluded. Raw entries are retained as export references, not certified safe for every patch or quest state. No health, damage or faction relationship values are invented from the IDs. Spawned copies do not restore quest state.
+## Validation
 
-`archolos-character-source-manifest.json` records source hashes, excluded IDs and coverage counts. Runtime game testing remains pending.
+The actual data objects compile with Kotlin 2.2.0, JVM 17. **20 JUnit tests** pass across the core, actor and acquisition suites. Tests cover uniqueness, exact commands, category counts, conditional bonuses, armor values, alias preservation, actor exclusions, crafting requirements, acquisition searches, magic-volume counts, teleport structure and official patch facts.
+
+Source audits account for all exported IDs, check preserved numerical fields and verify that acquisition keys resolve to actual exported items. Added use descriptions are tied to explicit item-table fields. Whitespace checks and remote payload verification run before completion.
+
+A full Android/Compose build and device visual test require Android Studio/SDK and are not claimed in this workspace.

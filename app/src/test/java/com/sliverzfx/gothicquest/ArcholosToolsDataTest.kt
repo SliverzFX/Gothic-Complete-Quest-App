@@ -6,8 +6,8 @@ import org.junit.Test
 class ArcholosToolsDataTest {
     @Test fun sectionsHaveDistinctIdsAndExpectedCoverage() {
         assertEquals(5557, ArcholosToolsData.codes.size)
-        assertEquals(1252, ArcholosToolsData.items.size)
-        assertEquals(15, ArcholosToolsData.tips.size)
+        assertEquals(1314, ArcholosToolsData.items.size)
+        assertEquals(31, ArcholosToolsData.entries(ToolSection.USEFUL_TIPS).size)
         val entries = ToolSection.entries.flatMap { ArcholosToolsData.entries(it) }
         assertEquals(entries.size, entries.map { it.id }.toSet().size)
         assertTrue(entries.all { it.source.startsWith("https://") && it.body.isNotBlank() })
@@ -41,7 +41,7 @@ class ArcholosToolsDataTest {
         assertTrue(entry.body.contains("Blunt protection: 62"))
         assertTrue(entry.body.contains("Arrow protection: 57"))
         assertTrue(entry.body.contains("Magic protection: 7"))
-        assertTrue(entry.body.contains("player availability is not verified"))
+        assertTrue(entry.body.contains("Acquisition reference"))
     }
     @Test fun elixirAndPropsStaySeparate() {
         assertTrue(code("itpo_perm_str").body.contains("Strength bonus: 3"))

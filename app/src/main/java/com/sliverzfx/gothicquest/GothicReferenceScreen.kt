@@ -104,7 +104,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         if (!embedded) Text(game.persistedName, color = body, fontSize = 18.sp)
         Spacer(Modifier.height(6.dp))
         Text(if (game == GameId.ARCHOLOS) {
-            "Archolos • items v${ArcholosToolsData.sourceVersion} / actor index"
+            "Archolos • stat source v${ArcholosToolsData.sourceVersion}"
         } else if (game == GameId.GOTHIC_2_GOLD) {
             if (section == ToolSection.MARVIN_CODES) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
@@ -140,8 +140,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Text("${filtered.size} / ${allEntries.size} entries • reference", color = body, fontSize = 13.sp)
                 if (game == GameId.ARCHOLOS) {
                     Spacer(Modifier.height(6.dp))
-                    Text("Item source v${ArcholosToolsData.sourceVersion}; NPC/creature index version unspecified. " +
-                        "Later patches may differ. Exports include quest and legacy variants.",
+                    Text("Patch notes reviewed through v${ArcholosToolsData.reviewedPatchVersion}. " +
+                        "Acquisition: community index. NPC export version unspecified; quest and legacy variants included.",
                         color = body, fontSize = 13.sp, lineHeight = 18.sp)
                 }
                 Spacer(Modifier.height(12.dp))
@@ -181,6 +181,17 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 if (game == GameId.ARCHOLOS && section == ToolSection.MARVIN_CODES) {
                     Text(ArcholosCharacterCodesData.attribution, color = body, fontSize = 13.sp)
                 }
+                if (game == GameId.ARCHOLOS) {
+                    Text(ArcholosAcquisitionData.attribution, color = body, fontSize = 13.sp)
+                    TextButton(onClick = {
+                        sourceError = false
+                        try { uriHandler.openUri("https://docs.google.com/spreadsheets/d/1Z5O00oK-OYpmjtniR5t3s__TxNq8eMuwzn8ftJPeNpQ/edit") }
+                        catch (_: IllegalArgumentException) { sourceError = true }
+                        catch (_: SecurityException) { sourceError = true }
+                    }, modifier = Modifier.heightIn(min = 56.dp)) {
+                        Text("Equipment and location index", color = gold, fontSize = 14.sp)
+                    }
+                }
                 allEntries.map { it.source }.distinct().forEachIndexed { index, source ->
                     TextButton(onClick = {
                         sourceError = false
@@ -193,6 +204,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                                     source.contains("github.com/auronen/Gothic-2-localization") -> "Gothic script reference"
                                 source.contains("github.com/auronen/CoM-itemlist") -> "Archolos item export v1.2.2"
                                 source.contains("docs.google.com/spreadsheets/d/1LZa9Key") -> "ID index © CrazyRaus, 2022"
+                                source.contains("docs.google.com/spreadsheets/d/1Z5O00oK") -> "Equipment / location index"
+                                source.contains("steamcommunity.com/games/1467450/announcements") -> "Official Archolos patch notes"
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"
