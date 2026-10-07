@@ -84,6 +84,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             GameId.GOTHIC_3 -> Gothic3ToolsData.entries(requested)
             GameId.RISEN -> RisenToolsData.entries(requested)
             GameId.RISEN_2 -> Risen2ToolsData.entries(requested)
+            GameId.RISEN_3 -> Risen3ToolsData.entries(requested)
             else -> GothicToolsData.entries(requested)
         }
         if (codesSection) combineToolReferences(entries(ToolSection.MARVIN_CODES), entries(ToolSection.ITEMS))
@@ -122,6 +123,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             "Archolos • stat source v${ArcholosToolsData.sourceVersion}"
         } else if (game == GameId.GOTHIC_3) {
             Gothic3ToolsData.sourceNote
+        } else if (game == GameId.RISEN_3) {
+            if (codesSection) Risen3ToolsData.sourceNote else "Risen 3 • normal gameplay"
         } else if (game == GameId.RISEN_2) {
             if (codesSection) Risen2ToolsData.sourceNote else "Risen 2 • normal gameplay"
         } else if (game == GameId.RISEN) {
@@ -280,6 +283,13 @@ private fun referenceSourceName(source: String): String = when {
     source.contains("steamcommunity.com/games/1467450/announcements") -> "Official Archolos patch notes"
     source.contains("CP_1_70_Manual.pdf") -> "Community Patch team • CP 1.70 manual"
     source.contains("G3_Manual_UK.pdf") -> "Gothic 3 • official manual"
+    source.contains("gamepressure.com/risen3") -> "Gamepressure • Risen 3 walkthrough"
+    source.contains("id=723232144") -> "kris.aalst • Risen 3 crafting reference"
+    source.contains("35221031695469794") -> "alex / OC Burner • original PC testmode report"
+    source.contains("nexusmods.com/risen3/mods/7") -> "Nexus Mods • Risen 3 debug-tool requirements"
+    source.contains("PC_Risen3_Manual") -> "Risen 3 • official PC manual"
+    source.contains("abcgames.net") && source.contains("id=16001") -> "Andrej Eperješi • Risen 3 walkthrough"
+    source.contains("faqs/78150") -> "Gessie • Enhanced Edition gameplay reference"
     source.contains("gamepressure.com/risen2") -> "Gamepressure • Risen 2 walkthrough"
     source.contains("gothicz.net") -> "Gothicz.net"
     source.contains("gamefaqs.gamespot.com/pc/622499-risen-2-dark-waters/faqs/77368") -> "ZhirC • Risen 2 item catalogue"

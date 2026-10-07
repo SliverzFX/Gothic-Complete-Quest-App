@@ -1,0 +1,73 @@
+{
+  "game": "Risen 3: Titan Lords",
+  "scope": "Curated offline facts and version-dependent original-PC debug shortcuts",
+  "legendary_items": 30,
+  "permanent_potion_formulas": 8,
+  "rare_plants": 8,
+  "unique_re_forged_weapons": 5,
+  "faction_armor_acquisition": 2,
+  "item_reference_cards": 53,
+  "debug_shortcuts": 9,
+  "debug_setup_cards": 1,
+  "tips": 19,
+  "item_spawn_commands": 0,
+  "sources": [
+    "https://gamefaqs.gamespot.com/pc/763908-risen-3-titan-lords/faqs/78150",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/249230/manuals/PC_Risen3_Manual_UK_4c_digital.pdf",
+    "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/",
+    "https://steamcommunity.com/sharedfiles/filedetails/?id=723232144",
+    "https://www.abcgames.net/?cast=3&id=16001&p=navody_zobraz",
+    "https://www.gamepressure.com/risen3/a-guardians-armor/z667d5",
+    "https://www.gamepressure.com/risen3/antigua-legendary-items/z567ce",
+    "https://www.gamepressure.com/risen3/calador-legendary-items/za668f",
+    "https://www.gamepressure.com/risen3/crab-coast/z9668e",
+    "https://www.gamepressure.com/risen3/fog-island-legendary-items/z366f1",
+    "https://www.gamepressure.com/risen3/introduction/z4680f",
+    "https://www.gamepressure.com/risen3/kila-legendary-items/z466e3",
+    "https://www.gamepressure.com/risen3/new-armour/z667ed",
+    "https://www.gamepressure.com/risen3/re-forge-caladors-coronation-sword/zf6810",
+    "https://www.gamepressure.com/risen3/re-forge-kraken-eye/z36814",
+    "https://www.gamepressure.com/risen3/re-forge-maras-fame/z06811",
+    "https://www.gamepressure.com/risen3/re-forge-sphere-torn/z16812",
+    "https://www.gamepressure.com/risen3/re-forge-wound-tearer/z26813",
+    "https://www.gamepressure.com/risen3/tacarigua-legendary-items/z96793",
+    "https://www.gamepressure.com/risen3/taranis-legendary-items/z86756",
+    "https://www.nexusmods.com/risen3/mods/7"
+  ],
+  "source_derivation": [
+    "Crafting guide: ingredient formulas only. ABCgames: permanent potion +5 and plant +2 values.",
+    "Weapon introduction: Blacksmith/anvil assembly, not the independently sourced location descriptions.",
+    "Official manual: normal gameplay guidance; Gessie: specifically labelled planning entries."
+  ],
+  "excluded": [
+    "Risen 1 Minsky and It_* template lists mislabeled as Risen 3",
+    "Unverified item-spawn/NPC IDs",
+    "Deliberate crash/debug quit shortcuts",
+    "Third-party executable/DLL assets",
+    "Maps"
+  ],
+  "limitations": [
+    "No exhaustive engine item-ID, NPC or equipment catalogue claimed",
+    "Original-PC testmode prerequisites; Enhanced Edition support unverified",
+    "No Android build, instrumentation or physical-device validation in this environment"
+  ],
+  "validation": "79 pure Kotlin JUnit data regression tests passed; 3 new Android instrumentation tests added, not run",
+  "evidence": [
+    {
+      "file": "crafting.html",
+      "sha256": "e6aa11322848bd261000fca9b407f5d9ad7f523c2b449b18f7cc02945b3d3174"
+    },
+    {
+      "file": "debug.html",
+      "sha256": "301710baf774b867eae964aacc38299b8f4aee79aca9c112271ecfb77caeec78"
+    },
+    {
+      "file": "manual.pdf",
+      "sha256": "6255f908de9c2ae413ee04380c3e8503d4b8b31dd30785fc61ed3efa989212cc"
+    },
+    {
+      "file": "testmode.zip",
+      "sha256": "83dfc71a5aec6fd890595e3c3c209fb987fd1cbdafb2788d81a8ea79e8ebe667"
+    }
+  ]
+}
