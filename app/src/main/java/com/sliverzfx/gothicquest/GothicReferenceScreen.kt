@@ -3,8 +3,12 @@ package com.sliverzfx.gothicquest
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +38,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -53,6 +61,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     embedded: Boolean = false, game: GameId = GameId.GOTHIC) {
     val gold = Color(0xFFD7B06A)
     val body = Color(0xFFC7B89B)
+    val codesSection = section != ToolSection.USEFUL_TIPS
+    var selectedEntryId by rememberSaveable(game, section) { mutableStateOf<String?>(null) }
     var searchVisible by rememberSaveable(game, section) { mutableStateOf(false) }
     var query by rememberSaveable(game, section) { mutableStateOf("") }
     var selectedCategory by rememberSaveable(game, section) { mutableStateOf<CodeCategory?>(null) }
@@ -70,14 +80,19 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     BackHandler(enabled = !embedded || searchVisible) { if (searchVisible) closeSearch() else onBack() }
     val clipboard = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
-    val allEntries = when (game) {
-        GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(section)
-        GameId.ARCHOLOS -> ArcholosToolsData.entries(section)
-        GameId.GOTHIC_3 -> Gothic3ToolsData.entries(section)
-        else -> GothicToolsData.entries(section)
+    val allCards = remember(game, section) {
+        fun entries(requested: ToolSection): List<ToolReferenceEntry> = when (game) {
+            GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(requested)
+            GameId.ARCHOLOS -> ArcholosToolsData.entries(requested)
+            GameId.GOTHIC_3 -> Gothic3ToolsData.entries(requested)
+            else -> GothicToolsData.entries(requested)
+        }
+        if (codesSection) combineToolReferences(entries(ToolSection.MARVIN_CODES), entries(ToolSection.ITEMS))
+        else entries(ToolSection.USEFUL_TIPS).map { ToolReferenceCard(it, setOf(it.source)) }
     }
+    val allEntries = remember(allCards) { allCards.map { it.entry } }
     val filtered = allEntries.filter { entry ->
-        (section != ToolSection.MARVIN_CODES || selectedCategory == null || entry.codeCategory == selectedCategory) &&
+        (!codesSection || selectedCategory == null || entry.codeCategory == selectedCategory) &&
             (query.isBlank() || listOf(entry.title, entry.group, entry.body, entry.command.orEmpty())
                 .any { it.contains(query.trim(), ignoreCase = true) })
     }
@@ -109,11 +124,11 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         } else if (game == GameId.GOTHIC_3) {
             Gothic3ToolsData.sourceNote
         } else if (game == GameId.GOTHIC_2_GOLD) {
-            if (section == ToolSection.MARVIN_CODES) "Gold / Night of the Raven • PC Marvin mode"
+            if (codesSection) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
-        } else if (section == ToolSection.MARVIN_CODES) "Original Gothic • PC Marvin mode"
+        } else if (codesSection) "Original Gothic • PC Marvin mode"
             else "Original Gothic • normal gameplay", color = body, fontSize = 13.sp)
-        if (section == ToolSection.MARVIN_CODES) {
+        if (codesSection) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth().testTag("code_category_list")) {
                 item {
@@ -155,30 +170,28 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Spacer(Modifier.height(12.dp))
             }
             items(filtered, key = { it.id }) { entry ->
-                val shape = RoundedCornerShape(12.dp)
+                val shape = RoundedCornerShape(10.dp)
                 Column(Modifier.fillMaxWidth().background(Color(0xF015100D), shape)
                     .border(1.dp, gold.copy(alpha = 0.35f), shape)
-                    .testTag("gothic_reference_${entry.id}").padding(18.dp)) {
-                    Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 12.sp, letterSpacing = 1.sp)
-                    Spacer(Modifier.height(6.dp))
-                    Text(entry.title, color = gold, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                    Spacer(Modifier.height(10.dp))
-                    Text(entry.body, color = body, fontSize = 16.sp, lineHeight = 23.sp)
+                    .clickable(role = Role.Button, onClick = { selectedEntryId = entry.id })
+                    .testTag("gothic_reference_${entry.id}").padding(horizontal = 14.dp, vertical = 10.dp)) {
+                    Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 11.sp, letterSpacing = 1.sp)
+                    Spacer(Modifier.height(4.dp))
+                    Text(entry.title, color = gold, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     entry.command?.let { command ->
-                        Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth()) {
-                            Text(command, color = gold, fontSize = 15.sp, fontFamily = FontFamily.Monospace,
-                                modifier = Modifier.weight(1f).padding(top = 16.dp))
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text(command, color = gold, fontSize = 13.sp, fontFamily = FontFamily.Monospace,
+                                modifier = Modifier.weight(1f))
                             TextButton(onClick = {
                                 clipboard.setText(AnnotatedString(command))
                                 copiedId = entry.id
-                            }, modifier = Modifier.heightIn(min = 56.dp).testTag("tool_copy_${entry.id}")) {
+                            }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_copy_${entry.id}")) {
                                 Text(if (copiedId == entry.id) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
                             }
                         }
                     }
                 }
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(8.dp))
             }
             if (filtered.isEmpty()) item {
                 Text("No matching entries. Try another search.", color = body, fontSize = 16.sp)
@@ -186,7 +199,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             }
             item {
                 Text("REFERENCE SOURCES", color = gold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                if (game == GameId.ARCHOLOS && section == ToolSection.MARVIN_CODES) {
+                if (game == GameId.ARCHOLOS && codesSection) {
                     Text(ArcholosCharacterCodesData.attribution, color = body, fontSize = 13.sp)
                 }
                 if (game == GameId.ARCHOLOS) {
@@ -200,7 +213,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         Text("Equipment and location index", color = gold, fontSize = 14.sp)
                     }
                 }
-                allEntries.map { it.source }.distinct().forEachIndexed { index, source ->
+                allCards.flatMap { it.sources }.distinct().forEachIndexed { index, source ->
                     TextButton(onClick = {
                         sourceError = false
                         try { uriHandler.openUri(source) }
@@ -219,7 +232,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"
-                            }} • ${allEntries.first { it.source == source }.group.lowercase()}",
+                            }} • ${allCards.first { source in it.sources }.entry.group.lowercase()}",
                             color = gold, fontSize = 14.sp)
                     }
                 }
@@ -228,6 +241,54 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             }
         }
     }
+    allCards.firstOrNull { it.entry.id == selectedEntryId }?.let { card ->
+        val entry = card.entry
+        Dialog(onDismissRequest = { selectedEntryId = null },
+            properties = DialogProperties(usePlatformDefaultWidth = false)) {
+            Column(Modifier.fillMaxWidth(0.94f).fillMaxHeight(0.85f)
+                .background(Color(0xFF15100D), RoundedCornerShape(14.dp))
+                .border(1.dp, gold.copy(alpha = 0.6f), RoundedCornerShape(14.dp))
+                .padding(20.dp).testTag("tool_reference_detail")) {
+                Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 12.sp)
+                Spacer(Modifier.height(8.dp))
+                Text(entry.title, color = gold, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(14.dp))
+                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                    Text(entry.body, color = body, fontSize = 16.sp, lineHeight = 23.sp,
+                        modifier = Modifier.testTag("tool_detail_body"))
+                    Spacer(Modifier.height(16.dp))
+                    card.sources.forEachIndexed { index, source ->
+                        TextButton(onClick = {
+                            sourceError = false
+                            try { uriHandler.openUri(source) }
+                            catch (_: IllegalArgumentException) { sourceError = true }
+                            catch (_: SecurityException) { sourceError = true }
+                        }, modifier = Modifier.heightIn(min = 48.dp)) {
+                            Text("OPEN REFERENCE ${index + 1}", color = gold, fontSize = 14.sp)
+                        }
+                    }
+                    if (sourceError) Text("Could not open the reference website.", color = body, fontSize = 14.sp)
+                }
+                entry.command?.let { command ->
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(command, color = gold, fontSize = 14.sp, fontFamily = FontFamily.Monospace,
+                            modifier = Modifier.weight(1f))
+                        TextButton(onClick = {
+                            clipboard.setText(AnnotatedString(command))
+                            copiedId = entry.id
+                        }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_detail_copy")) {
+                            Text(if (copiedId == entry.id) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
+                        }
+                    }
+                }
+                TextButton(onClick = { selectedEntryId = null },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("tool_detail_close")) {
+                    Text("CLOSE", color = gold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+    }
+
 }
 
 @Composable

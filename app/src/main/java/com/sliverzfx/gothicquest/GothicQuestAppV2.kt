@@ -716,8 +716,11 @@ private fun NavGameHubScreen(
     onAllQuests: () -> Unit,
     onSearch: () -> Unit
 ) {
-    var selectedTab by rememberSaveable(game, initialTab) { mutableStateOf(initialTab) }
-    LaunchedEffect(game, selectedTab) { onTabSelected(selectedTab) }
+    var selectedTab by rememberSaveable(game, initialTab) { mutableStateOf(if (initialTab == "items") "codes" else initialTab) }
+    LaunchedEffect(game, selectedTab) {
+        if (selectedTab == "items") selectedTab = "codes"
+        else onTabSelected(selectedTab)
+    }
     BackHandler { if (selectedTab != "quests") selectedTab = "quests" else onBack() }
     val logoRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_classic_logo
@@ -738,7 +741,7 @@ private fun NavGameHubScreen(
                 modifier = Modifier.width(260.dp).height(70.dp), contentScale = ContentScale.Fit)
             Spacer(Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth().selectableGroup()) {
-                listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS", "items" to "ITEMS")
+                listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS")
                     .forEach { (key, label) ->
                         Box(Modifier.weight(1f).heightIn(min = 48.dp)
                             .background(if (selectedTab == key) Color(0xB5594123) else Color(0x8815100D))
@@ -776,9 +779,8 @@ private fun NavGameHubScreen(
                 } else {
                     ToolReferenceScreen(
                         section = when (selectedTab) {
-                            "codes" -> ToolSection.MARVIN_CODES
                             "tips" -> ToolSection.USEFUL_TIPS
-                            else -> ToolSection.ITEMS
+                            else -> ToolSection.MARVIN_CODES
                         },
                         game = game,
                         onBack = { selectedTab = "quests" },

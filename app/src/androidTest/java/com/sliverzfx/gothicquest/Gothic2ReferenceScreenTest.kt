@@ -21,6 +21,7 @@ class Gothic2ReferenceScreenTest {
         composeRule.onNodeWithTag("gothic_reference_g2_itar_ranger_addon").assertExists()
         composeRule.onNodeWithTag("tool_copy_g2_itar_ranger_addon").performScrollTo().performClick()
         composeRule.onNodeWithText("COPIED").assertExists()
+        composeRule.onNodeWithTag("tool_reference_detail").assertDoesNotExist()
         composeRule.onNodeWithTag("code_category_list").performScrollToNode(hasTestTag("code_category_weapons"))
         composeRule.onNodeWithTag("code_category_weapons").performClick()
         composeRule.onNodeWithTag("gothic_reference_g2_itar_ranger_addon").assertDoesNotExist()
@@ -29,7 +30,7 @@ class Gothic2ReferenceScreenTest {
         composeRule.onNodeWithTag("gothic_reference_g2_itar_ranger_addon").assertExists()
     }
 
-    @Test fun normalItemSearchDoesNotShowSpawnCommands() {
+    @Test fun legacyItemsRouteOpensCombinedCompactCardsAndFullDetails() {
         composeRule.setContent {
             MaterialTheme {
                 GothicReferenceScreen(ToolSection.ITEMS, {}, {}, embedded = true,
@@ -38,7 +39,12 @@ class Gothic2ReferenceScreenTest {
         }
         composeRule.onNodeWithTag("tools_search_toggle").performClick()
         composeRule.onNodeWithTag("tool_reference_search").performTextInput("Dragonroot")
-        composeRule.onNodeWithTag("gothic_reference_g2_item_itpl_strength_herb_01").assertExists()
-        composeRule.onNodeWithText("COPY").assertDoesNotExist()
+        composeRule.onNodeWithTag("gothic_reference_g2_itpl_strength_herb_01").assertExists()
+        composeRule.onNodeWithTag("tool_detail_body").assertDoesNotExist()
+        composeRule.onNodeWithTag("gothic_reference_g2_itpl_strength_herb_01").performClick()
+        composeRule.onNodeWithTag("tool_detail_body").assertTextContains("+1 strength", substring = true)
+        composeRule.onNodeWithTag("tool_detail_copy").performClick()
+        composeRule.onNodeWithTag("tool_detail_close").performClick()
+        composeRule.onNodeWithTag("tool_reference_detail").assertDoesNotExist()
     }
 }

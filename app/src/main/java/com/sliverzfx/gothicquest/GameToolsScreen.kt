@@ -33,16 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 enum class ToolSection(val title: String, val description: String) {
-    MARVIN_CODES("MARVIN CODES", "Debug mode, console commands and item insert codes."),
+    MARVIN_CODES("CODES", "Commands, item details, equipment and locations."),
     USEFUL_TIPS("USEFUL TIPS", "Normal gameplay advice, training and exploration."),
     ITEMS("ITEMS", "Equipment, consumables and spell references.");
 
-    fun titleFor(game: GameId): String = when {
-        this != MARVIN_CODES -> title
-        game == GameId.GOTHIC_3 || game == GameId.RISEN ||
-            game == GameId.RISEN_2 || game == GameId.RISEN_3 -> "CONSOLE CODES"
-        else -> title
-    }
+    // Keep ITEMS as a legacy route value so saved destinations remain valid.
+    fun titleFor(game: GameId): String = if (this == ITEMS) MARVIN_CODES.title else title
+
 }
 
 private val ToolsGold = Color(0xFFD7B06A)
@@ -60,7 +57,7 @@ internal fun GameToolsScreen(onBack: () -> Unit, onHome: () -> Unit,
             Spacer(Modifier.height(8.dp))
             Text("A little help for your next adventure.", color = ToolsBody, fontSize = 16.sp)
             Spacer(Modifier.height(24.dp))
-            ToolSection.entries.forEach { section ->
+            ToolSection.entries.filter { it != ToolSection.ITEMS }.forEach { section ->
                 val shape = RoundedCornerShape(14.dp)
                 Column(Modifier.fillMaxWidth()
                     .background(Brush.verticalGradient(listOf(Color(0xF0241B13), Color(0xF0120F0C))), shape)
