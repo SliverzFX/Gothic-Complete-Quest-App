@@ -50,14 +50,14 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onHome: () -> Unit,
-    embedded: Boolean = false) {
+    embedded: Boolean = false, game: GameId = GameId.GOTHIC) {
     val gold = Color(0xFFD7B06A)
     val body = Color(0xFFC7B89B)
-    var searchVisible by rememberSaveable(section) { mutableStateOf(false) }
-    var query by rememberSaveable(section) { mutableStateOf("") }
-    var selectedCategory by rememberSaveable(section) { mutableStateOf<CodeCategory?>(null) }
-    var copiedId by rememberSaveable(section) { mutableStateOf<String?>(null) }
-    var sourceError by rememberSaveable(section) { mutableStateOf(false) }
+    var searchVisible by rememberSaveable(game, section) { mutableStateOf(false) }
+    var query by rememberSaveable(game, section) { mutableStateOf("") }
+    var selectedCategory by rememberSaveable(game, section) { mutableStateOf<CodeCategory?>(null) }
+    var copiedId by rememberSaveable(game, section) { mutableStateOf<String?>(null) }
+    var sourceError by rememberSaveable(game, section) { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
@@ -70,7 +70,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     BackHandler(enabled = !embedded || searchVisible) { if (searchVisible) closeSearch() else onBack() }
     val clipboard = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
-    val allEntries = GothicToolsData.entries(section)
+    val allEntries = if (game == GameId.GOTHIC_2_GOLD) Gothic2ToolsData.entries(section)
+        else GothicToolsData.entries(section)
     val filtered = allEntries.filter { entry ->
         (section != ToolSection.MARVIN_CODES || selectedCategory == null || entry.codeCategory == selectedCategory) &&
             (query.isBlank() || listOf(entry.title, entry.group, entry.body, entry.command.orEmpty())
@@ -78,7 +79,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     }
     val listState = rememberLazyListState()
     LaunchedEffect(searchVisible) { if (searchVisible) focusRequester.requestFocus() }
-    LaunchedEffect(query, section, selectedCategory) { listState.scrollToItem(0) }
+    LaunchedEffect(game, query, section, selectedCategory) { listState.scrollToItem(0) }
     Column(Modifier.fillMaxSize().imePadding().then(if (embedded) Modifier else
         Modifier.statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp))
         .testTag("tool_reference_screen")) {
@@ -97,9 +98,12 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Text(if (searchVisible) "CLOSE" else "SEARCH", color = gold, fontSize = 14.sp)
             }
         }
-        if (!embedded) Text("Gothic", color = body, fontSize = 18.sp)
+        if (!embedded) Text(game.persistedName, color = body, fontSize = 18.sp)
         Spacer(Modifier.height(6.dp))
-        Text(if (section == ToolSection.MARVIN_CODES) "Original Gothic • PC Marvin mode"
+        Text(if (game == GameId.GOTHIC_2_GOLD) {
+            if (section == ToolSection.MARVIN_CODES) "Gold / Night of the Raven • PC Marvin mode"
+            else "Gold / Night of the Raven • normal gameplay"
+        } else if (section == ToolSection.MARVIN_CODES) "Original Gothic • PC Marvin mode"
             else "Original Gothic • normal gameplay", color = body, fontSize = 13.sp)
         if (section == ToolSection.MARVIN_CODES) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -128,7 +132,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         }
         LazyColumn(state = listState, modifier = Modifier.weight(1f).testTag("tool_reference_list")) {
             item {
-                Text("${filtered.size} / ${allEntries.size} entries • starter reference", color = body, fontSize = 13.sp)
+                Text("${filtered.size} / ${allEntries.size} entries • ${if (game == GameId.GOTHIC_2_GOLD) "curated reference" else "starter reference"}", color = body, fontSize = 13.sp)
                 Spacer(Modifier.height(12.dp))
             }
             items(filtered, key = { it.id }) { entry ->
@@ -174,7 +178,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"
-                            }}",
+                            }} • ${allEntries.first { it.source == source }.group.lowercase()}",
                             color = gold, fontSize = 14.sp)
                     }
                 }
