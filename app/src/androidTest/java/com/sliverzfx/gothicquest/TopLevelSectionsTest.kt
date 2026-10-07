@@ -64,16 +64,15 @@ class TopLevelSectionsTest {
     }
 
     @Test
-    fun donationsPlaceholderReturnsHome() {
+    fun donationsShowsWiseSupportAndReturnsHome() {
         waitForHome()
-        listOf(
-            "DONATIONS" to "DONATIONS"
-        ).forEach { (menuLabel, sectionTitle) ->
-            composeRule.onNodeWithText(menuLabel).performClick()
-            composeRule.onNodeWithTag("section_placeholder").assertExists()
-            composeRule.onNodeWithText(sectionTitle).assertExists()
-            composeRule.onNodeWithTag("section_back").performClick()
-        }
+        composeRule.onNodeWithText("DONATIONS").performClick()
+        composeRule.onNodeWithTag("donations_screen").assertExists()
+        composeRule.onNodeWithText("Support Questbound").assertExists()
+        composeRule.onNodeWithText("@mihag25").assertExists()
+        composeRule.onNodeWithTag("donations_wise").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("donations_home").performClick()
+        composeRule.onNodeWithTag("home_screen").assertExists()
     }
 
     @Test

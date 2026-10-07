@@ -344,7 +344,7 @@ private fun GothicQuestAppContent(
                 )
                 AppRoute.About -> AboutScreen(onBack = onGuideHome)
                 AppRoute.Support -> SupportScreen(onBack = onGuideHome)
-                AppRoute.Donations -> SectionPlaceholderScreen("DONATIONS", useMenuBackground = true) { route = AppRoute.Home }
+                AppRoute.Donations -> DonationsScreen(onBack = onGuideHome)
 
                 AppRoute.Settings -> NavSettingsScreen(
                     backgroundAnimationEnabled = backgroundAnimationEnabled,

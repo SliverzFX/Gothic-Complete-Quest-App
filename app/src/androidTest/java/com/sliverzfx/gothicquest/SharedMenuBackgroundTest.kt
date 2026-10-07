@@ -62,7 +62,7 @@ class SharedMenuBackgroundTest {
 
     private val menus = listOf(
         Triple("home_settings", "‹  BACK TO MAIN MENU", null),
-        Triple("home_donations", null, "section_back"),
+        Triple("home_donations", null, "donations_home"),
         Triple("home_support", null, "support_home"),
         Triple("home_about", null, "about_home"),
         Triple("home_faqs", null, "faq_home")
