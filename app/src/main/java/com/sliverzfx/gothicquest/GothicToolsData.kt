@@ -1,8 +1,15 @@
 package com.sliverzfx.gothicquest
 
+internal enum class CodeCategory(val title: String) {
+    GENERAL("General Cheats"), CHARACTERS("Characters & Creatures"),
+    ITEMS("Items"), WEAPONS("Weapons"), ARMOR("Armor")
+}
+
 internal data class ToolReferenceEntry(
     val id: String, val group: String, val title: String, val body: String,
-    val command: String? = null, val source: String
+    val command: String? = null, val source: String,
+    val codeCategory: CodeCategory? = if (command == null) null else
+        if (group == "ITEM INSERTS") CodeCategory.ITEMS else CodeCategory.GENERAL
 )
 
 /** Original Gothic PC reference. Descriptions are independently written summaries. */
@@ -13,6 +20,11 @@ internal object GothicToolsData {
     private const val scrolls = "https://www.worldofgothic.com/gothic/?go=g1spruchrollen"
     private const val inserts = "https://www.gothicz.net/marvin/g1/insert-kody/predmety/magicke-svitky/"
 
+    private const val console = "https://gamefaqs.gamespot.com/pc/913888-gothic/cheats"
+    private const val npcs = "https://www.gothicz.net/marvin/g1/insert-kody/npc/"
+    private const val creatures = "https://www.gothicz.net/marvin/g1/insert-kody/bestie/"
+    private const val armorCodes = "https://www.gothicz.net/marvin/g1/insert-kody/predmety/zbroje/"
+
     val codes = listOf(
         ToolReferenceEntry("enable", "SETUP", "Enable Marvin mode", "Open your character/status screen, type marvin, then close it. Use your configured status-screen key; bindings vary between releases.", "marvin", cheats),
         ToolReferenceEntry("console", "SHORTCUTS", "Open the console", "With Marvin active, press F2. Type a console command and press Enter.", "F2", cheats),
@@ -22,7 +34,21 @@ internal object GothicToolsData {
         ToolReferenceEntry("light_insert", "ITEM INSERTS", "Spawn a Light scroll", "Enter this in the F2 console. The scroll is spawned into the world; pick it up.", "insert itarscrolllight", inserts),
         ToolReferenceEntry("heal_insert", "ITEM INSERTS", "Spawn a Healing scroll", "Enter this in the F2 console, then pick up the spawned scroll.", "insert itarscrollheal", inserts),
         ToolReferenceEntry("fire_insert", "ITEM INSERTS", "Spawn a Fireball scroll", "Enter this in the F2 console, then pick up the spawned scroll.", "insert itarscrollfireball", inserts),
-        ToolReferenceEntry("telekinesis_insert", "ITEM INSERTS", "Spawn a Telekinesis scroll", "Enter this in the F2 console, then pick up the spawned scroll.", "insert itarscrolltelekinesis", inserts)
+        ToolReferenceEntry("telekinesis_insert", "ITEM INSERTS", "Spawn a Telekinesis scroll", "Enter this in the F2 console, then pick up the spawned scroll.", "insert itarscrolltelekinesis", inserts),
+        ToolReferenceEntry("god", "CONSOLE COMMANDS", "God mode", "Enter in the F2 console to enable invulnerability. Enter again to toggle it off.", "cheat god", console),
+        ToolReferenceEntry("full", "CONSOLE COMMANDS", "Restore health", "Enter in the F2 console to restore your character's health.", "cheat full", console),
+        ToolReferenceEntry("ore", "STATUS-SCREEN CHEATS", "Add 1,000 ore", "Open the status screen, type marin, then close it. This older status-screen cheat can depend on your game version.", "marin", cheats),
+        ToolReferenceEntry("version", "CONSOLE COMMANDS", "Show game version", "Enter in the F2 console to display the game's version.", "version", console),
+        ToolReferenceEntry("diego", "NPC INSERTS", "Spawn Diego", "Inserts a copy of Diego. This does not move the existing character or reliably repair his quests.", "insert pc_thief", npcs, CodeCategory.CHARACTERS),
+        ToolReferenceEntry("gorn", "NPC INSERTS", "Spawn Gorn", "Inserts a copy of Gorn. Use a separate save when experimenting with story characters.", "insert pc_fighter", npcs, CodeCategory.CHARACTERS),
+        ToolReferenceEntry("scavenger", "CREATURE INSERTS", "Spawn a Scavenger", "Creates a Scavenger nearby. Spawned creatures can attack.", "insert scavenger", creatures, CodeCategory.CHARACTERS),
+        ToolReferenceEntry("molerat", "CREATURE INSERTS", "Spawn a Molerat", "Creates a Molerat nearby. Spawned creatures can attack.", "insert molerat", creatures, CodeCategory.CHARACTERS),
+        ToolReferenceEntry("rusty_sword_insert", "WEAPON INSERTS", "Spawn a Rusty Sword", "Creates a Rusty Sword to pick up. You still need to meet its requirements to equip it.", "insert ItMw_1H_Sword_Old_01", console, CodeCategory.WEAPONS),
+        ToolReferenceEntry("short_sword_insert", "WEAPON INSERTS", "Spawn a Short Sword", "Creates a Short Sword to pick up and equip if you meet its requirements.", "insert ItMw_1H_Sword_Short_01", console, CodeCategory.WEAPONS),
+        ToolReferenceEntry("battle_staff_insert", "WEAPON INSERTS", "Spawn a Battle Staff", "Creates a two-handed Battle Staff to pick up. Inserting it does not grant weapon training.", "insert ItMw_2H_Staff_01", console, CodeCategory.WEAPONS),
+        ToolReferenceEntry("digger_pants_insert", "ARMOR INSERTS", "Spawn Digger's Trousers", "Creates the digger clothing item to pick up and equip.", "insert vlk_armor_m", armorCodes, CodeCategory.ARMOR),
+        ToolReferenceEntry("shadow_armor_insert", "ARMOR INSERTS", "Spawn Shadow's Armor", "Creates Shadow's Armor. Inserting faction armor does not make you a member of that faction.", "insert STT_ARMOR_H", console, CodeCategory.ARMOR)
+
     )
     val tips = listOf(
         ToolReferenceEntry("save", "STARTING OUT", "Keep more than one save", "You can save freely. Keep an earlier slot before difficult fights or major decisions so you can return if needed.", source = faq),

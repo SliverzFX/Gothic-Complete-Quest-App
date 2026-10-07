@@ -81,6 +81,24 @@ class TopLevelSectionsTest {
     }
 
     @Test
+    fun codeCategoriesNarrowSearchAndAllCodesRestoresMatches() {
+        waitForHome()
+        composeRule.onNodeWithText("GAME TOOLS").performClick()
+        composeRule.onNodeWithTag("tools_category_marvin_codes").performClick()
+        composeRule.onNodeWithTag("game_gothic").performClick()
+        composeRule.onNodeWithTag("tools_search_toggle").performClick()
+        composeRule.onNodeWithTag("tool_reference_search").performTextInput("god")
+        composeRule.onNodeWithTag("gothic_reference_god").assertExists()
+        composeRule.onNodeWithTag("code_category_list").performScrollToNode(hasTestTag("code_category_weapons"))
+        composeRule.onNodeWithTag("code_category_weapons").performClick()
+        composeRule.onNodeWithTag("gothic_reference_god").assertDoesNotExist()
+        composeRule.onNodeWithText("No matching entries. Try another search.").assertExists()
+        composeRule.onNodeWithTag("code_category_list").performScrollToNode(hasTestTag("code_category_all"))
+        composeRule.onNodeWithTag("code_category_all").performClick()
+        composeRule.onNodeWithTag("gothic_reference_god").assertExists()
+    }
+
+    @Test
     fun faqsExpandCollapseAndReturnHome() {
         waitForHome()
         composeRule.onNodeWithText("FAQs").performClick()

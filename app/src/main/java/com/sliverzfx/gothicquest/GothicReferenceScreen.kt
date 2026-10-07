@@ -3,6 +3,7 @@ package com.sliverzfx.gothicquest
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,10 +15,13 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -50,6 +54,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     val body = Color(0xFFC7B89B)
     var searchVisible by rememberSaveable(section) { mutableStateOf(false) }
     var query by rememberSaveable(section) { mutableStateOf("") }
+    var selectedCategory by rememberSaveable(section) { mutableStateOf<CodeCategory?>(null) }
     var copiedId by rememberSaveable(section) { mutableStateOf<String?>(null) }
     var sourceError by rememberSaveable(section) { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
@@ -66,12 +71,13 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     val uriHandler = LocalUriHandler.current
     val allEntries = GothicToolsData.entries(section)
     val filtered = allEntries.filter { entry ->
-        query.isBlank() || listOf(entry.title, entry.group, entry.body, entry.command.orEmpty())
-            .any { it.contains(query.trim(), ignoreCase = true) }
+        (section != ToolSection.MARVIN_CODES || selectedCategory == null || entry.codeCategory == selectedCategory) &&
+            (query.isBlank() || listOf(entry.title, entry.group, entry.body, entry.command.orEmpty())
+                .any { it.contains(query.trim(), ignoreCase = true) })
     }
     val listState = rememberLazyListState()
     LaunchedEffect(searchVisible) { if (searchVisible) focusRequester.requestFocus() }
-    LaunchedEffect(query, section) { listState.scrollToItem(0) }
+    LaunchedEffect(query, section, selectedCategory) { listState.scrollToItem(0) }
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().imePadding()
         .padding(horizontal = 20.dp).testTag("tool_reference_screen")) {
         ToolsHeader(onBack, onHome,
@@ -83,6 +89,20 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         Spacer(Modifier.height(6.dp))
         Text(if (section == ToolSection.MARVIN_CODES) "Original Gothic • PC Marvin mode"
             else "Original Gothic • normal gameplay", color = body, fontSize = 13.sp)
+        if (section == ToolSection.MARVIN_CODES) {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth().testTag("code_category_list")) {
+                item {
+                    CodeCategoryChip("All Codes", selectedCategory == null, "code_category_all") {
+                        selectedCategory = null
+                    }
+                }
+                items(CodeCategory.entries, key = { it.name }) { category ->
+                    CodeCategoryChip(category.title, selectedCategory == category,
+                        "code_category_${category.name.lowercase()}") { selectedCategory = category }
+                }
+            }
+        }
         if (searchVisible) {
             OutlinedTextField(value = query, onValueChange = { query = it }, singleLine = true,
                 label = { Text("Search this section") },
@@ -138,7 +158,11 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         catch (_: IllegalArgumentException) { sourceError = true }
                         catch (_: SecurityException) { sourceError = true }
                     }, modifier = Modifier.heightIn(min = 56.dp)) {
-                        Text("${index + 1}. ${if (source.contains("gothicz.net")) "Gothicz.net" else "World of Gothic"}",
+                        Text("${index + 1}. ${when {
+                                source.contains("gothicz.net") -> "Gothicz.net"
+                                source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
+                                else -> "World of Gothic"
+                            }}",
                             color = gold, fontSize = 14.sp)
                     }
                 }
@@ -147,4 +171,15 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             }
         }
     }
+}
+
+@Composable
+private fun CodeCategoryChip(label: String, selected: Boolean, tag: String, onClick: () -> Unit) {
+    val gold = Color(0xFFD7B06A)
+    FilterChip(selected = selected, onClick = onClick,
+        label = { Text(label, fontSize = 14.sp) },
+        modifier = Modifier.heightIn(min = 48.dp).testTag(tag),
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = Color(0xE615100D), labelColor = gold,
+            selectedContainerColor = Color(0xFF594123), selectedLabelColor = Color(0xFFFFE0A0)))
 }
