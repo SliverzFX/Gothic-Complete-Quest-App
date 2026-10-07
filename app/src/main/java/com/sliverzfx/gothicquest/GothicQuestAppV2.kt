@@ -809,7 +809,7 @@ private fun NavChapterButton(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 60.dp)
+            .heightIn(min = 72.dp)
             .testTag("chapter_button_$chapter")
             .border(
                 1.dp,
@@ -827,7 +827,7 @@ private fun NavChapterButton(
                 alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 6.dp)
+            .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -845,11 +845,11 @@ private fun NavChapterButton(
             }
             Text("›", color = Color(0xFFD7B06A), fontSize = 26.sp)
         }
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(5.dp))
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(3.dp)
+                .height(6.dp)
                 .background(Color(0xFF0B0907), RoundedCornerShape(3.dp))
                 .border(1.dp, navProgressBorder(game), RoundedCornerShape(3.dp))
         ) {
