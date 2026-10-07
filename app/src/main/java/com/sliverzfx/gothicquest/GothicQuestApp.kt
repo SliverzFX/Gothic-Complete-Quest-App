@@ -1,7 +1,6 @@
 package com.sliverzfx.gothicquest
 
 import android.content.Context
-import android.media.MediaPlayer
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
@@ -62,21 +61,7 @@ fun GothicQuestApp() {
     var favoriteKeys by remember { mutableStateOf(loadFavoriteKeys(context)) }
     var completedKeys by remember { mutableStateOf(loadCompletedKeys(context)) }
     var musicEnabled by remember { mutableStateOf(loadMusicEnabled(context)) }
-    val musicPlayer = remember { MediaPlayer.create(context, R.raw.gothic_old_camp) }
-
-    DisposableEffect(musicPlayer) {
-        musicPlayer?.isLooping = true
-        musicPlayer?.setVolume(0.45f, 0.45f)
-        onDispose { musicPlayer?.release() }
-    }
-
-    LaunchedEffect(musicEnabled, showSplash) {
-        if (musicEnabled && !showSplash) {
-            if (musicPlayer?.isPlaying == false) musicPlayer.start()
-        } else if (musicPlayer?.isPlaying == true) {
-            musicPlayer.pause()
-        }
-    }
+    AppMusic(enabled = musicEnabled, introFinished = !showSplash)
 
     LaunchedEffect(Unit) {
         delay(2200)

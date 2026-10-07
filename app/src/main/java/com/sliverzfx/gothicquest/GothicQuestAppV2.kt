@@ -1,7 +1,6 @@
 package com.sliverzfx.gothicquest
 
 import android.content.Context
-import android.media.MediaPlayer
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
@@ -269,21 +268,7 @@ private fun GothicQuestAppContent(
         appView.keepScreenOn = keepScreenAwake
         onDispose { appView.keepScreenOn = previousKeepScreenOn }
     }
-    val musicPlayer = remember { MediaPlayer.create(context, R.raw.gothic_old_camp) }
-
-    DisposableEffect(musicPlayer) {
-        musicPlayer?.isLooping = true
-        musicPlayer?.setVolume(0.45f, 0.45f)
-        onDispose { musicPlayer?.release() }
-    }
-
-    LaunchedEffect(musicEnabled, introPending) {
-        if (musicEnabled && !introPending) {
-            if (musicPlayer?.isPlaying == false) musicPlayer.start()
-        } else if (musicPlayer?.isPlaying == true) {
-            musicPlayer.pause()
-        }
-    }
+    AppMusic(enabled = musicEnabled, introFinished = !introPending)
 
     CompositionLocalProvider(
         LocalReduceAnimations provides reduceAnimations,
