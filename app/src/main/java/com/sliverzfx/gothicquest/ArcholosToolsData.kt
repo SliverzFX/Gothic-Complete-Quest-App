@@ -46,7 +46,7 @@ internal object ArcholosToolsData {
         addAll(items37())
     } }
 
-    val codes: List<ToolReferenceEntry> by lazy { generalCodes + catalog.map { item ->
+    val codes: List<ToolReferenceEntry> by lazy { generalCodes + ArcholosCharacterCodesData.entries + catalog.map { item ->
         ToolReferenceEntry("arch_code_${item.code}", item.group, "Spawn ${item.title}",
             item.body + "\nSpawns an exported object nearby. Pick it up to add it to inventory.",
             command = "insert ${item.code}", source = item.source, codeCategory = item.category)

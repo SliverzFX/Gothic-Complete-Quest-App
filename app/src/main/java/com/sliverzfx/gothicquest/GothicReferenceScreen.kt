@@ -104,7 +104,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         if (!embedded) Text(game.persistedName, color = body, fontSize = 18.sp)
         Spacer(Modifier.height(6.dp))
         Text(if (game == GameId.ARCHOLOS) {
-            "Archolos • item source v${ArcholosToolsData.sourceVersion}"
+            "Archolos • items v${ArcholosToolsData.sourceVersion} / actor index"
         } else if (game == GameId.GOTHIC_2_GOLD) {
             if (section == ToolSection.MARVIN_CODES) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
@@ -140,8 +140,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Text("${filtered.size} / ${allEntries.size} entries • reference", color = body, fontSize = 13.sp)
                 if (game == GameId.ARCHOLOS) {
                     Spacer(Modifier.height(6.dp))
-                    Text("Source snapshot v${ArcholosToolsData.sourceVersion}. Later patches may differ. " +
-                        "Codes include quest, NPC and legacy objects; normal acquisition is not verified.",
+                    Text("Item source v${ArcholosToolsData.sourceVersion}; NPC/creature index version unspecified. " +
+                        "Later patches may differ. Exports include quest and legacy variants.",
                         color = body, fontSize = 13.sp, lineHeight = 18.sp)
                 }
                 Spacer(Modifier.height(12.dp))
@@ -178,6 +178,9 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             }
             item {
                 Text("REFERENCE SOURCES", color = gold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                if (game == GameId.ARCHOLOS && section == ToolSection.MARVIN_CODES) {
+                    Text(ArcholosCharacterCodesData.attribution, color = body, fontSize = 13.sp)
+                }
                 allEntries.map { it.source }.distinct().forEachIndexed { index, source ->
                     TextButton(onClick = {
                         sourceError = false
@@ -189,6 +192,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                                 source.contains("github.com/auronen/Gothic-1-localization") ||
                                     source.contains("github.com/auronen/Gothic-2-localization") -> "Gothic script reference"
                                 source.contains("github.com/auronen/CoM-itemlist") -> "Archolos item export v1.2.2"
+                                source.contains("docs.google.com/spreadsheets/d/1LZa9Key") -> "ID index © CrazyRaus, 2022"
                                 source.contains("gothicz.net") -> "Gothicz.net"
                                 source.contains("gamefaqs.gamespot.com") -> "GameFAQs"
                                 else -> "World of Gothic"

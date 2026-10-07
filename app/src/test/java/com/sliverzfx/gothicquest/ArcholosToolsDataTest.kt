@@ -5,7 +5,7 @@ import org.junit.Test
 
 class ArcholosToolsDataTest {
     @Test fun sectionsHaveDistinctIdsAndExpectedCoverage() {
-        assertEquals(2605, ArcholosToolsData.codes.size)
+        assertEquals(5557, ArcholosToolsData.codes.size)
         assertEquals(1252, ArcholosToolsData.items.size)
         assertEquals(15, ArcholosToolsData.tips.size)
         val entries = ToolSection.entries.flatMap { ArcholosToolsData.entries(it) }
@@ -15,13 +15,13 @@ class ArcholosToolsDataTest {
     }
     @Test fun exportedIdsAreSafeCompleteAndCategoryCountsMatch() {
         val codes = ArcholosToolsData.codes.filter { it.command?.startsWith("insert ") == true }
-        assertEquals(2599, codes.size)
+        assertEquals(5551, codes.size)
         assertTrue(codes.all { Regex("insert [a-z0-9_]+").matches(it.command!!) })
         assertEquals(codes.size, codes.map { it.command }.toSet().size)
         assertEquals(488, codes.count { it.codeCategory == CodeCategory.WEAPONS })
         assertEquals(238, codes.count { it.codeCategory == CodeCategory.ARMOR })
         assertEquals(1873, codes.count { it.codeCategory == CodeCategory.ITEMS })
-        assertFalse(codes.any { it.codeCategory == CodeCategory.CHARACTERS })
+        assertEquals(2952, codes.count { it.codeCategory == CodeCategory.CHARACTERS })
     }
     @Test fun conditionalSummonerBeltStatsAreNotCollapsed() {
         val body = code("itbe_mod_summon_h").body
