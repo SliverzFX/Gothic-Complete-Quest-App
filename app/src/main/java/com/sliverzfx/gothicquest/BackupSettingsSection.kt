@@ -143,7 +143,7 @@ internal fun BackupSettingsSection(
             onDismissRequest = { if (!busy) pendingRestore = null },
             containerColor = Color(0xFF15100D),
             title = { Text("Restore backup?", color = gold) },
-            text = { Text("Replace your current progress, favorites, settings and Continue location with this backup?\n\n${backup.completed.size} completed quests • ${backup.favorites.size} favorites",
+            text = { Text("Replace your current progress, notes, reading positions, favorites, settings and Continue location with this backup?\n\n${backup.completed.size} completed quests • ${backup.inProgress.size} in progress • ${backup.notes.size} notes • ${backup.favorites.size} favorites",
                 color = Color(0xFFC7B89B)) },
             confirmButton = {
                 TextButton(enabled = !busy, onClick = {
