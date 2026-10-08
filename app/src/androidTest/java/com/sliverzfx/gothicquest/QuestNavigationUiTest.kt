@@ -14,7 +14,7 @@ import org.junit.Test
 class QuestNavigationUiTest {
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
 
-    @Test fun nextAndPreviousOpenQuestAtTopAndBackKeepsOriginalChapter() {
+    @Test fun nextAndPreviousOpenQuestsAndBackKeepsOriginalChapter() {
         rule.waitUntil(10000) {
             rule.onAllNodesWithText("PICK A GAME").fetchSemanticsNodes().isNotEmpty()
         }
@@ -24,10 +24,10 @@ class QuestNavigationUiTest {
         rule.onNodeWithText("Admission to the Old Camp").performClick()
         rule.onNodeWithTag("quest_previous").performScrollTo().assertIsNotEnabled()
         rule.onNodeWithTag("quest_next").performScrollTo().performClick()
-        rule.onNodeWithText("G1-C1-02").assertIsDisplayed()
+        rule.onNodeWithText("G1-C1-02").assertExists()
         rule.onNodeWithTag("quest_previous").performScrollTo().performClick()
-        rule.onNodeWithText("G1-C1-01").assertIsDisplayed()
-        rule.onNodeWithText("‹  BACK TO QUESTS").performScrollTo().performClick()
+        rule.onNodeWithText("G1-C1-01").assertExists()
+        rule.onAllNodesWithText("‹  BACK TO QUESTS")[0].performScrollTo().performClick()
         rule.onNodeWithText("GOTHIC — CHAPTER 1").assertExists()
     }
 }

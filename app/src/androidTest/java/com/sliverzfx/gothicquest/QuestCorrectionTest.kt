@@ -39,7 +39,7 @@ class QuestCorrectionTest {
         }
         rule.onNodeWithTag("support_back").performClick()
         rule.onNodeWithTag("quest_report_correction").assertExists()
-        rule.onNodeWithText("‹  BACK TO QUESTS").performScrollTo().performClick()
+        rule.onAllNodesWithText("‹  BACK TO QUESTS")[0].performScrollTo().performClick()
         rule.onNodeWithText("GOTHIC — SEARCH").assertExists()
         rule.onNodeWithText("HOME").performClick()
         rule.onNodeWithText("SUPPORT").performClick()

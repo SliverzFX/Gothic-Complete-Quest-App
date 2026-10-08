@@ -18,7 +18,10 @@ internal data class QuestAppBackup(
     val resumeQuest: String?,
     val reduceAnimations: Boolean = false,
     val backgroundAnimationEnabled: Boolean = true,
-    val recentVisits: String? = null
+    val recentVisits: String? = null,
+    val inProgress: Set<String> = emptySet(),
+    val notes: Map<String, String> = emptyMap(),
+    val readingPositions: Map<String, Int> = emptyMap()
 )
 
 internal object QuestBackupCodec {
@@ -37,7 +40,14 @@ internal object QuestBackupCodec {
         prefs.getString("resume_quest", null),
         prefs.getBoolean("reduce_animations", false),
         prefs.getBoolean("background_animation_enabled", true),
-        prefs.getString(RecentVisitsKey, null)
+        prefs.getString(RecentVisitsKey, null),
+        prefs.getStringSet("in_progress", emptySet())!!.toSet(),
+        prefs.all.filterKeys { it.startsWith("quest_note:") }.mapNotNull { (key, value) ->
+            (value as? String)?.let { key.removePrefix("quest_note:") to it }
+        }.toMap(),
+        prefs.all.filterKeys { it.startsWith("quest_scroll:") }.mapNotNull { (key, value) ->
+            (value as? Int)?.let { key.removePrefix("quest_scroll:") to it }
+        }.toMap()
     )
 
     fun encode(backup: QuestAppBackup): String = JSONObject().apply {
@@ -45,6 +55,9 @@ internal object QuestBackupCodec {
         put("version", 1)
         put("completed", JSONArray(backup.completed.sorted()))
         put("favorites", JSONArray(backup.favorites.sorted()))
+        put("in_progress", JSONArray(backup.inProgress.sorted()))
+        put("notes", JSONObject(backup.notes))
+        put("reading_positions", JSONObject(backup.readingPositions))
         put("settings", JSONObject().apply {
             put("text_size", backup.textSize)
             put("box_opacity_percent", backup.boxOpacity)
@@ -64,7 +77,7 @@ internal object QuestBackupCodec {
     }.toString(2)
 
     fun decode(text: String): QuestAppBackup {
-        require(text.length <= 2_000_000) { "Backup file is too large." }
+        require(text.length <= 25_000_000) { "Backup file is too large." }
         val root = JSONObject(text)
         require(root.get("format") == FORMAT && root.get("version") == 1) { "Unsupported backup file." }
         fun string(obj: JSONObject, key: String): String {
@@ -92,6 +105,29 @@ internal object QuestBackupCodec {
                 value
             }.toSet()
         }
+        fun validJournalKey(key: String): Boolean = key.length <= 200 &&
+            key.matches(Regex("""(G1|G2|NB|G3|R1|R2|R3|AR)\|[^|\s]+""")) && "|tool:" !in key
+        val notes = if (!root.has("notes")) emptyMap() else {
+            val obj = root.getJSONObject("notes")
+            require(obj.length() <= 20_000) { "Too many quest notes." }
+            obj.keys().asSequence().associateWith { key ->
+                val value = obj.get(key)
+                require(validJournalKey(key) && value is String && value.length <= 4000) { "Invalid quest note." }
+                value as String
+            }
+        }
+        val positions = if (!root.has("reading_positions")) emptyMap() else {
+            val obj = root.getJSONObject("reading_positions")
+            require(obj.length() <= 20_000) { "Too many reading positions." }
+            obj.keys().asSequence().associateWith { key ->
+                val value = obj.get(key)
+                require(validJournalKey(key) && value is Int && value in 0..10_000_000) { "Invalid reading position." }
+                value as Int
+            }
+        }
+        val inProgress = if (root.has("in_progress")) keys("in_progress").also { set ->
+            require(set.all(::validJournalKey)) { "Invalid in-progress quest." }
+        } else emptySet()
         val settings = root.getJSONObject("settings")
         val size = string(settings, "text_size")
         val display = string(settings, "completed_quest_display")
@@ -115,13 +151,14 @@ internal object QuestBackupCodec {
             if (settings.has("background_animation_enabled")) boolean(settings, "background_animation_enabled") else true,
             if (root.has("recent_visits")) root.getJSONArray("recent_visits").toString().also {
                 RecentVisitsCodec.decode(it)
-            } else null)
+            } else null, inProgress, notes, positions)
     }
 
     fun restore(prefs: SharedPreferences, backup: QuestAppBackup): Boolean =
         prefs.edit()
             .putStringSet("completed", backup.completed)
             .putStringSet("favorites", backup.favorites)
+            .putStringSet("in_progress", backup.inProgress - backup.completed)
             .putString("text_size", backup.textSize)
             .putInt("box_opacity_percent", backup.boxOpacity)
             .putInt("background_brightness_percent", backup.backgroundBrightness)
@@ -133,6 +170,10 @@ internal object QuestBackupCodec {
             .remove(RecentVisitsKey)
             .remove("resume_game").remove("resume_chapter").remove("resume_quest")
             .apply {
+                prefs.all.keys.filter { it.startsWith("quest_note:") || it.startsWith("quest_scroll:") }
+                    .forEach { remove(it) }
+                backup.notes.forEach { (key, value) -> putString("quest_note:$key", value) }
+                backup.readingPositions.forEach { (key, value) -> putInt("quest_scroll:$key", value) }
                 backup.recentVisits?.let { putString(RecentVisitsKey, it) }
                 if (backup.resumeGame != null && backup.resumeChapter != null) {
                     putString("resume_game", backup.resumeGame)

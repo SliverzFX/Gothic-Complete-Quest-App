@@ -253,6 +253,14 @@ private fun GothicQuestAppContent(
 
     var favoriteKeys by remember { mutableStateOf(loadNavStringSet(context, "favorites")) }
     var completedKeys by remember { mutableStateOf(loadNavStringSet(context, "completed")) }
+    var inProgressKeys by remember { mutableStateOf(loadNavStringSet(context, "in_progress")) }
+    val setQuestStatus: (String, QuestStatus) -> Unit = { key, status ->
+        val progress = withQuestStatus(completedKeys, inProgressKeys, key, status)
+        context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE).edit()
+            .putStringSet("completed", progress.completed).putStringSet("in_progress", progress.inProgress).apply()
+        completedKeys = progress.completed
+        inProgressKeys = progress.inProgress
+    }
     var completedDisplay by remember {
         mutableStateOf(CompletedQuestDisplay.fromStoredValue(
             context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
@@ -289,6 +297,7 @@ private fun GothicQuestAppContent(
         LocalToggleToolFavorite provides { game, entryId ->
             favoriteKeys = toggleNavSet(context, "favorites", favoriteKeys, toolFavoriteKey(game, entryId))
         },
+        LocalInProgressKeys provides inProgressKeys,
         LocalCompletedKeys provides completedKeys
     ) {
     Box(Modifier.fillMaxSize()) {
@@ -410,6 +419,7 @@ private fun GothicQuestAppContent(
                         recentVisits = RecentVisitsCodec.load(visitPrefs)
                         favoriteKeys = loadNavStringSet(context, "favorites")
                         completedKeys = loadNavStringSet(context, "completed")
+                        inProgressKeys = loadNavStringSet(context, "in_progress")
                         musicEnabled = loadNavMusicEnabled(context)
                         val prefs = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
                         keepScreenAwake = prefs.getBoolean("keep_screen_awake", false)
@@ -422,9 +432,10 @@ private fun GothicQuestAppContent(
                     },
                     onResetGame = { game ->
                         val updated = progressWithoutGame(completedKeys, navGamePrefix(game))
+                        val updatedInProgress = progressWithoutGame(inProgressKeys, navGamePrefix(game))
                         val saved = context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE)
-                            .edit().putStringSet("completed", updated).commit()
-                        if (saved) completedKeys = updated
+                            .edit().putStringSet("completed", updated).putStringSet("in_progress", updatedInProgress).commit()
+                        if (saved) { completedKeys = updated; inProgressKeys = updatedInProgress }
                         saved
                     },
                     backgroundBrightness = backgroundBrightness,
@@ -526,11 +537,14 @@ private fun GothicQuestAppContent(
                             },
                             isFavorite = favoriteKey in favoriteKeys,
                             isCompleted = completedKey in completedKeys,
+                            status = questStatus(completedKeys, inProgressKeys, completedKey),
+                            onStatusChanged = { setQuestStatus(completedKey, it) },
                             onToggleFavorite = {
                                 favoriteKeys = toggleNavSet(context, "favorites", favoriteKeys, favoriteKey)
                             },
                             onToggleCompleted = {
-                                completedKeys = toggleNavSet(context, "completed", completedKeys, completedKey)
+                                setQuestStatus(completedKey, if (completedKey in completedKeys)
+                                    QuestStatus.NOT_STARTED else QuestStatus.COMPLETED)
                             },
                             onReportCorrection = {
                                 route = AppRoute.QuestCorrection(currentRoute.game, quest.id)
@@ -1007,6 +1021,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
             Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
         }
         Spacer(Modifier.height(3.dp))
+        QuestInProgressBadge(game, quest)
         Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
         Text(
@@ -1029,6 +1044,8 @@ private fun NavQuestDetailScreen(
     onAdjacentQuest: (Quest) -> Unit,
     isFavorite: Boolean,
     isCompleted: Boolean,
+    status: QuestStatus,
+    onStatusChanged: (QuestStatus) -> Unit,
     onToggleFavorite: () -> Unit,
     onToggleCompleted: () -> Unit,
     onReportCorrection: () -> Unit,
@@ -1036,7 +1053,8 @@ private fun NavQuestDetailScreen(
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
-    val scrollState = remember(game, quest.id) { androidx.compose.foundation.ScrollState(0) }
+    val questKey = navQuestKey(game, quest)
+    val scrollState = rememberQuestReadingScroll(questKey)
     NavGuideBackground(game) {
         Column(
             Modifier
@@ -1069,6 +1087,8 @@ private fun NavQuestDetailScreen(
                     modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
                 )
             }
+            Spacer(Modifier.height(12.dp))
+            QuestStatusButtons(status, onStatusChanged)
             if (quest.aliases.isNotEmpty()) {
                 Text("Also: ${quest.aliases.joinToString()}", color = Color(0xFF9E8B70), fontSize = 12.sp)
             }
@@ -1125,6 +1145,7 @@ private fun NavQuestDetailScreen(
                 Spacer(Modifier.height(12.dp))
             }
             Spacer(Modifier.height(12.dp))
+            QuestNotesSection(questKey)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 NavAdjacentQuestButton("‹  PREVIOUS QUEST", "quest_previous", neighbors.previous,
                     onAdjacentQuest, Modifier.weight(1f))
@@ -1233,6 +1254,7 @@ private fun NavAllQuestsScreen(
                     .clickable { onQuestSelected(quest) }
                     .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
+                QuestInProgressBadge(game, quest)
                 Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(
@@ -1343,6 +1365,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
             Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
         }
+        QuestInProgressBadge(game, quest)
         Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(5.dp))
         Text("${quest.giver} • ${quest.location}", color = Color(0xFF9E8B70), fontSize = 11.sp)
@@ -1404,6 +1427,7 @@ private fun NavFavoritesScreen(
                             Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                             Text("★", color = Color(0xFFD7B06A), fontSize = 20.sp)
                         }
+                        QuestInProgressBadge(entry.game, quest)
                         Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.height(10.dp))

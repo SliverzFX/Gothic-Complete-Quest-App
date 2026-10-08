@@ -88,7 +88,7 @@ internal fun BackupSettingsSection(
         .border(1.dp, Color(0xFF5F4529), shape).padding(16.dp)) {
         Text("BACKUP & RESTORE", color = gold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(6.dp))
-        Text("Save progress, favorites, settings and your Continue location to a file.",
+        Text("Save progress, notes, reading positions, favorites, settings and your Continue location to a file.",
             color = Color(0xFF9E8B70), fontSize = 12.sp)
         TextButton(enabled = !busy, onClick = {
             exportText = QuestBackupCodec.encode(QuestBackupCodec.capture(prefs))
@@ -106,7 +106,7 @@ internal fun BackupSettingsSection(
         .border(1.dp, Color(0xFF5F4529), shape).padding(16.dp)) {
         Text("RESET GAME PROGRESS", color = gold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(6.dp))
-        Text("Clear completion marks for one game. Favorites and other games stay saved.",
+        Text("Clear completed and in-progress marks for one game. Notes, favorites and other games stay saved.",
             color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(12.dp))
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -169,7 +169,7 @@ internal fun BackupSettingsSection(
             onDismissRequest = { resetGame = null },
             containerColor = Color(0xFF15100D),
             title = { Text("Reset ${game.persistedName} progress?", color = gold) },
-            text = { Text("Clear all completion marks for this game? Your favorites and other games will be kept.",
+            text = { Text("Clear completed and in-progress marks for this game? Your notes, favorites and other games will be kept.",
                 color = Color(0xFFC7B89B)) },
             confirmButton = {
                 TextButton(onClick = {
