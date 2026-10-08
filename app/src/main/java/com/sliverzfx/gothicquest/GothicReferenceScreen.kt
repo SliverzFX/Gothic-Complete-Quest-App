@@ -78,17 +78,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
     BackHandler(enabled = !embedded || searchVisible) { if (searchVisible) closeSearch() else onBack() }
     val clipboard = LocalClipboardManager.current
     val allCards = remember(game, section) {
-        fun entries(requested: ToolSection): List<ToolReferenceEntry> = when (game) {
-            GameId.GOTHIC_2_GOLD -> Gothic2ToolsData.entries(requested)
-            GameId.ARCHOLOS -> ArcholosToolsData.entries(requested)
-            GameId.GOTHIC_3 -> Gothic3ToolsData.entries(requested)
-            GameId.RISEN -> RisenToolsData.entries(requested)
-            GameId.RISEN_2 -> Risen2ToolsData.entries(requested)
-            GameId.RISEN_3 -> Risen3ToolsData.entries(requested)
-            else -> GothicToolsData.entries(requested)
-        }
-        if (codesSection) combineToolReferences(entries(ToolSection.MARVIN_CODES), entries(ToolSection.ITEMS))
-        else entries(ToolSection.USEFUL_TIPS).map { ToolReferenceCard(it, setOf(it.source)) }
+        game.toolReferenceCards(section)
     }
     val allEntries = remember(allCards) { allCards.map { it.entry } }
     val filtered = allEntries.filter { entry ->
@@ -184,7 +174,11 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                     .testTag("gothic_reference_${entry.id}").padding(horizontal = 14.dp, vertical = 10.dp)) {
                     Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 11.sp, letterSpacing = 1.sp)
                     Spacer(Modifier.height(4.dp))
-                    Text(entry.title, color = gold, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(entry.title, color = gold, fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1f))
+                        if (codesSection) ToolFavoriteButton(game, entry)
+                    }
                     entry.command?.let { command ->
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text(command, color = gold, fontSize = 13.sp, fontFamily = FontFamily.Monospace,
@@ -193,7 +187,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                                 clipboard.setText(AnnotatedString(command))
                                 copiedId = entry.id
                             }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_copy_${entry.id}")) {
-                                Text(if (copiedId == entry.id) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
+                                Text(if (copiedId == entry.id && selectedEntryId == null) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
                             }
                         }
                     }
@@ -223,44 +217,57 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
         }
     }
     allCards.firstOrNull { it.entry.id == selectedEntryId }?.let { card ->
-        val entry = card.entry
-        Dialog(onDismissRequest = { selectedEntryId = null },
-            properties = DialogProperties(usePlatformDefaultWidth = false)) {
-            Column(Modifier.fillMaxWidth(0.94f).fillMaxHeight(0.85f)
-                .background(Color(0xFF15100D), RoundedCornerShape(14.dp))
-                .border(1.dp, gold.copy(alpha = 0.6f), RoundedCornerShape(14.dp))
-                .padding(20.dp).testTag("tool_reference_detail")) {
-                Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 12.sp)
-                Spacer(Modifier.height(8.dp))
-                Text(entry.title, color = gold, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(14.dp))
-                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
-                    Text(entry.body, color = body, fontSize = 16.sp, lineHeight = 23.sp,
-                        modifier = Modifier.testTag("tool_detail_body"))
-                    Spacer(Modifier.height(16.dp))
-                    Text("Reference: " + card.sources.flatMap { it.split(" | ") }.map(::referenceSourceName).distinct().joinToString(" • "),
-                        color = body.copy(alpha = 0.75f), fontSize = 12.sp, lineHeight = 17.sp)
-                }
-                entry.command?.let { command ->
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(command, color = gold, fontSize = 14.sp, fontFamily = FontFamily.Monospace,
-                            modifier = Modifier.weight(1f))
-                        TextButton(onClick = {
-                            clipboard.setText(AnnotatedString(command))
-                            copiedId = entry.id
-                        }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_detail_copy")) {
-                            Text(if (copiedId == entry.id) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
-                        }
+        ToolReferenceDetailDialog(game, card, allowFavorite = codesSection) { selectedEntryId = null }
+    }
+}
+
+@Composable
+internal fun ToolReferenceDetailDialog(
+    game: GameId, card: ToolReferenceCard, allowFavorite: Boolean = true, onClose: () -> Unit
+) {
+    val gold = Color(0xFFD7B06A)
+    val body = Color(0xFFC7B89B)
+    val entry = card.entry
+    val clipboard = LocalClipboardManager.current
+    var copied by remember(card.entry.id, game) { mutableStateOf(false) }
+    Dialog(onDismissRequest = onClose,
+        properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Column(Modifier.fillMaxWidth(0.94f).fillMaxHeight(0.85f)
+            .background(Color(0xFF15100D), RoundedCornerShape(14.dp))
+            .border(1.dp, gold.copy(alpha = 0.6f), RoundedCornerShape(14.dp))
+            .padding(20.dp).testTag("tool_reference_detail")) {
+            Text("${game.persistedName} • ${entry.group}", color = gold.copy(alpha = 0.8f), fontSize = 12.sp)
+            Spacer(Modifier.height(8.dp))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(entry.title, color = gold, fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f))
+                if (allowFavorite) ToolFavoriteButton(game, entry, "tool_detail_favorite")
+            }
+            Spacer(Modifier.height(14.dp))
+            Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                Text(entry.body, color = body, fontSize = 16.sp, lineHeight = 23.sp,
+                    modifier = Modifier.testTag("tool_detail_body"))
+                Spacer(Modifier.height(16.dp))
+                Text("Reference: " + card.sources.flatMap { it.split(" | ") }.map(::referenceSourceName).distinct().joinToString(" • "),
+                    color = body.copy(alpha = 0.75f), fontSize = 12.sp, lineHeight = 17.sp)
+            }
+            entry.command?.let { command ->
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text(command, color = gold, fontSize = 14.sp, fontFamily = FontFamily.Monospace,
+                        modifier = Modifier.weight(1f))
+                    TextButton(onClick = {
+                        clipboard.setText(AnnotatedString(command)); copied = true
+                    }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_detail_copy")) {
+                        Text(if (copied) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
                     }
                 }
-                TextButton(onClick = { selectedEntryId = null },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("tool_detail_close")) {
-                    Text("CLOSE", color = gold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                }
+            }
+            TextButton(onClick = onClose,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("tool_detail_close")) {
+                Text("CLOSE", color = gold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
-
 }
 
 @Composable

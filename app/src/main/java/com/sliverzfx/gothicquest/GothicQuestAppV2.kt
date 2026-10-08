@@ -285,6 +285,10 @@ private fun GothicQuestAppContent(
     CompositionLocalProvider(
         LocalReduceAnimations provides reduceAnimations,
         LocalCompletedDisplay provides completedDisplay,
+        LocalToolFavoriteKeys provides favoriteKeys,
+        LocalToggleToolFavorite provides { game, entryId ->
+            favoriteKeys = toggleNavSet(context, "favorites", favoriteKeys, toolFavoriteKey(game, entryId))
+        },
         LocalCompletedKeys provides completedKeys
     ) {
     Box(Modifier.fillMaxSize()) {
@@ -457,7 +461,8 @@ private fun GothicQuestAppContent(
 
                 AppRoute.Favorites -> NavFavoritesScreen(
                     onHome = onGuideHome,
-                    entries = buildNavFavoriteEntries(favoriteKeys),
+                    entries = remember(favoriteKeys) { buildNavFavoriteEntries(favoriteKeys) },
+                    toolEntries = remember(favoriteKeys) { buildToolFavorites(favoriteKeys) },
                     onBack = { route = AppRoute.QuestGuides },
                     onQuestSelected = { game, quest ->
                         questReturnRoute = AppRoute.Favorites
@@ -683,16 +688,7 @@ private fun saveNavMusicEnabled(context: Context, enabled: Boolean) {
         .apply()
 }
 
-private fun navGamePrefix(game: GameId): String = when (game) {
-    GameId.GOTHIC -> "G1"
-    GameId.GOTHIC_2_GOLD -> "G2"
-    GameId.NEW_BALANCE -> "NB"
-    GameId.GOTHIC_3 -> "G3"
-    GameId.RISEN -> "R1"
-    GameId.RISEN_2 -> "R2"
-    GameId.RISEN_3 -> "R3"
-    GameId.ARCHOLOS -> "AR"
-}
+private fun navGamePrefix(game: GameId): String = game.savedKeyPrefix
 
 private fun navQuestKey(game: GameId, quest: Quest): String = "${navGamePrefix(game)}|${quest.id}"
 
@@ -1356,6 +1352,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
 @Composable
 private fun NavFavoritesScreen(
     entries: List<NavFavoriteEntry>,
+    toolEntries: List<SavedToolFavorite>,
     onHome: () -> Unit,
     onBack: () -> Unit,
     onQuestSelected: (GameId, Quest) -> Unit
@@ -1375,33 +1372,44 @@ private fun NavFavoritesScreen(
         NavGuideHeader("‹  BACK TO GAMES", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("FAVORITES", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Text("${visibleEntries.size} VISIBLE • ${entries.size} SAVED QUESTS", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text("${visibleEntries.size + toolEntries.size} VISIBLE • ${entries.size + toolEntries.size} SAVED FAVORITES", color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
-        if (visibleEntries.isEmpty()) {
-            Text(if (entries.isEmpty()) "No favorites yet. Open any quest and tap ☆ to save it here."
+        if (visibleEntries.isEmpty() && toolEntries.isEmpty()) {
+            Text(if (entries.isEmpty()) "No favorites yet. Tap ☆ on a quest, code or item to save it here."
                 else "Completed favorites are hidden. Change Completed quests in Settings to show them.", color = Color(0xFFC7B89B), fontSize = 14.sp)
         } else {
-            visibleEntries.forEach { entry ->
-                val quest = entry.quest
-                val shape = RoundedCornerShape(7.dp)
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .alpha(questOpacity(entry.game, quest))
-                        .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape, alpha = NavBoxOpacity)
-                        .border(1.dp, Color(0xFF5F4529), shape)
-                        .clickable { onQuestSelected(entry.game, quest) }
-                        .padding(horizontal = 16.dp, vertical = 14.dp)
-                ) {
-                    Text("${entry.game.displayTitle}  •  ${entry.game.sectionLabel} ${quest.chapter}", color = Color(0xFF8F806A), fontSize = 10.sp)
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                        Text("★", color = Color(0xFFD7B06A), fontSize = 20.sp)
-                    }
-                    Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                }
-                Spacer(Modifier.height(10.dp))
+            if (visibleEntries.isNotEmpty()) {
+                Text("QUESTS", color = Color(0xFFD7B06A), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(12.dp))
             }
+            visibleEntries.sortedWith(compareBy<NavFavoriteEntry> { it.quest.category }
+                .thenBy { it.game.ordinal }.thenBy { it.quest.chapter }.thenBy { it.quest.playOrder })
+                .groupBy { it.quest.category }.forEach { (category, categoryEntries) ->
+                Text(category.uppercase(), color = Color(0xFFC79A55), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
+                categoryEntries.forEach { entry ->
+                    val quest = entry.quest
+                    val shape = RoundedCornerShape(7.dp)
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .alpha(questOpacity(entry.game, quest))
+                            .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape, alpha = NavBoxOpacity)
+                            .border(1.dp, Color(0xFF5F4529), shape)
+                            .clickable { onQuestSelected(entry.game, quest) }
+                            .padding(horizontal = 16.dp, vertical = 14.dp)
+                    ) {
+                        Text("${entry.game.displayTitle}  •  ${entry.game.sectionLabel} ${quest.chapter}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            Text("★", color = Color(0xFFD7B06A), fontSize = 20.sp)
+                        }
+                        Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Spacer(Modifier.height(10.dp))
+                }
+            }
+            ToolFavoritesSections(toolEntries)
         }
     }
 }

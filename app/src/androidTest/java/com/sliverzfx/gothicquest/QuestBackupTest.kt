@@ -8,7 +8,7 @@ import org.junit.Test
 
 class QuestBackupTest {
     private fun sample() = QuestAppBackup(setOf("G1|Q1", "R2|R2-C4-001"),
-        setOf("NB|CH1-001"), "LARGE", 80, 60, "HIDE", false, true,
+        setOf("NB|CH1-001", "G1|tool:enable", "R2|tool:r2_item_sword"), "LARGE", 80, 60, "HIDE", false, true,
         "Risen 2", 4, "R2-C4-001", reduceAnimations = true)
 
     @Test fun backupRoundTripAndRestoreIncludeAllSavedFields() {
