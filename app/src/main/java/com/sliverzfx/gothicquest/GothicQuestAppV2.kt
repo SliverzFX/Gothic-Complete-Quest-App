@@ -97,6 +97,7 @@ private fun saveBoxOpacity(context: Context, percent: Int) {
 
 private fun navBackgroundBrush(game: GameId): Brush =
     when {
+        gameGuidePalette(game).backgroundColors.isNotEmpty() -> Brush.verticalGradient(gameGuidePalette(game).backgroundColors)
         game == GameId.GOTHIC_2_GOLD -> Brush.verticalGradient(listOf(Color(0xFF292419), Color(0xFF17140F), Color(0xFF0B0A07)))
         game.usesStoneTheme -> Brush.verticalGradient(
             listOf(
@@ -121,6 +122,7 @@ private fun navBackgroundBrush(game: GameId): Brush =
 
 private fun navCardBrush(game: GameId): Brush =
     when {
+        gameGuidePalette(game).cardColors.isNotEmpty() -> Brush.horizontalGradient(gameGuidePalette(game).cardColors)
         game == GameId.GOTHIC_2_GOLD -> Brush.horizontalGradient(listOf(Color(0xFF242017), Color(0xFF393124), Color(0xFF211D15)))
         game.usesStoneTheme -> Brush.horizontalGradient(
             listOf(
@@ -145,6 +147,7 @@ private fun navCardBrush(game: GameId): Brush =
 
 private fun navCardBorder(game: GameId): Color =
     when {
+        gameGuidePalette(game).cardColors.isNotEmpty() -> gameGuidePalette(game).border
         game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border
         game.usesStoneTheme -> Color(0xFF78838F)
         game.usesBloodTheme -> Color(0xFF76252A)
@@ -153,6 +156,7 @@ private fun navCardBorder(game: GameId): Color =
 
 private fun navInsetColor(game: GameId): Color =
     when {
+        gameGuidePalette(game).cardColors.isNotEmpty() -> gameGuidePalette(game).surface
         game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).surface
         game.usesStoneTheme -> Color(0xFF1C2127)
         game.usesBloodTheme -> Color(0xFF190708)
@@ -161,6 +165,7 @@ private fun navInsetColor(game: GameId): Color =
 
 private fun navUtilityBorder(game: GameId): Color =
     when {
+        gameGuidePalette(game).cardColors.isNotEmpty() -> gameGuidePalette(game).border.copy(alpha = 0.8f)
         game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border.copy(alpha = 0.8f)
         game.usesStoneTheme -> Color(0xFF66727F)
         game.usesBloodTheme -> Color(0xFF652126)
@@ -169,6 +174,7 @@ private fun navUtilityBorder(game: GameId): Color =
 
 private fun navUtilityBackground(game: GameId): Color =
     when {
+        gameGuidePalette(game).cardColors.isNotEmpty() -> gameGuidePalette(game).surface
         game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).surface
         game.usesStoneTheme -> Color(0xFF1A2028)
         game.usesBloodTheme -> Color(0xFF160607)
@@ -177,6 +183,7 @@ private fun navUtilityBackground(game: GameId): Color =
 
 private fun navProgressBorder(game: GameId): Color =
     when {
+        gameGuidePalette(game).cardColors.isNotEmpty() -> gameGuidePalette(game).border.copy(alpha = 0.65f)
         game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border.copy(alpha = 0.65f)
         game.usesStoneTheme -> Color(0xFF596572)
         game.usesBloodTheme -> Color(0xFF642126)
@@ -859,6 +866,7 @@ private fun NavChapterButton(
             .border(
                 1.dp,
                 when {
+                    gameGuidePalette(game).cardColors.isNotEmpty() -> gameGuidePalette(game).border
                     game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border
                     game.usesStoneTheme -> Color(0xFF8B97A4)
                     game.usesBloodTheme -> Color(0xFF81272D)
@@ -867,7 +875,7 @@ private fun NavChapterButton(
                 shape
             )
             .background(
-                if (game.usesStoneTheme || game.usesBloodTheme || game == GameId.GOTHIC_2_GOLD) navCardBrush(game)
+                if (gameGuidePalette(game).cardColors.isNotEmpty() || game.usesStoneTheme || game.usesBloodTheme || game == GameId.GOTHIC_2_GOLD) navCardBrush(game)
                 else Brush.horizontalGradient(listOf(Color(0xFF211712), Color(0xFF35160F), Color(0xFF17110E))),
                 shape,
                 alpha = NavBoxOpacity
@@ -903,7 +911,7 @@ private fun NavChapterButton(
                 Modifier
                     .fillMaxWidth(progress.coerceIn(0f, 1f))
                     .fillMaxHeight()
-                    .background(LocalGameGuidePalette.current.accent, RoundedCornerShape(3.dp))
+                    .background(LocalGameGuidePalette.current.secondaryAccent, RoundedCornerShape(3.dp))
             )
         }
     }
@@ -1032,7 +1040,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
         }
         Spacer(Modifier.height(3.dp))
         QuestInProgressBadge(game, quest)
-        Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+        Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.secondaryAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
         Text(
             quest.summary,
@@ -1276,7 +1284,7 @@ private fun NavAllQuestsScreen(
                     )
                     Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
                 }
-                Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.secondaryAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(10.dp))
         }
@@ -1376,7 +1384,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
             Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
         }
         QuestInProgressBadge(game, quest)
-        Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+        Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.secondaryAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(5.dp))
         Text("${quest.giver} • ${quest.location}", color = LocalGameGuidePalette.current.muted, fontSize = 11.sp)
     }
@@ -1438,7 +1446,7 @@ private fun NavFavoritesScreen(
                             Text("★", color = gameGuidePalette(entry.game).accent, fontSize = 20.sp)
                         }
                         QuestInProgressBadge(entry.game, quest)
-                        Text(quest.category.uppercase(), color = gameGuidePalette(entry.game).accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        Text(quest.category.uppercase(), color = gameGuidePalette(entry.game).secondaryAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.height(10.dp))
                 }
