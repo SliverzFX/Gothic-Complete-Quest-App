@@ -48,17 +48,17 @@ class TextSizeSettingsTest {
         composeRule.onNodeWithTag("text_size_normal").performClick()
         composeRule.onNodeWithTag("text_size_normal").assertIsSelected()
         val normalHeight = composeRule.onNodeWithTag("text_size_preview")
-            .getUnclippedBoundsInRoot().height
+            .getUnclippedBoundsInRoot().let { it.bottom - it.top }
 
         composeRule.onNodeWithTag("text_size_small").performClick()
         composeRule.onNodeWithTag("text_size_small").assertIsSelected()
         val smallHeight = composeRule.onNodeWithTag("text_size_preview")
-            .getUnclippedBoundsInRoot().height
+            .getUnclippedBoundsInRoot().let { it.bottom - it.top }
 
         composeRule.onNodeWithTag("text_size_large").performClick()
         composeRule.onNodeWithTag("text_size_large").assertIsSelected()
         val largeHeight = composeRule.onNodeWithTag("text_size_preview")
-            .getUnclippedBoundsInRoot().height
+            .getUnclippedBoundsInRoot().let { it.bottom - it.top }
         assertTrue(smallHeight < normalHeight)
         assertTrue(normalHeight < largeHeight)
 

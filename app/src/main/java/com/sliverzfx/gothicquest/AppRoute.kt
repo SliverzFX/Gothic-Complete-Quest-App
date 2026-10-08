@@ -25,6 +25,7 @@ sealed interface AppRoute {
     data object Faqs : AppRoute
     data object About : AppRoute
     data object Support : AppRoute
+    data class QuestCorrection(val game: GameId, val questId: String) : AppRoute
     data object Donations : AppRoute
     data object Settings : AppRoute
     data object Favorites : AppRoute

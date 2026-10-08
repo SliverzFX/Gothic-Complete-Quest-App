@@ -45,7 +45,11 @@ private val SupportGold = Color(0xFFD7B06A)
 private val SupportBody = Color(0xFFC7B89B)
 
 @Composable
-internal fun SupportScreen(onBack: () -> Unit) {
+internal fun SupportScreen(
+    onBack: () -> Unit,
+    onHome: () -> Unit = onBack,
+    correction: QuestCorrectionContext? = null
+) {
     BackHandler(onBack = onBack)
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -53,25 +57,11 @@ internal fun SupportScreen(onBack: () -> Unit) {
         @Suppress("DEPRECATION")
         context.packageManager.getPackageInfo(context.packageName, 0).versionName.orEmpty()
     }
-    val report = remember(version) {
-        """
-            Questbound — Bug report
-            App version: ${version.ifBlank { "Unknown" }}
-            Phone: ${Build.MANUFACTURER} ${Build.MODEL}
-            Android: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})
-
-            Game / mod and version:
-            Chapter / quest or app screen:
-            What I did (steps to reproduce):
-            What I expected:
-            What actually happened:
-            Does it happen every time?
-            Relevant app settings (text size, opacity, animations):
-
-            Please attach a screenshot if it helps.
-        """.trimIndent()
+    val report = remember(version, correction) {
+        buildSupportReport(version, "${Build.MANUFACTURER} ${Build.MODEL}",
+            "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})", correction)
     }
-    var message by remember { mutableStateOf<String?>(null) }
+    var message by remember(correction) { mutableStateOf<String?>(null) }
 
     Column(Modifier.fillMaxSize()
 
@@ -82,30 +72,40 @@ internal fun SupportScreen(onBack: () -> Unit) {
             TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("support_back")) {
                 Text("‹  BACK", color = SupportGold, fontSize = 16.sp)
             }
-            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("support_home")) {
+            TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp).testTag("support_home")) {
                 Text("HOME", color = SupportGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
             Text("SUPPORT / BUGS", color = SupportGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(20.dp))
-            SupportBlock("REPORT A PROBLEM") {
+            correction?.let { quest ->
+                SupportBlock("SELECTED QUEST") {
+                    Text("${quest.gameName} • ${quest.sectionLabel} ${quest.sectionNumber}\n${quest.questTitle}\n${quest.questId}",
+                        color = SupportBody, fontSize = 15.sp,
+                        modifier = Modifier.testTag("support_correction_context"))
+                }
+                Spacer(Modifier.height(16.dp))
+            }
+            SupportBlock(if (correction == null) "REPORT A PROBLEM" else "REPORT A CORRECTION") {
                 Text("Found an app bug or an incorrect quest step? Share it with SliverZFX on Discord.",
                     color = SupportBody, fontSize = 16.sp)
                 Spacer(Modifier.height(10.dp))
-                Text("Copy the report below, open Discord, paste it and fill in what happened. Include the game, chapter and quest name. For guide corrections, include your game or mod version and the correct information.",
+                Text(if (correction == null)
+                    "Copy the report, open Discord, paste it and fill in what happened. Include the game, chapter and quest name. For guide corrections, include your game or mod version and the correct information."
+                    else "The game, chapter or part, quest title and ID are already filled in. Copy the report, open Discord and paste it. Add your game or mod version, the incorrect step and your suggested correction.",
                     color = SupportBody, fontSize = 14.sp)
                 Spacer(Modifier.height(10.dp))
                 Text("The template includes your app version, phone model and Android version. Nothing is sent automatically.",
                     color = SupportBody, fontSize = 13.sp)
                 Spacer(Modifier.height(14.dp))
-                SupportButton("COPY BUG REPORT", "support_copy_report") {
+                SupportButton(if (correction == null) "COPY BUG REPORT" else "COPY CORRECTION REPORT", "support_copy_report") {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                     if (clipboard == null) {
                         message = "Clipboard unavailable. Please describe the problem directly in Discord."
                     } else {
                         try {
-                            clipboard.setPrimaryClip(ClipData.newPlainText("Bug report", report))
+                            clipboard.setPrimaryClip(ClipData.newPlainText(if (correction == null) "Bug report" else "Quest correction", report))
                             message = "Report copied. Paste it into Discord and fill in the details."
                         } catch (_: SecurityException) {
                             message = "Could not copy the report. Please describe the problem directly in Discord."

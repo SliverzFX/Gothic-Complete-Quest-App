@@ -374,6 +374,18 @@ private fun GothicQuestAppContent(
                 )
                 AppRoute.About -> AboutScreen(onBack = onGuideHome)
                 AppRoute.Support -> SupportScreen(onBack = onGuideHome)
+                is AppRoute.QuestCorrection -> {
+                    val quest = currentRoute.game.quests().firstOrNull { it.id == currentRoute.questId }
+                    SupportScreen(
+                        onBack = { route = if (quest != null) AppRoute.QuestDetail(currentRoute.game, quest.id)
+                            else AppRoute.GameHub(currentRoute.game) },
+                        onHome = onGuideHome,
+                        correction = quest?.let {
+                            QuestCorrectionContext(currentRoute.game.persistedName,
+                                currentRoute.game.sectionLabel, it.chapter, it.title, it.id)
+                        }
+                    )
+                }
                 AppRoute.Donations -> DonationsScreen(onBack = onGuideHome)
 
                 AppRoute.Settings -> NavSettingsScreen(
@@ -505,6 +517,9 @@ private fun GothicQuestAppContent(
                             },
                             onToggleCompleted = {
                                 completedKeys = toggleNavSet(context, "completed", completedKeys, completedKey)
+                            },
+                            onReportCorrection = {
+                                route = AppRoute.QuestCorrection(currentRoute.game, quest.id)
                             },
                             onBack = {
                                 route = questReturnRoute ?: AppRoute.Chapter(currentRoute.game, quest.chapter)
@@ -1009,6 +1024,7 @@ private fun NavQuestDetailScreen(
     isCompleted: Boolean,
     onToggleFavorite: () -> Unit,
     onToggleCompleted: () -> Unit,
+    onReportCorrection: () -> Unit,
     onHome: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -1101,6 +1117,10 @@ private fun NavQuestDetailScreen(
                 Spacer(Modifier.height(12.dp))
             }
             Spacer(Modifier.height(12.dp))
+            TextButton(onClick = onReportCorrection,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("quest_report_correction")) {
+                Text("REPORT A CORRECTION", color = Color(0xFFD7B06A), fontSize = 14.sp)
+            }
             NavBackText("‹  BACK TO QUESTS", onBack)
         }
     }
