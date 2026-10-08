@@ -738,6 +738,7 @@ private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
         GameId.GOTHIC_3 -> R.drawable.gothic_3_bg
         GameId.RISEN -> R.drawable.risen_1_bg
         GameId.RISEN_2 -> R.drawable.risen_2_background
+        GameId.RISEN_3 -> R.drawable.risen_3_bg
         else -> null
     }
     Box(Modifier.fillMaxSize().background(navBackgroundBrush(game))) {
