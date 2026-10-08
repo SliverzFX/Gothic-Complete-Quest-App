@@ -59,12 +59,40 @@ private val gothic3GuidePalette = GameGuidePalette(
     cardColors = listOf(Color(0xFF203B4F), Color(0xFF37566A), Color(0xFF1B3041))
 )
 
+private val risenGuidePalette = GameGuidePalette(
+    accent = Color(0xFFF0C786), body = Color(0xFFDCD6CC), reading = Color(0xFFF3EEE5),
+    muted = Color(0xFFBAB3A8), faint = Color(0xFF928A7D), surface = Color(0xFF242321),
+    selected = Color(0xFF51483A), highlight = Color(0xFFFFE2AF), border = Color(0xFFAB916A),
+    track = Color(0xFF121211), secondaryAccent = Color(0xFFCFCBC3),
+    backgroundColors = listOf(Color(0xFF34332F), Color(0xFF201F1D), Color(0xFF100F0E)),
+    cardColors = listOf(Color(0xFF2A2926), Color(0xFF434039), Color(0xFF262522))
+)
+private val risen2GuidePalette = GameGuidePalette(
+    accent = Color(0xFFB9E8AC), body = Color(0xFFD4E6D3), reading = Color(0xFFF0F8ED),
+    muted = Color(0xFFADD1B5), faint = Color(0xFF7CA388), surface = Color(0xFF14271C),
+    selected = Color(0xFF355D3D), highlight = Color(0xFFE2F7D5), border = Color(0xFF7BAB7A),
+    track = Color(0xFF0A150F), secondaryAccent = Color(0xFF91D5A4),
+    backgroundColors = listOf(Color(0xFF233D2A), Color(0xFF14291D), Color(0xFF09140D)),
+    cardColors = listOf(Color(0xFF1E3526), Color(0xFF2D513C), Color(0xFF193021))
+)
+private val risen3GuidePalette = GameGuidePalette(
+    accent = Color(0xFFE8E7E2), body = Color(0xFFD4D4D0), reading = Color(0xFFF1F0EB),
+    muted = Color(0xFFBDBDB9), faint = Color(0xFF929491), surface = Color(0xFF252728),
+    selected = Color(0xFF505352), highlight = Color(0xFFF6F5EF), border = Color(0xFF979B98),
+    track = Color(0xFF131516), secondaryAccent = Color(0xFFC7CCC8),
+    backgroundColors = listOf(Color(0xFF36393A), Color(0xFF232627), Color(0xFF121415)),
+    cardColors = listOf(Color(0xFF2F3233), Color(0xFF414244), Color(0xFF292C2D))
+)
+
 internal fun gameGuidePalette(game: GameId?): GameGuidePalette = when (game) {
     GameId.GOTHIC -> gothicGuidePalette
     GameId.GOTHIC_2_GOLD -> gothicGoldGuidePalette
     GameId.NEW_BALANCE -> newBalanceGuidePalette
     GameId.ARCHOLOS -> archolosGuidePalette
     GameId.GOTHIC_3 -> gothic3GuidePalette
+    GameId.RISEN -> risenGuidePalette
+    GameId.RISEN_2 -> risen2GuidePalette
+    GameId.RISEN_3 -> risen3GuidePalette
     else -> defaultGuidePalette
 }
 
