@@ -506,10 +506,19 @@ private fun GothicQuestAppContent(
                     } else {
                         val favoriteKey = navQuestKey(currentRoute.game, quest)
                         val completedKey = navQuestKey(currentRoute.game, quest)
+                        val neighbors = remember(currentRoute.game, quest.id, completedDisplay, completedKeys) {
+                            adjacentQuests(currentRoute.game.quests(), quest.id) {
+                                completedDisplay.isVisible(navQuestKey(currentRoute.game, it) in completedKeys)
+                            }
+                        }
                         NavQuestDetailScreen(
                             onHome = onGuideHome,
                             game = currentRoute.game,
                             quest = quest,
+                            neighbors = neighbors,
+                            onAdjacentQuest = { destination ->
+                                route = AppRoute.QuestDetail(currentRoute.game, destination.id)
+                            },
                             isFavorite = favoriteKey in favoriteKeys,
                             isCompleted = completedKey in completedKeys,
                             onToggleFavorite = {
@@ -1020,6 +1029,8 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
 private fun NavQuestDetailScreen(
     game: GameId,
     quest: Quest,
+    neighbors: QuestNeighbors,
+    onAdjacentQuest: (Quest) -> Unit,
     isFavorite: Boolean,
     isCompleted: Boolean,
     onToggleFavorite: () -> Unit,
@@ -1029,12 +1040,13 @@ private fun NavQuestDetailScreen(
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
+    val scrollState = remember(game, quest.id) { androidx.compose.foundation.ScrollState(0) }
     NavGuideBackground(game) {
         Column(
             Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(20.dp)
         ) {
             NavGuideHeader("‹  BACK TO QUESTS", onBack, onHome)
@@ -1117,11 +1129,46 @@ private fun NavQuestDetailScreen(
                 Spacer(Modifier.height(12.dp))
             }
             Spacer(Modifier.height(12.dp))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                NavAdjacentQuestButton("‹  PREVIOUS QUEST", "quest_previous", neighbors.previous,
+                    onAdjacentQuest, Modifier.weight(1f))
+                NavAdjacentQuestButton("NEXT QUEST  ›", "quest_next", neighbors.next,
+                    onAdjacentQuest, Modifier.weight(1f))
+            }
+            Spacer(Modifier.height(8.dp))
             TextButton(onClick = onReportCorrection,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("quest_report_correction")) {
                 Text("REPORT A CORRECTION", color = Color(0xFFD7B06A), fontSize = 14.sp)
             }
             NavBackText("‹  BACK TO QUESTS", onBack)
+        }
+    }
+}
+
+@Composable
+private fun NavAdjacentQuestButton(
+    label: String,
+    tag: String,
+    destination: Quest?,
+    onSelected: (Quest) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val shape = RoundedCornerShape(7.dp)
+    TextButton(
+        onClick = { destination?.let(onSelected) },
+        enabled = destination != null,
+        modifier = modifier.heightIn(min = 64.dp)
+            .background(Color(0xFF15100D), shape)
+            .border(1.dp, Color(0xFF5F4529), shape).testTag(tag)
+    ) {
+        Column(Modifier.fillMaxWidth()) {
+            Text(label, color = if (destination != null) Color(0xFFD7B06A) else Color(0xFF746957),
+                fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            if (destination != null) {
+                Spacer(Modifier.height(4.dp))
+                Text(destination.title, color = Color(0xFFC7B89B), fontSize = 12.sp,
+                    maxLines = 2, overflow = TextOverflow.Ellipsis)
+            }
         }
     }
 }
