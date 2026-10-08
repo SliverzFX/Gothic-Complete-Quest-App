@@ -30,7 +30,7 @@ internal fun ToolFavoriteButton(game: GameId, entry: ToolReferenceEntry,
         modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp).testTag(tag)
             .semantics { contentDescription = if (saved) "Remove ${entry.title} from favorites"
                 else "Save ${entry.title} to favorites" }) {
-        Text(if (saved) "★" else "☆", color = Color(0xFFD7B06A), fontSize = 26.sp)
+        Text(if (saved) "★" else "☆", color = gameGuidePalette(game).accent, fontSize = 26.sp)
     }
 }
 
@@ -47,18 +47,18 @@ internal fun ToolFavoritesSections(entries: List<SavedToolFavorite>) {
             favorites.forEach { favorite ->
                 val entry = favorite.card.entry
                 val shape = RoundedCornerShape(7.dp)
-                Column(Modifier.fillMaxWidth().background(Color(0xFF15100D), shape)
-                    .border(1.dp, Color(0xFF5F4529), shape)
+                Column(Modifier.fillMaxWidth().background(gameGuidePalette(favorite.game).surface, shape)
+                    .border(1.dp, gameGuidePalette(favorite.game).border, shape)
                     .clickable { selected = favorite }
                     .testTag("saved_tool_${favorite.game.name.lowercase()}_${entry.id}")
                     .padding(horizontal = 16.dp, vertical = 10.dp)) {
-                    Text("${favorite.game.persistedName} • ${entry.group}", color = Color(0xFF9E8B70), fontSize = 11.sp)
+                    Text("${favorite.game.persistedName} • ${entry.group}", color = gameGuidePalette(favorite.game).muted, fontSize = 11.sp)
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(entry.title, color = Color(0xFFD7B06A), fontSize = 18.sp,
+                        Text(entry.title, color = gameGuidePalette(favorite.game).accent, fontSize = 18.sp,
                             fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                         ToolFavoriteButton(favorite.game, entry, "saved_tool_remove_${favorite.game.name.lowercase()}_${entry.id}")
                     }
-                    entry.command?.let { Text(it, color = Color(0xFFC7B89B), fontSize = 13.sp) }
+                    entry.command?.let { Text(it, color = gameGuidePalette(favorite.game).body, fontSize = 13.sp) }
                 }
                 Spacer(Modifier.height(10.dp))
             }

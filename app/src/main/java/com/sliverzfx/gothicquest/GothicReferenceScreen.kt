@@ -58,8 +58,9 @@ import androidx.compose.ui.unit.sp
 @Composable
 internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onHome: () -> Unit,
     embedded: Boolean = false, game: GameId = GameId.GOTHIC) {
-    val gold = Color(0xFFD7B06A)
-    val body = Color(0xFFC7B89B)
+    val palette = gameGuidePalette(game)
+    val gold = palette.accent
+    val body = palette.body
     val codesSection = section != ToolSection.USEFUL_TIPS
     var selectedEntryId by rememberSaveable(game, section) { mutableStateOf<String?>(null) }
     var searchVisible by rememberSaveable(game, section) { mutableStateOf(false) }
@@ -129,12 +130,12 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth().testTag("code_category_list")) {
                 item {
-                    CodeCategoryChip("All Codes", selectedCategory == null, "code_category_all") {
+                    CodeCategoryChip(game, "All Codes", selectedCategory == null, "code_category_all") {
                         selectedCategory = null
                     }
                 }
                 items(CodeCategory.entries.filter { category -> allEntries.any { it.codeCategory == category } }, key = { it.name }) { category ->
-                    CodeCategoryChip(category.title, selectedCategory == category,
+                    CodeCategoryChip(game, category.title, selectedCategory == category,
                         "code_category_${category.name.lowercase()}") { selectedCategory = category }
                 }
             }
@@ -168,7 +169,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             }
             items(filtered, key = { it.id }) { entry ->
                 val shape = RoundedCornerShape(10.dp)
-                Column(Modifier.fillMaxWidth().background(Color(0xF015100D), shape)
+                Column(Modifier.fillMaxWidth().background(palette.surface.copy(alpha = 0.94f), shape)
                     .border(1.dp, gold.copy(alpha = 0.35f), shape)
                     .clickable(role = Role.Button, onClick = { selectedEntryId = entry.id })
                     .testTag("gothic_reference_${entry.id}").padding(horizontal = 14.dp, vertical = 10.dp)) {
@@ -225,15 +226,16 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
 internal fun ToolReferenceDetailDialog(
     game: GameId, card: ToolReferenceCard, allowFavorite: Boolean = true, onClose: () -> Unit
 ) {
-    val gold = Color(0xFFD7B06A)
-    val body = Color(0xFFC7B89B)
+    val palette = gameGuidePalette(game)
+    val gold = palette.accent
+    val body = palette.body
     val entry = card.entry
     val clipboard = LocalClipboardManager.current
     var copied by remember(card.entry.id, game) { mutableStateOf(false) }
     Dialog(onDismissRequest = onClose,
         properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Column(Modifier.fillMaxWidth(0.94f).fillMaxHeight(0.85f)
-            .background(Color(0xFF15100D), RoundedCornerShape(14.dp))
+            .background(palette.surface, RoundedCornerShape(14.dp))
             .border(1.dp, gold.copy(alpha = 0.6f), RoundedCornerShape(14.dp))
             .padding(20.dp).testTag("tool_reference_detail")) {
             Text("${game.persistedName} • ${entry.group}", color = gold.copy(alpha = 0.8f), fontSize = 12.sp)
@@ -271,14 +273,15 @@ internal fun ToolReferenceDetailDialog(
 }
 
 @Composable
-private fun CodeCategoryChip(label: String, selected: Boolean, tag: String, onClick: () -> Unit) {
-    val gold = Color(0xFFD7B06A)
+private fun CodeCategoryChip(game: GameId, label: String, selected: Boolean, tag: String, onClick: () -> Unit) {
+    val palette = gameGuidePalette(game)
+    val gold = palette.accent
     FilterChip(selected = selected, onClick = onClick,
         label = { Text(label, fontSize = 14.sp) },
         modifier = Modifier.heightIn(min = 48.dp).testTag(tag),
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = Color(0xE615100D), labelColor = gold,
-            selectedContainerColor = Color(0xFF594123), selectedLabelColor = Color(0xFFFFE0A0)))
+            containerColor = palette.surface.copy(alpha = 0.9f), labelColor = gold,
+            selectedContainerColor = palette.selected, selectedLabelColor = palette.highlight))
 }
 
 private fun referenceSourceName(source: String): String = when {

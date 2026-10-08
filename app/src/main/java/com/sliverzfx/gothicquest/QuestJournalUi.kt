@@ -26,15 +26,15 @@ internal val LocalInProgressKeys = compositionLocalOf<Set<String>> { emptySet() 
 
 @Composable
 internal fun QuestStatusButtons(status: QuestStatus, onChanged: (QuestStatus) -> Unit) {
-    val gold = Color(0xFFD7B06A)
+    val gold = LocalGameGuidePalette.current.accent
     Text("QUEST STATUS", color = gold, fontSize = 12.sp, fontWeight = FontWeight.Bold)
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         QuestStatus.entries.forEach { option ->
             FilterChip(selected = status == option, onClick = { onChanged(option) },
                 modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("quest_status_${option.name.lowercase()}"),
                 label = { Text(option.label, fontSize = 12.sp) },
-                colors = FilterChipDefaults.filterChipColors(containerColor = Color(0xFF15100D),
-                    labelColor = gold, selectedContainerColor = Color(0xFF594123), selectedLabelColor = Color(0xFFFFE0A0)))
+                colors = FilterChipDefaults.filterChipColors(containerColor = LocalGameGuidePalette.current.surface,
+                    labelColor = gold, selectedContainerColor = LocalGameGuidePalette.current.selected, selectedLabelColor = LocalGameGuidePalette.current.highlight))
         }
     }
 }
@@ -44,7 +44,7 @@ internal fun QuestNotesSection(questKey: String) {
     val context = LocalContext.current
     val prefs = remember(context) { context.getSharedPreferences("quest_prefs", Context.MODE_PRIVATE) }
     var note by remember(questKey) { mutableStateOf(prefs.getString("quest_note:$questKey", "").orEmpty()) }
-    val gold = Color(0xFFD7B06A)
+    val gold = LocalGameGuidePalette.current.accent
     Text("MY NOTES", color = gold, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(8.dp))
     OutlinedTextField(value = note, onValueChange = { value ->
@@ -56,10 +56,10 @@ internal fun QuestNotesSection(questKey: String) {
         }
     }, modifier = Modifier.fillMaxWidth().testTag("quest_personal_notes"), minLines = 3, maxLines = 6,
         placeholder = { Text("Add a reminder for this quest…") },
-        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = Color(0xFFE0D5C2),
-            unfocusedTextColor = Color(0xFFE0D5C2), focusedBorderColor = gold,
-            unfocusedBorderColor = Color(0xFF5F4529), cursorColor = gold))
-    Text("Saved automatically • ${note.length}/4000", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        colors = OutlinedTextFieldDefaults.colors(focusedTextColor = LocalGameGuidePalette.current.reading,
+            unfocusedTextColor = LocalGameGuidePalette.current.reading, focusedBorderColor = gold,
+            unfocusedBorderColor = LocalGameGuidePalette.current.border, cursorColor = gold))
+    Text("Saved automatically • ${note.length}/4000", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
     Spacer(Modifier.height(16.dp))
 }
 
@@ -87,7 +87,7 @@ internal fun rememberQuestReadingScroll(questKey: String): ScrollState {
 @Composable
 internal fun QuestInProgressBadge(game: GameId, quest: Quest) {
     if ("${game.savedKeyPrefix}|${quest.id}" in LocalInProgressKeys.current) {
-        Text("IN PROGRESS", color = Color(0xFFF2CB79), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+        Text("IN PROGRESS", color = gameGuidePalette(game).highlight, fontSize = 11.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(4.dp))
     }
 }

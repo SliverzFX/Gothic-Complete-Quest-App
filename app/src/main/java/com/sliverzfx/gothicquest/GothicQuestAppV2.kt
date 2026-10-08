@@ -97,12 +97,13 @@ private fun saveBoxOpacity(context: Context, percent: Int) {
 
 private fun navBackgroundBrush(game: GameId): Brush =
     when {
+        game == GameId.GOTHIC_2_GOLD -> Brush.verticalGradient(listOf(Color(0xFF292419), Color(0xFF17140F), Color(0xFF0B0A07)))
         game.usesStoneTheme -> Brush.verticalGradient(
             listOf(
-                Color(0xFF292A29),
-                Color(0xFF1B1D1D),
-                Color(0xFF111313),
-                Color(0xFF080909)
+                Color(0xFF30363E),
+                Color(0xFF1E242B),
+                Color(0xFF14191F),
+                Color(0xFF0C1015)
             )
         )
         game.usesBloodTheme -> Brush.verticalGradient(
@@ -120,12 +121,13 @@ private fun navBackgroundBrush(game: GameId): Brush =
 
 private fun navCardBrush(game: GameId): Brush =
     when {
+        game == GameId.GOTHIC_2_GOLD -> Brush.horizontalGradient(listOf(Color(0xFF242017), Color(0xFF393124), Color(0xFF211D15)))
         game.usesStoneTheme -> Brush.horizontalGradient(
             listOf(
-                Color(0xFF252625),
-                Color(0xFF343534),
-                Color(0xFF202221),
-                Color(0xFF171918)
+                Color(0xFF262D35),
+                Color(0xFF3B444F),
+                Color(0xFF2B333D),
+                Color(0xFF1A2028)
             )
         )
         game.usesBloodTheme -> Brush.horizontalGradient(
@@ -143,35 +145,40 @@ private fun navCardBrush(game: GameId): Brush =
 
 private fun navCardBorder(game: GameId): Color =
     when {
-        game.usesStoneTheme -> Color(0xFF6F6D66)
+        game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border
+        game.usesStoneTheme -> Color(0xFF78838F)
         game.usesBloodTheme -> Color(0xFF76252A)
         else -> Color(0xFF5F4529)
     }
 
 private fun navInsetColor(game: GameId): Color =
     when {
-        game.usesStoneTheme -> Color(0xFF1D1F1E)
+        game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).surface
+        game.usesStoneTheme -> Color(0xFF1C2127)
         game.usesBloodTheme -> Color(0xFF190708)
         else -> Color(0xFF15100D)
     }
 
 private fun navUtilityBorder(game: GameId): Color =
     when {
-        game.usesStoneTheme -> Color(0xFF64645F)
+        game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border.copy(alpha = 0.8f)
+        game.usesStoneTheme -> Color(0xFF66727F)
         game.usesBloodTheme -> Color(0xFF652126)
         else -> Color(0xFF4D4030)
     }
 
 private fun navUtilityBackground(game: GameId): Color =
     when {
-        game.usesStoneTheme -> Color(0xFF171918)
+        game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).surface
+        game.usesStoneTheme -> Color(0xFF1A2028)
         game.usesBloodTheme -> Color(0xFF160607)
         else -> Color(0xFF11100E)
     }
 
 private fun navProgressBorder(game: GameId): Color =
     when {
-        game.usesStoneTheme -> Color(0xFF5C5D59)
+        game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border.copy(alpha = 0.65f)
+        game.usesStoneTheme -> Color(0xFF596572)
         game.usesBloodTheme -> Color(0xFF642126)
         else -> Color(0xFF493720)
     }
@@ -312,6 +319,7 @@ private fun GothicQuestAppContent(
         animationSpec = tween(durationMillis = if (reduceAnimations) 0 else 350),
         label = "screenCrossfadeV2"
     ) { currentRoute ->
+        CompositionLocalProvider(LocalGameGuidePalette provides gameGuidePalette(currentRoute.guideGame())) {
             when (currentRoute) {
                 AppRoute.Home -> HomeScreen(
                     playIntro = introPending,
@@ -584,6 +592,7 @@ private fun GothicQuestAppContent(
                     }
                 )
             }
+        }
     }
     }
     }
@@ -778,11 +787,11 @@ private fun NavGameHubScreen(
                 listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS")
                     .forEach { (key, label) ->
                         Box(Modifier.weight(1f).heightIn(min = 48.dp)
-                            .background(if (selectedTab == key) Color(0xB5594123) else Color(0x8815100D))
+                            .background(if (selectedTab == key) LocalGameGuidePalette.current.selected.copy(alpha = 0.71f) else LocalGameGuidePalette.current.surface.copy(alpha = 0.53f))
                             .selectable(selected = selectedTab == key, role = Role.Tab,
                                 onClick = { selectedTab = key }).testTag("game_tab_$key")
                             .padding(vertical = 14.dp), contentAlignment = Alignment.Center) {
-                            Text(label, color = Color(0xFFD7B06A), fontSize = 14.sp,
+                            Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold)
                         }
                     }
@@ -850,14 +859,15 @@ private fun NavChapterButton(
             .border(
                 1.dp,
                 when {
-                    game.usesStoneTheme -> Color(0xFF77746C)
+                    game == GameId.GOTHIC_2_GOLD -> gameGuidePalette(game).border
+                    game.usesStoneTheme -> Color(0xFF8B97A4)
                     game.usesBloodTheme -> Color(0xFF81272D)
                     else -> Color(0xFF76552E)
                 },
                 shape
             )
             .background(
-                if (game.usesStoneTheme || game.usesBloodTheme) navCardBrush(game)
+                if (game.usesStoneTheme || game.usesBloodTheme || game == GameId.GOTHIC_2_GOLD) navCardBrush(game)
                 else Brush.horizontalGradient(listOf(Color(0xFF211712), Color(0xFF35160F), Color(0xFF17110E))),
                 shape,
                 alpha = NavBoxOpacity
@@ -871,29 +881,29 @@ private fun NavChapterButton(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(Modifier.weight(1f)) {
-                Text("${game.sectionLabel} $chapter", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Text(
                     if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
                     else "$completedCount / $questCount completed • $percentage%",
-                    color = Color(0xFF9E8B70),
+                    color = LocalGameGuidePalette.current.muted,
                     fontSize = 11.sp
                 )
             }
-            Text("›", color = Color(0xFFD7B06A), fontSize = 26.sp)
+            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 26.sp)
         }
         Spacer(Modifier.height(5.dp))
         Box(
             Modifier
                 .fillMaxWidth()
                 .height(6.dp)
-                .background(Color(0xFF0B0907), RoundedCornerShape(3.dp))
+                .background(LocalGameGuidePalette.current.track, RoundedCornerShape(3.dp))
                 .border(1.dp, navProgressBorder(game), RoundedCornerShape(3.dp))
         ) {
             Box(
                 Modifier
                     .fillMaxWidth(progress.coerceIn(0f, 1f))
                     .fillMaxHeight()
-                    .background(Color(0xFFC79A55), RoundedCornerShape(3.dp))
+                    .background(LocalGameGuidePalette.current.accent, RoundedCornerShape(3.dp))
             )
         }
     }
@@ -911,7 +921,7 @@ private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
             .padding(horizontal = 12.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(label, color = Color(0xFFBDA47A), fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -938,25 +948,25 @@ private fun NavChapterQuestListScreen(
         ) {
             NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
             Spacer(Modifier.height(4.dp))
-            Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
+            Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp, fontWeight = FontWeight.Bold)
             Text(
                 if (visibleCount == quests.size) "${quests.size} QUESTS • CHRONOLOGICAL ORDER"
                 else "$visibleCount / ${quests.size} QUESTS VISIBLE • CHRONOLOGICAL ORDER",
-                color = Color(0xFF9E8B70),
+                color = LocalGameGuidePalette.current.muted,
                 fontSize = 12.sp
             )
             Spacer(Modifier.height(18.dp))
             if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && quests.isEmpty()) {
                 Text(
                     "The quest guide for this chapter is coming soon.",
-                    color = Color(0xFFC7B89B),
+                    color = LocalGameGuidePalette.current.body,
                     fontSize = 16.sp
                 )
                 Spacer(Modifier.height(18.dp))
             }
             if (quests.isNotEmpty() && visibleCount == 0) {
                 Text("All quests in this chapter are completed and hidden. Change Completed quests in Settings to show them.",
-                    color = Color(0xFFC7B89B), fontSize = 14.sp)
+                    color = LocalGameGuidePalette.current.body, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
             }
             val guideNotes = when (game) {
@@ -987,7 +997,7 @@ private fun NavChapterQuestListScreen(
 @Composable
 private fun NavRisenGuideNote(game: GameId, note: RisenGuideNote) {
     if (note.paragraphs.isEmpty()) {
-        Text(note.title, color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(note.title, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     } else {
         NavDetailCallout(note.title, note.paragraphs.joinToString("\n\n"), navInsetColor(game))
     }
@@ -1013,26 +1023,26 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
         ) {
             Text(
                 "$number.  ${quest.title}",
-                color = Color(0xFFD7B06A),
+                color = LocalGameGuidePalette.current.accent,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f)
             )
-            Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
+            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
         }
         Spacer(Modifier.height(3.dp))
         QuestInProgressBadge(game, quest)
-        Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+        Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
         Text(
             quest.summary,
-            color = Color(0xFFC7B89B),
+            color = LocalGameGuidePalette.current.body,
             fontSize = 13.sp,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(7.dp))
-        Text(quest.id, color = Color(0xFF746957), fontSize = 10.sp)
+        Text(quest.id, color = LocalGameGuidePalette.current.faint, fontSize = 10.sp)
     }
 }
 
@@ -1065,24 +1075,24 @@ private fun NavQuestDetailScreen(
         ) {
             NavGuideHeader("‹  BACK TO QUESTS", onBack, onHome)
             Spacer(Modifier.height(6.dp))
-            Text(quest.id, color = Color(0xFF746957), fontSize = 11.sp)
+            Text(quest.id, color = LocalGameGuidePalette.current.faint, fontSize = 11.sp)
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     quest.title,
-                    color = Color(0xFFD6B06A),
+                    color = LocalGameGuidePalette.current.accent,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     if (isCompleted) "✓" else "○",
-                    color = if (isCompleted) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                    color = if (isCompleted) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
                     fontSize = 30.sp,
                     modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
                 )
                 Text(
                     if (isFavorite) "★" else "☆",
-                    color = if (isFavorite) Color(0xFFD7B06A) else Color(0xFF8F806A),
+                    color = if (isFavorite) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
                     fontSize = 32.sp,
                     modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
                 )
@@ -1090,7 +1100,7 @@ private fun NavQuestDetailScreen(
             Spacer(Modifier.height(12.dp))
             QuestStatusButtons(status, onStatusChanged)
             if (quest.aliases.isNotEmpty()) {
-                Text("Also: ${quest.aliases.joinToString()}", color = Color(0xFF9E8B70), fontSize = 12.sp)
+                Text("Also: ${quest.aliases.joinToString()}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
             }
             Spacer(Modifier.height(16.dp))
 
@@ -1108,11 +1118,11 @@ private fun NavQuestDetailScreen(
                 NavDetailLine("PREREQUISITE", quest.prerequisites, false)
             }
             Spacer(Modifier.height(18.dp))
-            Text("OBJECTIVE", color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text("OBJECTIVE", color = LocalGameGuidePalette.current.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(5.dp))
-            Text(quest.summary, color = Color(0xFFE0D5C2), fontSize = 16.sp)
+            Text(quest.summary, color = LocalGameGuidePalette.current.reading, fontSize = 16.sp)
             Spacer(Modifier.height(22.dp))
-            Text("WALKTHROUGH", color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("WALKTHROUGH", color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(8.dp))
             quest.walkthroughSteps.forEachIndexed { index, step ->
                 val stepShape = RoundedCornerShape(6.dp)
@@ -1127,12 +1137,12 @@ private fun NavQuestDetailScreen(
                 ) {
                     Text(
                         "${index + 1}",
-                        color = Color(0xFFD7B06A),
+                        color = LocalGameGuidePalette.current.accent,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.width(28.dp)
                     )
-                    Text(step, color = Color(0xFFD4C7B1), fontSize = 14.sp, modifier = Modifier.weight(1f))
+                    Text(step, color = LocalGameGuidePalette.current.reading, fontSize = 14.sp, modifier = Modifier.weight(1f))
                 }
             }
             Spacer(Modifier.height(10.dp))
@@ -1155,7 +1165,7 @@ private fun NavQuestDetailScreen(
             Spacer(Modifier.height(8.dp))
             TextButton(onClick = onReportCorrection,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("quest_report_correction")) {
-                Text("REPORT A CORRECTION", color = Color(0xFFD7B06A), fontSize = 14.sp)
+                Text("REPORT A CORRECTION", color = LocalGameGuidePalette.current.accent, fontSize = 14.sp)
             }
             NavBackText("‹  BACK TO QUESTS", onBack)
         }
@@ -1175,15 +1185,15 @@ private fun NavAdjacentQuestButton(
         onClick = { destination?.let(onSelected) },
         enabled = destination != null,
         modifier = modifier.heightIn(min = 64.dp)
-            .background(Color(0xFF15100D), shape)
-            .border(1.dp, Color(0xFF5F4529), shape).testTag(tag)
+            .background(LocalGameGuidePalette.current.surface, shape)
+            .border(1.dp, LocalGameGuidePalette.current.border, shape).testTag(tag)
     ) {
         Column(Modifier.fillMaxWidth()) {
-            Text(label, color = if (destination != null) Color(0xFFD7B06A) else Color(0xFF746957),
+            Text(label, color = if (destination != null) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.faint,
                 fontSize = 12.sp, fontWeight = FontWeight.Bold)
             if (destination != null) {
                 Spacer(Modifier.height(4.dp))
-                Text(destination.title, color = Color(0xFFC7B89B), fontSize = 12.sp,
+                Text(destination.title, color = LocalGameGuidePalette.current.body, fontSize = 12.sp,
                     maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         }
@@ -1192,8 +1202,8 @@ private fun NavAdjacentQuestButton(
 
 @Composable
 private fun NavDetailLine(label: String, value: String, addSpace: Boolean = true) {
-    Text(label, color = Color(0xFF8F806A), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-    Text(value, color = Color(0xFFC7B89B), fontSize = 14.sp)
+    Text(label, color = LocalGameGuidePalette.current.muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+    Text(value, color = LocalGameGuidePalette.current.body, fontSize = 14.sp)
     if (addSpace) Spacer(Modifier.height(8.dp))
 }
 
@@ -1207,9 +1217,9 @@ private fun NavDetailCallout(label: String, value: String, tint: Color) {
             .border(1.dp, tint.copy(alpha = 0.85f), shape)
             .padding(14.dp)
     ) {
-        Text(label, color = Color(0xFFD7B06A), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(5.dp))
-        Text(value, color = Color(0xFFD4C7B1), fontSize = 14.sp)
+        Text(value, color = LocalGameGuidePalette.current.reading, fontSize = 14.sp)
     }
 }
 
@@ -1235,12 +1245,12 @@ private fun NavAllQuestsScreen(
     ) {
         NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
         Spacer(Modifier.height(4.dp))
-        Text("${game.displayTitle} — ALL QUESTS", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text("${sorted.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text("${game.displayTitle} — ALL QUESTS", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text("${sorted.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
         if (sorted.isEmpty() && quests.isNotEmpty()) {
             Text("All quests are completed and hidden. Change Completed quests in Settings to show them.",
-                color = Color(0xFFC7B89B), fontSize = 14.sp)
+                color = LocalGameGuidePalette.current.body, fontSize = 14.sp)
             Spacer(Modifier.height(14.dp))
         }
         sorted.forEachIndexed { index, quest ->
@@ -1255,18 +1265,18 @@ private fun NavAllQuestsScreen(
                     .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
                 QuestInProgressBadge(game, quest)
-                Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = LocalGameGuidePalette.current.muted, fontSize = 10.sp)
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         "${index + 1}.  ${quest.title}",
-                        color = Color(0xFFD7B06A),
+                        color = LocalGameGuidePalette.current.accent,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f)
                     )
-                    Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
+                    Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
                 }
-                Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(10.dp))
         }
@@ -1311,8 +1321,8 @@ private fun NavSearchScreen(
     ) {
         NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
         Spacer(Modifier.height(4.dp))
-        Text("${game.displayTitle} — SEARCH", color = Color(0xFFD6B06A), fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text("SEARCH ALL QUEST DATA", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        Text("${game.displayTitle} — SEARCH", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp, fontWeight = FontWeight.Bold)
+        Text("SEARCH ALL QUEST DATA", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
         Spacer(Modifier.height(16.dp))
         OutlinedTextField(
             value = query,
@@ -1321,21 +1331,21 @@ private fun NavSearchScreen(
             singleLine = true,
             label = { Text("Quest, NPC, location, ID...") },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color(0xFFE0D5C2),
-                unfocusedTextColor = Color(0xFFE0D5C2),
-                focusedBorderColor = Color(0xFFD7B06A),
+                focusedTextColor = LocalGameGuidePalette.current.reading,
+                unfocusedTextColor = LocalGameGuidePalette.current.reading,
+                focusedBorderColor = LocalGameGuidePalette.current.accent,
                 unfocusedBorderColor = navCardBorder(game),
-                focusedLabelColor = Color(0xFFD7B06A),
-                unfocusedLabelColor = Color(0xFF9E8B70),
-                cursorColor = Color(0xFFD7B06A)
+                focusedLabelColor = LocalGameGuidePalette.current.accent,
+                unfocusedLabelColor = LocalGameGuidePalette.current.muted,
+                cursorColor = LocalGameGuidePalette.current.accent
             )
         )
         Spacer(Modifier.height(14.dp))
         when {
-            normalized.isBlank() -> Text("Type something to search ${visibleQuests.size} quests.", color = Color(0xFF9E8B70), fontSize = 14.sp)
-            results.isEmpty() -> Text("No quests found.", color = Color(0xFF9E8B70), fontSize = 14.sp)
+            normalized.isBlank() -> Text("Type something to search ${visibleQuests.size} quests.", color = LocalGameGuidePalette.current.muted, fontSize = 14.sp)
+            results.isEmpty() -> Text("No quests found.", color = LocalGameGuidePalette.current.muted, fontSize = 14.sp)
             else -> {
-                Text("${results.size} RESULTS", color = Color(0xFFC79A55), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                Text("${results.size} RESULTS", color = LocalGameGuidePalette.current.accent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(10.dp))
                 results.forEach { quest ->
                     NavSearchCard(game, quest) { onQuestSelected(quest) }
@@ -1360,15 +1370,15 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 13.dp)
     ) {
-        Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = Color(0xFF8F806A), fontSize = 10.sp)
+        Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = LocalGameGuidePalette.current.muted, fontSize = 10.sp)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text("›", color = Color(0xFFB6935B), fontSize = 25.sp)
+            Text(quest.title, color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
         }
         QuestInProgressBadge(game, quest)
-        Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+        Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(5.dp))
-        Text("${quest.giver} • ${quest.location}", color = Color(0xFF9E8B70), fontSize = 11.sp)
+        Text("${quest.giver} • ${quest.location}", color = LocalGameGuidePalette.current.muted, fontSize = 11.sp)
     }
 }
 
@@ -1417,18 +1427,18 @@ private fun NavFavoritesScreen(
                         Modifier
                             .fillMaxWidth()
                             .alpha(questOpacity(entry.game, quest))
-                            .background(Brush.horizontalGradient(listOf(Color(0xFF1B1410), Color(0xFF26150F), Color(0xFF15100D))), shape, alpha = NavBoxOpacity)
-                            .border(1.dp, Color(0xFF5F4529), shape)
+                            .background(navCardBrush(entry.game), shape, alpha = NavBoxOpacity)
+                            .border(1.dp, navCardBorder(entry.game), shape)
                             .clickable { onQuestSelected(entry.game, quest) }
                             .padding(horizontal = 16.dp, vertical = 14.dp)
                     ) {
-                        Text("${entry.game.displayTitle}  •  ${entry.game.sectionLabel} ${quest.chapter}", color = Color(0xFF8F806A), fontSize = 10.sp)
+                        Text("${entry.game.displayTitle}  •  ${entry.game.sectionLabel} ${quest.chapter}", color = gameGuidePalette(entry.game).muted, fontSize = 10.sp)
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text(quest.title, color = Color(0xFFD7B06A), fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                            Text("★", color = Color(0xFFD7B06A), fontSize = 20.sp)
+                            Text(quest.title, color = gameGuidePalette(entry.game).accent, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            Text("★", color = gameGuidePalette(entry.game).accent, fontSize = 20.sp)
                         }
                         QuestInProgressBadge(entry.game, quest)
-                        Text(quest.category.uppercase(), color = Color(0xFFC79A55), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        Text(quest.category.uppercase(), color = gameGuidePalette(entry.game).accent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.height(10.dp))
                 }
@@ -1717,11 +1727,11 @@ private fun NavCompactToggle(
 private fun NavGuideHeader(backLabel: String, onBack: () -> Unit, onHome: () -> Unit) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         TextButton(onClick = onBack, modifier = Modifier.weight(1f).heightIn(min = 56.dp)) {
-            Text(backLabel, color = Color(0xFFB6935B), fontSize = 16.sp,
+            Text(backLabel, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp,
                 modifier = Modifier.fillMaxWidth())
         }
         TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp)) {
-            Text("HOME", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text("HOME", color = LocalGameGuidePalette.current.accent, fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -1729,6 +1739,6 @@ private fun NavGuideHeader(backLabel: String, onBack: () -> Unit, onHome: () -> 
 @Composable
 private fun NavBackText(label: String, onBack: () -> Unit) {
     TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp)) {
-        Text(label, color = Color(0xFFB6935B), fontSize = 16.sp)
+        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp)
     }
 }
