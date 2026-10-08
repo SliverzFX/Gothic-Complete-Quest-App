@@ -852,6 +852,13 @@ private fun NavChapterButton(
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(6.dp)
+    val heightScale = when {
+        game == GameId.GOTHIC_3 -> 0.85f
+        game.sectionCount == 6 -> 0.95f
+        else -> 1f
+    }
+    // Take the height reduction from padding so text and progress stay readable.
+    val verticalPadding = (10f - 36f * (1f - heightScale)).dp
     val questCount = quests.size
     val completedCount = quests.count { navQuestKey(game, it) in completedKeys }
     val targetProgress = if (questCount == 0) 0f else completedCount.toFloat() / questCount.toFloat()
@@ -861,7 +868,7 @@ private fun NavChapterButton(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 72.dp)
+            .heightIn(min = (72f * heightScale).dp)
             .testTag("chapter_button_$chapter")
             .border(
                 1.dp,
@@ -881,7 +888,7 @@ private fun NavChapterButton(
                 alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(horizontal = 20.dp, vertical = verticalPadding)
     ) {
         Row(
             Modifier.fillMaxWidth(),
