@@ -39,11 +39,11 @@ jobs:
           printf '%s' "$ANDROID_DEBUG_KEYSTORE_BASE64" | base64 --decode > "$HOME/.android/debug.keystore"
           keytool -list -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey > /dev/null
 
-      - name: Explain missing phone signing key
+      - name: Explain preview installation
         if: env.ANDROID_DEBUG_KEYSTORE_BASE64 == ''
         run: |
-          echo "::notice::Add the ANDROID_DEBUG_KEYSTORE_BASE64 repository secret to enable APK downloads that update your existing phone installation."
-          echo "APK downloads are disabled until the phone signing key is configured. Build checks still run." >> "$GITHUB_STEP_SUMMARY"
+          echo "::notice::The phone signing key is not configured. Building Questbound Preview as a separate installation."
+          echo "Questbound Preview installs alongside Questbound and has separate notes, favorites and progress. It uses this run's debug signing key." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run unit tests
         run: gradle :app:testDebugUnitTest --stacktrace
@@ -52,13 +52,12 @@ jobs:
         run: gradle :app:assembleDebugAndroidTest --stacktrace
 
       - name: Build debug APK
-        run: gradle :app:assembleDebug --stacktrace
+        run: gradle :app:assembleDebug --stacktrace ${{ env.ANDROID_DEBUG_KEYSTORE_BASE64 == '' && '-PphonePreview=true' || '' }}
 
       - name: Upload debug APK
-        if: env.ANDROID_DEBUG_KEYSTORE_BASE64 != ''
         uses: actions/upload-artifact@v4
         with:
-          name: Gothic-Complete-Quest-Guide-v0.1-debug
+          name: ${{ env.ANDROID_DEBUG_KEYSTORE_BASE64 == '' && 'Questbound-Preview' || 'Questbound-debug' }}
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
 

@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val phonePreview = providers.gradleProperty("phonePreview").orNull == "true"
+
 android {
     namespace = "com.sliverzfx.gothicquest"
     compileSdk = 37
@@ -13,7 +15,14 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
+        manifestPlaceholders["appLabel"] = if (phonePreview) "Questbound Preview" else "Questbound"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        getByName("debug") {
+            if (phonePreview) applicationIdSuffix = ".preview"
+        }
     }
 
     buildFeatures { compose = true }
