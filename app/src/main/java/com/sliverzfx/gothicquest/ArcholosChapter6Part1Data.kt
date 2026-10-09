@@ -23,7 +23,7 @@ internal object ArcholosChapter6Part1Data {
             playOrder = 2,
             title = "A City On Fire",
             category = "MAIN STORY — All routes",
-            giver = "Automatic after Black Hour",
+            giver = "Trigger quest",
             location = "Burning Archolos",
             prerequisites = "Route: All routes",
             summary = "Fight through the ruined city, help the surviving factions, defeat Ulryk in the town hall, then enter the Sewers and confront Volker.",
