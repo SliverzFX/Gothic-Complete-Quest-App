@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 private val DonationGold = Color(0xFFD7B06A)
 private val DonationBody = Color(0xFFC7B89B)
 private const val WiseSupportUrl = "https://wise.com/pay/me/mihag25"
+private const val KoFiSupportUrl = "https://ko-fi.com/sliverzfx"
 
 @Composable
 internal fun DonationsScreen(onBack: () -> Unit) {
@@ -124,6 +125,31 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                 Spacer(Modifier.height(12.dp))
                 Text("An internet connection is required to open Wise.", color = Color(0xFF9E8B70), fontSize = 13.sp,
                     lineHeight = 19.sp)
+                Spacer(Modifier.height(22.dp))
+                HorizontalDivider(color = DonationGold.copy(alpha = 0.22f))
+                Spacer(Modifier.height(20.dp))
+                Text("SUPPORT VIA KO-FI", color = DonationGold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(12.dp))
+                Text("Choose any amount on Ko-fi. Payment is handled on Ko-fi's website.",
+                    color = DonationBody, fontSize = 14.sp, lineHeight = 21.sp)
+                Spacer(Modifier.height(18.dp))
+                OutlinedButton(onClick = {
+                    linkError = null
+                    try {
+                        uriHandler.openUri(KoFiSupportUrl)
+                    } catch (_: IllegalArgumentException) {
+                        linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
+                    } catch (_: SecurityException) {
+                        linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
+                    }
+                }, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).testTag("donations_kofi"),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
+                    border = BorderStroke(1.dp, DonationGold)) {
+                    Text("SUPPORT ON KO-FI", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+                Spacer(Modifier.height(12.dp))
+                Text("An internet connection is required to open Ko-fi.", color = Color(0xFF9E8B70), fontSize = 13.sp)
                 Spacer(Modifier.height(22.dp))
                 Text("Support is entirely optional. All guides and features remain available without contributing.",
                     color = DonationBody, fontSize = 14.sp, lineHeight = 21.sp)
