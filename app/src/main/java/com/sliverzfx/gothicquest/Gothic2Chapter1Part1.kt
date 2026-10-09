@@ -42,7 +42,7 @@ private val gothic2QuestGivers = mapOf(
     "G2G-C01-018" to "Bromor",
     "G2G-C01-052" to "Baltram",
     "G2G-C01-055" to "Lares",
-    "G2G-C01-042" to "Trigger quest",
+    "G2G-C01-042" to "Cassia",
     "G2G-C01-016" to "Bosper",
     "G2G-C01-025" to "Coragon",
     "G2G-C01-024" to "Cassia",
