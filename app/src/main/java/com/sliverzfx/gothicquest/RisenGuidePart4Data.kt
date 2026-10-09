@@ -218,7 +218,7 @@ internal object RisenGuidePart4Data {
             playOrder = 59,
             title = "Investigate the crime scene",
             category = "SHARED — INVESTIGATION",
-            giver = "Automatic / murder chain",
+            giver = "Trigger quest",
             location = "Volcano Keep / Monastery",
             prerequisites = "",
             summary = "Collect Hemlar's purse, the weed packet and the kitchen knife.",
