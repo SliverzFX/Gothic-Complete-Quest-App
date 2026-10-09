@@ -8,7 +8,7 @@ internal object Gothic3Part4Data {
             playOrder = 1,
             title = "The fat bastard is dead!",
             category = "SAFE",
-            giver = "Automatic / related kill",
+            giver = "Trigger quest",
             location = "Nordmar",
             prerequisites = "",
             summary = "This global Nordmar quest completes when the associated unique target is killed during exploration.",
