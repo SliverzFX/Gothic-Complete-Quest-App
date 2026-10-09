@@ -638,7 +638,7 @@ internal object Gothic3Part3Data {
             playOrder = 43,
             title = "Find the king.",
             category = "MAIN QUEST",
-            giver = "Main story",
+            giver = "Trigger quest",
             location = "Vengard",
             prerequisites = "",
             summary = "Use the Vengard teleport route/stone when the story sends you to the capital. Fight or evade Orcs inside the magical barrier and reach the castle. Speak with King Rhobar.",
