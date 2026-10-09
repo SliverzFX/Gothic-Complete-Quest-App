@@ -8,7 +8,7 @@ internal object ArcholosChapter5Part1Data {
             playOrder = 1,
             title = "From Bad To Worse",
             category = "MAIN STORY — Guild/story route",
-            giver = "Chapter 5 main story",
+            giver = "Trigger quest",
             location = "Monastery",
             prerequisites = "Route: Guild/story route",
             summary = "Recover from the Chapter 4 crisis, obtain the cure/recipe and escape the Monastery situation.",
