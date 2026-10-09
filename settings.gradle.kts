@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "GothicCompleteQuestGuide"
+rootProject.name = "Questbound"
 include(":app")
