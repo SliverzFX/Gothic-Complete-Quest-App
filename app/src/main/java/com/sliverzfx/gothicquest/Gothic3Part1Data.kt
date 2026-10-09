@@ -8,7 +8,7 @@ internal object Gothic3Part1Data {
             playOrder = 1,
             title = "Liberate Ardea from the orcs!",
             category = "SAFE",
-            giver = "Automatic / opening battle",
+            giver = "Trigger quest",
             location = "Ardea",
             prerequisites = "",
             summary = "Fight alongside Diego, Gorn, Milten and Lester and defeat the Orcs occupying Ardea. The quest completes when the occupying force has been beaten and the settlement is free.",
