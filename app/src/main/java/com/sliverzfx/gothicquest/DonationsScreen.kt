@@ -146,7 +146,12 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
                     border = BorderStroke(1.dp, DonationGold)) {
-                    Text("SUPPORT ON KO-FI", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("SUPPORT ON", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.width(12.dp))
+                    Image(painterResource(R.drawable.kofi_cup_icon), contentDescription = "Ko-fi",
+                        modifier = Modifier.width(34.dp).height(30.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text("KO-FI", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(12.dp))
                 Text("An internet connection is required to open Ko-fi.", color = Color(0xFF9E8B70), fontSize = 13.sp)
