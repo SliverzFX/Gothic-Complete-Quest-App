@@ -88,13 +88,9 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                 Spacer(Modifier.height(20.dp))
                 HorizontalDivider(color = DonationGold.copy(alpha = 0.22f))
                 Spacer(Modifier.height(20.dp))
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text("SUPPORT VIA WISE", color = DonationGold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                    Text("@mihag25", color = DonationBody, fontSize = 14.sp)
-                }
+                Text("CHOOSE HOW TO SUPPORT", color = DonationGold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(12.dp))
-                Text("Choose any amount on Wise. Payment is handled through Wise.",
+                Text("If you'd like to support future Questbound updates, choose Wise or Ko-fi and contribute any amount. Payments are handled on their respective websites.",
                     color = DonationBody, fontSize = 14.sp, lineHeight = 21.sp)
                 Spacer(Modifier.height(18.dp))
                 OutlinedButton(onClick = {
@@ -118,21 +114,7 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                             modifier = Modifier.width(62.dp).height(15.dp))
                     }
                 }
-                linkError?.let {
-                    Spacer(Modifier.height(12.dp))
-                    Text(it, color = DonationBody, fontSize = 14.sp)
-                }
                 Spacer(Modifier.height(12.dp))
-                Text("An internet connection is required to open Wise.", color = Color(0xFF9E8B70), fontSize = 13.sp,
-                    lineHeight = 19.sp)
-                Spacer(Modifier.height(22.dp))
-                HorizontalDivider(color = DonationGold.copy(alpha = 0.22f))
-                Spacer(Modifier.height(20.dp))
-                Text("SUPPORT VIA KO-FI", color = DonationGold, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(12.dp))
-                Text("Choose any amount on Ko-fi. Payment is handled on Ko-fi's website.",
-                    color = DonationBody, fontSize = 14.sp, lineHeight = 21.sp)
-                Spacer(Modifier.height(18.dp))
                 OutlinedButton(onClick = {
                     linkError = null
                     try {
@@ -153,8 +135,13 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                     Spacer(Modifier.width(8.dp))
                     Text("KO-FI", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
+                linkError?.let {
+                    Spacer(Modifier.height(12.dp))
+                    Text(it, color = DonationBody, fontSize = 14.sp)
+                }
                 Spacer(Modifier.height(12.dp))
-                Text("An internet connection is required to open Ko-fi.", color = Color(0xFF9E8B70), fontSize = 13.sp)
+                Text("An internet connection is required to open Wise or Ko-fi.", color = Color(0xFF9E8B70), fontSize = 13.sp,
+                    lineHeight = 19.sp)
                 Spacer(Modifier.height(22.dp))
                 Text("Support is entirely optional. All guides and features remain available without contributing.",
                     color = DonationBody, fontSize = 14.sp, lineHeight = 21.sp)
