@@ -8,7 +8,7 @@ internal object Risen2GuidePart5Data {
             playOrder = 1,
             title = "Find Captain Slayne",
             category = "MAIN STORY",
-            giver = "Main story",
+            giver = "Trigger quest",
             location = "Antigua / Chapter 3",
             prerequisites = "",
             summary = "Sail to Antigua, enter Admiral Alvarez's house and speak with Captain Slayne.",
