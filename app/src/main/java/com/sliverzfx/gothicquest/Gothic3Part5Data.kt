@@ -518,7 +518,7 @@ internal object Gothic3Part5Data {
             playOrder = 35,
             title = "Find Vatras.",
             category = "MAIN-STORY SUPPORT",
-            giver = "Main story / Water Mage chain",
+            giver = "Trigger quest",
             location = "Lago",
             prerequisites = "",
             summary = "Discover that Vatras, the Water Mage from Khorinis, is being held prisoner in Lago. Reach his cell and speak with him before deciding how to handle the town.",
