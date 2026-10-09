@@ -1,0 +1,19 @@
+# Android Studio and Gradle
+.gradle/
+**/build/
+.idea/
+local.properties
+*.iml
+
+# Generated Android packages
+*.apk
+*.aab
+app/release/
+
+# Signing credentials
+*.jks
+*.keystore
+
+# Operating system files
+.DS_Store
+Thumbs.db
