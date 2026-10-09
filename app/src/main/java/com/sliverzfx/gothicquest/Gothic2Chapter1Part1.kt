@@ -1,4 +1,9 @@
 package com.sliverzfx.gothicquest
+
+private val gothic2QuestGivers = mapOf(
+
+)
+
 internal fun g2q(id:String, order:Int, title:String, type:String, region:String, path:String, stage:String, objective:String, walkthrough:String, notes:String) = Quest(id,1,order,title,category="$type / $path",giver=gothic2QuestGivers[id] ?: "Trigger quest",location=region,prerequisites=stage,summary=objective,walkthroughSteps=walkthrough.split("§"),reward="Not specified in the master guide",warnings=notes,searchTags=listOf(title.lowercase(),region.lowercase(),path.lowercase()))
 object Gothic2Chapter1Part1 {
     val quests = listOf(
