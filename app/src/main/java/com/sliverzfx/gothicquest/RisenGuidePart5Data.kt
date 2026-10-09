@@ -38,7 +38,7 @@ internal object RisenGuidePart5Data {
             playOrder = 3,
             title = "Teleport Stones",
             category = "COLLECTION / FAST TRAVEL",
-            giver = "Inquisitor Mendoza / automatic collection",
+            giver = "Inquisitor Mendoza",
             location = "World / Chapter 2",
             prerequisites = "",
             summary = "Collect all 14 teleport stones. Mendoza gives the Volcano Keep stone; most others are carried by lizardmen near the destination they unlock.",
