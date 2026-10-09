@@ -8,7 +8,7 @@ internal object ArcholosChapter2Part1Data {
             playOrder = 1,
             title = "Without A Trace",
             category = "MAIN STORY — All routes",
-            giver = "Main story / Silbach survivors",
+            giver = "Trigger quest",
             location = "Silbach → Archolos",
             prerequisites = "Route: All routes",
             summary = "Investigate Kurt’s disappearance, question the witnesses and reach the gates of Archolos.",
