@@ -170,7 +170,7 @@ internal object ArcholosChapter2Part3Data {
         Quest(
             id = "AR-C2-072",
             chapter = 2,
-            playOrder = 72,
+            playOrder = 67,
             title = "Late For Work",
             category = "SIDE QUEST — All routes",
             giver = "Rita",
@@ -185,7 +185,7 @@ internal object ArcholosChapter2Part3Data {
         Quest(
             id = "AR-C2-073",
             chapter = 2,
-            playOrder = 73,
+            playOrder = 68,
             title = "Let There Be Light",
             category = "SIDE QUEST — All routes",
             giver = "Nayla",
@@ -200,7 +200,7 @@ internal object ArcholosChapter2Part3Data {
         Quest(
             id = "AR-C2-074",
             chapter = 2,
-            playOrder = 74,
+            playOrder = 69,
             title = "Danger Around",
             category = "SIDE QUEST — All routes",
             giver = "Rita",
@@ -215,7 +215,7 @@ internal object ArcholosChapter2Part3Data {
         Quest(
             id = "AR-C2-075",
             chapter = 2,
-            playOrder = 75,
+            playOrder = 70,
             title = "What Goes Around, Comes Around",
             category = "SIDE QUEST — All routes",
             giver = "Sven",
@@ -230,7 +230,7 @@ internal object ArcholosChapter2Part3Data {
         Quest(
             id = "AR-C2-076",
             chapter = 2,
-            playOrder = 76,
+            playOrder = 71,
             title = "Behind The Closed Door",
             category = "SIDE QUEST — All routes",
             giver = "Zachary",
@@ -245,7 +245,7 @@ internal object ArcholosChapter2Part3Data {
         Quest(
             id = "AR-C2-077",
             chapter = 2,
-            playOrder = 77,
+            playOrder = 72,
             title = "Hunter's Blood",
             category = "SIDE QUEST — All routes",
             giver = "Nelson",
