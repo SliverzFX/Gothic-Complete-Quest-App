@@ -63,9 +63,85 @@ internal fun SupportScreen(
     }
     var message by remember(correction) { mutableStateOf<String?>(null) }
 
+    val tablet = isLargeLandscapeTablet()
+    val selectedQuestContent: @Composable () -> Unit = {
+        correction?.let { quest ->
+            SupportBlock("SELECTED QUEST") {
+                Text("${quest.gameName} • ${quest.sectionLabel} ${quest.sectionNumber}\n${quest.questTitle}\n${quest.questId}",
+                    color = SupportBody, fontSize = 15.sp,
+                    modifier = Modifier.testTag("support_correction_context"))
+            }
+            Spacer(Modifier.height(16.dp))
+        }
+    }
+    val reportContent: @Composable () -> Unit = {
+        SupportBlock(if (correction == null) "REPORT A PROBLEM" else "REPORT A CORRECTION") {
+            Text("Found an app bug or an incorrect quest step? Share it with SliverZFX on Discord.",
+                color = SupportBody, fontSize = 16.sp)
+            Spacer(Modifier.height(10.dp))
+            Text(if (correction == null)
+                "Copy the report, open Discord, paste it and fill in what happened. Include the game, chapter and quest name. For guide corrections, include your game or mod version and the correct information."
+                else "The game, chapter or part, quest title and ID are already filled in. Copy the report, open Discord and paste it. Add your game or mod version, the incorrect step and your suggested correction.",
+                color = SupportBody, fontSize = 14.sp)
+            Spacer(Modifier.height(10.dp))
+            Text("The template includes your app version, phone model and Android version. Nothing is sent automatically.",
+                color = SupportBody, fontSize = 13.sp)
+            Spacer(Modifier.height(14.dp))
+            SupportButton(if (correction == null) "COPY BUG REPORT" else "COPY CORRECTION REPORT", "support_copy_report") {
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                if (clipboard == null) {
+                    message = "Clipboard unavailable. Please describe the problem directly in Discord."
+                } else {
+                    try {
+                        clipboard.setPrimaryClip(ClipData.newPlainText(if (correction == null) "Bug report" else "Quest correction", report))
+                        message = "Report copied. Paste it into Discord and fill in the details."
+                    } catch (_: SecurityException) {
+                        message = "Could not copy the report. Please describe the problem directly in Discord."
+                    }
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            SupportButton("OPEN DISCORD", "support_discord") {
+                try {
+                    uriHandler.openUri("https://discord.gg/evwry6hzwH")
+                    message = null
+                } catch (_: IllegalArgumentException) {
+                    message = "Could not open Discord. Check that a browser or Discord is available and try again."
+                } catch (_: SecurityException) {
+                    message = "Could not open Discord. Please try again."
+                }
+            }
+            message?.let {
+                Spacer(Modifier.height(10.dp))
+                Text(it, color = SupportBody, fontSize = 14.sp)
+            }
+            Spacer(Modifier.height(10.dp))
+            Text("Opening Discord needs an internet connection.", color = SupportBody, fontSize = 13.sp)
+        }
+    }
+    val troubleshootingContent: @Composable () -> Unit = {
+        SupportBlock("QUICK TROUBLESHOOTING") {
+            SupportTip("A quest seems to be missing",
+                "Clear the search, check the chapter and set Completed quests to Show in Settings. Some quests depend on your faction, earlier choices or game version.")
+            SupportTip("Text or backgrounds are hard to read",
+                "Try Normal text size, increase box opacity or reduce background brightness in Settings.")
+            SupportTip("Animations feel slow",
+                "Turn on Reduce animations in Settings.")
+            SupportTip("Music is silent",
+                "Check Music in Settings and your phone's media volume.")
+            SupportTip("The app freezes or closes unexpectedly",
+                "Reopen the app. If it happens again, include the exact steps and screen in your report.")
+        }
+    }
+    val backupContent: @Composable () -> Unit = {
+        SupportBlock("KEEP YOUR PROGRESS SAFE") {
+            Text("Use Export backup in Settings to save your progress, favorites and preferences before reinstalling or clearing app data. Keep the backup somewhere you can find again.",
+                color = SupportBody, fontSize = 14.sp)
+        }
+    }
     Column(Modifier.fillMaxSize()
-
-        .statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp)
+        .statusBarsPadding().navigationBarsPadding()
+        .padding(horizontal = if (tablet) 32.dp else 20.dp)
         .testTag("support_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
@@ -76,77 +152,30 @@ internal fun SupportScreen(
                 Text("HOME", color = SupportGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
-        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
-            Text("SUPPORT / BUGS", color = SupportGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(20.dp))
-            correction?.let { quest ->
-                SupportBlock("SELECTED QUEST") {
-                    Text("${quest.gameName} • ${quest.sectionLabel} ${quest.sectionNumber}\n${quest.questTitle}\n${quest.questId}",
-                        color = SupportBody, fontSize = 15.sp,
-                        modifier = Modifier.testTag("support_correction_context"))
+        if (tablet) {
+            Text("SUPPORT / BUGS", color = SupportGold, fontSize = 28.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 8.dp))
+            LargeTabletPageColumns(
+                left = {
+                    selectedQuestContent()
+                    reportContent()
+                },
+                right = {
+                    troubleshootingContent()
+                    Spacer(Modifier.height(16.dp))
+                    backupContent()
                 }
+            )
+        } else {
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
+                Text("SUPPORT / BUGS", color = SupportGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(20.dp))
+                selectedQuestContent()
+                reportContent()
                 Spacer(Modifier.height(16.dp))
-            }
-            SupportBlock(if (correction == null) "REPORT A PROBLEM" else "REPORT A CORRECTION") {
-                Text("Found an app bug or an incorrect quest step? Share it with SliverZFX on Discord.",
-                    color = SupportBody, fontSize = 16.sp)
-                Spacer(Modifier.height(10.dp))
-                Text(if (correction == null)
-                    "Copy the report, open Discord, paste it and fill in what happened. Include the game, chapter and quest name. For guide corrections, include your game or mod version and the correct information."
-                    else "The game, chapter or part, quest title and ID are already filled in. Copy the report, open Discord and paste it. Add your game or mod version, the incorrect step and your suggested correction.",
-                    color = SupportBody, fontSize = 14.sp)
-                Spacer(Modifier.height(10.dp))
-                Text("The template includes your app version, phone model and Android version. Nothing is sent automatically.",
-                    color = SupportBody, fontSize = 13.sp)
-                Spacer(Modifier.height(14.dp))
-                SupportButton(if (correction == null) "COPY BUG REPORT" else "COPY CORRECTION REPORT", "support_copy_report") {
-                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-                    if (clipboard == null) {
-                        message = "Clipboard unavailable. Please describe the problem directly in Discord."
-                    } else {
-                        try {
-                            clipboard.setPrimaryClip(ClipData.newPlainText(if (correction == null) "Bug report" else "Quest correction", report))
-                            message = "Report copied. Paste it into Discord and fill in the details."
-                        } catch (_: SecurityException) {
-                            message = "Could not copy the report. Please describe the problem directly in Discord."
-                        }
-                    }
-                }
-                Spacer(Modifier.height(8.dp))
-                SupportButton("OPEN DISCORD", "support_discord") {
-                    try {
-                        uriHandler.openUri("https://discord.gg/evwry6hzwH")
-                        message = null
-                    } catch (_: IllegalArgumentException) {
-                        message = "Could not open Discord. Check that a browser or Discord is available and try again."
-                    } catch (_: SecurityException) {
-                        message = "Could not open Discord. Please try again."
-                    }
-                }
-                message?.let {
-                    Spacer(Modifier.height(10.dp))
-                    Text(it, color = SupportBody, fontSize = 14.sp)
-                }
-                Spacer(Modifier.height(10.dp))
-                Text("Opening Discord needs an internet connection.", color = SupportBody, fontSize = 13.sp)
-            }
-            Spacer(Modifier.height(16.dp))
-            SupportBlock("QUICK TROUBLESHOOTING") {
-                SupportTip("A quest seems to be missing",
-                    "Clear the search, check the chapter and set Completed quests to Show in Settings. Some quests depend on your faction, earlier choices or game version.")
-                SupportTip("Text or backgrounds are hard to read",
-                    "Try Normal text size, increase box opacity or reduce background brightness in Settings.")
-                SupportTip("Animations feel slow",
-                    "Turn on Reduce animations in Settings.")
-                SupportTip("Music is silent",
-                    "Check Music in Settings and your phone's media volume.")
-                SupportTip("The app freezes or closes unexpectedly",
-                    "Reopen the app. If it happens again, include the exact steps and screen in your report.")
-            }
-            Spacer(Modifier.height(16.dp))
-            SupportBlock("KEEP YOUR PROGRESS SAFE") {
-                Text("Use Export backup in Settings to save your progress, favorites and preferences before reinstalling or clearing app data. Keep the backup somewhere you can find again.",
-                    color = SupportBody, fontSize = 14.sp)
+                troubleshootingContent()
+                Spacer(Modifier.height(16.dp))
+                backupContent()
             }
         }
     }
