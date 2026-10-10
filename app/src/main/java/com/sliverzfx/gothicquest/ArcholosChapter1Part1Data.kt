@@ -275,7 +275,7 @@ internal object ArcholosChapter1Part1Data {
         Quest(
             id = "AR-C1-019",
             chapter = 2,
-            playOrder = 78,
+            playOrder = 73,
             title = "Last Batch Of Stuff",
             category = "SIDE QUEST — All routes",
             giver = "Petra",
@@ -290,7 +290,7 @@ internal object ArcholosChapter1Part1Data {
         Quest(
             id = "AR-C1-020",
             chapter = 2,
-            playOrder = 79,
+            playOrder = 74,
             title = "Merchant Ezekiel",
             category = "SIDE QUEST — All routes",
             giver = "Ezekiel",
