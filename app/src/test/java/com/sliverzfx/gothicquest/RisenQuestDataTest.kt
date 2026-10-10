@@ -73,10 +73,10 @@ class RisenQuestDataTest {
 
     @Test
     fun guideCrossReferencesNeverCountAsIndependentCompletedQuests() {
-        val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041", "R1-C1-037", "R1-C1-038")
+        val expected = setOf("R1-C1-030", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041", "R1-C1-037", "R1-C1-038")
         val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
         assertEquals(expected, guideIds)
-        assertEquals(275, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertEquals(276, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
         assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
         assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
     }
@@ -161,6 +161,14 @@ class RisenQuestDataTest {
         assertEquals("Dirk", RisenQuestData.quests.single { it.id == "R1-C1-187" }.giver)
         assertEquals("500 XP", RisenQuestData.quests.single { it.id == "R1-C1-198" }.reward)
         assertTrue(RisenQuestData.quests.single { it.id == "R1-C1-094" }.summary.contains("five vassal rings"))
+    }
+
+    @Test
+    fun collectingFifthGoldenDiskIsJournalQuestNotReferenceGuide() {
+        val collection = RisenQuestData.quests.single { it.id == "R1-C2-002" }
+        assertFalse(RisenQuestData.isGuideEntry(collection))
+        assertTrue(collection.reward.contains("250 XP"))
+        assertTrue(collection.walkthroughSteps.any { it.contains("Mendoza") })
     }
 
 }
