@@ -448,8 +448,8 @@ internal object ArcholosChapter2Part1Data {
             prerequisites = "Chapter 2; Merchants' Guild recruitment tasks; speak with Dima in the Archolos marketplace.",
             summary = "Find Dima’s missing messenger by tracing him from Silbach into the forest.",
             walkthroughSteps = listOf("Speak with Dima and accept the delivery/messenger investigation.", "Go to Silbach and find Sunder in the Molerat Inn. If he is too drunk to help, use Bastian’s sludge/remedy to sober him.", "Follow the directions toward the north-western forest and look for blood/tracks rather than staying on the main road.", "Find the messenger’s body near a tree and inspect it for the quest item/evidence.", "Return to Sunder if required, then report the outcome to Dima."),
-            reward = "The missing-messenger job closes and counts toward the Araxos route.",
-            warnings = "Sunder in Silbach may be drunk and require Bastian's sobering remedy before he gives directions. Follow the forest blood trail to the courier's body.",
+            reward = "900 XP, 125 gold and Dima's vote for Araxos Merchants' Guild entry once you report the missing messenger's fate.",
+            warnings = "The guide confirms Dima accepts the result even if Sunder returns home or the guide changes; the courier's body later becomes a dangerous zombie.",
             searchTags = listOf("CHAPTER 2 — MERCHANTS’ GUILD ROUTE", "", "Merchants’ Guild", "Canonical quest"),
         ),
     )
