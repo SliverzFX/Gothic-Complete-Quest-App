@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,10 +14,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -43,10 +48,11 @@ private val FaqBody = Color(0xFFC7B89B)
 internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
     BackHandler(onBack = onBack)
     var expandedId by rememberSaveable { mutableStateOf<String?>(null) }
+    val tablet = isLargeLandscapeTablet()
 
     Column(Modifier.fillMaxSize()
 
-        .statusBarsPadding().navigationBarsPadding().padding(horizontal = 20.dp)
+        .statusBarsPadding().navigationBarsPadding().padding(horizontal = if (tablet) 32.dp else 20.dp)
         .testTag("faq_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
@@ -58,6 +64,51 @@ internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
             }
         }
         Spacer(Modifier.fillMaxWidth().height(2.dp).background(FaqGold.copy(alpha = 0.55f)))
+        if (tablet) {
+            Text("FAQs", color = FaqGold, fontSize = 28.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 14.dp))
+            Text("Find answers by topic, or open Support for further help.",
+                color = FaqBody, fontSize = 15.sp, modifier = Modifier.padding(bottom = 8.dp))
+            Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.widthIn(max = 1100.dp).fillMaxSize()
+                        .clipToBounds().testTag("faq_list"),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        top = 12.dp, bottom = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(18.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    FaqContent.groups.forEach { group ->
+                        item(key = "group_${group.title}", span = { GridItemSpan(maxLineSpan) }) {
+                            Text(group.title, color = FaqGold, fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(top = 12.dp, bottom = 2.dp))
+                        }
+                        group.entries.forEach { entry ->
+                            item(key = entry.id) {
+                                FaqQuestion(entry, expandedId == entry.id) {
+                                    expandedId = if (expandedId == entry.id) null else entry.id
+                                }
+                            }
+                        }
+                    }
+                    item(key = "support", span = { GridItemSpan(maxLineSpan) }) {
+                        Row(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 18.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween) {
+                            Text("Still need help or found a guide error?",
+                                color = FaqBody, fontSize = 16.sp)
+                            TextButton(onClick = onSupport,
+                                modifier = Modifier.heightIn(min = 56.dp).testTag("faq_support")) {
+                                Text("OPEN SUPPORT", color = FaqGold, fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
         LazyColumn(Modifier.weight(1f).fillMaxWidth().clipToBounds().testTag("faq_list"),
             verticalArrangement = Arrangement.spacedBy(10.dp)) {
             item(key = "intro") {
@@ -91,6 +142,8 @@ internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
                 }
             }
         }
+        }
+
     }
 }
 
