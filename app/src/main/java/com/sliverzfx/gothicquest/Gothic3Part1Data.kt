@@ -8,13 +8,13 @@ internal object Gothic3Part1Data {
             playOrder = 1,
             title = "Liberate Ardea from the orcs!",
             category = "SAFE",
-            giver = "Trigger quest",
+            giver = "Automatic upon entering Ardea (opening liberation)",
             location = "Ardea",
-            prerequisites = "",
+            prerequisites = "Game opening; occurs before the main regional quest chains.",
             summary = "Fight alongside Diego, Gorn, Milten and Lester and defeat the Orcs occupying Ardea. The quest completes when the occupying force has been beaten and the settlement is free.",
-            walkthroughSteps = listOf("This quest belongs to the Ardea section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Fight alongside Diego, Gorn, Milten and Lester and defeat the Orcs occupying Ardea. The quest completes when the occupying force has been beaten and the settlement is free.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Ardea is a scripted opening liberation and should not be treated like the later optional city liberations."),
+            walkthroughSteps = listOf("Enter Ardea with Diego, Gorn, Lester and Milten; the Orc-occupation battle begins immediately.", "Fight alongside your companions until the Orc garrison is defeated.", "Talk to Hamlar and your companions after combat to open the Rebel/Reddock and regional search quests."),
             reward = "",
-            warnings = "",
+            warnings = "Ardea's initial liberation does NOT count toward the later Orc three-city hostility rule. No NPC formally gives this battle quest.",
             searchTags = listOf("Liberate Ardea from the orcs!", "Automatic / opening battle", "Ardea", "SAFE")
         ),
         Quest(
@@ -25,11 +25,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Hamlar",
             location = "Ardea → Reddock",
-            prerequisites = "",
+            prerequisites = "Defeat the Orc occupiers in Ardea.",
             summary = "After the battle, speak with Hamlar. He directs you to the nearby rebel hideout at Reddock. Travel there and speak with Javier, the rebel leader.",
-            walkthroughSteps = listOf("Start by speaking with Hamlar. This quest belongs to the Ardea → Reddock section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "After the battle, speak with Hamlar. He directs you to the nearby rebel hideout at Reddock. Travel there and speak with Javier, the rebel leader.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Taking Gorn's escort quest immediately makes finding Reddock much easier."),
+            walkthroughSteps = listOf("After the opening liberation, speak with Hamlar in Ardea about Xardas and the rebel resistance.", "Ask Gorn to lead you to Reddock, the underground rebel camp.", "Enter Reddock and speak with its leader Javier, then return to Hamlar only if the journal requests another report."),
             reward = "",
-            warnings = "",
+            warnings = "Hamlar is the Ardea quest giver; JAVIER is the Reddock leader. Do not confuse the two.",
             searchTags = listOf("Talk to the leader of the rebels in Reddock!", "Hamlar", "Ardea → Reddock", "SAFE")
         ),
         Quest(
@@ -40,11 +40,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Gorn",
             location = "Ardea → Reddock",
-            prerequisites = "",
+            prerequisites = "Liberate Ardea and speak to Gorn.",
             summary = "Speak with Gorn after Ardea is liberated and ask him about the rebels. Follow him out of Ardea and through the countryside until he reaches the entrance to Reddock.",
-            walkthroughSteps = listOf("Start by speaking with Gorn. This quest belongs to the Ardea → Reddock section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Speak with Gorn after Ardea is liberated and ask him about the rebels. Follow him out of Ardea and through the countryside until he reaches the entrance to Reddock.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Stay reasonably close to Gorn so the escort proceeds normally."),
+            walkthroughSteps = listOf("Find Gorn near the Ardea campfire after the liberation.", "Tell him you are ready to visit Reddock and follow him through the forest.", "Keep close if wolves or bandits block the route, and speak with Javier at the rebel hideout."),
             reward = "",
-            warnings = "",
+            warnings = "Following Gorn is the intended early route to Reddock; taking unrelated detours can separate the escort.",
             searchTags = listOf("Gorn shows you the rebels' hideout.", "Gorn", "Ardea → Reddock", "SAFE")
         ),
         Quest(
@@ -55,10 +55,10 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Jack",
             location = "Lighthouse east of Ardea",
-            prerequisites = "",
+            prerequisites = "Meet lighthouse keeper Jack south of Ardea.",
             summary = "Find Jack at the lighthouse east of Ardea. Deal with the bandits threatening him near the lighthouse, then return to Jack.",
             walkthroughSteps = listOf("Start by speaking with Jack. This quest belongs to the Lighthouse east of Ardea section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Find Jack at the lighthouse east of Ardea. Deal with the bandits threatening him near the lighthouse, then return to Jack.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "This is an easy early detour before or after visiting Reddock."),
-            reward = "",
+            reward = "500 XP for clearing the bilge rats around Jack's tower.",
             warnings = "",
             searchTags = listOf("Jack and the bilge rats.", "Jack", "Lighthouse east of Ardea", "SAFE")
         ),
@@ -83,13 +83,13 @@ internal object Gothic3Part1Data {
             playOrder = 6,
             title = "Jack's rebel gold.",
             category = "SAFE",
-            giver = "Jack / information from Seruk",
+            giver = "Serduk (Cape Dun); Jack holds the money",
             location = "Ardea lighthouse",
-            prerequisites = "",
+            prerequisites = "Meet Serduk in Cape Dun and ask about rebel gold held by Jack.",
             summary = "After meeting the thief Seruk in Cape Dun and learning about Jack's payment from the rebels, return to Jack and ask about the money. Jack admits the arrangement and gives you the gold.",
-            walkthroughSteps = listOf("Start by speaking with Jack / information from Seruk. This quest belongs to the Ardea lighthouse section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "After meeting the thief Seruk in Cape Dun and learning about Jack's payment from the rebels, return to Jack and ask about the money. Jack admits the arrangement and gives you the gold.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "This quest appears later chronologically even though it is filed under Ardea."),
-            reward = "",
-            warnings = "",
+            walkthroughSteps = listOf("Speak with Serduk in Cape Dun to learn that Jack is holding some rebel gold.", "Travel to the lighthouse south of Ardea and ask Jack about the gold.", "Collect the gold through dialogue and return to Serduk as requested."),
+            reward = "750 XP and +1 Thieving.",
+            warnings = "The task originates with Serduk, not Jack; Jack is where you collect the gold.",
             searchTags = listOf("Jack's rebel gold.", "Jack / information from Seruk", "Ardea lighthouse", "SAFE")
         ),
         Quest(
@@ -130,11 +130,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Javier",
             location = "Reddock / Orc farm",
-            prerequisites = "",
+            prerequisites = "Speak to Javier in Reddock and free Kliff from the occupied farm.",
             summary = "Javier explains that the rebels need a smith. Kliff, the enslaved smith at the Orc-controlled farm on the road toward Cape Dun, is the solution. Free Kliff and escort him safely back to Javier.",
             walkthroughSteps = listOf("Javier explains that Reddock lacks a blacksmith. Kliff, a slave at the Orc farm south of Reddock, used to be a smith.", "Free Kliff first—normally by resolving Topork and the farm quests—then tell Kliff that Reddock needs a smith. He agrees to take the position; escort/recruit him as required by the linked quest.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "The quest is linked to freeing Kliff and dealing with the Orc patrol on the farm. Avoid destroying the farm indiscriminately before speaking to everyone."),
             reward = "Verified: 750 XP, +10 Reddock reputation and +1 Smithing.",
-            warnings = "",
+            warnings = "Kliff must be available and free to work as smith. Keep him alive during his escort to Javier.",
             searchTags = listOf("Reddock needs a smith.", "Javier", "Reddock / Orc farm", "SAFE")
         ),
         Quest(
@@ -250,11 +250,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Joey",
             location = "Southern caves, Reddock",
-            prerequisites = "",
+            prerequisites = "Speak with Joey in Reddock and clear the cave tunnels.",
             summary = "Enter the southern cave system guarded by Joey. Kill the goblins, larger lizards and the Minecrawler blocking the route until the cave passage is clear.",
             walkthroughSteps = listOf("Start by speaking with Joey. This quest belongs to the Southern caves, Reddock section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Enter the southern cave system guarded by Joey. Kill the goblins, larger lizards and the Minecrawler blocking the route until the cave passage is clear.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Loot the chest in the cave: it contains the Reddock Teleport Stone."),
             reward = "",
-            warnings = "",
+            warnings = "Check both tunnel branches for lurking creatures before returning; the cave can become a reliable route afterward.",
             searchTags = listOf("Clean out the southern caves of Reddock.", "Joey", "Southern caves, Reddock", "SAFE")
         ),
         Quest(
@@ -280,11 +280,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Javier",
             location = "Reddock → Cape Dun",
-            prerequisites = "",
+            prerequisites = "Speak with Javier about finding the rebel agent in Cape Dun.",
             summary = "Once Javier trusts you, he tells you that a rebel agent is operating in Cape Dun. Speak with Phil, the swineherd, and use the rebel-friendly dialogue until he reveals himself as the contact.",
             walkthroughSteps = listOf("Javier in Reddock tells you that Cape Dun contains a Rebel contact, but deliberately does not identify him. In Cape Dun, speak with Phil, the swineherd/slave overseer in the lower part of the settlement, and exhaust the dialogue about his past and the local situation.", "The conversation reveals that Phil is the Rebel underground contact. The quest completes when his identity is uncovered; you do not need to start the rebellion.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Keep Phil alive if you want the Rebel route. Turning him in eventually opens Uruk's opposing quest to destroy the underground."),
             reward = "Verified reward: 500 XP, +10 Cape Dun/Reddock-area quest reputation as listed by the quest database, +2 Rebel reputation, and 50 gold from Phil.",
-            warnings = "",
+            warnings = "Do not start Cape Dun's liberation or reveal its agent Phil to Uruk before completing the espionage and neutral town quests.",
             searchTags = listOf("Find the rebel underground in Cape Dun.", "Javier", "Reddock → Cape Dun", "SAFE")
         ),
         Quest(
@@ -295,11 +295,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — ORC PATH",
             giver = "Uruk",
             location = "Reddock",
-            prerequisites = "",
+            prerequisites = "Earn enough Cape Dun reputation to meet Uruk and receive the Orc contract to destroy Reddock.",
             summary = "After earning enough reputation in Cape Dun, Uruk can order the destruction of Reddock. To complete it you must kill Javier and enough of the rebel population for the camp to fall, then report to Uruk.",
             walkthroughSteps = listOf("Uruk in Cape Dun offers this only after you have earned access to him.", "On the Orc route, attack Reddock and kill enough Rebels for the enclave to collapse and the survivors to flee. Return to Uruk afterward.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "DEFER. This permanently destroys a major early Rebel hub. Finish Javier, Sebastian, Norris, Kliff, arena and other Reddock content first."),
             reward = "Verified: 2500 XP, +7 Orc reputation, 2000 gold and 1000 follow-up XP from Uruk.",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "DESTROYS A REBEL QUEST HUB. Finish Javier, Sebastian, Norris, Kliff and the Reddock arena beforehand; this counts toward anti-Rebel faction hostility.",
             searchTags = listOf("Destroy the rebel camp Reddock.", "Uruk", "Reddock", "DEFER — ORC PATH")
         ),
         Quest(
@@ -460,11 +460,11 @@ internal object Gothic3Part1Data {
             category = "CHOICE — HASHISHIN",
             giver = "Gamal / Harek",
             location = "Cape Dun outskirts",
-            prerequisites = "",
+            prerequisites = "Meet slave trader Gamal in Cape Dun and learn about his escaped slave Harek.",
             summary = "Escort Harek back to Gamal instead of helping him escape.",
             walkthroughSteps = listOf("Start by speaking with Gamal / Harek. This quest belongs to the Cape Dun outskirts section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Escort Harek back to Gamal instead of helping him escape.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Mutually conflicts with helping Harek escape. Documented for completeness, not recommended if following the Rebel-friendly outcome."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Returning Harek to Gamal and helping him escape are opposite outcomes. Choose deliberately; both cannot be completed as a single peaceful route.",
             searchTags = listOf("Take Harek the slave back to Gamal.", "Gamal / Harek", "Cape Dun outskirts", "CHOICE — HASHISHIN")
         ),
         Quest(
@@ -475,11 +475,11 @@ internal object Gothic3Part1Data {
             category = "CHOICE — REBEL",
             giver = "Harek",
             location = "Cape Dun → Jens",
-            prerequisites = "",
+            prerequisites = "Find Harek outside Cape Dun and decide to help him flee from Gamal.",
             summary = "Agree to help Harek escape and lead him safely to Jens' hut outside Cape Dun.",
             walkthroughSteps = listOf("Start by speaking with Harek. This quest belongs to the Cape Dun → Jens section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Agree to help Harek escape and lead him safely to Jens' hut outside Cape Dun.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Alternative to returning Harek to Gamal."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Helping Harek directly conflicts with Gamal's return-the-slave objective. Do not promise both resolutions in one save.",
             searchTags = listOf("Help Harek escape!", "Harek", "Cape Dun → Jens", "CHOICE — REBEL")
         ),
         Quest(
@@ -565,11 +565,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — ORC PATH",
             giver = "Uruk",
             location = "Cape Dun",
-            prerequisites = "",
+            prerequisites = "Gain access to Uruk in Cape Dun and expose the rebel underground.",
             summary = "At high Cape Dun reputation, Uruk asks you to identify and eliminate the rebel spy. If you reveal Phil and kill him, report back to Uruk.",
             walkthroughSteps = listOf("Start by speaking with Uruk. This quest belongs to the Cape Dun section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "At high Cape Dun reputation, Uruk asks you to identify and eliminate the rebel spy. If you reveal Phil and kill him, report back to Uruk.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Irreversibly removes the local Rebel contact. Do not do this if you intend to preserve the Rebel route."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Selling out Phil permanently closes his Rebel underground and town liberation content. Do other Cape Dun quests first.",
             searchTags = listOf("Destroy the rebel underground in Cape Dun!", "Uruk", "Cape Dun", "DEFER — ORC PATH")
         ),
         Quest(
@@ -580,11 +580,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — REBEL PATH",
             giver = "Phil / Wenzel / player action",
             location = "Cape Dun",
-            prerequisites = "",
+            prerequisites = "Discover rebel spy Phil and free paladin Wenzel when ready to liberate Cape Dun.",
             summary = "Once you are ready for the rebellion, kill Uruk or coordinate with Wenzel. Defeat enough Orcs and Orc mercenaries for the remaining occupiers to flee, then report to the surviving Rebel contacts.",
             walkthroughSteps = listOf("Start by speaking with Phil / Wenzel / player action. This quest belongs to the Cape Dun section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Once you are ready for the rebellion, kill Uruk or coordinate with Wenzel. Defeat enough Orcs and Orc mercenaries for the remaining occupiers to flee, then report to the surviving Rebel contacts.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Finish all desired Cape Dun quests first. This is a major city liberation and contributes to the wider faction-hostility system."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "COUNTED ORC CITY LIBERATION. After three counted Orc towns fall, leaders of the remaining Orc cities may turn permanently hostile. Ardea does not count.",
             searchTags = listOf("Liberate Cape Dun!", "Phil / Wenzel / player action", "Cape Dun", "DEFER — REBEL PATH")
         ),
         Quest(
@@ -595,11 +595,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — REBEL PATH",
             giver = "Wenzel",
             location = "Cape Dun",
-            prerequisites = "",
+            prerequisites = "Complete Cape Dun liberation and free paladin Wenzel.",
             summary = "After gaining access to Wenzel, tell him when you are ready to attack. Follow him out of confinement and help him fight through the Orc occupation.",
             walkthroughSteps = listOf("Start by speaking with Wenzel. This quest belongs to the Cape Dun section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "After gaining access to Wenzel, tell him when you are ready to attack. Follow him out of confinement and help him fight through the Orc occupation.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Best used as the combat start for the Cape Dun liberation, but postpone until local content is complete."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Wenzel's follow-up sword quest and any planned return dialogue should be handled before you leave the region.",
             searchTags = listOf("Wenzel cleans up.", "Wenzel", "Cape Dun", "DEFER — REBEL PATH")
         ),
         Quest(
@@ -610,11 +610,11 @@ internal object Gothic3Part1Data {
             category = "SAFE AFTER WENZEL",
             giver = "Wenzel",
             location = "Montera region / Cape Dun follow-up",
-            prerequisites = "",
+            prerequisites = "Free Wenzel during the Cape Dun storyline; ask him about the lost sword.",
             summary = "After Wenzel is free, ask about his lost sword. Recover the named sword from the location connected with his past fighting around Montera and return it to him.",
             walkthroughSteps = listOf("Start by speaking with Wenzel. This quest belongs to the Montera region / Cape Dun follow-up section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "After Wenzel is free, ask about his lost sword. Recover the named sword from the location connected with his past fighting around Montera and return it to him.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "This follow-up naturally sends you toward the next major region."),
             reward = "",
-            warnings = "",
+            warnings = "Complete the Wenzel conversation before selling any unusually named sword found around Montera or the occupied coast.",
             searchTags = listOf("Wenzel's lost sword.", "Wenzel", "Montera region / Cape Dun follow-up", "SAFE AFTER WENZEL")
         ),
         Quest(
@@ -745,11 +745,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Marik",
             location = "Montera",
-            prerequisites = "",
+            prerequisites = "Meet Marik at Montera and investigate the loyalty of the mercenary recruits.",
             summary = "Investigate the loyalty of Montera's mercenaries by speaking with the relevant people and completing the connected evidence tasks for Marik.",
             walkthroughSteps = listOf("Marik uses you as an outsider to investigate his mercenaries. This is a long umbrella quest, not one conversation. Speak with the relevant mercenaries and slaves while doing Montera's normal quests and repeatedly report useful information to Marik.", "Important evidence chains include Trano loafing outside town; Bradley's slave list; Kelvin's information that Ashton is hiding arena income; Ashton's Golden List from the chest behind the arena; and the Rebel spy Sanford. If you are following the Rebel route, do NOT hand Marik the evidence that exposes Sanford until you are ready to abandon that route.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Treat this as a background investigation and finish the harmless sub-investigations first. Bradley's list can be returned after Marik checks it, allowing the slave-camp chain to continue cleanly."),
             reward = "The quest pays incremental XP, gold and Montera reputation for individual reports; exposing Sanford is the Orc-aligned final branch.",
-            warnings = "",
+            warnings = "Do not assassinate Montera leaders before reporting the mercenaries' loyalties to Marik, or the dialogue chain can disappear.",
             searchTags = listOf("How loyal are the orcs' mercenaries?", "Marik", "Montera", "SAFE")
         ),
         Quest(
@@ -1060,11 +1060,11 @@ internal object Gothic3Part1Data {
             category = "SAFE",
             giver = "Marik",
             location = "Montera arena",
-            prerequisites = "",
+            prerequisites = "Accept Marik's investigation of Ashton's hidden arena accounts.",
             summary = "Investigate Ashton and obtain the evidence of his hidden/embezzled gold. Bring the proof to Marik.",
             walkthroughSteps = listOf("Kelvin can reveal that Ashton is skimming arena income. Once Marik hears the accusation, he asks for proof.", "Go behind Montera's arena and search the bushes near the wall for Ashton's hidden chest. Take Ashton's Golden List and bring that document to Marik.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Do this before any liberation or action that removes Ashton/Kelvin. You can still complete the arena fights independently."),
             reward = "Verified walkthrough reward: +4 Montera reputation, 500 XP and 200 gold.",
-            warnings = "",
+            warnings = "Search for Ashton's evidence and report it to Marik BEFORE liberating Montera; the arena champion may become hostile.",
             searchTags = listOf("Bring Marik proof that Ashton embezzles gold.", "Marik", "Montera arena", "SAFE")
         ),
         Quest(
@@ -1075,11 +1075,11 @@ internal object Gothic3Part1Data {
             category = "SAFE / THIEVERY",
             giver = "Marik",
             location = "Montera slave camp",
-            prerequisites = "",
+            prerequisites = "Speak with Marik about Bradley's list; avoid openly assaulting the slave boss.",
             summary = "Obtain Bradley's slave list and bring it to Marik as part of the loyalty investigation.",
             walkthroughSteps = listOf("During Bradley's slave-rotation quests you learn that he keeps a written list. Tell Marik, who wants to inspect it to check whether Bradley is cheating him.", "The Slave List lies on the table inside Bradley's hut. Steal it when Bradley is outside or otherwise unable to see you, then bring it to Marik.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Complete Bradley's own dialogue/quests first if possible. After Marik checks the list, he explicitly tells you to return it, creating the follow-up quest."),
             reward = "Verified: taking the list gives XP and Montera reputation; delivering it to Marik adds XP and gold.",
-            warnings = "",
+            warnings = "This theft links to Return the Stolen Slave List to Bradley. Complete both while Montera remains peaceful.",
             searchTags = listOf("Marik wants Bradley's slave list.", "Marik", "Montera slave camp", "SAFE / THIEVERY")
         ),
         Quest(
@@ -1105,11 +1105,11 @@ internal object Gothic3Part1Data {
             category = "SAFE — REBEL SABOTAGE",
             giver = "Mason / rebels",
             location = "Montera farm",
-            prerequisites = "",
+            prerequisites = "Meet rebel contact Mason or the Montera underground and accept cattle sabotage.",
             summary = "Kill the designated cattle at the stockyard, preferably discreetly so the farm does not erupt into a wider fight.",
             walkthroughSteps = listOf("Start by speaking with Mason / rebels. This quest belongs to the Montera farm section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Kill the designated cattle at the stockyard, preferably discreetly so the farm does not erupt into a wider fight.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Nighttime/ranged attacks make the sabotage easier."),
             reward = "",
-            warnings = "",
+            warnings = "Killing farm cattle damages the Orc-held Montera economy and can advance the Rebel liberation chain. Finish cattle/warehouse quests you want first.",
             searchTags = listOf("Kill the cattle in the stockyard.", "Mason / rebels", "Montera farm", "SAFE — REBEL SABOTAGE")
         ),
         Quest(
@@ -1135,11 +1135,11 @@ internal object Gothic3Part1Data {
             category = "SAFE — REBEL",
             giver = "Rufus",
             location = "Montera grain farm",
-            prerequisites = "",
+            prerequisites = "Find slave Rufus on the Montera grain farm and agree to help him escape.",
             summary = "Help Rufus get away from the grain farm without being killed by the guards.",
             walkthroughSteps = listOf("Start by speaking with Rufus. This quest belongs to the Montera grain farm section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Help Rufus get away from the grain farm without being killed by the guards.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Before turning the quest in, loot the objective area and speak with any named NPC involved; Gothic 3 often chains follow-up quests through the same characters."),
             reward = "",
-            warnings = "",
+            warnings = "Rufus's escape leads to Okara recruitment. Escort him safely before attacking the Montera occupation.",
             searchTags = listOf("Rufus escapes from the grain farm.", "Rufus", "Montera grain farm", "SAFE — REBEL")
         ),
         Quest(
@@ -1150,11 +1150,11 @@ internal object Gothic3Part1Data {
             category = "SAFE — REBEL",
             giver = "Rufus",
             location = "Montera → Okara",
-            prerequisites = "",
+            prerequisites = "Complete Rufus's escape from the grain farm and agree to lead him to Okara.",
             summary = "Escort Rufus from the Montera region to the rebel camp at Okara.",
             walkthroughSteps = listOf("After Rufus escapes the grain farm he stops in the forest and asks for an escort to Okara. The direct route crosses territory with numerous wolves and snappers.", "Escort Rufus all the way to Okara and keep him alive. When you reach the camp, speak with him to finish his escort; Manning also counts Rufus toward “Okara needs more people.”", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "The safest method is to clear the route before starting the escort. Rufus readily attacks nearby wildlife and can get himself killed if several packs engage at once."),
             reward = "Verified reward: 1000 XP, +1 Rebel reputation, 15 gold from Rufus; Manning gives additional recruitment rewards.",
-            warnings = "",
+            warnings = "Return him to Okara's rebel camp; the town transition does not automatically finish Manning's larger recruitment quest.",
             searchTags = listOf("The slave Rufus wants to go to Okara.", "Rufus", "Montera → Okara", "SAFE — REBEL")
         ),
         Quest(
@@ -1165,11 +1165,11 @@ internal object Gothic3Part1Data {
             category = "SAFE — REBEL",
             giver = "Sanford",
             location = "Montera → Okara",
-            prerequisites = "",
+            prerequisites = "Discover Montera's Rebel contact Sanford and ask about sending word to Okara.",
             summary = "Carry Sanford's message to the rebel leadership in Okara and deliver it.",
             walkthroughSteps = listOf("Start by speaking with Sanford. This quest belongs to the Montera → Okara section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "Carry Sanford's message to the rebel leadership in Okara and deliver it.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Do this before exposing Sanford if you want the Rebel route."),
             reward = "",
-            warnings = "",
+            warnings = "Keep Sanford's identity hidden while Montera is occupied. Exposing him to the Orcs forfeits the Rebel spy route.",
             searchTags = listOf("A message for Okara.", "Sanford", "Montera → Okara", "SAFE — REBEL")
         ),
         Quest(
@@ -1180,11 +1180,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — ORC PATH",
             giver = "Orc-side quest",
             location = "Montera",
-            prerequisites = "",
+            prerequisites = "Orc-aligned Montera route; learn that Sanford is the Rebel informant.",
             summary = "If you choose to support the Orcs and expose the rebel underground, eliminate Sanford as ordered.",
             walkthroughSteps = listOf("Start by speaking with Orc-side quest. This quest belongs to the Montera section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "If you choose to support the Orcs and expose the rebel underground, eliminate Sanford as ordered.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Sanford is a key Rebel agent. Killing him closes Rebel content."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Killing Sanford is irreversible. His message to Okara and Montera rebel-support quests should be finished before choosing this Orc outcome.",
             searchTags = listOf("Do away with Sanford.", "Orc-side quest", "Montera", "DEFER — ORC PATH")
         ),
         Quest(
@@ -1240,11 +1240,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — REBEL PATH",
             giver = "Sanford / Rebel network",
             location = "Montera",
-            prerequisites = "",
+            prerequisites = "Finish the neutral Orc-mercenary, slave, arena and spy quests in Montera, then align with Sanford.",
             summary = "After completing the Rebel preparation chain and gaining access to Varek, begin the uprising and defeat Varek plus enough Orcs/mercenaries for Montera to fall. Surviving enemies eventually flee.",
             walkthroughSteps = listOf("Start by speaking with Sanford / Rebel network. This quest belongs to the Montera section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "After completing the Rebel preparation chain and gaining access to Varek, begin the uprising and defeat Varek plus enough Orcs/mercenaries for Montera to fall. Surviving enemies eventually flee.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Finish all desired Montera quests first. This is a very large battle and a major faction-hostility action."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Montera liberation is a COUNTED Orc-city strike; complete all desired quests before beginning the attack.",
             searchTags = listOf("Liberate Montera from the orcs!", "Sanford / Rebel network", "Montera", "DEFER — REBEL PATH")
         ),
         Quest(
@@ -1255,11 +1255,11 @@ internal object Gothic3Part1Data {
             category = "DEFER — ORC PATH",
             giver = "Varek",
             location = "Montera outskirts",
-            prerequisites = "",
+            prerequisites = "Receive Varek's Orc-aligned contract after gaining Montera trust.",
             summary = "At sufficiently high standing with the Orc leadership, Varek orders you to destroy the rebel groups around Montera, including the positions associated with Daryl, Mason and Otis.",
             walkthroughSteps = listOf("Start by speaking with Varek. This quest belongs to the Montera outskirts section. Exhaust the quest-related dialogue before leaving so every objective and follow-up is registered.", "At sufficiently high standing with the Orc leadership, Varek orders you to destroy the rebel groups around Montera, including the positions associated with Daryl, Mason and Otis.", "Return to the quest giver or the named destination after the objective is complete. If no completion message appears, re-check the target area for a surviving enemy, missing quest item, or an unfinished dialogue step.", "Mutually hostile to the Rebel route and removes several quest givers. Save for a committed Orc playthrough."),
             reward = "",
-            warnings = "⚠ Choice warning: This quest can affect faction access, named NPCs, or later quest availability. Make a manual save before committing and finish the surrounding neutral quests first.",
+            warnings = "Clearing Rebel camps can permanently eliminate their quest givers. Finish Okara, Reddock and Nemora recruitment/Fire Mage quests before a destruction route.",
             searchTags = listOf("Eliminate the rebel positions around Montera.", "Varek", "Montera outskirts", "DEFER — ORC PATH")
         ),
     )
