@@ -179,8 +179,19 @@ internal fun HomeScreen(
             }
             // The compact tablet has a shorter display: avoid reserving an entire
             // second logo/credit-sized band around the vertical menu.
-            val menuTop = if (compactTablet) titleHeight + 4.dp else titleHeight + 40.dp * tabletScale
-            val menuBottom = if (compactTablet) 8.dp else creditHeight + 32.dp * tabletScale
+            // Pixel Tablet: reclaim only decorative whitespace, not text or button size.
+            // This keeps EXIT reachable without having to scroll the main menu.
+            val largeTablet = tabletLandscape && !compactTablet
+            val menuTop = when {
+                compactTablet -> titleHeight + 4.dp
+                largeTablet -> titleHeight + 26.dp
+                else -> titleHeight + 40.dp * tabletScale
+            }
+            val menuBottom = when {
+                compactTablet -> 8.dp
+                largeTablet -> creditHeight + 8.dp
+                else -> creditHeight + 32.dp * tabletScale
+            }
             Box(Modifier.fillMaxSize().padding(top = menuTop, bottom = menuBottom)) {
                 Column(
                     modifier = Modifier.align(Alignment.CenterEnd)
@@ -203,12 +214,12 @@ internal fun HomeScreen(
                             Column(horizontalAlignment = Alignment.End) {
                                 GothicMenuItem(entry, tabletLandscape, tabletScale, compactTablet)
                                 if (index != entries.lastIndex) {
-                                    Spacer(Modifier.height(if (compactTablet) 1.dp else if (tabletLandscape) 6.dp * tabletScale else 8.dp))
+                                    Spacer(Modifier.height(if (compactTablet) 1.dp else if (largeTablet) 4.dp else if (tabletLandscape) 6.dp * tabletScale else 8.dp))
                                     Box(Modifier.width(if (tabletLandscape) 290.dp * tabletScale else 210.dp).height(1.dp).background(
                                         Brush.horizontalGradient(listOf(Color.Transparent,
                                             Color(0x66A67C32), Color(0xB8E0BD69),
                                             Color(0x66A67C32), Color.Transparent))))
-                                    Spacer(Modifier.height(if (compactTablet) 1.dp else if (tabletLandscape) 4.dp * tabletScale else 5.dp))
+                                    Spacer(Modifier.height(if (compactTablet) 1.dp else if (largeTablet) 2.dp else if (tabletLandscape) 4.dp * tabletScale else 5.dp))
                                 }
                             }
                         }
