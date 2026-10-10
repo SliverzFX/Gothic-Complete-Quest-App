@@ -88,3 +88,22 @@ Primary source comparisons:
 ### Saved-progress migration warning
 
 Stable IDs protect the storage key format, but a few previously vague records now identify different concrete journal objectives (for example `R1-C1-020`, `R1-C1-026`, `R1-C1-027`, and `R1-C1-040`). If anyone installed an earlier Questbound build and completed one of these IDs, the saved checkmark may incorrectly apply to the newly documented objective. The data correction pass deliberately did **not** delete or silently rewrite user progress. Before public release, determine whether a targeted one-time migration or a user-visible reconciliation notice is appropriate.
+
+## Supplemental quest coverage — October 10, 2026
+
+After the original 169-record metadata audit, a new `RisenGuidePart9Data.kt` appendix adds **27 independently documented Chapter 1 quests** from GameBanshee's Severin Farm, optional wilderness, legendary swords, Bandit Camp and arena walkthroughs. All have quest givers, prerequisites, actionable steps and a source-documented reward. They use new IDs `R1-C1-090` through `R1-C1-116`; old IDs and saved completion keys are untouched.
+
+**New catalog total: 196 records, including 190 trackable objectives and 6 guide/cross-reference records.** Chapter counts: 116, 42, 21, 17. This still is **not** the full ~263 documented quests, so no completion claim is warranted. The new sidequests appear as a Chapter 1 completionist appendix after the older 89 entries pending an ordering/experience-flow presentation review; this does not move existing saved IDs.
+
+Updated regression tests cover the new chapter counts, unique IDs and complete metadata for the 27 additions. A successful final Android build and emulator run has **not** been verified at this checkpoint.
+
+Sources:
+- https://www.gamebanshee.com/risen/walkthrough/ch1farangaseverinsfarm.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1farangathecursedlords&swords.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampquestspart1.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampquestspart2.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampquestspart3.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampquestspart4.php
+- https://www.myrtana.net/en/wiki/risen
+
+The Gold Fever reward was additionally corrected to **200 XP and 100 gold**, matching the Bandit Camp source.
