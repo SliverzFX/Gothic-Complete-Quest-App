@@ -8,7 +8,7 @@ import org.junit.Test
 class RisenQuestDataTest {
     @Test
     fun allSuppliedChapterEntriesHaveUniqueIdsAndOrderedWalkthroughs() {
-        assertEquals(listOf(89, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
+        assertEquals(listOf(116, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
         val quests = GameId.RISEN.quests()
         assertEquals(quests.size, quests.map { it.id }.distinct().size)
         (1..4).forEach { chapter ->
@@ -64,7 +64,7 @@ class RisenQuestDataTest {
     @Test
     fun fullRisenMetadataAuditHasNoBlankRequiredFields() {
         val quests = RisenQuestData.quests
-        assertEquals(169, quests.size)
+        assertEquals(196, quests.size)
         assertTrue(quests.all { it.title.isNotBlank() && it.giver.isNotBlank() })
         assertTrue(quests.all { it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
         assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() })
@@ -76,7 +76,7 @@ class RisenQuestDataTest {
         val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041")
         val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
         assertEquals(expected, guideIds)
-        assertEquals(163, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertEquals(190, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
         assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
         assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
     }
@@ -88,6 +88,20 @@ class RisenQuestDataTest {
         assertEquals("Scordo", RisenQuestData.quests.single { it.id == "R1-C1-028" }.giver)
         assertEquals("Walter", RisenQuestData.quests.single { it.id == "R1-C2-017" }.giver)
         assertEquals("Romanov", RisenQuestData.quests.single { it.id == "R1-C1-040" }.giver)
+    }
+
+    @Test
+    fun newSideQuestAppendixIsUniqueAndHasActionableSteps() {
+        val extra = RisenGuidePart9Data.quests
+        assertEquals(27, extra.size)
+        assertEquals((90..116).toList(), extra.map { it.playOrder })
+        assertTrue(extra.all { it.id.startsWith("R1-C1-") && it.chapter == 1 })
+        assertTrue(extra.all { it.giver.isNotBlank() && it.reward.isNotBlank() && it.prerequisites.isNotBlank() })
+        assertTrue(extra.all { it.walkthroughSteps.size >= 3 })
+        assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart1Data.quests.map { it.id }.toSet()).isEmpty())
+        assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart2Data.quests.map { it.id }.toSet()).isEmpty())
+        assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart3Data.quests.map { it.id }.toSet()).isEmpty())
+        assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart4Data.quests.map { it.id }.toSet()).isEmpty())
     }
 
 }
