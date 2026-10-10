@@ -22,6 +22,21 @@ class Gothic3QuestDataTest {
     }
 
     @Test
+    fun completedMyrtanaAndNordmarSectionsDoNotContainTemplateWalkthroughs() {
+        for (section in 1..4) {
+            for (quest in Gothic3QuestData.part(section)) {
+                assertTrue(
+                    "Generic walkthrough remaining: " + quest.id,
+                    quest.walkthroughSteps.none {
+                        it.startsWith("Begin with ") || it.startsWith("This quest belongs to")
+                    }
+                )
+                assertTrue("Missing giver: " + quest.id, quest.giver != "Trigger quest")
+            }
+        }
+    }
+
+    @Test
     fun importantGlobalAndRegionalObjectivesStayLinked() {
         val quests = Gothic3QuestData.quests.associateBy { it.id }
         assertTrue(quests.getValue("G3-P7-001").walkthroughSteps.any { it.contains("Cruz") })
