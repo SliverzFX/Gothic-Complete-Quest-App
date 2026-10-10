@@ -153,3 +153,37 @@ GameBanshee's original-game prologue documents six journal quests, while the ear
 In-game order is `R1-C1-001 → 194 → 195 → 196 → 197 → 002`. To preserve legacy IDs, play-order values and saved progress, the new entries appear at the end of Chapter 1 as a completionist appendix with explicit chronology warnings; the display-order limitation remains open.
 
 New structural checkpoint: **277 entries, 269 trackable and 8 guide-only; chapter counts 197/42/21/17**. This addition does not resolve the remaining full-catalog comparison, duplicate classification, or Android CI verification. Earlier CI failures on intermediate commits were caused by Risen test count expectations lagging behind newly added entries; latest CI must be checked independently.
+
+
+## Final quest-list reconciliation pass — 2026-10-10
+
+**Reference comparison:** [Risen.cz full original-English quest index](https://www.risen.cz/risen/navod-seznam-ukolu/?en=1), [Myrtana.net Risen index](https://www.myrtana.net/en/wiki/risen), and individual [GameBanshee original-Risen walkthroughs](https://www.gamebanshee.com/risen/walkthrough.php). The Risen.cz rendered index yields 265 location-grouped quest *titles* in the four text sections, while Myrtana.net advertises 263 total quests; these services' counting/deduplication schemes should not be conflated.
+
+The full source title comparison against the Questbound Risen quest catalog found **no outstanding unmatched journal titles after documented alternative-English-title aliases were resolved**. Verified aliases include:
+- "A lovely time with Lilly" → `R1-C1-147` (Nice Moments with Lilly).
+- "Cole's hunting bow returned" → `R1-C1-119` (Cole Has His Bow Back).
+- "Collect from Alvaro / Konrad" → `R1-C1-150` / `151`.
+- "Get your hands on Cutter!" → `R1-C1-149`.
+- "Knock down Scordo" → `R1-C1-170`.
+- "Take the Don's heirloom to Hernandez" → `R1-C1-154`.
+- "Weasel hunt" → `R1-C1-153`.
+- "Woman beater" → `R1-C1-127` (The Violent One).
+- "Assist the Warriors of the Order in Harbour Town" → `R1-C1-192`.
+- "Get yourself a quill" → `R1-C1-071`.
+- "Sweep out the chambers" → `R1-C1-191`.
+- "The best fighter in the camp" → `R1-C1-022`.
+- "The ocular" → `R1-C4-017` (Retrieve the Ocular).
+
+**Missing original-game journal quests restored:** four prologue steps `R1-C1-194..197` (Take Sara to Safety; Investigate the Abandoned House; Find the Key; Loot the Chest); six further standalone quests `R1-C1-198..203` (the six vassal rings, large eastern temple discovery, Pallas report, 15 gnome tool bags, Trick Aric, five Golden Fragments); and the other expansions documented above. The source recommends taking prologue quests before the old `R1-C1-002`; they were appended under stable new IDs rather than renumbering existing records.
+
+**Important corrections following individual-source cross-check:**
+- `R1-C2-002`, *Find the Golden Crystal Disks*, is **a real, distinct journal task**, completing for 250 XP when all five disks are collected. `R1-C2-001` separately completes when the disks are given to Mendoza. It is **trackable**, not guide-only ([GameBanshee](https://www.gamebanshee.com/risen/walkthrough/ch2metaquests.php)).
+- `R1-C1-094`, *The Cursed Lords*, requires **five** undead lords' rings and the **sixth from Leon**, not six undead lord kills ([Risen.cz](https://www.risen.cz/risen/navod/153/find-all-the-vassal-rings/)).
+- `R1-C1-125`, Jack's Chest, is started by **Josh's alternate information reward**, not Jack; `R1-C1-187`, The Imprisoned Treasure Hunter, is offered by **Dirk** about Olf ([Risen.cz Jack's Chest](https://www.risen.cz/risen/navod/65/jacks-chest/), [Risen.cz Imprisoned Treasure Hunter](https://www.risen.cz/risen/navod/67/the-imprisoned-treasure-hunter/)).
+- `R1-C2-017` Lizard Swords starts when **Oscar** sees the sword; **Walter** resolves the mystery of obsidian ([Risen.cz](https://www.risen.cz/risen/navod/159/lizard-swords/)).
+- Some early prologue XP differs across original guide authors: GameBanshee documents **25 XP** for Take Sara to Safety, while Risen.cz describes **50 XP**; the current app uses GameBanshee's quest-chain breakdown and this difference should be treated as documented source disagreement rather than claimed universal precision ([GameBanshee](https://www.gamebanshee.com/risen/walkthrough/prologuequests.php), [Risen.cz](https://www.risen.cz/risen/navod/2/take-sara-to-safety/)).
+
+**Current source catalog:** **283 unique entries** in four chapters: 203, 42, 21, 17. Of the 283, **276 are tracked journal/quest objectives and 7 are guide-only or duplicate cross-references**. These are Questbound catalog counts, not a guarantee that the original game has 276 independently completable quests in a single faction playthrough.
+
+**Scope of sign-off:** All named original-game quests in the compared indexes are now represented in the app; this is a reference-backed quest-name coverage milestone. Exact rewards and trigger conditions can still vary by patch, faction, prior decisions and walkthrough author. An automated Android build plus instrumented UI tests and a real-device verification are still required to sign off the **Android release**, which is a different milestone.
+
