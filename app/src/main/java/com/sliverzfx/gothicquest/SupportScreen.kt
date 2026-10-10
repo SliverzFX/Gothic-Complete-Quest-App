@@ -63,7 +63,8 @@ internal fun SupportScreen(
     }
     var message by remember(correction) { mutableStateOf<String?>(null) }
 
-    val tablet = isLargeLandscapeTablet()
+    val tablet = isLandscapeTablet()
+    val compactTablet = isCompactLandscapeTablet()
     val selectedQuestContent: @Composable () -> Unit = {
         correction?.let { quest ->
             SupportBlock("SELECTED QUEST") {
@@ -141,7 +142,7 @@ internal fun SupportScreen(
     }
     Column(Modifier.fillMaxSize()
         .statusBarsPadding().navigationBarsPadding()
-        .padding(horizontal = if (tablet) 32.dp else 20.dp)
+        .padding(horizontal = if (tablet) { if (compactTablet) 14.dp else 32.dp } else 20.dp)
         .testTag("support_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
@@ -153,8 +154,8 @@ internal fun SupportScreen(
             }
         }
         if (tablet) {
-            Text("SUPPORT / BUGS", color = SupportGold, fontSize = 28.sp, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 8.dp))
+            Text("SUPPORT / BUGS", color = SupportGold, fontSize = if (compactTablet) 23.sp else 28.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = if (compactTablet) 2.dp else 8.dp))
             LargeTabletPageColumns(
                 left = {
                     selectedQuestContent()
@@ -183,11 +184,12 @@ internal fun SupportScreen(
 
 @Composable
 private fun SupportBlock(title: String, content: @Composable ColumnScope.() -> Unit) {
+    val compact = isCompactLandscapeTablet()
     val shape = RoundedCornerShape(7.dp)
     Column(Modifier.fillMaxWidth().background(Color(0xFF15100D), shape)
-        .border(1.dp, Color(0xFF5F4529), shape).padding(16.dp)) {
-        Text(title, color = SupportGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(12.dp))
+        .border(1.dp, Color(0xFF5F4529), shape).padding(if (compact) 12.dp else 16.dp)) {
+        Text(title, color = SupportGold, fontSize = if (compact) 15.sp else 16.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(if (compact) 7.dp else 12.dp))
         content()
     }
 }
@@ -197,7 +199,7 @@ private fun SupportTip(title: String, body: String) {
     Text(title, color = SupportGold, fontSize = 15.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(4.dp))
     Text(body, color = SupportBody, fontSize = 14.sp)
-    Spacer(Modifier.height(14.dp))
+    Spacer(Modifier.height(if (isCompactLandscapeTablet()) 8.dp else 14.dp))
 }
 
 @Composable
