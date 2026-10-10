@@ -8,7 +8,7 @@ import org.junit.Test
 class RisenQuestDataTest {
     @Test
     fun allSuppliedChapterEntriesHaveUniqueIdsAndOrderedWalkthroughs() {
-        assertEquals(listOf(186, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
+        assertEquals(listOf(192, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
         val quests = GameId.RISEN.quests()
         assertEquals(quests.size, quests.map { it.id }.distinct().size)
         (1..4).forEach { chapter ->
@@ -64,7 +64,7 @@ class RisenQuestDataTest {
     @Test
     fun fullRisenMetadataAuditHasNoBlankRequiredFields() {
         val quests = RisenQuestData.quests
-        assertEquals(266, quests.size)
+        assertEquals(272, quests.size)
         assertTrue(quests.all { it.title.isNotBlank() && it.giver.isNotBlank() })
         assertTrue(quests.all { it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
         assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() })
@@ -76,7 +76,7 @@ class RisenQuestDataTest {
         val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041", "R1-C1-037", "R1-C1-038")
         val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
         assertEquals(expected, guideIds)
-        assertEquals(258, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertEquals(264, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
         assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
         assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
     }
@@ -125,6 +125,15 @@ class RisenQuestDataTest {
         assertEquals(16, quests.map { it.id }.distinct().size)
         assertTrue(quests.any { it.title == "Artefact Delivery" && it.giver == "Beppo" })
         assertTrue(quests.any { it.title == "To the Temple Ruins with Lorenzo" })
+    }
+
+    @Test
+    fun pattyAndMonasteryMissingQuestsKeepUniqueProgress() {
+        val appendix = RisenGuidePart13Data.quests
+        assertEquals(6, appendix.size)
+        assertEquals((187..192).toList(), appendix.map { it.playOrder })
+        assertEquals(6, appendix.map { it.id }.distinct().size)
+        assertTrue(appendix.all { it.walkthroughSteps.size == 3 && it.reward.isNotBlank() })
     }
 
 }
