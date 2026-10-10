@@ -7,7 +7,7 @@ import org.junit.Test
 class ArcholosQuestDataTest {
     @Test
     fun allSixChaptersPreserveImportedQuestsAndOrder() {
-        assertEquals(listOf(20, 77, 36, 28, 29, 2), (1..6).map { GameId.ARCHOLOS.chapterQuests(it).size })
+        assertEquals(listOf(18, 74, 41, 28, 29, 2), (1..6).map { GameId.ARCHOLOS.chapterQuests(it).size })
         val quests = GameId.ARCHOLOS.quests()
         assertEquals(quests.size, quests.map { it.id }.toSet().size)
         assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() && it.reward.isNotBlank() })
@@ -22,6 +22,11 @@ class ArcholosQuestDataTest {
     fun chapterSpecificFollowupsUseTheirStatedAvailability() {
         assertEquals(3, ArcholosQuestData.quests.single { it.title == "The Legendary Recipe (Odgar)" }.chapter)
         assertEquals(2, ArcholosQuestData.quests.single { it.title == "Cleaning The Shore" }.chapter)
+        assertEquals(2, ArcholosQuestData.quests.single { it.id == "AR-C1-019" }.chapter)
+        assertEquals(2, ArcholosQuestData.quests.single { it.id == "AR-C1-020" }.chapter)
+        for (number in 67..71) {
+            assertEquals(3, ArcholosQuestData.quests.single { it.id == "AR-C2-" + number.toString().padStart(3, '0') }.chapter)
+        }
         assertEquals(5, ArcholosQuestData.quests.single { it.title == "Small Gift" }.chapter)
         assertEquals(6, ArcholosQuestData.quests.single { it.title == "A City On Fire" }.chapter)
     }
