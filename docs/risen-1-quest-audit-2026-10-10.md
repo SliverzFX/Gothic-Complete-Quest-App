@@ -145,3 +145,11 @@ The Myrtana.net catalog lists **263** game journal quests. This is **not an iden
 - Clarified the Farmer's Sick Wife and Nelson's island map reward information.
 - Added Baxter's **Mental Arithmetic!** quest, with the answer **238** for 14 × 17 and the documented 100 XP.
 - Regression test expectations have been updated for **273 entries, 265 tracked + 8 reference-only**. Newest Android CI and emulator status remained unconfirmed when this note was written.
+
+## Four distinct prologue journal quests restored
+
+GameBanshee's original-game prologue documents six journal quests, while the earlier guide tracked only the first survivor search and final fried-meat delivery. Four intermediate objectives are now independently tracked with 25 XP each: `R1-C1-194` Take Sara to Safety, `R1-C1-195` Investigate the Abandoned House, `R1-C1-196` Find the Key in the Abandoned House, and `R1-C1-197` Loot the Chest in the Abandoned House. Source: https://www.gamebanshee.com/risen/walkthrough/prologuequests.php
+
+In-game order is `R1-C1-001 → 194 → 195 → 196 → 197 → 002`. To preserve legacy IDs, play-order values and saved progress, the new entries appear at the end of Chapter 1 as a completionist appendix with explicit chronology warnings; the display-order limitation remains open.
+
+New structural checkpoint: **277 entries, 269 trackable and 8 guide-only; chapter counts 197/42/21/17**. This addition does not resolve the remaining full-catalog comparison, duplicate classification, or Android CI verification. Earlier CI failures on intermediate commits were caused by Risen test count expectations lagging behind newly added entries; latest CI must be checked independently.

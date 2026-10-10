@@ -8,7 +8,7 @@ import org.junit.Test
 class RisenQuestDataTest {
     @Test
     fun allSuppliedChapterEntriesHaveUniqueIdsAndOrderedWalkthroughs() {
-        assertEquals(listOf(193, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
+        assertEquals(listOf(197, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
         val quests = GameId.RISEN.quests()
         assertEquals(quests.size, quests.map { it.id }.distinct().size)
         (1..4).forEach { chapter ->
@@ -64,7 +64,7 @@ class RisenQuestDataTest {
     @Test
     fun fullRisenMetadataAuditHasNoBlankRequiredFields() {
         val quests = RisenQuestData.quests
-        assertEquals(273, quests.size)
+        assertEquals(277, quests.size)
         assertTrue(quests.all { it.title.isNotBlank() && it.giver.isNotBlank() })
         assertTrue(quests.all { it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
         assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() })
@@ -76,7 +76,7 @@ class RisenQuestDataTest {
         val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041", "R1-C1-037", "R1-C1-038")
         val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
         assertEquals(expected, guideIds)
-        assertEquals(265, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertEquals(269, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
         assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
         assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
     }
@@ -137,4 +137,18 @@ class RisenQuestDataTest {
         assertTrue(appendix.any { it.title == "Mental Arithmetic!" && it.reward == "100 XP" })
     }
 
+    @Test
+    fun missingPrologueJournalQuestsKeepIndependentProgressKeys() {
+        val quests = RisenGuidePart14Data.quests
+        assertEquals(4, quests.size)
+        assertEquals((194..197).toList(), quests.map { it.playOrder })
+        assertEquals((194..197).map { "R1-C1-" + it }, quests.map { it.id })
+        assertEquals(listOf("Take Sara to Safety", "Investigate the Abandoned House",
+            "Find the Key in the Abandoned House", "Loot the Chest in the Abandoned House"), quests.map { it.title })
+        assertTrue(quests.all { it.chapter == 1 && it.reward.contains("25 XP") })
+        assertTrue(quests.all { it.walkthroughSteps.size == 3 && it.warnings.contains("Chronology:") })
+        assertTrue(quests.all { !RisenQuestData.isGuideEntry(it) })
+        assertEquals("Find survivors of the shipwreck", RisenQuestData.quests.single { it.id == "R1-C1-001" }.title)
+        assertEquals("Take some fried meat to Sara", RisenQuestData.quests.single { it.id == "R1-C1-002" }.title)
+    }
 }
