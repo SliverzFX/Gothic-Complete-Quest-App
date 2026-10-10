@@ -73,3 +73,64 @@ Detailed regional sources:
 - Hammer Clan: https://www.gamepressure.com/gothic3/hammer-clan/ze5d5
 - Fire Clan: https://www.gamepressure.com/gothic3/fire-clan/zd5d4
 - Monastery: https://www.gamepressure.com/gothic3/monastery/zf5d6
+
+
+---
+
+## Second regional pass: Varant corrected (2026-10-10)
+
+The earlier checkpoint above recorded **101 remaining generic openings in Parts 5 and 6**. Those 101 have now been replaced by actionable multi-step entries or explicitly labeled historical guide/unverified records. **Do not use the stale counts in the earlier table as the current status.**
+
+### Corrections committed this pass
+
+- `2a744e221807329b210c0e8895db89ea2fa8c9b8` — Braga and Ben Erai; replaced incorrect generic quests with named source counterparts.
+- `59a81acc19d1a62f0c67df8efe45d6fdd359bed6` — Lago and Ben Sala; named arena opponents, Vatras escort to Hurit, Miguel/Enzo/Daro/Julio/Yugul routes.
+- `11cf2267e740a1bf2e428d9425fae8cb471243bb` — Mora Sul; gifts for Gonzales via Nasib, Paladin/Anktos/Oelk/Angar arena, Masil/Orknarok and Water Mage consequences.
+- `0bca947a1be85dde13ab309b57ea6719703d7036` — Al Shedim; five relic collections and ally preparation; separated true quests from duplicated region guidance.
+- `f52c71925962172603ea87fc32c09dba0573445f` — Bakaresh; temple access, the one-day Amul tribute limit, Hernando's arena, Nomad versus Hashishin missions.
+- `e8d8c6b0a6764ab2f137e5f553d5a14d9ed37e57` — Ishtar; 75 global Hashishin reputation, Kasim's arena, Zuben's test, Karmok's weapon/potion deliveries, optional assassination/endgame choices.
+- `f53c397c7bba151fe4839c6881ef364f1fc5d544` and `80921122ef0b0b434d666fbc683b1db364096f3f` — reconcile corrected titles with summaries, prerequisites, and guide-only categories.
+- `d956e02c0a8a3d63bb03adad6da3fd3253f50a87` — extend Gothic 3 regression coverage to **all seven sections**, and test that clearly uncertain records remain visibly categorized as guides.
+
+### Significant data-hygiene correction
+
+The original Ben Erai and Ben Sala section had many placeholder tasks with no matching **independent journal quests** in the classic base-game walkthrough. Examples included `Lukar Needs Ore`, `Bring Water to the Mine`, `The Ruined Mine`, `Basir's Old Chest` and `Clear the Road to Bakaresh`. Some old catalog IDs have been reassigned to **documented** named quests, and other uncertain entries explicitly identify themselves as guides rather than asserting a fictitious NPC/reward. The original IDs were kept to preserve saved progress; reclassification means a previously ticked entry might now represent a different task. Review saved-state migration/presentation separately if this app had existing users.
+
+The classic guide also identifies a possible **Ten Gold Nuggets ghost quest** in Ben Erai for which it could not establish a giver. This is marked unverified rather than guaranteed in every patch.
+
+Additional warning: `G3-P6-029` and `G3-P6-034` both concern **The Liberation of Al Shedim**. The latter is labeled as a reference entry and notes that the two entries are not separate rewards. Full deduplication should be considered before a release migration.
+
+### Final source/static audit (after Varant pass)
+
+| Part | Quest records | Generic walkthrough openings | Blank reward | Blank prerequisite |
+|---|---:|---:|---:|---:|
+| 1 — Ardea to Montera | 84 | 0 | 3 | 2 |
+| 2 — Okara to Nemora | 68 | 0 | 0 | 8 |
+| 3 — Geldern to Faring | 70 | 0 | 51 | 42 |
+| 4 — Nordmar | 72 | 0 | 1 | 0 |
+| 5 — Northern Varant | 56 | 0 | 4 | 2 |
+| 6 — Southern Varant | 66 | 0 | 3 | 0 |
+| 7 — Global guides | 10 | 0 | 0 | 0 |
+| **TOTAL** | **426** | **0** | **62** | **54** |
+
+Source inspection found **426 unique IDs, exactly one entry per existing section/play-order position, at least two walkthrough steps per entry, no empty summaries or givers, and no mismatched Kotlin quote/bracket/parenthesis delimiters**.
+
+**These checks are not in-game verification or a complete Android build.** For the last checked code, GitHub's Android **build** job passed in one earlier run, whereas **Android instrumentation tests** failed in another earlier run. Latest Varant CI is still in progress. Recheck the freshest commit's jobs before claiming release readiness.
+
+### Sources
+
+- Braga: https://www.gamepressure.com/gothic3/braga/z95d0
+- Ben Erai: https://www.gamepressure.com/gothic3/ben-erai/zd5ce
+- Lago: https://www.gamepressure.com/gothic3/lago/zc5d3
+- Ben Sala: https://www.gamepressure.com/gothic3/ben-sala/ze5cf
+- Mora Sul: https://www.gamepressure.com/gothic3/mora-sul/zb5d2
+- Al Shedim and Nomad camp: https://www.gamepressure.com/gothic3/kdw-camp/zc5dc
+- Bakaresh: https://www.gamepressure.com/gothic3/bakaresh/zc5cd
+- Ishtar: https://www.gamepressure.com/gothic3/ishtar/za5d1
+
+### Remaining targeted work
+
+- **Part 3:** 51 blank reward fields and 42 blank prerequisites across Geldern, Silden, Vengard, Faring. These should be source-verified, not auto-filled with guessed numbers.
+- **Parts 1–2 / Nordmar:** 4 total blank rewards and a few version-dependent issues; fix only where a reliable source or game journal corroborates details.
+- Review documented guide-only and duplicate entries before release; do not present reference entries as completed individual journal quests.
+- Android UI/instrumentation tests still need a clean run independent of this content audit.
