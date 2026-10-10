@@ -48,21 +48,22 @@ internal fun ContinueHistoryScreen(visits: List<RecentVisit>, onHome: () -> Unit
     var selected by remember { mutableStateOf(emptySet<GameId>()) }
     var pendingRemoval by remember { mutableStateOf<Set<GameId>?>(null) }
     LaunchedEffect(visits) { selected = selected.intersect(visits.map { it.game }.toSet()) }
-    val tablet = isLargeLandscapeTablet()
+    val tablet = isLandscapeTablet()
+    val compactTablet = isCompactLandscapeTablet()
     val continueContent: @Composable ColumnScope.() -> Unit = {
-    Spacer(Modifier.height(18.dp))
-    Text("CONTINUE", color = gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+    Spacer(Modifier.height(if (compactTablet) 4.dp else 18.dp))
+    Text("CONTINUE", color = gold, fontSize = if (compactTablet) 23.sp else 28.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(8.dp))
     Text("Your last page in each game. Most recently visited first.", color = body, fontSize = 14.sp)
     if (visits.isNotEmpty()) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             TextButton(onClick = {
                 selected = if (selected.size == visits.size) emptySet() else visits.map { it.game }.toSet()
-            }, modifier = Modifier.heightIn(min = 56.dp).testTag("continue_select_all")) {
+            }, modifier = Modifier.heightIn(min = if (compactTablet) 48.dp else 56.dp).testTag("continue_select_all")) {
                 Text(if (selected.size == visits.size) "CLEAR SELECTION" else "SELECT ALL", color = gold, fontSize = 13.sp)
             }
             TextButton(enabled = selected.isNotEmpty(), onClick = { pendingRemoval = selected },
-                modifier = Modifier.heightIn(min = 56.dp).testTag("continue_delete_selected")) {
+                modifier = Modifier.heightIn(min = if (compactTablet) 48.dp else 56.dp).testTag("continue_delete_selected")) {
                 Text("DELETE SELECTED", color = if (selected.isNotEmpty()) gold else body.copy(alpha = 0.4f), fontSize = 13.sp)
             }
         }
@@ -90,7 +91,7 @@ internal fun ContinueHistoryScreen(visits: List<RecentVisit>, onHome: () -> Unit
                     modifier = Modifier.testTag("continue_select_${visit.game.name.lowercase()}"))
                 Column(Modifier.weight(1f)) {
                     TextButton(onClick = { onResume(visit) }, modifier = Modifier.fillMaxWidth()
-                        .heightIn(min = 64.dp).testTag("continue_resume_${visit.game.name.lowercase()}")) {
+                        .heightIn(min = if (compactTablet) 52.dp else 64.dp).testTag("continue_resume_${visit.game.name.lowercase()}")) {
                         Column(Modifier.fillMaxWidth()) {
                             Text(visit.game.persistedName, color = gold, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             Spacer(Modifier.height(6.dp))
@@ -103,7 +104,7 @@ internal fun ContinueHistoryScreen(visits: List<RecentVisit>, onHome: () -> Unit
                     }
                 }
             }
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(if (compactTablet) 6.dp else 12.dp))
         }
         item {
             TextButton(onClick = onPickGame, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)
@@ -116,12 +117,12 @@ internal fun ContinueHistoryScreen(visits: List<RecentVisit>, onHome: () -> Unit
 
     }
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-        .padding(horizontal = if (tablet) 32.dp else 20.dp)
+        .padding(horizontal = if (tablet) { if (compactTablet) 14.dp else 32.dp } else 20.dp)
         .testTag("continue_history_screen")) {
         ToolsHeader(onHome, onHome)
         if (tablet) {
             Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
-                Column(Modifier.widthIn(max = 900.dp).fillMaxSize()) {
+                Column(Modifier.widthIn(max = if (compactTablet) 780.dp else 900.dp).fillMaxSize()) {
                     continueContent()
                 }
             }
