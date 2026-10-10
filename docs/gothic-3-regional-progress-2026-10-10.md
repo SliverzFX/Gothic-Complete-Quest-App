@@ -134,3 +134,34 @@ Source inspection found **426 unique IDs, exactly one entry per existing section
 - **Parts 1–2 / Nordmar:** 4 total blank rewards and a few version-dependent issues; fix only where a reliable source or game journal corroborates details.
 - Review documented guide-only and duplicate entries before release; do not present reference entries as completed individual journal quests.
 - Android UI/instrumentation tests still need a clean run independent of this content audit.
+
+
+---
+
+## Third regional pass: Silden / Faring / Geldern source reconciliation
+
+In the same correction session, continued the Part 3 audit against the classic Gothic 3 regional guides and reduced blank reward fields in that section from **51 to 23**. The latest global counts below supersede earlier snapshots in this report.
+
+- `c17001d8ff7d8d7bc5c883924b7ab5963780b15c`: 21 Silden and Faring entries, including eight strange lurkers, wood/fish shipments, the Inog–Anog Rebel faction choice, three trolls near Tippler's hut, Wilson's hunter requirements, and the Faring liberation reward.
+- `eb95cd8b9baf49d829cf53891d006c0cbff14d9a`: seven more Geldern/Faring records, including Samuel's six minecrawlers, the two separate Faring arena ladders, Spike's title fight and Wilson's **400-gold honesty check**.
+
+Several entries in this legacy catalog overlap the same genuine journal quest. They are now described as **cross-references** rather than promises of multiple distinct XP payouts (Shadow Scepter, Silden wood/fish delivery, Al Shedim liberation, and Lars's Nordmar-pass escort). Quest IDs remain stable to avoid a silent saved-progress migration.
+
+### Most recent static counts
+
+| Part | Entries | Generic openings | Blank rewards | Blank prerequisites |
+|---|---:|---:|---:|---:|
+| 1 | 84 | 0 | 3 | 2 |
+| 2 | 68 | 0 | 0 | 8 |
+| 3 | 70 | 0 | 23 | 17 |
+| 4 | 72 | 0 | 1 | 0 |
+| 5 | 56 | 0 | 4 | 2 |
+| 6 | 66 | 0 | 3 | 0 |
+| 7 | 10 | 0 | 0 | 0 |
+| **Total** | **426** | **0** | **34** | **29** |
+
+**Static verification passed:** 426/426 unique IDs, consistent section order, balanced Kotlin delimiters, and no remaining template walkthrough openings. The latest GitHub Actions builds and emulator tests are still in progress at the checkpoint; no new green CI completion is claimed.
+
+Remaining reward gaps are concentrated in the more weakly documented quests for **Geldern, Silden, Vengard and Faring**. Recheck these against in-game journal labels and patch-specific values before release, rather than inventing exact payouts.
+
+Additional reference sources: https://www.gamepressure.com/gothic3/silden/z95ca ; https://www.gamepressure.com/gothic3/faring/zb5c3 ; https://www.gamepressure.com/gothic3/vengard/zb5cc ; https://www.gamepressure.com/gothic3/geldern/zc5c4 .
