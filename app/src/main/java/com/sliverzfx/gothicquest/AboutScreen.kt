@@ -61,11 +61,64 @@ internal fun AboutScreen(onBack: () -> Unit) {
         }
     }
 
-    Column(
-        Modifier.fillMaxSize()
+    val tablet = isLargeLandscapeTablet()
+    val overviewContent: @Composable () -> Unit = {
+        AboutBlock("QUESTBOUND") {
+            Text("RPG Quest Guides", color = AboutGold, fontSize = 16.sp)
+            Spacer(Modifier.height(8.dp))
+            Text("Quest walkthroughs for Gothic, Risen and selected mods, together in one place.",
+                color = AboutBody, fontSize = 16.sp)
+            Spacer(Modifier.height(10.dp))
+            Text("Browse chapters, search for a quest, save favorites and mark quests as completed. Use Continue on the main menu to return to your last chapter or quest.",
+                color = AboutBody, fontSize = 14.sp)
+            Spacer(Modifier.height(10.dp))
+            Text("The included guides work offline. Community links need an internet connection.",
+                color = AboutBody, fontSize = 14.sp)
+            if (version.isNotBlank()) {
+                Spacer(Modifier.height(12.dp))
+                Text("Version $version", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            }
+        }
+    }
+    val guidesContent: @Composable () -> Unit = {
+        AboutBlock("INCLUDED GUIDES") {
+            GameId.entries.forEach { game ->
+                Text("• ${game.persistedName}", color = AboutBody, fontSize = 14.sp)
+                Spacer(Modifier.height(6.dp))
+            }
+            Text("Gothic II Gold includes Night of the Raven. More games and mods will be added as their guides are prepared.",
+                color = AboutBody, fontSize = 14.sp)
+        }
+    }
+    val communityContent: @Composable () -> Unit = {
+        AboutBlock("CREATOR & COMMUNITY") {
+            Text("Created by SliverZFX", color = AboutGold, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(6.dp))
+            Text("Watch playthroughs and guides on YouTube, or join the community on Discord.",
+                color = AboutBody, fontSize = 14.sp)
+            Spacer(Modifier.height(12.dp))
+            AboutLinkButton("YOUTUBE", "about_youtube") { openLink("https://www.youtube.com/@sliverz_fx") }
+            Spacer(Modifier.height(8.dp))
+            AboutLinkButton("DISCORD", "about_discord") { openLink("https://discord.gg/evwry6hzwH") }
+            linkError?.let {
+                Spacer(Modifier.height(8.dp))
+                Text(it, color = AboutBody, fontSize = 13.sp)
+            }
+        }
+    }
+    val legalContent: @Composable () -> Unit = {
+        AboutBlock("UNOFFICIAL FAN GUIDE") {
+            Text("This is an unofficial fan-made guide and is not affiliated with or endorsed by the games' developers or publishers. Game names and trademarks belong to their respective owners.",
+                color = AboutBody, fontSize = 13.sp)
+            Spacer(Modifier.height(8.dp))
+            Text("Quest availability and solutions can vary by game version, mod version and choices made during your playthrough.",
+                color = AboutBody, fontSize = 13.sp)
+        }
+    }
 
-            .statusBarsPadding().navigationBarsPadding()
-            .padding(horizontal = 20.dp)
+    Column(
+        Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+            .padding(horizontal = if (tablet) 32.dp else 20.dp)
             .testTag("about_screen")
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
@@ -77,56 +130,32 @@ internal fun AboutScreen(onBack: () -> Unit) {
                 Text("HOME", color = AboutGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
-        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
-            Text("INFO / ABOUT", color = AboutGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(20.dp))
-            AboutBlock("QUESTBOUND") {
-                Text("RPG Quest Guides", color = AboutGold, fontSize = 16.sp)
-                Spacer(Modifier.height(8.dp))
-                Text("Quest walkthroughs for Gothic, Risen and selected mods, together in one place.",
-                    color = AboutBody, fontSize = 16.sp)
-                Spacer(Modifier.height(10.dp))
-                Text("Browse chapters, search for a quest, save favorites and mark quests as completed. Use Continue on the main menu to return to your last chapter or quest.",
-                    color = AboutBody, fontSize = 14.sp)
-                Spacer(Modifier.height(10.dp))
-                Text("The included guides work offline. Community links need an internet connection.",
-                    color = AboutBody, fontSize = 14.sp)
-                if (version.isNotBlank()) {
-                    Spacer(Modifier.height(12.dp))
-                    Text("Version $version", color = Color(0xFF9E8B70), fontSize = 12.sp)
+        if (tablet) {
+            Text("INFO / ABOUT", color = AboutGold, fontSize = 28.sp,
+                fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp))
+            LargeTabletPageColumns(
+                left = {
+                    overviewContent()
+                    Spacer(Modifier.height(16.dp))
+                    guidesContent()
+                },
+                right = {
+                    communityContent()
+                    Spacer(Modifier.height(16.dp))
+                    legalContent()
                 }
-            }
-            Spacer(Modifier.height(16.dp))
-            AboutBlock("INCLUDED GUIDES") {
-                GameId.entries.forEach { game ->
-                    Text("• ${game.persistedName}", color = AboutBody, fontSize = 14.sp)
-                    Spacer(Modifier.height(6.dp))
-                }
-                Text("Gothic II Gold includes Night of the Raven. More games and mods will be added as their guides are prepared.",
-                    color = AboutBody, fontSize = 14.sp)
-            }
-            Spacer(Modifier.height(16.dp))
-            AboutBlock("CREATOR & COMMUNITY") {
-                Text("Created by SliverZFX", color = AboutGold, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(6.dp))
-                Text("Watch playthroughs and guides on YouTube, or join the community on Discord.",
-                    color = AboutBody, fontSize = 14.sp)
-                Spacer(Modifier.height(12.dp))
-                AboutLinkButton("YOUTUBE", "about_youtube") { openLink("https://www.youtube.com/@sliverz_fx") }
-                Spacer(Modifier.height(8.dp))
-                AboutLinkButton("DISCORD", "about_discord") { openLink("https://discord.gg/evwry6hzwH") }
-                linkError?.let {
-                    Spacer(Modifier.height(8.dp))
-                    Text(it, color = AboutBody, fontSize = 13.sp)
-                }
-            }
-            Spacer(Modifier.height(16.dp))
-            AboutBlock("UNOFFICIAL FAN GUIDE") {
-                Text("This is an unofficial fan-made guide and is not affiliated with or endorsed by the games' developers or publishers. Game names and trademarks belong to their respective owners.",
-                    color = AboutBody, fontSize = 13.sp)
-                Spacer(Modifier.height(8.dp))
-                Text("Quest availability and solutions can vary by game version, mod version and choices made during your playthrough.",
-                    color = AboutBody, fontSize = 13.sp)
+            )
+        } else {
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
+                Text("INFO / ABOUT", color = AboutGold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(20.dp))
+                overviewContent()
+                Spacer(Modifier.height(16.dp))
+                guidesContent()
+                Spacer(Modifier.height(16.dp))
+                communityContent()
+                Spacer(Modifier.height(16.dp))
+                legalContent()
             }
         }
     }
