@@ -61,4 +61,33 @@ class RisenQuestDataTest {
         assertTrue(quest.reward.contains("500 XP"))
     }
 
+    @Test
+    fun fullRisenMetadataAuditHasNoBlankRequiredFields() {
+        val quests = RisenQuestData.quests
+        assertEquals(169, quests.size)
+        assertTrue(quests.all { it.title.isNotBlank() && it.giver.isNotBlank() })
+        assertTrue(quests.all { it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
+        assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() })
+        assertEquals(quests.size, quests.map { it.id }.distinct().size)
+    }
+
+    @Test
+    fun guideCrossReferencesNeverCountAsIndependentCompletedQuests() {
+        val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041")
+        val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
+        assertEquals(expected, guideIds)
+        assertEquals(163, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
+        assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
+    }
+
+    @Test
+    fun correctedHarbourTownAndBanditCampQuestsUseDocumentedGivers() {
+        assertEquals("Master Belschwur", RisenQuestData.quests.single { it.id == "R1-C1-031" }.giver)
+        assertEquals("Flavio", RisenQuestData.quests.single { it.id == "R1-C1-032" }.giver)
+        assertEquals("Scordo", RisenQuestData.quests.single { it.id == "R1-C1-028" }.giver)
+        assertEquals("Walter", RisenQuestData.quests.single { it.id == "R1-C2-017" }.giver)
+        assertEquals("Romanov", RisenQuestData.quests.single { it.id == "R1-C1-040" }.giver)
+    }
+
 }
