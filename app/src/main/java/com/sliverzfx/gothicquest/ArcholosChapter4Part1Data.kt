@@ -113,7 +113,7 @@ internal object ArcholosChapter4Part1Data {
             playOrder = 8,
             title = "Long Awaited Meeting",
             category = "MAIN STORY — Guild/story route",
-            giver = "Trigger quest",
+            giver = "Story investigation — Jon's decoded evidence leads to the Slums hideout",
             location = "Archolos Slums",
             prerequisites = "Route: Guild/story route",
             summary = "Break into the north-west Slums hideout, discover Jorn's fate and escape with Kessel.",
