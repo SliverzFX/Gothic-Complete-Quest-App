@@ -897,8 +897,9 @@ private fun NavChapterButton(
     }
     // Take the height reduction from padding so text and progress stay readable.
     val verticalPadding = (10f - 36f * (1f - heightScale)).dp * tabletScale
-    val questCount = quests.size
-    val completedCount = quests.count { navQuestKey(game, it) in completedKeys }
+    val journalQuests = if (game == GameId.GOTHIC_3) quests.filterNot(Gothic3QuestData::isGuideEntry) else quests
+    val questCount = journalQuests.size
+    val completedCount = journalQuests.count { navQuestKey(game, it) in completedKeys }
     val targetProgress = if (questCount == 0) 0f else completedCount.toFloat() / questCount.toFloat()
     val progress by animateFloatAsState(targetProgress, tween(if (LocalReduceAnimations.current) 0 else 500), label = "navChapterProgress")
     val percentage = (targetProgress * 100).toInt()
@@ -1033,7 +1034,9 @@ private fun NavChapterQuestListScreen(
     BackHandler(onBack = onBack)
     val display = LocalCompletedDisplay.current
     val completed = LocalCompletedKeys.current
-    val visibleCount = quests.count { display.isVisible(navQuestKey(game, it) in completed) }
+    val journalQuests = if (game == GameId.GOTHIC_3) quests.filterNot(Gothic3QuestData::isGuideEntry) else quests
+    val referenceGuides = if (game == GameId.GOTHIC_3) quests.filter(Gothic3QuestData::isGuideEntry) else emptyList()
+    val visibleCount = journalQuests.count { display.isVisible(navQuestKey(game, it) in completed) }
     val tabletScale = tabletLayoutScale()
     NavGuideBackground(game) {
         NavGuideReadingFrame(
@@ -1045,7 +1048,8 @@ private fun NavChapterQuestListScreen(
             Spacer(Modifier.height(4.dp))
             Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = (25f * tabletScale).sp, fontWeight = FontWeight.Bold)
             Text(
-                if (visibleCount == quests.size) "${quests.size} QUESTS • CHRONOLOGICAL ORDER"
+                if (game == GameId.GOTHIC_3) "$visibleCount / ${journalQuests.size} QUESTS • ${referenceGuides.size} REFERENCE GUIDES"
+                else if (visibleCount == quests.size) "${quests.size} QUESTS • CHRONOLOGICAL ORDER"
                 else "$visibleCount / ${quests.size} QUESTS VISIBLE • CHRONOLOGICAL ORDER",
                 color = LocalGameGuidePalette.current.muted,
                 fontSize = 12.sp
@@ -1072,12 +1076,20 @@ private fun NavChapterQuestListScreen(
                 else -> emptyList()
             }
             val notesByOrder = guideNotes.groupBy { it.beforeQuestOrder }
-            quests.forEachIndexed { index, quest ->
+            val orderedEntries = if (game == GameId.GOTHIC_3) journalQuests + referenceGuides else quests
+            orderedEntries.forEachIndexed { index, quest ->
                 notesByOrder[quest.playOrder].orEmpty().forEach { note ->
                     NavRisenGuideNote(game, note)
                 }
-                if (display.isVisible(navQuestKey(game, quest) in completed)) {
-                    NavQuestListCard(game, index + 1, quest) { onQuestSelected(quest) }
+                val isReference = game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(quest)
+                if (isReference && referenceGuides.firstOrNull()?.id == quest.id) {
+                    Text("REFERENCE GUIDES • NOT JOURNAL QUESTS",
+                        color = LocalGameGuidePalette.current.secondaryAccent,
+                        fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(10.dp))
+                }
+                if (isReference || display.isVisible(navQuestKey(game, quest) in completed)) {
+                    NavQuestListCard(game, if (isReference) 0 else index + 1, quest) { onQuestSelected(quest) }
                     Spacer(Modifier.height(10.dp))
                 }
             }
@@ -1118,7 +1130,8 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                "$number.  ${quest.title}",
+                if (game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(quest)) "REFERENCE • ${quest.title}"
+                else "$number.  ${quest.title}",
                 color = LocalGameGuidePalette.current.accent,
                 fontSize = maxOf(15f, 18f * tabletScale).sp,
                 fontWeight = FontWeight.Bold,
@@ -1127,7 +1140,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
             Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
         }
         Spacer(Modifier.height(3.dp))
-        QuestInProgressBadge(game, quest)
+        if (game != GameId.GOTHIC_3 || !Gothic3QuestData.isGuideEntry(quest)) QuestInProgressBadge(game, quest)
         Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.secondaryAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
         Text(
@@ -1549,7 +1562,7 @@ private fun NavSearchCard(game: GameId, quest: Quest, onClick: () -> Unit) {
             Text(quest.title, color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp)
         }
-        QuestInProgressBadge(game, quest)
+        if (game != GameId.GOTHIC_3 || !Gothic3QuestData.isGuideEntry(quest)) QuestInProgressBadge(game, quest)
         Text(quest.category.uppercase(), color = LocalGameGuidePalette.current.secondaryAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(5.dp))
         Text("${quest.giver} • ${quest.location}", color = LocalGameGuidePalette.current.muted, fontSize = 11.sp)
