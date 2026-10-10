@@ -37,3 +37,16 @@ References:
 5. Add structural regression tests (ID uniqueness, chapter order, required fields) and run the Android build, JVM tests and emulator instrumentation. Avoid representing a green compile as game-content verification.
 
 This is an **initial inventory and one confirmed correction**, not yet a complete Risen 1 verification.
+
+## Second pass: Bandit Camp correctness (2026-10-10)
+
+- `R1-C1-017`, **Gold Fever**: corrected giver from Don Esteban to **Rachel** and replaced the vague Don digger conversation with the three required camp quest lines: **The workers are to work again**, **The hunters are to go hunt**, and **Power struggle**. No numeric reward was fabricated.
+- `R1-C1-018`, **Beer for the gang**: corrected giver to **Rhobart**, delivery direction to **Rhobart → Rachel**, and the return/payment step. Classic walkthrough references award **200 XP for the delivery** and **100 XP for reporting back**; the gold outcome varies with dialogue.
+- Added explicit JUnit regression assertions for these quests and Severin's Chapter 4 `R1-C4-007` invasion entry.
+
+Sources:
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampquestspart1.php
+- https://gamefaqs.gamespot.com/pc/952152-risen/faqs/58833
+- https://gamefaqs.gamespot.com/xbox360/959034-risen/faqs/58853
+
+These corrections make the two earlier Bandit Camp walkthroughs materially more accurate; this is not a declaration that the remaining source fields are verified.
