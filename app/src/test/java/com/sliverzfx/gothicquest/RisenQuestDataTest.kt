@@ -8,7 +8,7 @@ import org.junit.Test
 class RisenQuestDataTest {
     @Test
     fun allSuppliedChapterEntriesHaveUniqueIdsAndOrderedWalkthroughs() {
-        assertEquals(listOf(197, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
+        assertEquals(listOf(203, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
         val quests = GameId.RISEN.quests()
         assertEquals(quests.size, quests.map { it.id }.distinct().size)
         (1..4).forEach { chapter ->
@@ -64,7 +64,7 @@ class RisenQuestDataTest {
     @Test
     fun fullRisenMetadataAuditHasNoBlankRequiredFields() {
         val quests = RisenQuestData.quests
-        assertEquals(277, quests.size)
+        assertEquals(283, quests.size)
         assertTrue(quests.all { it.title.isNotBlank() && it.giver.isNotBlank() })
         assertTrue(quests.all { it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
         assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() })
@@ -76,7 +76,7 @@ class RisenQuestDataTest {
         val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041", "R1-C1-037", "R1-C1-038")
         val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
         assertEquals(expected, guideIds)
-        assertEquals(269, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertEquals(275, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
         assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
         assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
     }
@@ -86,7 +86,7 @@ class RisenQuestDataTest {
         assertEquals("Master Belschwur", RisenQuestData.quests.single { it.id == "R1-C1-031" }.giver)
         assertEquals("Flavio", RisenQuestData.quests.single { it.id == "R1-C1-032" }.giver)
         assertEquals("Scordo", RisenQuestData.quests.single { it.id == "R1-C1-028" }.giver)
-        assertEquals("Walter", RisenQuestData.quests.single { it.id == "R1-C2-017" }.giver)
+        assertEquals("Oscar (journal trigger); Walter (resolution)", RisenQuestData.quests.single { it.id == "R1-C2-017" }.giver)
         assertEquals("Romanov", RisenQuestData.quests.single { it.id == "R1-C1-040" }.giver)
     }
 
@@ -151,4 +151,16 @@ class RisenQuestDataTest {
         assertEquals("Find survivors of the shipwreck", RisenQuestData.quests.single { it.id == "R1-C1-001" }.title)
         assertEquals("Take some fried meat to Sara", RisenQuestData.quests.single { it.id == "R1-C1-002" }.title)
     }
+    @Test
+    fun finalMissingQuestsMatchSourcedGiversAndCounts() {
+        val late = RisenGuidePart15Data.quests
+        assertEquals(6, late.size)
+        assertEquals((198..203).toList(), late.map { it.playOrder })
+        assertTrue(late.all { it.giver.isNotBlank() && it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
+        assertEquals("Josh", RisenQuestData.quests.single { it.id == "R1-C1-125" }.giver)
+        assertEquals("Dirk", RisenQuestData.quests.single { it.id == "R1-C1-187" }.giver)
+        assertEquals("500 XP", RisenQuestData.quests.single { it.id == "R1-C1-198" }.reward)
+        assertTrue(RisenQuestData.quests.single { it.id == "R1-C1-094" }.summary.contains("five vassal rings"))
+    }
+
 }
