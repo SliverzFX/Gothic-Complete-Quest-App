@@ -84,3 +84,7 @@ Primary source comparisons:
 - https://www.myrtana.net/en/wiki/risen
 
 **Verdict:** completed source-field and duplicate reconciliation for the **existing** 169 app records; full **game-quest coverage and in-game accuracy verification remain open**, as does release CI/real-device testing.
+
+### Saved-progress migration warning
+
+Stable IDs protect the storage key format, but a few previously vague records now identify different concrete journal objectives (for example `R1-C1-020`, `R1-C1-026`, `R1-C1-027`, and `R1-C1-040`). If anyone installed an earlier Questbound build and completed one of these IDs, the saved checkmark may incorrectly apply to the newly documented objective. The data correction pass deliberately did **not** delete or silently rewrite user progress. Before public release, determine whether a targeted one-time migration or a user-visible reconciliation notice is appropriate.
