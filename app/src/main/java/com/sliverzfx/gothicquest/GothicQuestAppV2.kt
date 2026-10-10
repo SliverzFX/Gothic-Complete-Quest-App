@@ -1725,20 +1725,11 @@ private fun NavSettingsScreen(
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
-    Column(
-        Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(20.dp)
-    ) {
-        NavBackText("‹  BACK TO MAIN MENU", onBack)
-        Spacer(Modifier.height(8.dp))
-        Text("SETTINGS", color = Color(0xFFD6B06A), fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Text("APP PREFERENCES", color = Color(0xFF9E8B70), fontSize = 12.sp)
-        Spacer(Modifier.height(24.dp))
-        val shape = RoundedCornerShape(7.dp)
+    val tablet = isLargeLandscapeTablet()
+    val shape = RoundedCornerShape(7.dp)
+
+    // The same interactive cards are shared by the phone and tablet layouts.
+    val textSizeCard: @Composable () -> Unit = {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -1791,7 +1782,8 @@ private fun NavSettingsScreen(
             Spacer(Modifier.height(6.dp))
             Text("Applies throughout the app.", color = Color(0xFF9E8B70), fontSize = 12.sp)
         }
-        Spacer(Modifier.height(16.dp))
+    }
+    val opacityCard: @Composable () -> Unit = {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -1850,7 +1842,8 @@ private fun NavSettingsScreen(
                 }
             }
         }
-        Spacer(Modifier.height(16.dp))
+    }
+    val brightnessCard: @Composable () -> Unit = {
         Column(
             Modifier.fillMaxWidth()
                 .background(Color(0xFF15100D), shape)
@@ -1896,7 +1889,8 @@ private fun NavSettingsScreen(
                     fontSize = 14.sp, fontWeight = FontWeight.Bold)
             }
         }
-        Spacer(Modifier.height(16.dp))
+    }
+    val completedCard: @Composable () -> Unit = {
         Column(
             Modifier.fillMaxWidth()
                 .background(Color(0xFF15100D), shape)
@@ -1927,7 +1921,8 @@ private fun NavSettingsScreen(
                 }
             }
         }
-        Spacer(Modifier.height(16.dp))
+    }
+    val appOptions: @Composable () -> Unit = {
         Text("APP OPTIONS", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(12.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1946,7 +1941,62 @@ private fun NavSettingsScreen(
         Text("Background animation plays the video across the main menu and app pages. OFF uses the splash background image. Reduce animations also keeps the background still and uses instant transitions.",
             color = Color(0xFF9E8B70), fontSize = 12.sp)
         Spacer(Modifier.height(16.dp))
+    }
+    val backupTools: @Composable () -> Unit = {
         BackupSettingsSection(onRestored = onRestored, onResetGame = onResetGame)
+    }
+
+    if (tablet) {
+        Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+            .padding(horizontal = 32.dp).testTag("settings_screen")) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                NavBackText("‹  BACK TO MAIN MENU", onBack)
+                TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp)) {
+                    Text("HOME", color = Color(0xFFD7B06A),
+                        fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+            Text("SETTINGS", color = Color(0xFFD6B06A), fontSize = 28.sp,
+                fontWeight = FontWeight.Bold)
+            Text("APP PREFERENCES", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            LargeTabletPageColumns(
+                left = {
+                    textSizeCard()
+                    Spacer(Modifier.height(16.dp))
+                    opacityCard()
+                    Spacer(Modifier.height(16.dp))
+                    brightnessCard()
+                },
+                right = {
+                    completedCard()
+                    Spacer(Modifier.height(18.dp))
+                    appOptions()
+                    Spacer(Modifier.height(18.dp))
+                    backupTools()
+                }
+            )
+        }
+    } else {
+        Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+            .verticalScroll(rememberScrollState()).padding(20.dp)) {
+            NavBackText("‹  BACK TO MAIN MENU", onBack)
+            Spacer(Modifier.height(8.dp))
+            Text("SETTINGS", color = Color(0xFFD6B06A), fontSize = 28.sp,
+                fontWeight = FontWeight.Bold)
+            Text("APP PREFERENCES", color = Color(0xFF9E8B70), fontSize = 12.sp)
+            Spacer(Modifier.height(24.dp))
+            textSizeCard()
+            Spacer(Modifier.height(16.dp))
+            opacityCard()
+            Spacer(Modifier.height(16.dp))
+            brightnessCard()
+            Spacer(Modifier.height(16.dp))
+            completedCard()
+            Spacer(Modifier.height(16.dp))
+            appOptions()
+            backupTools()
+        }
     }
 }
 
