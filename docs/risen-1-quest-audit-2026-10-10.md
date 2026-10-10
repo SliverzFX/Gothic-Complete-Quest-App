@@ -117,14 +117,14 @@ The earlier 169-record catalog was expanded in phases, retaining every legacy qu
 - Part 10: **18** standalone neutral Harbour Town quests (healing herbs, smithing errands, lighthouse, ring, brothel, prison).
 - Part 11: **36** faction-specific Harbour Town branches (Delgado/Sebastian, Cid/Rodriguez, Weasel/Marcelo, Toni/Hernandez, Scordo/Carasco, Lukor/Carasco, Romanov/Sergio). Opposing hand-ins have clear lockout warnings.
 - Part 12: **16** previously grouped Bandit Camp arena, workforce and Fincher/Esteban story objectives.
-- Part 13: **6** remaining Harbour Town and Volcano Keep objectives: Olf's detention, triplet reunion, Patty's father and escape, Aric's sweeping task, and Pallas's Harbour Town referral.
+- Part 13: **7** remaining Harbour Town and Volcano Keep objectives: Olf's detention, triplet reunion, Patty's father and escape, Aric's sweeping task, Pallas's Harbour Town referral and Baxter's Mental Arithmetic.
 - Corrected documented rewards for Gold Fever (200 XP + 100 gold), Hawkins's worker hub (200 XP plus dialogue), Craig's fighter hub (100 XP), and Doug's Rotworm hunting quest (150 + 200 XP).
 
-**Source-level count after this expansion: 272 preserved unique IDs, of which 264 are currently trackable and 8 are reference-only overviews.** Four chapters have 192, 42, 21 and 17 entries, respectively. The source scan found consecutive chapter order values, no missing essential fields, and no duplicate IDs. Regression tests were updated to match these counts.
+**Source-level count after this expansion: 273 preserved unique IDs, of which 265 are currently trackable and 8 are reference-only overviews.** Four chapters have 193, 42, 21 and 17 entries, respectively. The source scan found consecutive chapter order values, no missing essential fields, and no duplicate IDs. Regression tests were updated to match these counts.
 
 The Myrtana.net catalog lists **263** game journal quests. This is **not an identical counting scheme**: Questbound still has a mixture of true journal quests, high-level hub objectives, optional discovery quests, and cross-references; the two counts cannot be compared arithmetically to infer missing or excess entries. A remaining **name-by-name, location-by-location reconciliation** must determine which journal quests are still missing, mislabeled, conditional or accidentally represented more than once. In particular, examine chapter-one world/prologue microquests, Bandit Camp side objectives and monastery dialogue microquests. The presence of 272 entries does not prove that all 263 catalog quests are individually correct.
 
-**Release checks:** Static validation succeeded for 272 records; a completed green Android CI build and emulator instrumentation run **has not yet been observed** for these newest commits. Earlier CI failures occurred while the expected test counts were still outdated, and are not evidence that the latest source version is broken.
+**Release checks:** Static validation succeeded for the 272-record checkpoint (retest the subsequently added Baxter record); a completed green Android CI build and emulator instrumentation run **has not yet been observed** for these newest commits. Earlier CI failures occurred while the expected test counts were still outdated, and are not evidence that the latest source version is broken.
 
 **Source references:**
 - https://www.myrtana.net/en/wiki/risen
@@ -138,3 +138,10 @@ The Myrtana.net catalog lists **263** game journal quests. This is **not an iden
 - https://www.gamebanshee.com/risen/walkthrough/ch1banditcampadditionalquests.php
 
 **Completion status: STILL OPEN.** Do not notify the user that the guide is entirely done until both journal-quest coverage reconciliation and green relevant build/tests are verified.
+
+### Follow-up fixes after the 272-entry checkpoint
+
+- Corrected the Souldrinker reforge requirement to **Smithing level 3** based on independent original-game walkthroughs.
+- Clarified the Farmer's Sick Wife and Nelson's island map reward information.
+- Added Baxter's **Mental Arithmetic!** quest, with the answer **238** for 14 × 17 and the documented 100 XP.
+- Regression test expectations have been updated for **273 entries, 265 tracked + 8 reference-only**. Newest Android CI and emulator status remained unconfirmed when this note was written.
