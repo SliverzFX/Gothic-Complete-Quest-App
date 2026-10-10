@@ -30,9 +30,17 @@ internal object RisenQuestData {
         addAll(RisenGuidePart8Data.notes)
     }
 
+    fun isGuideEntry(quest: Quest): Boolean = quest.category.startsWith("GUIDE", ignoreCase = true)
+
     fun chapter(number: Int): List<Quest> =
         quests.filter { it.chapter == number }.sortedBy { it.playOrder }
 
     fun notes(chapter: Int): List<RisenGuideNote> =
         guideNotes.filter { it.chapter == chapter }
+}
+
+internal fun isReferenceQuest(game: GameId, quest: Quest): Boolean = when (game) {
+    GameId.GOTHIC_3 -> Gothic3QuestData.isGuideEntry(quest)
+    GameId.RISEN -> RisenQuestData.isGuideEntry(quest)
+    else -> false
 }
