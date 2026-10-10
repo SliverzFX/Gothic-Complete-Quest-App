@@ -107,3 +107,34 @@ Sources:
 - https://www.myrtana.net/en/wiki/risen
 
 The Gold Fever reward was additionally corrected to **200 XP and 100 gold**, matching the Bandit Camp source.
+
+
+## Continued completionist expansion (October 10, 2026, latest pass)
+
+The earlier 169-record catalog was expanded in phases, retaining every legacy quest ID:
+
+- Part 9: **27** documented Chapter 1 optional quests (Severin's farm, wilderness weapon recovery, Bandit Camp jobs).
+- Part 10: **18** standalone neutral Harbour Town quests (healing herbs, smithing errands, lighthouse, ring, brothel, prison).
+- Part 11: **36** faction-specific Harbour Town branches (Delgado/Sebastian, Cid/Rodriguez, Weasel/Marcelo, Toni/Hernandez, Scordo/Carasco, Lukor/Carasco, Romanov/Sergio). Opposing hand-ins have clear lockout warnings.
+- Part 12: **16** previously grouped Bandit Camp arena, workforce and Fincher/Esteban story objectives.
+- Part 13: **6** remaining Harbour Town and Volcano Keep objectives: Olf's detention, triplet reunion, Patty's father and escape, Aric's sweeping task, and Pallas's Harbour Town referral.
+- Corrected documented rewards for Gold Fever (200 XP + 100 gold), Hawkins's worker hub (200 XP plus dialogue), Craig's fighter hub (100 XP), and Doug's Rotworm hunting quest (150 + 200 XP).
+
+**Source-level count after this expansion: 272 preserved unique IDs, of which 264 are currently trackable and 8 are reference-only overviews.** Four chapters have 192, 42, 21 and 17 entries, respectively. The source scan found consecutive chapter order values, no missing essential fields, and no duplicate IDs. Regression tests were updated to match these counts.
+
+The Myrtana.net catalog lists **263** game journal quests. This is **not an identical counting scheme**: Questbound still has a mixture of true journal quests, high-level hub objectives, optional discovery quests, and cross-references; the two counts cannot be compared arithmetically to infer missing or excess entries. A remaining **name-by-name, location-by-location reconciliation** must determine which journal quests are still missing, mislabeled, conditional or accidentally represented more than once. In particular, examine chapter-one world/prologue microquests, Bandit Camp side objectives and monastery dialogue microquests. The presence of 272 entries does not prove that all 263 catalog quests are individually correct.
+
+**Release checks:** Static validation succeeded for 272 records; a completed green Android CI build and emulator instrumentation run **has not yet been observed** for these newest commits. Earlier CI failures occurred while the expected test counts were still outdated, and are not evidence that the latest source version is broken.
+
+**Source references:**
+- https://www.myrtana.net/en/wiki/risen
+- https://www.gamebanshee.com/risen/walkthrough.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1harborcityneutralquestspart2.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1harborcityquests1delgado&sebastian.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1harborcityquests2cid&rodriguez.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1harborcityquests3weasel&marcelo.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1harborcityquests6lukor&carasco.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampquestspart3.php
+- https://www.gamebanshee.com/risen/walkthrough/ch1banditcampadditionalquests.php
+
+**Completion status: STILL OPEN.** Do not notify the user that the guide is entirely done until both journal-quest coverage reconciliation and green relevant build/tests are verified.
