@@ -51,6 +51,24 @@ class Gothic3QuestDataTest {
     }
 
     @Test
+    fun referenceEntriesAreBrowseableButNotTrackedAsSeparateQuests() {
+        assertEquals(426, Gothic3QuestData.quests.size)
+        assertEquals(35, Gothic3QuestData.guideEntries.size)
+        assertEquals(391, Gothic3QuestData.journalQuests.size)
+        assertEquals(
+            listOf(84, 68, 59, 72, 47, 61, 0),
+            (1..7).map { Gothic3QuestData.chapterJournalQuests(it).size }
+        )
+        val references = Gothic3QuestData.guideEntries.map { it.id }.toSet()
+        assertEquals(35, references.size)
+        assertTrue(Gothic3QuestData.journalQuests.none { it.id in references })
+        assertTrue(Gothic3QuestData.quests.all { it.reward.isNotBlank() && it.prerequisites.isNotBlank() })
+        for (id in listOf("G3-P3-003", "G3-P3-013", "G3-P3-034", "G3-P6-034")) {
+            assertTrue(Gothic3QuestData.isGuideEntry(Gothic3QuestData.quests.single { it.id == id }))
+        }
+    }
+
+    @Test
     fun importantGlobalAndRegionalObjectivesStayLinked() {
         val quests = Gothic3QuestData.quests.associateBy { it.id }
         assertTrue(quests.getValue("G3-P7-001").walkthroughSteps.any { it.contains("Cruz") })
