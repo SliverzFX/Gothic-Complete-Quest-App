@@ -22,8 +22,8 @@ class Gothic3QuestDataTest {
     }
 
     @Test
-    fun completedMyrtanaAndNordmarSectionsDoNotContainTemplateWalkthroughs() {
-        for (section in 1..4) {
+    fun allGothic3SectionsHaveQuestSpecificWalkthroughs() {
+        for (section in 1..7) {
             for (quest in Gothic3QuestData.part(section)) {
                 assertTrue(
                     "Generic walkthrough remaining: " + quest.id,
@@ -33,6 +33,20 @@ class Gothic3QuestDataTest {
                 )
                 assertTrue("Missing giver: " + quest.id, quest.giver != "Trigger quest")
             }
+        }
+    }
+
+    @Test
+    fun uncertainClassicGuideEntriesAreClearlyIdentified() {
+        val quests = Gothic3QuestData.quests.associateBy { it.id }
+        for (id in listOf(
+            "G3-P5-023", "G3-P5-044", "G3-P5-050",
+            "G3-P5-051", "G3-P5-053", "G3-P5-056",
+            "G3-P6-034", "G3-P6-061"
+        )) {
+            val entry = quests.getValue(id)
+            assertTrue("Expected guide-only category: " + id, entry.category.contains("GUIDE"))
+            assertTrue("Missing guide warning: " + id, entry.warnings.isNotBlank())
         }
     }
 
