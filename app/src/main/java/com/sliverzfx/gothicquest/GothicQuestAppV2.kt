@@ -795,6 +795,7 @@ private fun NavGameHubScreen(
     }
     BackHandler { if (selectedTab != "quests") selectedTab = "quests" else onBack() }
     val tabletLandscape = isLandscapeTablet()
+    val tabletScale = tabletLayoutScale()
     val logoRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_classic_logo
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_gold_logo
@@ -816,40 +817,40 @@ private fun NavGameHubScreen(
                 modifier = Modifier
                     .weight(1f)
                     .then(
-                        if (tabletLandscape) Modifier.fillMaxWidth(TabletGuidePanelFraction).padding(end = TabletGuidePanelRightPadding)
+                        if (tabletLandscape) Modifier.fillMaxWidth(TabletGuidePanelFraction).padding(end = TabletGuidePanelRightPadding * tabletScale)
                         else Modifier.fillMaxWidth()
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(painterResource(logoRes), contentDescription = game.persistedName,
-                    modifier = Modifier.width(if (tabletLandscape) 300.dp else 260.dp).height(70.dp), contentScale = ContentScale.Fit)
-                Spacer(Modifier.height(8.dp))
+                    modifier = Modifier.width(if (tabletLandscape) 300.dp * tabletScale else 260.dp).height(if (tabletLandscape) 70.dp * tabletScale else 70.dp), contentScale = ContentScale.Fit)
+                Spacer(Modifier.height(8.dp * tabletScale))
                 Row(Modifier.fillMaxWidth().selectableGroup()) {
                     listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS")
                         .forEach { (key, label) ->
-                            Box(Modifier.weight(1f).heightIn(min = if (tabletLandscape) 52.dp else 48.dp)
+                            Box(Modifier.weight(1f).heightIn(min = if (tabletLandscape) maxOf(48.dp, 52.dp * tabletScale) else 48.dp)
                                 .background(if (selectedTab == key) LocalGameGuidePalette.current.selected.copy(alpha = 0.71f) else LocalGameGuidePalette.current.surface.copy(alpha = 0.53f))
                                 .selectable(selected = selectedTab == key, role = Role.Tab,
                                     onClick = { selectedTab = key }).testTag("game_tab_$key")
-                                .padding(vertical = 14.dp), contentAlignment = Alignment.Center) {
-                                Text(label, color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) 16.sp else 14.sp,
+                                .padding(vertical = 14.dp * tabletScale), contentAlignment = Alignment.Center) {
+                                Text(label, color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) (16f * tabletScale).sp else 14.sp,
                                     fontWeight = FontWeight.Bold)
                             }
                         }
                 }
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(10.dp * tabletScale))
                 Box(Modifier.weight(1f).fillMaxWidth()) {
                     if (selectedTab == "quests") {
                         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                             (1..game.sectionCount).forEach { chapter ->
-                                NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game, tabletLandscape) {
+                                NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game, tabletLandscape, tabletScale) {
                                     onChapterSelected(chapter)
                                 }
-                                if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp))
+                                if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp * tabletScale))
                             }
                             if (game.quests().isNotEmpty()) {
-                                Spacer(Modifier.height(12.dp))
-                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Spacer(Modifier.height(12.dp * tabletScale))
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp * tabletScale)) {
                                     Box(Modifier.weight(1f).testTag("game_all_quests")) {
                                         NavUtilityButton(game, "ALL QUESTS", onAllQuests)
                                     }
@@ -858,7 +859,7 @@ private fun NavGameHubScreen(
                                     }
                                 }
                             }
-                            Spacer(Modifier.height(12.dp))
+                            Spacer(Modifier.height(12.dp * tabletScale))
                         }
                     } else {
                         ToolReferenceScreen(
@@ -885,6 +886,7 @@ private fun NavChapterButton(
     completedKeys: Set<String>,
     game: GameId,
     tabletLandscape: Boolean = false,
+    tabletScale: Float = 1f,
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(6.dp)
@@ -894,7 +896,7 @@ private fun NavChapterButton(
         else -> 1f
     }
     // Take the height reduction from padding so text and progress stay readable.
-    val verticalPadding = (10f - 36f * (1f - heightScale)).dp
+    val verticalPadding = (10f - 36f * (1f - heightScale)).dp * tabletScale
     val questCount = quests.size
     val completedCount = quests.count { navQuestKey(game, it) in completedKeys }
     val targetProgress = if (questCount == 0) 0f else completedCount.toFloat() / questCount.toFloat()
@@ -904,7 +906,7 @@ private fun NavChapterButton(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = (72f * heightScale).dp)
+            .heightIn(min = maxOf(48.dp, (72f * heightScale).dp * tabletScale))
             .testTag("chapter_button_$chapter")
             .border(
                 1.dp,
@@ -924,7 +926,7 @@ private fun NavChapterButton(
                 alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = verticalPadding)
+            .padding(horizontal = 20.dp * tabletScale, vertical = verticalPadding)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -933,21 +935,21 @@ private fun NavChapterButton(
         ) {
             Column(Modifier.weight(1f)) {
                 Text("${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent,
-                    fontSize = if (tabletLandscape) 21.sp else 18.sp, fontWeight = FontWeight.Bold)
+                    fontSize = if (tabletLandscape) (21f * tabletScale).sp else 18.sp, fontWeight = FontWeight.Bold)
                 Text(
                     if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
                     else "$completedCount / $questCount completed • $percentage%",
                     color = LocalGameGuidePalette.current.muted,
-                    fontSize = if (tabletLandscape) 13.sp else 11.sp
+                    fontSize = if (tabletLandscape) (13f * tabletScale).sp else 11.sp
                 )
             }
-            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) 30.sp else 26.sp)
+            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) (30f * tabletScale).sp else 26.sp)
         }
-        Spacer(Modifier.height(5.dp))
+        Spacer(Modifier.height(5.dp * tabletScale))
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(6.dp)
+                .height(6.dp * tabletScale)
                 .background(LocalGameGuidePalette.current.track, RoundedCornerShape(3.dp))
                 .border(1.dp, navProgressBorder(game), RoundedCornerShape(3.dp))
         ) {
@@ -963,17 +965,18 @@ private fun NavChapterButton(
 
 @Composable
 private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
+    val tabletScale = tabletLayoutScale()
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 56.dp)
+            .heightIn(min = maxOf(48.dp, 56.dp * tabletScale))
             .border(1.dp, navUtilityBorder(game), RoundedCornerShape(5.dp))
             .background(navUtilityBackground(game).copy(alpha = NavBoxOpacity), RoundedCornerShape(5.dp))
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 12.dp),
+            .padding(horizontal = 12.dp * tabletScale, vertical = 12.dp * tabletScale),
         contentAlignment = Alignment.Center
     ) {
-        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = (16f * tabletScale).sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -989,10 +992,11 @@ private fun NavGuideReadingFrame(
     scrollState: ScrollState,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val tabletScale = tabletLayoutScale()
     if (isLandscapeTablet()) {
         Column(
             Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp * tabletScale),
             horizontalAlignment = Alignment.End
         ) {
             // Keep navigation visible while only the quest reading panel scrolls.
@@ -1000,9 +1004,9 @@ private fun NavGuideReadingFrame(
             Column(
                 modifier = Modifier.weight(1f)
                     .fillMaxWidth(TabletGuidePanelFraction)
-                    .padding(end = TabletGuidePanelRightPadding)
+                    .padding(end = TabletGuidePanelRightPadding * tabletScale)
                     .verticalScroll(scrollState)
-                    .padding(vertical = 20.dp),
+                    .padding(vertical = 20.dp * tabletScale),
                 content = content
             )
         }
@@ -1030,6 +1034,7 @@ private fun NavChapterQuestListScreen(
     val display = LocalCompletedDisplay.current
     val completed = LocalCompletedKeys.current
     val visibleCount = quests.count { display.isVisible(navQuestKey(game, it) in completed) }
+    val tabletScale = tabletLayoutScale()
     NavGuideBackground(game) {
         NavGuideReadingFrame(
             backLabel = "‹  BACK TO ${game.sectionLabel}S",
@@ -1038,7 +1043,7 @@ private fun NavChapterQuestListScreen(
             scrollState = rememberScrollState()
         ) {
             Spacer(Modifier.height(4.dp))
-            Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp, fontWeight = FontWeight.Bold)
+            Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = (25f * tabletScale).sp, fontWeight = FontWeight.Bold)
             Text(
                 if (visibleCount == quests.size) "${quests.size} QUESTS • CHRONOLOGICAL ORDER"
                 else "$visibleCount / ${quests.size} QUESTS VISIBLE • CHRONOLOGICAL ORDER",
@@ -1096,6 +1101,7 @@ private fun NavRisenGuideNote(game: GameId, note: RisenGuideNote) {
 
 @Composable
 private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: () -> Unit) {
+    val tabletScale = tabletLayoutScale()
     val shape = RoundedCornerShape(7.dp)
     Column(
         Modifier
@@ -1104,7 +1110,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
             .background(navCardBrush(game), shape, alpha = NavBoxOpacity)
             .border(1.dp, navCardBorder(game), shape)
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .padding(horizontal = 16.dp * tabletScale, vertical = 14.dp * tabletScale)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -1114,7 +1120,7 @@ private fun NavQuestListCard(game: GameId, number: Int, quest: Quest, onClick: (
             Text(
                 "$number.  ${quest.title}",
                 color = LocalGameGuidePalette.current.accent,
-                fontSize = 18.sp,
+                fontSize = maxOf(15f, 18f * tabletScale).sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f)
             )
@@ -1153,6 +1159,7 @@ private fun NavQuestDetailScreen(
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
+    val tabletScale = tabletLayoutScale()
     val questKey = navQuestKey(game, quest)
     val readingScrollState = rememberQuestReadingScroll(questKey)
     NavGuideBackground(game) {
@@ -1162,13 +1169,14 @@ private fun NavQuestDetailScreen(
             val infoScrollState = remember(questKey) { ScrollState(0) }
             Column(
                 Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp * tabletScale)
             ) {
                 NavGuideHeader("‹  BACK TO QUESTS", onBack, onHome)
                 Row(
                     Modifier.weight(1f).fillMaxWidth()
-                        .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 14.dp),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp)
+                        .padding(start = 12.dp * tabletScale, end = 12.dp * tabletScale,
+                            top = 8.dp * tabletScale, bottom = 14.dp * tabletScale),
+                    horizontalArrangement = Arrangement.spacedBy(24.dp * tabletScale)
                 ) {
                     Column(
                         Modifier.weight(0.44f).fillMaxHeight()
@@ -1215,26 +1223,27 @@ private fun NavQuestDetailHeading(
     onToggleCompleted: () -> Unit,
     onToggleFavorite: () -> Unit
 ) {
-    Spacer(Modifier.height(6.dp))
+    val tabletScale = tabletLayoutScale()
+    Spacer(Modifier.height(6.dp * tabletScale))
     Text(quest.id, color = LocalGameGuidePalette.current.faint, fontSize = 11.sp)
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(
             quest.title,
             color = LocalGameGuidePalette.current.accent,
-            fontSize = 28.sp,
+            fontSize = maxOf(22f, 28f * tabletScale).sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
         Text(
             if (isCompleted) "✓" else "○",
             color = if (isCompleted) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
-            fontSize = 30.sp,
+            fontSize = (30f * tabletScale).sp,
             modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
         )
         Text(
             if (isFavorite) "★" else "☆",
             color = if (isFavorite) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
-            fontSize = 32.sp,
+            fontSize = (32f * tabletScale).sp,
             modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
         )
     }
@@ -1247,12 +1256,13 @@ private fun NavQuestDetailMetadata(
     status: QuestStatus,
     onStatusChanged: (QuestStatus) -> Unit
 ) {
-    Spacer(Modifier.height(12.dp))
+    val tabletScale = tabletLayoutScale()
+    Spacer(Modifier.height(12.dp * tabletScale))
     QuestStatusButtons(status, onStatusChanged)
     if (quest.aliases.isNotEmpty()) {
         Text("Also: ${quest.aliases.joinToString()}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
     }
-    Spacer(Modifier.height(16.dp))
+    Spacer(Modifier.height(16.dp * tabletScale))
 
     val infoShape = RoundedCornerShape(7.dp)
     Column(
@@ -1260,7 +1270,7 @@ private fun NavQuestDetailMetadata(
             .fillMaxWidth()
             .background(navInsetColor(game).copy(alpha = NavBoxOpacity), infoShape)
             .border(1.dp, navCardBorder(game), infoShape)
-            .padding(14.dp)
+            .padding(14.dp * tabletScale)
     ) {
         NavDetailLine("TYPE", quest.category)
         NavDetailLine("QUEST GIVER", quest.giver)
@@ -1271,11 +1281,12 @@ private fun NavQuestDetailMetadata(
 
 @Composable
 private fun NavQuestDetailGuide(game: GameId, quest: Quest) {
-    Spacer(Modifier.height(18.dp))
+    val tabletScale = tabletLayoutScale()
+    Spacer(Modifier.height(18.dp * tabletScale))
     Text("OBJECTIVE", color = LocalGameGuidePalette.current.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(5.dp))
     Text(quest.summary, color = LocalGameGuidePalette.current.reading, fontSize = 16.sp)
-    Spacer(Modifier.height(22.dp))
+    Spacer(Modifier.height(22.dp * tabletScale))
     Text("WALKTHROUGH", color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(8.dp))
     quest.walkthroughSteps.forEachIndexed { index, step ->
@@ -1283,10 +1294,10 @@ private fun NavQuestDetailGuide(game: GameId, quest: Quest) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(bottom = 9.dp)
+                .padding(bottom = 9.dp * tabletScale)
                 .background(navInsetColor(game).copy(alpha = NavBoxOpacity), stepShape)
                 .border(1.dp, navCardBorder(game).copy(alpha = 0.72f), stepShape)
-                .padding(13.dp),
+                .padding(13.dp * tabletScale),
             verticalAlignment = Alignment.Top
         ) {
             Text(
@@ -1318,9 +1329,10 @@ private fun NavQuestDetailFooter(
     onReportCorrection: () -> Unit,
     onBack: () -> Unit
 ) {
-    Spacer(Modifier.height(12.dp))
+    val tabletScale = tabletLayoutScale()
+    Spacer(Modifier.height(12.dp * tabletScale))
     QuestNotesSection(questKey)
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp * tabletScale)) {
         NavAdjacentQuestButton("‹  PREVIOUS QUEST", "quest_previous", neighbors.previous,
             onAdjacentQuest, Modifier.weight(1f))
         NavAdjacentQuestButton("NEXT QUEST  ›", "quest_next", neighbors.next,
@@ -1887,20 +1899,22 @@ private fun NavCompactToggle(
 
 @Composable
 private fun NavGuideHeader(backLabel: String, onBack: () -> Unit, onHome: () -> Unit) {
+    val tabletScale = tabletLayoutScale()
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         TextButton(onClick = onBack, modifier = Modifier.weight(1f).heightIn(min = 56.dp)) {
-            Text(backLabel, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp,
+            Text(backLabel, color = LocalGameGuidePalette.current.accent, fontSize = (16f * tabletScale).sp,
                 modifier = Modifier.fillMaxWidth())
         }
         TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp)) {
-            Text("HOME", color = LocalGameGuidePalette.current.accent, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text("HOME", color = LocalGameGuidePalette.current.accent, fontSize = (16f * tabletScale).sp, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
 private fun NavBackText(label: String, onBack: () -> Unit) {
+    val tabletScale = tabletLayoutScale()
     TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp)) {
-        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 16.sp)
+        Text(label, color = LocalGameGuidePalette.current.accent, fontSize = (16f * tabletScale).sp)
     }
 }
