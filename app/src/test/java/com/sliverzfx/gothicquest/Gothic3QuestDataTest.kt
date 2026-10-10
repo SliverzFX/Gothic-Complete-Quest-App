@@ -1,0 +1,40 @@
+package com.sliverzfx.gothicquest
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+class Gothic3QuestDataTest {
+    @Test
+    fun allSevenRegionalSectionsHaveStableQuestIdsAndOrder() {
+        val sectionSizes = listOf(84, 68, 70, 72, 56, 66, 10)
+        assertEquals(sectionSizes, (1..7).map { Gothic3QuestData.part(it).size })
+
+        val quests = Gothic3QuestData.quests
+        assertEquals(426, quests.size)
+        assertEquals(quests.size, quests.map { it.id }.toSet().size)
+        for (section in 1..7) {
+            val entries = Gothic3QuestData.part(section)
+            assertEquals((1..entries.size).toList(), entries.map { it.playOrder })
+            assertTrue(entries.all { it.chapter == section && it.walkthroughSteps.size >= 2 })
+            assertTrue(entries.all { it.giver.isNotBlank() && it.summary.isNotBlank() })
+        }
+    }
+
+    @Test
+    fun importantGlobalAndRegionalObjectivesStayLinked() {
+        val quests = Gothic3QuestData.quests.associateBy { it.id }
+        assertTrue(quests.getValue("G3-P7-001").walkthroughSteps.any { it.contains("Cruz") })
+        assertTrue(quests.getValue("G3-P7-002").walkthroughSteps.any { it.contains("Akascha") })
+        assertTrue(quests.getValue("G3-P6-010").walkthroughSteps.any { it.contains("Gonzales") })
+        assertTrue(quests.getValue("G3-P4-001").summary.contains("Ugluz"))
+        assertTrue(quests.getValue("G3-P6-050").walkthroughSteps.any { it.contains("75") })
+    }
+
+    @Test
+    fun sectionsAreGuideOrganizationNotChronologicalChapters() {
+        val globalGuide = Gothic3QuestData.part(7)
+        assertEquals("THE 12 FIRE CHALICES — COMPLETE CHECKLIST", globalGuide.first().title)
+        assertTrue(globalGuide.all { it.category.contains("GUIDE") })
+    }
+}
