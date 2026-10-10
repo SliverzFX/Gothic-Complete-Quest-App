@@ -281,10 +281,10 @@ object NewBalanceChapter4Data {
             giver = "Talbin",
             location = "Chapter 4",
             prerequisites = "Chapter 4; find Talbin and ask about Engrom.",
-            summary = "Talbin is worried about his missing friend Engrom.",
-            walkthroughSteps = listOf("Talbin is worried about his missing friend Engrom. Engrom's body is near Cavalorn's old hut, in the area where Marcos is stationed. Tell Talbin what happened; he leaves for the pass. The community guide recommends teleporting to the pass immediately so Talbin relocates safely instead of walking through danger. Speak with him at the Valley of Mines pass. Once he reaches Khorinis, he can later be recruited to your camp."),
-            reward = "Quest XP and Talbin's survival/recruitment availability.",
-            warnings = "Talbin can die while travelling if the route is allowed to play out normally. Save first and use the pass/teleport transition promptly. Fire Mage runs can differ because Engrom may still be alive and possessed.",
+            summary = "Find Engrom, then help Talbin escape from the Valley of Mines to Khorinis.",
+            walkthroughSteps = listOf("In Chapter 4, ask Talbin about Engrom. Search for Engrom near Marcos's camp at Cavalorn's old hut; take the snapper hide from his body (or, as a Fire Mage, subdue the possessed Engrom first).", "Tell Talbin of Engrom's fate (+1,000 XP). He flees toward the Valley of Mines mountain pass.", "Find Talbin by the pass entrance, help him kill the snapper threatening him, and agree to escort him through the pass.", "Cross the area transition into Khorinis; Talbin appears beside the pond beyond the gate. Speak with him for the reward.", "Later find Talbin at Akil's farm; if your own camp recruitment quest is active, you may invite him there."),
+            reward = "1,000 XP on reporting Engrom's fate; 600 XP and a piece of magic ore after helping Talbin reach Khorinis.",
+            warnings = "Talbin must survive his meeting with the snapper by the pass. In Fire Mage runs, Engrom can be alive but possessed; subdue him and retrieve the snapper hide. Talbin can join the player camp after this quest.",
             searchTags = listOf("talbin's escape", "chapter 4", "talbin")
         ),
         Quest(
@@ -293,13 +293,13 @@ object NewBalanceChapter4Data {
             playOrder = 20,
             title = "Dragon Hunters",
             category = "Chapter 4",
-            giver = "First Dragon Hunter encountered near the pass",
+            giver = "Automatic on entering the Valley of Mines in Chapter 4",
             location = "Chapter 4",
-            prerequisites = "Chapter 4; enter the Valley of Mines during the dragon hunt.",
-            summary = "This companion quest begins when you speak with the first Dragon Hunter you meet around the Valley pass.",
-            walkthroughSteps = listOf("This companion quest begins when you speak with the first Dragon Hunter you meet around the Valley pass. Continue the main dragon-hunting route, speaking with the hunters you encounter and progressing through the Valley. The quest remains active through the hunt and closes when the last of the four main dragons is killed."),
-            reward = "Quest XP when the dragon-hunter objective closes, plus normal dragon-hunt loot.",
-            warnings = "This is separate from the main Dragon Hunt journal entry even though both progress together.",
+            prerequisites = "Chapter 4; enter the Valley of Mines.",
+            summary = "Automatic chapter-wide tracker for the four-dragon hunt.",
+            walkthroughSteps = listOf("Enter the Valley of Mines during Chapter 4; this quest starts automatically without a speaking quest giver.", "Follow the main Dragon Hunt path and kill the swamp, stone, fire and ice dragons.", "This tracker closes after the fourth dragon dies; Dragon Hunt has its own reporting and Eye of Innos steps."),
+            reward = "Progress tracks the defeat of all four dragons; the 2026 guide does not document a separate XP award for this automatic journal entry.",
+            warnings = "This is automatic and does not require speaking with a Dragon Hunter near the pass. It is distinct from Pyrokar's Dragon Hunt.",
             searchTags = listOf("dragon hunters", "chapter 4", "first dragon hunter encountered near the pass")
         ),
         Quest(
@@ -311,10 +311,10 @@ object NewBalanceChapter4Data {
             giver = "Sylvio",
             location = "Chapter 4",
             prerequisites = "Chapter 4; reach Sylvio's camp at the entrance to the frozen region.",
-            summary = "Speak with Sylvio.",
-            walkthroughSteps = listOf("Speak with Sylvio. Two ice golems killed his men and block the route into the frozen territory. Kill both ice golems and return to Sylvio to report the result."),
-            reward = "Quest XP and Sylvio's reward; exact values depend on the current build.",
-            warnings = "After the Ice Dragon is defeated, Sylvio and Bullco will turn on you. Finish any dialogue you want with them before progressing beyond that point.",
+            summary = "Kill the two ice golems blocking Sylvio's approach to the frozen New Camp.",
+            walkthroughSteps = listOf("Find Sylvio and Bullco at the campfire beside the route to the former New Camp.", "Accept Sylvio's request to kill the two ice golems at the entrance.", "Defeat both ice golems and return to Sylvio."),
+            reward = "1,000 XP from Sylvio.",
+            warnings = "Complete Sylvio's dialogue before defeating the Ice Dragon; his relationship with you changes afterward.",
             searchTags = listOf("two ice golems for sylvio", "chapter 4", "sylvio")
         ),
         Quest(
@@ -326,10 +326,10 @@ object NewBalanceChapter4Data {
             giver = "Brutus",
             location = "Chapter 4",
             prerequisites = "Chapter 4; access to the castle.",
-            summary = "Speak with Brutus in the castle.",
-            walkthroughSteps = listOf("Speak with Brutus in the castle. Meatbugs have infested his chamber. Enter the room, kill the insects tied to the quest and return to Brutus once the room is clear."),
-            reward = "Quest XP and Brutus' reward.",
-            warnings = "Earlier catalogue versions normalized this title rather crudely as \"Stinking Shit\"; \"Filthy Sty\" is the cleaner English title used here.",
+            summary = "Clear the meatbugs from Brutus's castle room.",
+            walkthroughSteps = listOf("Find Brutus standing outside his chamber inside Garond's castle and ask why he refuses to enter.", "Kill all the meatbugs in his chamber.", "Return to Brutus once the room is clear. He resumes his normal routine."),
+            reward = "350 XP and 100 gold; afterward you can frighten Brutus with meatbugs in dialogue.",
+            warnings = "The insects are meatbugs inside Brutus's room, not monsters outside the castle.",
             searchTags = listOf("filthy sty", "chapter 4", "brutus")
         ),
         Quest(
@@ -341,10 +341,10 @@ object NewBalanceChapter4Data {
             giver = "Gerold",
             location = "Chapter 4",
             prerequisites = "Chapter 4; access to the castle.",
-            summary = "Gerold, the prison guard, is hungry.",
-            walkthroughSteps = listOf("Gerold, the prison guard, is hungry. Arrange to meet him at night in the mages' quarters inside the castle, then give him the food requested by the dialogue. Speak with him again if necessary to close the journal entry."),
-            reward = "Quest XP and Gerold's reward.",
-            warnings = "The meeting is time/location sensitive. If the hand-in dialogue is missing, wait until night and check the mages' building rather than his daytime post.",
+            summary = "Feed the hungry prison guard Gerold secretly in the castle chapel after 23:30.",
+            walkthroughSteps = listOf("Speak with Gerold near Garond's castle prison. He is hungry but refuses food while at his post.", "After 23:30, meet him at the castle chapel rather than the mages' quarters.", "Bring food he accepts—fish soup, stew, ham, cheese, sausage or roasted meat—and keep offering it while his dialogue allows.", "Finish his dialogue to collect the reward; it depends on how much food you provided."),
+            reward = "Up to 500 XP and 200 gold, depending on the amount of acceptable food delivered.",
+            warnings = "The correct meeting place is the CHAPEL after 23:30, not the mages' building.",
             searchTags = listOf("hunger", "chapter 4", "gerold")
         ),
         Quest(
@@ -356,10 +356,10 @@ object NewBalanceChapter4Data {
             giver = "Keroloth",
             location = "Chapter 4",
             prerequisites = "Chapter 4; access to the castle.",
-            summary = "Keroloth believes the Dragon Hunters stole his purse.",
-            walkthroughSteps = listOf("Keroloth believes the Dragon Hunters stole his purse. Search the area around the castle forge; the missing purse is lying nearby. Pick it up and return it to Keroloth."),
-            reward = "Quest XP and Keroloth's reward.",
-            warnings = "The purse is a world item close to the forge, so search the ground carefully before accusing or attacking anyone.",
+            summary = "Find Keroloth's missing purse by the forge and settle the accusation against the Dragon Hunters.",
+            walkthroughSteps = listOf("Speak with Keroloth in the Valley of Mines castle; he believes Dragon Hunters stole his purse.", "Pick up the purse on the ground beside the bench near the forge.", "Return the purse to Keroloth and answer his accusation based on your guild.", "As a Dragon Hunter, you must either fight him or accuse Jan; other factions can generally end the dispute peacefully."),
+            reward = "400 XP for returning the purse, plus an optional 50 gold for non-Fire-Mage characters.",
+            warnings = "Dragon Hunter dialogue can force a fight with Keroloth or an accusation against Jan. Choose carefully if you want to preserve friendly NPC relations.",
             searchTags = listOf("theft", "chapter 4", "keroloth")
         ),
         Quest(
@@ -371,10 +371,10 @@ object NewBalanceChapter4Data {
             giver = "Feros",
             location = "Chapter 4",
             prerequisites = "Chapter 4; speak with Feros in/around the castle.",
-            summary = "Feros tells you that he lost his sword.",
-            walkthroughSteps = listOf("Feros tells you that he lost his sword. Travel to the cliff where the orc shaman Hosh-Pak is stationed; the sword can be found on that cliff. Pick it up and return it to Feros. <PARSED TEXT FOR PAGE: 9 / 10> GOTHIC II: NEW BALANCE | CHAPTER 4 QUEST GUIDE SliverzFX Guide Project | Chapter 4 | CH4-001 to CH4-030"),
-            reward = "Quest XP and Feros's reward.",
-            warnings = "This objective is efficient to combine with the Hosh-Pak quest because both use the same area.",
+            summary = "Retrieve Feros's sword from the ground beside Hosh-Pak's tent.",
+            walkthroughSteps = listOf("Speak to Feros in Garond's castle during Chapter 4.", "Go to Hosh-Pak's encampment on the southeastern cliff near the castle; look on the ground BESIDE his tent for Feros's sword.", "Return the correct named sword to Feros. With 50 rhetoric, ask for his family ring.", "Speak with Feros again if you want his Strength or Dexterity training."),
+            reward = "700 XP; with 50 rhetoric, Feros's family ring grants +1 rhetoric. Feros also becomes a Strength/Dexterity trainer.",
+            warnings = "The sword is on the ground by Hosh-Pak's tent, not necessarily on Hosh-Pak's body. Requires 50 rhetoric for Feros's extra ring.",
             searchTags = listOf("feros's sword", "chapter 4", "feros")
         ),
         Quest(
@@ -386,10 +386,10 @@ object NewBalanceChapter4Data {
             giver = "Udar",
             location = "Chapter 4",
             prerequisites = "Chapter 4; access to the castle and dialogue with Udar.",
-            summary = "Udar tells you that the paladin Sengrath left the castle and has not returned.",
-            walkthroughSteps = listOf("Udar tells you that the paladin Sengrath left the castle and has not returned. Follow the palisade outside the castle until you find Sengrath's body. Take his crossbow and return to Udar with the news."),
-            reward = "Quest XP and the associated item/dialogue reward.",
-            warnings = "Loot the body before leaving; the crossbow is part of the return sequence.",
+            summary = "Discover Sengrath's death near the orc palisade and bring his crossbow back to Udar.",
+            walkthroughSteps = listOf("Ask Udar in Garond's castle about Sengrath's disappearance after losing his crossbow to an orc.", "Follow the outer palisade toward its beginning, where Sengrath's body lies in the mist.", "Retrieve his crossbow and return it to Udar."),
+            reward = "700 XP from Udar.",
+            warnings = "You must loot Sengrath's crossbow from his corpse for the return dialogue.",
             searchTags = listOf("lost in the dark", "chapter 4", "udar")
         ),
         Quest(
@@ -401,10 +401,10 @@ object NewBalanceChapter4Data {
             giver = "Oric",
             location = "Chapter 4",
             prerequisites = "Chapter 4; speak with Oric in the castle.",
-            summary = "Oric orders you to kill the orc shaman Hosh-Pak.",
-            walkthroughSteps = listOf("Oric orders you to kill the orc shaman Hosh-Pak. Hosh-Pak is stationed on the cliff near the cave with the stone steps. Kill him, loot the body and return to Oric to report the kill."),
-            reward = "Quest XP and progression to Orc Warlords.",
-            warnings = "Feros's lost sword is in the same general cliff area, so collect it during this trip. Hosh-Pak is also tied to Ur-Shak's story, so complete any dialogue you want with Ur-Shak before or after the kill as appropriate.",
+            summary = "Kill Hosh-Pak, the orc high shaman commanding the siege, and report back to Oric.",
+            walkthroughSteps = listOf("Speak to Oric in Garond's castle about Hosh-Pak; he offers an advance permanent potion choice.", "Leave by the castle battering ram and turn right toward the raised southeastern cliff and Hosh-Pak's camp.", "Defeat the shaman and surviving guards; collect Feros's lost sword lying beside Hosh-Pak's tent if needed.", "Report to Oric. If Hosh-Pak was killed before accepting the quest, Oric can still recognize the result."),
+            reward = "2,500 XP from Oric, with a choice of permanent potion available as an advance.",
+            warnings = "Hosh-Pak is connected to Ur-Shak's personal storyline. Killing him can change Ur-Shak's attitude and prevent a peaceful reunion route; resolve any Ur-Shak dialogue or objectives first.",
             searchTags = listOf("hosh-pak", "chapter 4", "oric")
         ),
         Quest(
@@ -416,10 +416,10 @@ object NewBalanceChapter4Data {
             giver = "Oric",
             location = "Chapter 4",
             prerequisites = "Complete Hosh-Pak.",
-            summary = "After Hosh-Pak is dead, speak with Oric again.",
-            walkthroughSteps = listOf("After Hosh-Pak is dead, speak with Oric again. He asks you to eliminate four named orc leaders commanding the siege around the castle. Hunt down all four leaders in the Valley, loot their bodies for any proof/items and return to Oric once all four are dead."),
-            reward = "Quest XP and Oric's completion reward.",
-            warnings = "Named orc leaders often carry useful rings or quest items. Loot them before leaving their patrol areas.",
+            summary = "Kill the four orc warlords commanding forces around the Valley of Mines castle.",
+            walkthroughSteps = listOf("After Hosh-Pak is dead, ask Oric if he has more work. You can take a permanent potion choice as an advance.", "Hunt down the four named warlords around the siege: Nar-Shag, Dur-Kash, Tum-Pak and Nur-Shak.", "Defeat all four and report to Oric; already defeated targets count for the assignment."),
+            reward = "4,000 XP from Oric, plus the optional permanent-potion advance.",
+            warnings = "These four leaders are separate from Khorinis's Orc Squads, whose elder rings go to Lord Hagen.",
             searchTags = listOf("orc warlords", "chapter 4", "oric")
         ),
         Quest(
@@ -430,11 +430,11 @@ object NewBalanceChapter4Data {
             category = "Chapter 4",
             giver = "Jan",
             location = "Chapter 4",
-            prerequisites = "Chapter 4; Jan is in the castle and wants access to the forge.",
-            summary = "Jan wants to work as the castle smith, but Parcival objects.",
-            walkthroughSteps = listOf("Jan wants to work as the castle smith, but Parcival objects. You can speak with Parcival first, but it is not required. Go directly to Garond and ask him to authorize Jan to use the smithy. Once Garond agrees, return to Jan and give him the good news."),
-            reward = "Quest XP and access to Jan's smithing-related services/dialogue.",
-            warnings = "The community guide notes that Parcival can be skipped entirely; Garond's approval is the decisive step.",
+            prerequisites = "Chapter 4, before Chapter 5; meet Jan in the castle.",
+            summary = "Get Garond's permission for Jan to operate the castle forge.",
+            walkthroughSteps = listOf("Speak with Jan in Garond's castle; he wants to use the forge but distrust from the paladins prevents him.", "Talk directly to Garond and vouch for Jan (Parcival is not required).", "Tell Jan that Garond approved his smithing work.", "Dragon Hunter characters can then ask Jan for instruction in weapons and armor forging."),
+            reward = "400 XP; Jan's forging instruction becomes available to Dragon Hunters.",
+            warnings = "Complete before Chapter 5. Garond's approval is sufficient; you do not need Parcival's permission.",
             searchTags = listOf("jan and the smithy", "chapter 4", "jan")
         ),
         Quest(
@@ -445,11 +445,11 @@ object NewBalanceChapter4Data {
             category = "Chapter 4",
             giver = "Garond",
             location = "Chapter 4",
-            prerequisites = "Chapter 4; speak with Garond after the castle situation advances.",
-            summary = "Garond asks you to find the smith Dobar and his assistant Parlaf.",
-            walkthroughSteps = listOf("Garond asks you to find the smith Dobar and his assistant Parlaf. Dobar's body is in the territory between the orc battering ram and the palisade. Parlaf is alive and hiding in Gilbert's cave, to the left of the barricade leading into the orc-held lands. Find Parlaf and escort him toward the castle; bringing him to the area in front of the battering ram is sufficient for the safe-arrival trigger. Return to Garond with the news."),
-            reward = "Quest XP and Garond's reward; the community guide notes that Parlaf-survival extras are not especially valuable.",
-            warnings = "This quest is time-limited: Parlaf can die if you delay too long. Save before starting the search and prioritize his rescue. Older catalogue wording used \"To Run or Not to Run\"; the current guide uses the clearer title \"No Turning Back\".",
+            prerequisites = "Chapter 4; complete Jan and the Smithy; begin only when ready for a timed rescue (about seven days).",
+            summary = "Locate missing smith Dobar and safely guide his assistant Parlaf back to Garond's castle.",
+            walkthroughSteps = listOf("After finishing Jan and the Smithy, speak with Garond about missing Dobar and Parlaf (+1,000 XP). This starts a time-limited quest.", "Preferably clear the orc siege near the battering ram before accepting; Parlaf may die if you leave the quest for more than about seven days.", "Find Parlaf alive in Gilbert's cave by the approach from the battering ram, talk to him (+300 XP) and lead him back toward the castle.", "Reach the battering ram with Parlaf for the safe-arrival trigger (+500 XP); he gives five steel billets, or a rune stone if you are a mage.", "Find Dobar's corpse in the small wooded strip between the castle's battering ram and the orc palisade.", "Tell Garond that Dobar died (+150 XP), complete the rescue report (+2,000 XP), and optionally speak to Parlaf in the castle again (+200 XP)."),
+            reward = "1,000 XP on accepting, 300 XP for finding Parlaf, 500 XP for safely escorting him, 2,000 XP for final Garond report, optional 150 XP for Dobar and 200 XP for Parlaf's later conversation; five steel billets or a rune stone (mages) from Parlaf.",
+            warnings = "TIME LIMIT: Parlaf can die after roughly seven days. Finish Jan and the Smithy first, clear the nearby orcs before starting, and escort him promptly.",
             searchTags = listOf("no turning back", "chapter 4", "garond")
         )
     )
