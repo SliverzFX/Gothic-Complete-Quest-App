@@ -731,7 +731,11 @@ private fun buildNavFavoriteEntries(keys: Set<String>): List<NavFavoriteEntry> =
 }
 
 @Composable
-private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
+private fun NavGuideBackground(
+    game: GameId,
+    tabletSidePanel: Boolean = false,
+    content: @Composable () -> Unit
+) {
     val backdropRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_mask_bg
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_bg
@@ -742,14 +746,36 @@ private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
         GameId.RISEN_3 -> R.drawable.risen_3_bg
         else -> null
     }
-    Box(Modifier.fillMaxSize().background(navBackgroundBrush(game))) {
+    Box(Modifier.fillMaxSize().background(
+        if (tabletSidePanel) Color.Black else navBackgroundBrush(game)
+    )) {
         if (backdropRes != null) {
             Image(
                 painter = painterResource(backdropRes),
                 contentDescription = null,
                 modifier = Modifier.matchParentSize(),
-                contentScale = ContentScale.Crop,
-                alpha = LocalBackgroundBrightness.current
+                // Fit the artwork to the tablet's height and anchor it to the left.
+                // Phone backgrounds retain their original edge-to-edge crop.
+                contentScale = if (tabletSidePanel) ContentScale.FillHeight else ContentScale.Crop,
+                alignment = if (tabletSidePanel) Alignment.CenterStart else Alignment.Center,
+                alpha = if (tabletSidePanel)
+                    (LocalBackgroundBrightness.current * 1.6f).coerceAtMost(1f)
+                else LocalBackgroundBrightness.current
+            )
+        }
+        if (tabletSidePanel) {
+            // The artwork naturally fades into a nearly black reading area on the right.
+            // Applied even for games without a background drawable.
+            Box(
+                Modifier.matchParentSize().background(
+                    Brush.horizontalGradient(
+                        0f to Color.Transparent,
+                        0.18f to Color.Transparent,
+                        0.45f to Color(0xB8000000),
+                        0.62f to Color.Black,
+                        1f to Color.Black
+                    )
+                )
             )
         }
         content()
@@ -785,18 +811,20 @@ private fun NavGameHubScreen(
         GameId.RISEN_3 -> R.drawable.risen_3_logo
         GameId.ARCHOLOS -> R.drawable.archolos_logo
     }
-    NavGuideBackground(game) {
+    NavGuideBackground(game, tabletSidePanel = tabletLandscape) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
             .padding(horizontal = 16.dp).testTag("game_hub_screen"),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = if (tabletLandscape) Alignment.End else Alignment.CenterHorizontally) {
             NavGuideHeader("‹  BACK TO GAMES", onBack, onHome)
-            // Keep Back and Home at screen edges; center the linear chapter navigator.
-            // Only tablet-landscape gets a readable maximum width.
+            // Landscape tablets keep their chapters in one vertical, right-side panel.
+            // The left side displays full-height artwork rather than stretched controls.
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .then(if (tabletLandscape) Modifier.widthIn(max = 720.dp) else Modifier)
-                    .fillMaxWidth(),
+                    .then(
+                        if (tabletLandscape) Modifier.fillMaxWidth(0.53f).padding(end = 28.dp)
+                        else Modifier.fillMaxWidth()
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(painterResource(logoRes), contentDescription = game.persistedName,
