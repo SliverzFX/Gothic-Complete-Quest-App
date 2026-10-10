@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -773,6 +774,7 @@ private fun NavGameHubScreen(
         else onTabSelected(selectedTab)
     }
     BackHandler { if (selectedTab != "quests") selectedTab = "quests" else onBack() }
+    val tabletLandscape = isLandscapeTablet()
     val logoRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_classic_logo
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_gold_logo
@@ -788,56 +790,66 @@ private fun NavGameHubScreen(
             .padding(horizontal = 16.dp).testTag("game_hub_screen"),
             horizontalAlignment = Alignment.CenterHorizontally) {
             NavGuideHeader("‹  BACK TO GAMES", onBack, onHome)
-            Image(painterResource(logoRes), contentDescription = game.persistedName,
-                modifier = Modifier.width(260.dp).height(70.dp), contentScale = ContentScale.Fit)
-            Spacer(Modifier.height(8.dp))
-            Row(Modifier.fillMaxWidth().selectableGroup()) {
-                listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS")
-                    .forEach { (key, label) ->
-                        Box(Modifier.weight(1f).heightIn(min = 48.dp)
-                            .background(if (selectedTab == key) LocalGameGuidePalette.current.selected.copy(alpha = 0.71f) else LocalGameGuidePalette.current.surface.copy(alpha = 0.53f))
-                            .selectable(selected = selectedTab == key, role = Role.Tab,
-                                onClick = { selectedTab = key }).testTag("game_tab_$key")
-                            .padding(vertical = 14.dp), contentAlignment = Alignment.Center) {
-                            Text(label, color = LocalGameGuidePalette.current.accent, fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold)
-                        }
-                    }
-            }
-            Spacer(Modifier.height(10.dp))
-            Box(Modifier.weight(1f).fillMaxWidth()) {
-                if (selectedTab == "quests") {
-                    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                        (1..game.sectionCount).forEach { chapter ->
-                            NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game) {
-                                onChapterSelected(chapter)
+            // Keep Back and Home at screen edges; center the linear chapter navigator.
+            // Only tablet-landscape gets a readable maximum width.
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .then(if (tabletLandscape) Modifier.widthIn(max = 720.dp) else Modifier)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(painterResource(logoRes), contentDescription = game.persistedName,
+                    modifier = Modifier.width(if (tabletLandscape) 300.dp else 260.dp).height(70.dp), contentScale = ContentScale.Fit)
+                Spacer(Modifier.height(8.dp))
+                Row(Modifier.fillMaxWidth().selectableGroup()) {
+                    listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS")
+                        .forEach { (key, label) ->
+                            Box(Modifier.weight(1f).heightIn(min = if (tabletLandscape) 52.dp else 48.dp)
+                                .background(if (selectedTab == key) LocalGameGuidePalette.current.selected.copy(alpha = 0.71f) else LocalGameGuidePalette.current.surface.copy(alpha = 0.53f))
+                                .selectable(selected = selectedTab == key, role = Role.Tab,
+                                    onClick = { selectedTab = key }).testTag("game_tab_$key")
+                                .padding(vertical = 14.dp), contentAlignment = Alignment.Center) {
+                                Text(label, color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) 16.sp else 14.sp,
+                                    fontWeight = FontWeight.Bold)
                             }
-                            if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp))
                         }
-                        if (game.quests().isNotEmpty()) {
+                }
+                Spacer(Modifier.height(10.dp))
+                Box(Modifier.weight(1f).fillMaxWidth()) {
+                    if (selectedTab == "quests") {
+                        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                            (1..game.sectionCount).forEach { chapter ->
+                                NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game, tabletLandscape) {
+                                    onChapterSelected(chapter)
+                                }
+                                if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp))
+                            }
+                            if (game.quests().isNotEmpty()) {
+                                Spacer(Modifier.height(12.dp))
+                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Box(Modifier.weight(1f).testTag("game_all_quests")) {
+                                        NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+                                    }
+                                    Box(Modifier.weight(1f).testTag("game_quest_search")) {
+                                        NavUtilityButton(game, "SEARCH", onSearch)
+                                    }
+                                }
+                            }
                             Spacer(Modifier.height(12.dp))
-                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Box(Modifier.weight(1f).testTag("game_all_quests")) {
-                                    NavUtilityButton(game, "ALL QUESTS", onAllQuests)
-                                }
-                                Box(Modifier.weight(1f).testTag("game_quest_search")) {
-                                    NavUtilityButton(game, "SEARCH", onSearch)
-                                }
-                            }
                         }
-                        Spacer(Modifier.height(12.dp))
+                    } else {
+                        ToolReferenceScreen(
+                            section = when (selectedTab) {
+                                "tips" -> ToolSection.USEFUL_TIPS
+                                else -> ToolSection.MARVIN_CODES
+                            },
+                            game = game,
+                            onBack = { selectedTab = "quests" },
+                            onHome = onHome,
+                            embedded = true
+                        )
                     }
-                } else {
-                    ToolReferenceScreen(
-                        section = when (selectedTab) {
-                            "tips" -> ToolSection.USEFUL_TIPS
-                            else -> ToolSection.MARVIN_CODES
-                        },
-                        game = game,
-                        onBack = { selectedTab = "quests" },
-                        onHome = onHome,
-                        embedded = true
-                    )
                 }
             }
         }
@@ -850,6 +862,7 @@ private fun NavChapterButton(
     quests: List<Quest>,
     completedKeys: Set<String>,
     game: GameId,
+    tabletLandscape: Boolean = false,
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(6.dp)
@@ -897,15 +910,16 @@ private fun NavChapterButton(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(Modifier.weight(1f)) {
-                Text("${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent,
+                    fontSize = if (tabletLandscape) 21.sp else 18.sp, fontWeight = FontWeight.Bold)
                 Text(
                     if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
                     else "$completedCount / $questCount completed • $percentage%",
                     color = LocalGameGuidePalette.current.muted,
-                    fontSize = 11.sp
+                    fontSize = if (tabletLandscape) 13.sp else 11.sp
                 )
             }
-            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = 26.sp)
+            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) 30.sp else 26.sp)
         }
         Spacer(Modifier.height(5.dp))
         Box(
