@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -152,6 +153,8 @@ internal fun HomeScreen(
 
         BoxWithConstraints(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
             val density = LocalDensity.current
+            // Phone dimensions remain unchanged. Tablet-landscape layouts get larger controls.
+            val tabletLandscape = maxWidth >= 840.dp && maxHeight >= 600.dp && maxWidth > maxHeight
             var titleHeight by remember { mutableStateOf(120.dp) }
             var creditHeight by remember { mutableStateOf(60.dp) }
             val centeredY = ((maxHeight - titleHeight - creditHeight - 12.dp) / 2).coerceAtLeast(16.dp)
@@ -160,7 +163,8 @@ internal fun HomeScreen(
                 modifier = Modifier.align(Alignment.TopCenter).offset(y = titleY)
                     .fillMaxWidth().padding(horizontal = 20.dp).alpha(titleOpacity)
                     .onSizeChanged { titleHeight = with(density) { it.height.toDp() } },
-                logoFraction = 0.96f - 0.08f * titlePosition
+                logoFraction = 0.96f - 0.08f * titlePosition,
+                maxLogoWidth = if (tabletLandscape) 560.dp else 420.dp
             )
             val creditStartY = centeredY + titleHeight + 12.dp
             val creditEndY = (maxHeight - creditHeight - 12.dp).coerceAtLeast(16.dp)
@@ -174,7 +178,11 @@ internal fun HomeScreen(
             Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp, bottom = creditHeight + 32.dp)) {
                 Column(
                     modifier = Modifier.align(Alignment.CenterEnd)
-                        .padding(end = 24.dp).widthIn(min = 235.dp, max = 310.dp)
+                        .padding(end = if (tabletLandscape) 44.dp else 24.dp)
+                        .widthIn(
+                            min = if (tabletLandscape) 330.dp else 235.dp,
+                            max = if (tabletLandscape) 380.dp else 310.dp
+                        )
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.End
                 ) {
@@ -187,14 +195,14 @@ internal fun HomeScreen(
                                     delayMillis = if (reduceAnimations) 0 else index * 65)) { it / 5 }
                         ) {
                             Column(horizontalAlignment = Alignment.End) {
-                                GothicMenuItem(entry)
+                                GothicMenuItem(entry, tabletLandscape)
                                 if (index != entries.lastIndex) {
-                                    Spacer(Modifier.height(8.dp))
-                                    Box(Modifier.width(210.dp).height(1.dp).background(
+                                    Spacer(Modifier.height(if (tabletLandscape) 6.dp else 8.dp))
+                                    Box(Modifier.width(if (tabletLandscape) 290.dp else 210.dp).height(1.dp).background(
                                         Brush.horizontalGradient(listOf(Color.Transparent,
                                             Color(0x66A67C32), Color(0xB8E0BD69),
                                             Color(0x66A67C32), Color.Transparent))))
-                                    Spacer(Modifier.height(5.dp))
+                                    Spacer(Modifier.height(if (tabletLandscape) 4.dp else 5.dp))
                                 }
                             }
                         }
@@ -206,7 +214,7 @@ internal fun HomeScreen(
 }
 
 @Composable
-private fun GothicMenuItem(entry: HomeMenuEntry) {
+private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = false) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val reduceAnimations = LocalReduceAnimations.current
@@ -216,7 +224,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
         label = "menuTextScale"
     )
     val verticalPadding by animateDpAsState(
-        targetValue = if (pressed && !reduceAnimations) 14.dp else 5.dp,
+        targetValue = if (pressed && !reduceAnimations) 14.dp else if (tabletLandscape) 6.dp else 5.dp,
         animationSpec = tween(if (reduceAnimations) 0 else 170),
         label = "menuItemSpacing"
     )
@@ -244,23 +252,26 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
 
     Row(
         modifier = Modifier
+            .then(if (tabletLandscape) Modifier.fillMaxWidth().heightIn(min = 52.dp) else Modifier)
             .scale(scale)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = entry.action
             )
-            .padding(horizontal = 4.dp, vertical = verticalPadding)
+            .padding(horizontal = if (tabletLandscape) 8.dp else 4.dp, vertical = verticalPadding)
             .testTag(entry.testTag),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = if (tabletLandscape) androidx.compose.foundation.layout.Arrangement.End
+            else androidx.compose.foundation.layout.Arrangement.Start
     ) {
-        GothicSelectionRune(visible = pressed)
+        GothicSelectionRune(visible = pressed, tabletLandscape = tabletLandscape)
         Box {
             // Keep the shadow separate from the gradient so it is always black.
             Text(
                 text = entry.label,
                 color = Color.Black,
-                fontSize = 25.sp,
+                fontSize = if (tabletLandscape) 32.sp else 25.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.0.sp,
                 style = TextStyle(shadow = Shadow(color = Color.Black, blurRadius = shadowBlur)),
@@ -268,7 +279,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
             )
             Text(
                 text = entry.label,
-                fontSize = 25.sp,
+                fontSize = if (tabletLandscape) 32.sp else 25.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.0.sp,
                 style = TextStyle(brush = goldBrush)
@@ -278,16 +289,16 @@ private fun GothicMenuItem(entry: HomeMenuEntry) {
 }
 
 @Composable
-private fun GothicSelectionRune(visible: Boolean) {
+private fun GothicSelectionRune(visible: Boolean, tabletLandscape: Boolean = false) {
     Box(
-        modifier = Modifier.widthIn(min = 25.dp),
+        modifier = Modifier.widthIn(min = if (tabletLandscape) 30.dp else 25.dp),
         contentAlignment = Alignment.Center
     ) {
         if (visible) {
             Text(
                 text = "✦",
                 color = HomeMenuGoldPressed,
-                fontSize = 16.sp,
+                fontSize = if (tabletLandscape) 20.sp else 16.sp,
                 style = TextStyle(
                     shadow = Shadow(color = Color.Black, blurRadius = 10f)
                 )
