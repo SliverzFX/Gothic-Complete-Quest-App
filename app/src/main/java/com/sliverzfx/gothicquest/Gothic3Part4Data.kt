@@ -73,7 +73,7 @@ internal object Gothic3Part4Data {
             prerequisites = "Speak with Hanson at his hunting cabin.",
             summary = "Travel to the plateau indicated by the hunter and kill the designated deer. Collect useful trophies and report back.",
             walkthroughSteps = listOf("Ask Hanson about the deer on the plateau above his hut.", "Hunt ELEVEN deer on the nearby plateau, using ranged attacks to avoid scattering them.", "Return to Hanson after the last deer is dead."),
-            reward = "",
+            reward = "1,500 XP, +5 Wolf Clan reputation and +1 Hunting skill from Hanson after hunting eleven deer.",
             warnings = "Eleven deer; they can flee and scatter.",
             searchTags = listOf("Bag the deer on the plateau!", "Wolf Clan hunter", "Plateau near Wolf Clan", "SAFE")
         ),
