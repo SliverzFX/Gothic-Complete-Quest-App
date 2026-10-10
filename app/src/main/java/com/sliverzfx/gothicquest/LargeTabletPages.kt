@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 /**
- * Pixel Tablet / large landscape page layout only.
- * Compact 7-inch tablets and phones intentionally retain their current pages.
+ * Full-size Pixel Tablet only. Compact layouts use isCompactLandscapeTablet().
+ * Secondary pages opt into these layouts for both tablet sizes separately.
  */
 @Composable
 internal fun isLargeLandscapeTablet(): Boolean =
@@ -34,19 +34,21 @@ internal fun ColumnScope.LargeTabletPageColumns(
     left: @Composable ColumnScope.() -> Unit,
     right: @Composable ColumnScope.() -> Unit
 ) {
+    val compact = isCompactLandscapeTablet()
     Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
         Row(
-            Modifier.widthIn(max = 1100.dp).fillMaxSize().padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(22.dp)
+            Modifier.widthIn(max = if (compact) 980.dp else 1100.dp).fillMaxSize()
+                .padding(top = if (compact) 6.dp else 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 12.dp else 22.dp)
         ) {
             Column(
                 Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState())
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = if (compact) 12.dp else 24.dp),
                 content = left
             )
             Column(
                 Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState())
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = if (compact) 12.dp else 24.dp),
                 content = right
             )
         }
@@ -59,10 +61,13 @@ internal fun ColumnScope.LargeTabletPageSingleColumn(
     maxWidthDp: Int = 840,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val compact = isCompactLandscapeTablet()
     Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
         Column(
-            Modifier.widthIn(max = maxWidthDp.dp).fillMaxSize()
-                .verticalScroll(rememberScrollState()).padding(top = 18.dp, bottom = 24.dp),
+            Modifier.widthIn(max = (if (compact) minOf(maxWidthDp, 780) else maxWidthDp).dp)
+                .fillMaxSize().verticalScroll(rememberScrollState())
+                .padding(top = if (compact) 8.dp else 18.dp,
+                    bottom = if (compact) 12.dp else 24.dp),
             content = content
         )
     }
