@@ -81,6 +81,7 @@ internal fun HomeScreen(
     val reduceAnimations = LocalReduceAnimations.current
     val tabletLandscape = isLandscapeTablet()
     val tabletScale = tabletLayoutScale()
+    val compactTablet = isCompactLandscapeTablet()
     val backdrop = backgroundState ?: remember { MenuBackgroundState() }
     val animateBackground = backgroundAnimationEnabled && !reduceAnimations && !tabletLandscape
     // Capture once: finishing the intro does not restart the sequence on recomposition.
@@ -176,7 +177,11 @@ internal fun HomeScreen(
             if (!menuVisible) {
                 Box(Modifier.fillMaxSize().testTag("splash_screen"))
             }
-            Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp * tabletScale, bottom = creditHeight + 32.dp * tabletScale)) {
+            // The compact tablet has a shorter display: avoid reserving an entire
+            // second logo/credit-sized band around the vertical menu.
+            val menuTop = if (compactTablet) titleHeight + 4.dp else titleHeight + 40.dp * tabletScale
+            val menuBottom = if (compactTablet) 8.dp else creditHeight + 32.dp * tabletScale
+            Box(Modifier.fillMaxSize().padding(top = menuTop, bottom = menuBottom)) {
                 Column(
                     modifier = Modifier.align(Alignment.CenterEnd)
                         .padding(end = if (tabletLandscape) 44.dp * tabletScale else 24.dp)
@@ -196,14 +201,14 @@ internal fun HomeScreen(
                                     delayMillis = if (reduceAnimations) 0 else index * 65)) { it / 5 }
                         ) {
                             Column(horizontalAlignment = Alignment.End) {
-                                GothicMenuItem(entry, tabletLandscape, tabletScale)
+                                GothicMenuItem(entry, tabletLandscape, tabletScale, compactTablet)
                                 if (index != entries.lastIndex) {
-                                    Spacer(Modifier.height(if (tabletLandscape) 6.dp * tabletScale else 8.dp))
+                                    Spacer(Modifier.height(if (compactTablet) 1.dp else if (tabletLandscape) 6.dp * tabletScale else 8.dp))
                                     Box(Modifier.width(if (tabletLandscape) 290.dp * tabletScale else 210.dp).height(1.dp).background(
                                         Brush.horizontalGradient(listOf(Color.Transparent,
                                             Color(0x66A67C32), Color(0xB8E0BD69),
                                             Color(0x66A67C32), Color.Transparent))))
-                                    Spacer(Modifier.height(if (tabletLandscape) 4.dp * tabletScale else 5.dp))
+                                    Spacer(Modifier.height(if (compactTablet) 1.dp else if (tabletLandscape) 4.dp * tabletScale else 5.dp))
                                 }
                             }
                         }
@@ -215,7 +220,8 @@ internal fun HomeScreen(
 }
 
 @Composable
-private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = false, tabletScale: Float = 1f) {
+private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = false,
+    tabletScale: Float = 1f, compactTablet: Boolean = false) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val reduceAnimations = LocalReduceAnimations.current
@@ -225,7 +231,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = fals
         label = "menuTextScale"
     )
     val verticalPadding by animateDpAsState(
-        targetValue = if (pressed && !reduceAnimations) 14.dp else if (tabletLandscape) 6.dp * tabletScale else 5.dp,
+        targetValue = if (pressed && !reduceAnimations) 14.dp else if (compactTablet) 1.dp else if (tabletLandscape) 6.dp * tabletScale else 5.dp,
         animationSpec = tween(if (reduceAnimations) 0 else 170),
         label = "menuItemSpacing"
     )
@@ -253,7 +259,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = fals
 
     Row(
         modifier = Modifier
-            .then(if (tabletLandscape) Modifier.fillMaxWidth().heightIn(min = maxOf(48.dp, 52.dp * tabletScale)) else Modifier)
+            .then(if (tabletLandscape) Modifier.fillMaxWidth().heightIn(min = if (compactTablet) 48.dp else maxOf(48.dp, 52.dp * tabletScale)) else Modifier)
             .scale(scale)
             .clickable(
                 interactionSource = interactionSource,
