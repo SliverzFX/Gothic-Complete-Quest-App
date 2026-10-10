@@ -74,7 +74,7 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                         linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
                     }
                 }
-    if (isLargeLandscapeTablet()) {
+    if (isLandscapeTablet()) {
         LargeTabletDonationsPage(onBack = onBack, onWise = onWise, onKoFi = onKoFi, linkError = linkError)
         return
     }
@@ -166,9 +166,10 @@ private fun LargeTabletDonationsPage(
     onKoFi: () -> Unit,
     linkError: String?
 ) {
+    val compact = isCompactLandscapeTablet()
     val cardShape = RoundedCornerShape(12.dp)
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-        .padding(horizontal = 32.dp).testTag("donations_screen")) {
+        .padding(horizontal = if (compact) 14.dp else 32.dp).testTag("donations_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
             TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("donations_back")) {
@@ -179,20 +180,22 @@ private fun LargeTabletDonationsPage(
             }
         }
         HorizontalDivider(color = DonationGold.copy(alpha = 0.35f))
-        Text("DONATIONS", color = DonationGold, fontSize = 28.sp, fontWeight = FontWeight.Bold,
-            letterSpacing = 2.sp, modifier = Modifier.padding(top = 12.dp))
-        Text("Help the next adventure take shape.", color = DonationBody, fontSize = 15.sp)
+        Text("DONATIONS", color = DonationGold, fontSize = if (compact) 23.sp else 28.sp, fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp, modifier = Modifier.padding(top = if (compact) 3.dp else 12.dp))
+        Text("Help the next adventure take shape.", color = DonationBody, fontSize = if (compact) 13.sp else 15.sp)
         LargeTabletPageColumns(
             left = {
                 Column(Modifier.fillMaxWidth()
                     .background(Brush.verticalGradient(listOf(Color(0xF5241B13), Color(0xF5120F0C))), cardShape)
-                    .border(1.dp, DonationGold.copy(alpha = 0.45f), cardShape).padding(24.dp)) {
-                    Text("SUPPORT QUESTBOUND", color = DonationGold, fontSize = 23.sp, fontWeight = FontWeight.Bold)
+                    .border(1.dp, DonationGold.copy(alpha = 0.45f), cardShape)
+                    .padding(if (compact) 14.dp else 24.dp)) {
+                    Text("SUPPORT QUESTBOUND", color = DonationGold, fontSize = if (compact) 19.sp else 23.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(6.dp))
                     Text("BY SLIVERZFX", color = Color(0xFF9E8B70), fontSize = 12.sp, letterSpacing = 1.5.sp)
                     Spacer(Modifier.height(20.dp))
                     Text("Questbound grows one guide at a time. Your support helps with continued development and new guides.",
-                        color = DonationBody, fontSize = 17.sp, lineHeight = 25.sp)
+                        color = DonationBody, fontSize = if (compact) 15.sp else 17.sp,
+                        lineHeight = if (compact) 21.sp else 25.sp)
                     Spacer(Modifier.height(18.dp))
                     HorizontalDivider(color = DonationGold.copy(alpha = 0.25f))
                     Spacer(Modifier.height(18.dp))
@@ -207,15 +210,16 @@ private fun LargeTabletDonationsPage(
             },
             right = {
                 Column(Modifier.fillMaxWidth().background(Color(0xF515100D), cardShape)
-                    .border(1.dp, DonationGold.copy(alpha = 0.45f), cardShape).padding(24.dp)) {
+                    .border(1.dp, DonationGold.copy(alpha = 0.45f), cardShape)
+                    .padding(if (compact) 14.dp else 24.dp)) {
                     Text("CHOOSE HOW TO SUPPORT", color = DonationGold,
-                        fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        fontSize = if (compact) 16.sp else 18.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(12.dp))
                     Text("Contribute any amount using Wise or Ko-fi. Payments are handled by their respective websites.",
                         color = DonationBody, fontSize = 15.sp, lineHeight = 22.sp)
-                    Spacer(Modifier.height(24.dp))
+                    Spacer(Modifier.height(if (compact) 12.dp else 24.dp))
                     OutlinedButton(onClick = onWise, modifier = Modifier.fillMaxWidth()
-                        .heightIn(min = 64.dp).testTag("donations_wise"),
+                        .heightIn(min = if (compact) 52.dp else 64.dp).testTag("donations_wise"),
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
                         border = BorderStroke(1.dp, DonationGold)) {
@@ -227,9 +231,9 @@ private fun LargeTabletDonationsPage(
                                 modifier = Modifier.width(62.dp).height(15.dp))
                         }
                     }
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(if (compact) 10.dp else 16.dp))
                     OutlinedButton(onClick = onKoFi, modifier = Modifier.fillMaxWidth()
-                        .heightIn(min = 64.dp).testTag("donations_kofi"),
+                        .heightIn(min = if (compact) 52.dp else 64.dp).testTag("donations_kofi"),
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
                         border = BorderStroke(1.dp, DonationGold)) {
