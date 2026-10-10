@@ -745,9 +745,12 @@ private fun NavGuideBackground(
         GameId.RISEN_3 -> R.drawable.risen_3_bg
         else -> null
     }
-    Box(Modifier.fillMaxSize().background(
-        if (tabletSidePanel) Color.Black else navBackgroundBrush(game)
-    )) {
+    Box(
+        Modifier.fillMaxSize().then(
+            if (tabletSidePanel) Modifier.background(Color.Black)
+            else Modifier.background(navBackgroundBrush(game))
+        )
+    ) {
         if (backdropRes != null) {
             Image(
                 painter = painterResource(backdropRes),
