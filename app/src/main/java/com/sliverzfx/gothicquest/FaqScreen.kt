@@ -48,11 +48,12 @@ private val FaqBody = Color(0xFFC7B89B)
 internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
     BackHandler(onBack = onBack)
     var expandedId by rememberSaveable { mutableStateOf<String?>(null) }
-    val tablet = isLargeLandscapeTablet()
+    val tablet = isLandscapeTablet()
+    val compactTablet = isCompactLandscapeTablet()
 
     Column(Modifier.fillMaxSize()
 
-        .statusBarsPadding().navigationBarsPadding().padding(horizontal = if (tablet) 32.dp else 20.dp)
+        .statusBarsPadding().navigationBarsPadding().padding(horizontal = if (tablet) { if (compactTablet) 14.dp else 32.dp } else 20.dp)
         .testTag("faq_screen")) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
@@ -65,25 +66,27 @@ internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
         }
         Spacer(Modifier.fillMaxWidth().height(2.dp).background(FaqGold.copy(alpha = 0.55f)))
         if (tablet) {
-            Text("FAQs", color = FaqGold, fontSize = 28.sp, fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 14.dp))
+            Text("FAQs", color = FaqGold, fontSize = if (compactTablet) 23.sp else 28.sp, fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = if (compactTablet) 4.dp else 14.dp))
             Text("Find answers by topic, or open Support for further help.",
-                color = FaqBody, fontSize = 15.sp, modifier = Modifier.padding(bottom = 8.dp))
+                color = FaqBody, fontSize = if (compactTablet) 13.sp else 15.sp,
+                modifier = Modifier.padding(bottom = if (compactTablet) 4.dp else 8.dp))
             Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.widthIn(max = 1100.dp).fillMaxSize()
+                    modifier = Modifier.widthIn(max = if (compactTablet) 980.dp else 1100.dp).fillMaxSize()
                         .clipToBounds().testTag("faq_list"),
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        top = 12.dp, bottom = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(18.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        top = if (compactTablet) 6.dp else 12.dp,
+                        bottom = if (compactTablet) 12.dp else 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(if (compactTablet) 12.dp else 18.dp),
+                    verticalArrangement = Arrangement.spacedBy(if (compactTablet) 8.dp else 12.dp)
                 ) {
                     FaqContent.groups.forEach { group ->
                         item(key = "group_${group.title}", span = { GridItemSpan(maxLineSpan) }) {
-                            Text(group.title, color = FaqGold, fontSize = 18.sp,
+                            Text(group.title, color = FaqGold, fontSize = if (compactTablet) 16.sp else 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(top = 12.dp, bottom = 2.dp))
+                                modifier = Modifier.padding(top = if (compactTablet) 4.dp else 12.dp, bottom = 2.dp))
                         }
                         group.entries.forEach { entry ->
                             item(key = entry.id) {
@@ -149,24 +152,26 @@ internal fun FaqScreen(onBack: () -> Unit, onSupport: () -> Unit) {
 
 @Composable
 private fun FaqQuestion(entry: FaqEntry, expanded: Boolean, onClick: () -> Unit) {
+    val compact = isCompactLandscapeTablet()
     val shape = RoundedCornerShape(7.dp)
     val motion = if (LocalReduceAnimations.current) Modifier else Modifier.animateContentSize(tween(180))
     Column(Modifier.fillMaxWidth().background(Color(0xFF15100D), shape)
         .border(1.dp, Color(0xFF5F4529), shape).then(motion)) {
-        TextButton(onClick = onClick, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)
+        TextButton(onClick = onClick, modifier = Modifier.fillMaxWidth().heightIn(min = if (compact) 48.dp else 64.dp)
             .testTag("faq_question_${entry.id}")
             .semantics { stateDescription = if (expanded) "Expanded" else "Collapsed" }) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically) {
-                Text(entry.question, color = FaqGold, fontSize = 18.sp,
+                Text(entry.question, color = FaqGold, fontSize = if (compact) 16.sp else 18.sp,
                     fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                Text(if (expanded) "−" else "+", color = FaqGold, fontSize = 24.sp,
+                Text(if (expanded) "−" else "+", color = FaqGold, fontSize = if (compact) 21.sp else 24.sp,
                     modifier = Modifier.padding(start = 12.dp))
             }
         }
         if (expanded) {
-            Text(entry.answer, color = FaqBody, fontSize = 16.sp,
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 18.dp)
+            Text(entry.answer, color = FaqBody, fontSize = if (compact) 14.sp else 16.sp,
+                modifier = Modifier.fillMaxWidth().padding(start = if (compact) 12.dp else 16.dp,
+                    end = if (compact) 12.dp else 16.dp, bottom = if (compact) 12.dp else 18.dp)
                     .testTag("faq_answer_${entry.id}"))
         }
     }
