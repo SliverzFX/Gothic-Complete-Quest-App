@@ -13,7 +13,7 @@ internal object RisenGuidePart2Data {
             prerequisites = "Ask Rachel at the Bandit Camp about why the Don's gold operation is breaking down; complete the linked workers, hunters and power-struggle objectives.",
             summary = "Restore order in the Bandit Camp by resolving the workers, hunters, and power-struggle quest lines, then report to Rachel.",
             walkthroughSteps = listOf("Start. Speak to Rachel about the disorder in the camp; Gold Fever is the overarching quest rather than a direct conversation with Don Esteban.", "Complete the linked quest lines: The workers are to work again, The hunters are to go hunt, and Power struggle. Their individual objectives involve the diggers, hunters, and Brogar.", "Completion. Once these lines are resolved, return to Rachel and report that order has been restored."),
-            reward = "150 XP; 100 gold from Rachel on completion",
+            reward = "200 XP and 100 gold from Rachel after reporting the restored hunters and workers",
             warnings = "⚠ Important: Do not attack named Bandits simply because they are unpleasant. Several are connected to overlapping quests.",
             searchTags = listOf("Gold fever", "Don Esteban / camp progression", "Bandit Camp / swamp", "SAFE — MAIN CAMP CHAIN", "Brogar / workers / diggers", "A. ENTERING THE CAMP & THE DON'S MAIN PROBLEM"),
         ),
