@@ -79,8 +79,9 @@ internal fun HomeScreen(
     onDestinationSelected: (String) -> Unit
 ) {
     val reduceAnimations = LocalReduceAnimations.current
+    val tabletLandscape = isLandscapeTablet()
     val backdrop = backgroundState ?: remember { MenuBackgroundState() }
-    val animateBackground = backgroundAnimationEnabled && !reduceAnimations
+    val animateBackground = backgroundAnimationEnabled && !reduceAnimations && !tabletLandscape
     // Capture once: finishing the intro does not restart the sequence on recomposition.
     val introRequested = remember { playIntro && !reduceAnimations }
     var titleVisible by remember { mutableStateOf(!introRequested) }
@@ -154,7 +155,6 @@ internal fun HomeScreen(
         BoxWithConstraints(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
             val density = LocalDensity.current
             // Phone dimensions remain unchanged. Tablet-landscape layouts get larger controls.
-            val tabletLandscape = maxWidth >= 840.dp && maxHeight >= 600.dp && maxWidth > maxHeight
             var titleHeight by remember { mutableStateOf(120.dp) }
             var creditHeight by remember { mutableStateOf(60.dp) }
             val centeredY = ((maxHeight - titleHeight - creditHeight - 12.dp) / 2).coerceAtLeast(16.dp)

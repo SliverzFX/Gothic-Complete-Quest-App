@@ -16,10 +16,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.viewinterop.AndroidView
+
+/** Larger landscape layouts use a dedicated still instead of cropping the portrait movie. */
+@Composable
+internal fun isLandscapeTablet(): Boolean {
+    val config = LocalConfiguration.current
+    return config.screenWidthDp >= 840 && config.screenHeightDp >= 600 &&
+        config.screenWidthDp > config.screenHeightDp
+}
 
 /** Owned above the route crossfade so navigation never replaces the video surface. */
 internal class MenuBackgroundState {
@@ -42,7 +51,8 @@ internal fun MenuBackground(
 ) {
     val context = LocalContext.current
     val reduceAnimations = LocalReduceAnimations.current
-    val playVideo = animationEnabled && !reduceAnimations
+    val tabletLandscape = isLandscapeTablet()
+    val playVideo = animationEnabled && !reduceAnimations && !tabletLandscape
     val video = remember(context, playVideo) {
         state.frameReady = false
         if (playVideo) HomeVideoView(context) { state.frameReady = it } else null
@@ -57,7 +67,9 @@ internal fun MenuBackground(
         tween(if (reduceAnimations) 0 else 350), label = "menuBackgroundDimming")
 
     Box(Modifier.fillMaxSize().alpha(if (visible) 1f else 0f).testTag("shared_menu_background")) {
-        Image(painter = painterResource(R.drawable.home_background),
+        Image(painter = painterResource(
+                if (tabletLandscape) R.drawable.home_background_tablet else R.drawable.home_background
+            ),
             contentDescription = "Khorinis", contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize().testTag("home_background_still"))
         if (video != null) {
