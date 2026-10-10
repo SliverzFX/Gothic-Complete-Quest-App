@@ -8,7 +8,7 @@ import org.junit.Test
 class RisenQuestDataTest {
     @Test
     fun allSuppliedChapterEntriesHaveUniqueIdsAndOrderedWalkthroughs() {
-        assertEquals(listOf(116, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
+        assertEquals(listOf(170, 42, 21, 17), (1..4).map { GameId.RISEN.chapterQuests(it).size })
         val quests = GameId.RISEN.quests()
         assertEquals(quests.size, quests.map { it.id }.distinct().size)
         (1..4).forEach { chapter ->
@@ -64,7 +64,7 @@ class RisenQuestDataTest {
     @Test
     fun fullRisenMetadataAuditHasNoBlankRequiredFields() {
         val quests = RisenQuestData.quests
-        assertEquals(196, quests.size)
+        assertEquals(250, quests.size)
         assertTrue(quests.all { it.title.isNotBlank() && it.giver.isNotBlank() })
         assertTrue(quests.all { it.prerequisites.isNotBlank() && it.reward.isNotBlank() })
         assertTrue(quests.all { it.summary.isNotBlank() && it.walkthroughSteps.isNotEmpty() })
@@ -73,10 +73,10 @@ class RisenQuestDataTest {
 
     @Test
     fun guideCrossReferencesNeverCountAsIndependentCompletedQuests() {
-        val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041")
+        val expected = setOf("R1-C1-030", "R1-C2-002", "R1-C2-036", "R1-C2-037", "R1-C2-040", "R1-C2-041", "R1-C1-037", "R1-C1-038")
         val guideIds = RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).map { it.id }.toSet()
         assertEquals(expected, guideIds)
-        assertEquals(190, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
+        assertEquals(242, RisenQuestData.quests.count { !RisenQuestData.isGuideEntry(it) })
         assertTrue(RisenQuestData.quests.filter(RisenQuestData::isGuideEntry).all { isReferenceQuest(GameId.RISEN, it) })
         assertFalse(isReferenceQuest(GameId.RISEN, RisenQuestData.quests.first()))
     }
@@ -102,6 +102,18 @@ class RisenQuestDataTest {
         assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart2Data.quests.map { it.id }.toSet()).isEmpty())
         assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart3Data.quests.map { it.id }.toSet()).isEmpty())
         assertTrue(extra.map { it.id }.toSet().intersect(RisenGuidePart4Data.quests.map { it.id }.toSet()).isEmpty())
+    }
+
+    @Test
+    fun harbourTownStandaloneExpansionHasStableAndDisjointIds() {
+        val neutral = RisenGuidePart10Data.quests
+        val faction = RisenGuidePart11Data.quests
+        assertEquals(18, neutral.size)
+        assertEquals(36, faction.size)
+        assertEquals((117..134).toList(), neutral.map { it.playOrder })
+        assertEquals((135..170).toList(), faction.map { it.playOrder })
+        assertTrue((neutral + faction).all { it.chapter == 1 && it.walkthroughSteps.size == 3 })
+        assertEquals(54, (neutral + faction).map { it.id }.distinct().size)
     }
 
 }
