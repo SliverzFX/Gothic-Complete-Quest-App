@@ -29,10 +29,25 @@ import androidx.compose.ui.viewinterop.AndroidView
 internal fun tabletLandscapeLayout(widthDp: Int, heightDp: Int, smallestWidthDp: Int): Boolean =
     smallestWidthDp >= 600 && widthDp >= 840 && heightDp >= 500 && widthDp > heightDp
 
-/** A compact 7-inch tablet needs smaller controls relative to its viewport. */
+/**
+ * Compact tablet UI differs from the full-size Pixel Tablet in available height.
+ * Keep launcher targets readable, while reducing the oversized decorative spacing.
+ */
+internal fun isCompactLandscapeTabletSize(widthDp: Int, heightDp: Int, smallestWidthDp: Int): Boolean =
+    tabletLandscapeLayout(widthDp, heightDp, smallestWidthDp) && smallestWidthDp < 720
+
+/** Preserve Pixel Tablet proportions; use a deliberately smaller 7-inch scale. */
 internal fun compactTabletLayoutScale(widthDp: Int, smallestWidthDp: Int): Float =
     if (smallestWidthDp >= 720) 1f
-    else (widthDp / 1280f).coerceIn(0.78f, 1f)
+    else (widthDp / 1500f).coerceIn(0.70f, 0.78f)
+
+@Composable
+internal fun isCompactLandscapeTablet(): Boolean {
+    val config = LocalConfiguration.current
+    return isCompactLandscapeTabletSize(
+        config.screenWidthDp, config.screenHeightDp, config.smallestScreenWidthDp
+    )
+}
 
 @Composable
 internal fun isLandscapeTablet(): Boolean {
