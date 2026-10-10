@@ -39,4 +39,24 @@ class RisenQuestDataTest {
         val quest = GameId.RISEN.chapterQuests(4).last()
         assertEquals(AppRoute.QuestDetail(GameId.RISEN, quest.id), routeFromResume("Risen", 4, quest.id))
     }
+    @Test
+    fun banditCampDeliveryAndGoldFeverFollowCanonicalNpcChains() {
+        val goldFever = RisenQuestData.quests.single { it.id == "R1-C1-017" }
+        assertEquals("Rachel", goldFever.giver)
+        assertTrue(goldFever.walkthroughSteps.any { it.contains("hunters") && it.contains("Power struggle") })
+
+        val beer = RisenQuestData.quests.single { it.id == "R1-C1-018" }
+        assertEquals("Rhobart", beer.giver)
+        assertTrue(beer.walkthroughSteps.any { it.contains("ten bottles") && it.contains("Rachel") })
+        assertTrue(beer.reward.contains("200 XP") && beer.reward.contains("100 XP"))
+    }
+
+    @Test
+    fun chapterFourSeverinInvasionIsActionable() {
+        val quest = RisenQuestData.quests.single { it.id == "R1-C4-007" }
+        assertEquals("Severin", quest.giver)
+        assertTrue(quest.walkthroughSteps.any { it.contains("five") && it.contains("lizardmen") })
+        assertTrue(quest.reward.contains("500 XP"))
+    }
+
 }
