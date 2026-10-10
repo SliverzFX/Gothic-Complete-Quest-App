@@ -1154,110 +1154,184 @@ private fun NavQuestDetailScreen(
 ) {
     BackHandler(onBack = onBack)
     val questKey = navQuestKey(game, quest)
-    val scrollState = rememberQuestReadingScroll(questKey)
+    val readingScrollState = rememberQuestReadingScroll(questKey)
     NavGuideBackground(game) {
-        NavGuideReadingFrame(
-            backLabel = "‹  BACK TO QUESTS",
-            onBack = onBack,
-            onHome = onHome,
-            scrollState = scrollState
-        ) {
-            Spacer(Modifier.height(6.dp))
-            Text(quest.id, color = LocalGameGuidePalette.current.faint, fontSize = 11.sp)
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    quest.title,
-                    color = LocalGameGuidePalette.current.accent,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    if (isCompleted) "✓" else "○",
-                    color = if (isCompleted) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
-                    fontSize = 30.sp,
-                    modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
-                )
-                Text(
-                    if (isFavorite) "★" else "☆",
-                    color = if (isFavorite) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
-                    fontSize = 32.sp,
-                    modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
-                )
-            }
-            Spacer(Modifier.height(12.dp))
-            QuestStatusButtons(status, onStatusChanged)
-            if (quest.aliases.isNotEmpty()) {
-                Text("Also: ${quest.aliases.joinToString()}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
-            }
-            Spacer(Modifier.height(16.dp))
-
-            val infoShape = RoundedCornerShape(7.dp)
+        if (isLandscapeTablet()) {
+            // Reference information stays on the left, the guide is on the right.
+            // Either side can be scrolled without losing the other side's place.
+            val infoScrollState = remember(questKey) { ScrollState(0) }
             Column(
-                Modifier
-                    .fillMaxWidth()
-                    .background(navInsetColor(game).copy(alpha = NavBoxOpacity), infoShape)
-                    .border(1.dp, navCardBorder(game), infoShape)
-                    .padding(14.dp)
+                Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+                    .padding(horizontal = 16.dp)
             ) {
-                NavDetailLine("TYPE", quest.category)
-                NavDetailLine("QUEST GIVER", quest.giver)
-                NavDetailLine("LOCATION", quest.location)
-                NavDetailLine("PREREQUISITE", quest.prerequisites, false)
-            }
-            Spacer(Modifier.height(18.dp))
-            Text("OBJECTIVE", color = LocalGameGuidePalette.current.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(5.dp))
-            Text(quest.summary, color = LocalGameGuidePalette.current.reading, fontSize = 16.sp)
-            Spacer(Modifier.height(22.dp))
-            Text("WALKTHROUGH", color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(8.dp))
-            quest.walkthroughSteps.forEachIndexed { index, step ->
-                val stepShape = RoundedCornerShape(6.dp)
+                NavGuideHeader("‹  BACK TO QUESTS", onBack, onHome)
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 9.dp)
-                        .background(navInsetColor(game).copy(alpha = NavBoxOpacity), stepShape)
-                        .border(1.dp, navCardBorder(game).copy(alpha = 0.72f), stepShape)
-                        .padding(13.dp),
-                    verticalAlignment = Alignment.Top
+                    Modifier.weight(1f).fillMaxWidth()
+                        .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    Text(
-                        "${index + 1}",
-                        color = LocalGameGuidePalette.current.accent,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.width(28.dp)
-                    )
-                    Text(step, color = LocalGameGuidePalette.current.reading, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                    Column(
+                        Modifier.weight(0.44f).fillMaxHeight()
+                            .verticalScroll(infoScrollState)
+                            .testTag("quest_tablet_info_column")
+                            .padding(end = 4.dp)
+                    ) {
+                        NavQuestDetailHeading(quest, isCompleted, isFavorite, onToggleCompleted, onToggleFavorite)
+                        NavQuestDetailMetadata(game, quest, status, onStatusChanged)
+                        NavQuestDetailFooter(questKey, neighbors, onAdjacentQuest, onReportCorrection, onBack)
+                    }
+                    Column(
+                        Modifier.weight(0.56f).fillMaxHeight()
+                            .verticalScroll(readingScrollState)
+                            .testTag("quest_tablet_walkthrough_column")
+                            .padding(end = 4.dp)
+                    ) {
+                        NavQuestDetailGuide(game, quest)
+                    }
                 }
             }
-            Spacer(Modifier.height(10.dp))
-            if (quest.reward.isNotBlank() && !quest.reward.startsWith("Not specified")) {
-                NavDetailCallout("REWARD", quest.reward, Color(0xFF3F4A2B))
-                Spacer(Modifier.height(12.dp))
+        } else {
+            // Keep the phone's original single-column structure and scroll behavior.
+            NavGuideReadingFrame(
+                backLabel = "‹  BACK TO QUESTS",
+                onBack = onBack,
+                onHome = onHome,
+                scrollState = readingScrollState
+            ) {
+                NavQuestDetailHeading(quest, isCompleted, isFavorite, onToggleCompleted, onToggleFavorite)
+                NavQuestDetailMetadata(game, quest, status, onStatusChanged)
+                NavQuestDetailGuide(game, quest)
+                NavQuestDetailFooter(questKey, neighbors, onAdjacentQuest, onReportCorrection, onBack)
             }
-            if (quest.warnings.isNotBlank()) {
-                NavDetailCallout("CHOICES / MISSABLE NOTES", quest.warnings, Color(0xFF4A2D24))
-                Spacer(Modifier.height(12.dp))
-            }
-            Spacer(Modifier.height(12.dp))
-            QuestNotesSection(questKey)
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                NavAdjacentQuestButton("‹  PREVIOUS QUEST", "quest_previous", neighbors.previous,
-                    onAdjacentQuest, Modifier.weight(1f))
-                NavAdjacentQuestButton("NEXT QUEST  ›", "quest_next", neighbors.next,
-                    onAdjacentQuest, Modifier.weight(1f))
-            }
-            Spacer(Modifier.height(8.dp))
-            TextButton(onClick = onReportCorrection,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("quest_report_correction")) {
-                Text("REPORT A CORRECTION", color = LocalGameGuidePalette.current.accent, fontSize = 14.sp)
-            }
-            NavBackText("‹  BACK TO QUESTS", onBack)
         }
     }
+}
+
+@Composable
+private fun NavQuestDetailHeading(
+    quest: Quest,
+    isCompleted: Boolean,
+    isFavorite: Boolean,
+    onToggleCompleted: () -> Unit,
+    onToggleFavorite: () -> Unit
+) {
+    Spacer(Modifier.height(6.dp))
+    Text(quest.id, color = LocalGameGuidePalette.current.faint, fontSize = 11.sp)
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            quest.title,
+            color = LocalGameGuidePalette.current.accent,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            if (isCompleted) "✓" else "○",
+            color = if (isCompleted) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
+            fontSize = 30.sp,
+            modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
+        )
+        Text(
+            if (isFavorite) "★" else "☆",
+            color = if (isFavorite) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
+            fontSize = 32.sp,
+            modifier = Modifier.clickable(onClick = onToggleFavorite).padding(6.dp)
+        )
+    }
+}
+
+@Composable
+private fun NavQuestDetailMetadata(
+    game: GameId,
+    quest: Quest,
+    status: QuestStatus,
+    onStatusChanged: (QuestStatus) -> Unit
+) {
+    Spacer(Modifier.height(12.dp))
+    QuestStatusButtons(status, onStatusChanged)
+    if (quest.aliases.isNotEmpty()) {
+        Text("Also: ${quest.aliases.joinToString()}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
+    }
+    Spacer(Modifier.height(16.dp))
+
+    val infoShape = RoundedCornerShape(7.dp)
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(navInsetColor(game).copy(alpha = NavBoxOpacity), infoShape)
+            .border(1.dp, navCardBorder(game), infoShape)
+            .padding(14.dp)
+    ) {
+        NavDetailLine("TYPE", quest.category)
+        NavDetailLine("QUEST GIVER", quest.giver)
+        NavDetailLine("LOCATION", quest.location)
+        NavDetailLine("PREREQUISITE", quest.prerequisites, false)
+    }
+}
+
+@Composable
+private fun NavQuestDetailGuide(game: GameId, quest: Quest) {
+    Spacer(Modifier.height(18.dp))
+    Text("OBJECTIVE", color = LocalGameGuidePalette.current.accent, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+    Spacer(Modifier.height(5.dp))
+    Text(quest.summary, color = LocalGameGuidePalette.current.reading, fontSize = 16.sp)
+    Spacer(Modifier.height(22.dp))
+    Text("WALKTHROUGH", color = LocalGameGuidePalette.current.accent, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    Spacer(Modifier.height(8.dp))
+    quest.walkthroughSteps.forEachIndexed { index, step ->
+        val stepShape = RoundedCornerShape(6.dp)
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(bottom = 9.dp)
+                .background(navInsetColor(game).copy(alpha = NavBoxOpacity), stepShape)
+                .border(1.dp, navCardBorder(game).copy(alpha = 0.72f), stepShape)
+                .padding(13.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(
+                "${index + 1}",
+                color = LocalGameGuidePalette.current.accent,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.width(28.dp)
+            )
+            Text(step, color = LocalGameGuidePalette.current.reading, fontSize = 14.sp, modifier = Modifier.weight(1f))
+        }
+    }
+    Spacer(Modifier.height(10.dp))
+    if (quest.reward.isNotBlank() && !quest.reward.startsWith("Not specified")) {
+        NavDetailCallout("REWARD", quest.reward, Color(0xFF3F4A2B))
+        Spacer(Modifier.height(12.dp))
+    }
+    if (quest.warnings.isNotBlank()) {
+        NavDetailCallout("CHOICES / MISSABLE NOTES", quest.warnings, Color(0xFF4A2D24))
+        Spacer(Modifier.height(12.dp))
+    }
+}
+
+@Composable
+private fun NavQuestDetailFooter(
+    questKey: String,
+    neighbors: QuestNeighbors,
+    onAdjacentQuest: (Quest) -> Unit,
+    onReportCorrection: () -> Unit,
+    onBack: () -> Unit
+) {
+    Spacer(Modifier.height(12.dp))
+    QuestNotesSection(questKey)
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        NavAdjacentQuestButton("‹  PREVIOUS QUEST", "quest_previous", neighbors.previous,
+            onAdjacentQuest, Modifier.weight(1f))
+        NavAdjacentQuestButton("NEXT QUEST  ›", "quest_next", neighbors.next,
+            onAdjacentQuest, Modifier.weight(1f))
+    }
+    Spacer(Modifier.height(8.dp))
+    TextButton(onClick = onReportCorrection,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("quest_report_correction")) {
+        Text("REPORT A CORRECTION", color = LocalGameGuidePalette.current.accent, fontSize = 14.sp)
+    }
+    NavBackText("‹  BACK TO QUESTS", onBack)
 }
 
 @Composable
