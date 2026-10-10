@@ -6,12 +6,14 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -71,6 +73,10 @@ private data class ResumeSnapshot(
 )
 
 private data class NavFavoriteEntry(val game: GameId, val quest: Quest)
+
+// Shared tablet dimensions so chapter menus, quest lists, and walkthroughs align.
+private const val TabletGuidePanelFraction = 0.53f
+private val TabletGuidePanelRightPadding = 28.dp
 
 private val LocalCompletedDisplay = staticCompositionLocalOf { CompletedQuestDisplay.SHOW }
 private val LocalCompletedKeys = staticCompositionLocalOf<Set<String>> { emptySet() }
@@ -810,7 +816,7 @@ private fun NavGameHubScreen(
                 modifier = Modifier
                     .weight(1f)
                     .then(
-                        if (tabletLandscape) Modifier.fillMaxWidth(0.53f).padding(end = 28.dp)
+                        if (tabletLandscape) Modifier.fillMaxWidth(TabletGuidePanelFraction).padding(end = TabletGuidePanelRightPadding)
                         else Modifier.fillMaxWidth()
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -971,6 +977,46 @@ private fun NavUtilityButton(game: GameId, label: String, onClick: () -> Unit) {
     }
 }
 
+/**
+ * Uses the chapter menu's right-side column on landscape tablets.
+ * Phone content retains its original full-screen scrolling layout.
+ */
+@Composable
+private fun NavGuideReadingFrame(
+    backLabel: String,
+    onBack: () -> Unit,
+    onHome: () -> Unit,
+    scrollState: ScrollState,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    if (isLandscapeTablet()) {
+        Column(
+            Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            // Keep navigation visible while only the quest reading panel scrolls.
+            NavGuideHeader(backLabel, onBack, onHome)
+            Column(
+                modifier = Modifier.weight(1f)
+                    .fillMaxWidth(TabletGuidePanelFraction)
+                    .padding(end = TabletGuidePanelRightPadding)
+                    .verticalScroll(scrollState)
+                    .padding(vertical = 20.dp),
+                content = content
+            )
+        }
+    } else {
+        Column(
+            Modifier.fillMaxSize().statusBarsPadding()
+                .verticalScroll(scrollState).padding(20.dp)
+        ) {
+            NavGuideHeader(backLabel, onBack, onHome)
+            content()
+        }
+    }
+}
+
 @Composable
 private fun NavChapterQuestListScreen(
     game: GameId,
@@ -985,14 +1031,12 @@ private fun NavChapterQuestListScreen(
     val completed = LocalCompletedKeys.current
     val visibleCount = quests.count { display.isVisible(navQuestKey(game, it) in completed) }
     NavGuideBackground(game) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(20.dp)
+        NavGuideReadingFrame(
+            backLabel = "‹  BACK TO ${game.sectionLabel}S",
+            onBack = onBack,
+            onHome = onHome,
+            scrollState = rememberScrollState()
         ) {
-            NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
             Spacer(Modifier.height(4.dp))
             Text("${game.displayTitle} — ${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp, fontWeight = FontWeight.Bold)
             Text(
@@ -1112,14 +1156,12 @@ private fun NavQuestDetailScreen(
     val questKey = navQuestKey(game, quest)
     val scrollState = rememberQuestReadingScroll(questKey)
     NavGuideBackground(game) {
-        Column(
-            Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .verticalScroll(scrollState)
-                .padding(20.dp)
+        NavGuideReadingFrame(
+            backLabel = "‹  BACK TO QUESTS",
+            onBack = onBack,
+            onHome = onHome,
+            scrollState = scrollState
         ) {
-            NavGuideHeader("‹  BACK TO QUESTS", onBack, onHome)
             Spacer(Modifier.height(6.dp))
             Text(quest.id, color = LocalGameGuidePalette.current.faint, fontSize = 11.sp)
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
