@@ -53,7 +53,7 @@ internal object ArcholosChapter3Part1Data {
             playOrder = 4,
             title = "Old Friends",
             category = "MAIN STORY — All routes",
-            giver = "Trigger quest",
+            giver = "Automatic story event following the Haven investigation",
             location = "Coast / wreck site",
             prerequisites = "Route: All routes",
             summary = "Search the wreck, recover the important cargo and rescue surviving crew.",
