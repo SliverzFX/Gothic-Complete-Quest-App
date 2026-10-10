@@ -730,60 +730,46 @@ private fun buildNavFavoriteEntries(keys: Set<String>): List<NavFavoriteEntry> =
 }
 
 @Composable
-private fun NavGuideBackground(
-    game: GameId,
-    tabletSidePanel: Boolean = false,
-    content: @Composable () -> Unit
-) {
-    val backdropRes = when (game) {
-        GameId.GOTHIC -> R.drawable.gothic_mask_bg
-        GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_bg
-        GameId.NEW_BALANCE -> R.drawable.gothic_2_nb_bg
-        GameId.GOTHIC_3 -> R.drawable.gothic_3_bg
-        GameId.RISEN -> R.drawable.risen_1_bg
-        GameId.RISEN_2 -> R.drawable.risen_2_background
-        GameId.RISEN_3 -> R.drawable.risen_3_bg
-        else -> null
+private fun NavGuideBackground(game: GameId, content: @Composable () -> Unit) {
+    val tabletLandscape = isLandscapeTablet()
+    // Each game has its own landscape tablet image; phones retain their portrait images.
+    val backdropRes = if (tabletLandscape) {
+        when (game) {
+            GameId.GOTHIC -> R.drawable.gothic1_tablet_background
+            GameId.GOTHIC_2_GOLD -> R.drawable.gothic2_tablet_background
+            GameId.NEW_BALANCE -> R.drawable.gothic2_new_balance_tablet_background
+            GameId.GOTHIC_3 -> R.drawable.gothic3_tablet_background
+            GameId.ARCHOLOS -> R.drawable.archolos_tablet_background
+            GameId.RISEN -> R.drawable.risen1_tablet_background
+            GameId.RISEN_2 -> R.drawable.risen2_tablet_background
+            GameId.RISEN_3 -> R.drawable.risen3_tablet_background
+        }
+    } else {
+        when (game) {
+            GameId.GOTHIC -> R.drawable.gothic_mask_bg
+            GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_bg
+            GameId.NEW_BALANCE -> R.drawable.gothic_2_nb_bg
+            GameId.GOTHIC_3 -> R.drawable.gothic_3_bg
+            GameId.ARCHOLOS -> R.drawable.archolos_phone_background
+            GameId.RISEN -> R.drawable.risen_1_bg
+            GameId.RISEN_2 -> R.drawable.risen_2_background
+            GameId.RISEN_3 -> R.drawable.risen3_phone_background
+        }
     }
-    Box(
-        Modifier.fillMaxSize().then(
-            if (tabletSidePanel) Modifier.background(Color.Black)
-            else Modifier.background(navBackgroundBrush(game))
+    Box(Modifier.fillMaxSize().background(navBackgroundBrush(game))) {
+        Image(
+            painter = painterResource(backdropRes),
+            contentDescription = null,
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.Crop,
+            alpha = if (tabletLandscape) {
+                (LocalBackgroundBrightness.current * 2f).coerceIn(0f, 1f)
+            } else LocalBackgroundBrightness.current
         )
-    ) {
-        if (backdropRes != null) {
-            Image(
-                painter = painterResource(backdropRes),
-                contentDescription = null,
-                modifier = Modifier.matchParentSize(),
-                // Fit the artwork to the tablet's height and anchor it to the left.
-                // Phone backgrounds retain their original edge-to-edge crop.
-                contentScale = if (tabletSidePanel) ContentScale.FillHeight else ContentScale.Crop,
-                alignment = if (tabletSidePanel) Alignment.CenterStart else Alignment.Center,
-                alpha = if (tabletSidePanel)
-                    (LocalBackgroundBrightness.current * 1.6f).coerceAtMost(1f)
-                else LocalBackgroundBrightness.current
-            )
-        }
-        if (tabletSidePanel) {
-            // The artwork naturally fades into a nearly black reading area on the right.
-            // Applied even for games without a background drawable.
-            Box(
-                Modifier.matchParentSize().background(
-                    Brush.horizontalGradient(
-                        0f to Color.Transparent,
-                        0.18f to Color.Transparent,
-                        0.45f to Color(0xB8000000),
-                        0.62f to Color.Black,
-                        1f to Color.Black
-                    )
-                )
-            )
-        }
+        // No split background or crossfade: tablet art continues behind the right menu.
         content()
     }
 }
-
 @Composable
 private fun NavGameHubScreen(
     game: GameId,
@@ -813,7 +799,7 @@ private fun NavGameHubScreen(
         GameId.RISEN_3 -> R.drawable.risen_3_logo
         GameId.ARCHOLOS -> R.drawable.archolos_logo
     }
-    NavGuideBackground(game, tabletSidePanel = tabletLandscape) {
+    NavGuideBackground(game) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
             .padding(horizontal = 16.dp).testTag("game_hub_screen"),
             horizontalAlignment = if (tabletLandscape) Alignment.End else Alignment.CenterHorizontally) {
