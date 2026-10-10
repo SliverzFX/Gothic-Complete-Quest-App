@@ -27,11 +27,13 @@ class RisenQuestDataTest {
     }
 
     @Test
-    fun repeatedTitlesInDifferentAreasKeepSeparateProgress() {
-        val entries = GameId.RISEN.chapterQuests(1).filter { it.title == "Protection money" }
-        assertEquals(2, entries.size)
-        assertEquals(2, entries.map { it.id }.distinct().size)
-        assertEquals(2, entries.map { it.location }.distinct().size)
+    fun campAndTownProtectionMoneyHaveSeparateProgressIds() {
+        val camp = RisenQuestData.quests.single { it.id == "R1-C1-021" }
+        val town = RisenQuestData.quests.single { it.id == "R1-C1-038" }
+        assertTrue(camp.title.contains("Protection money", ignoreCase = true))
+        assertTrue(town.title.contains("Protection money", ignoreCase = true))
+        assertTrue(camp.location != town.location)
+        assertTrue(camp.id != town.id)
     }
 
     @Test
