@@ -98,6 +98,7 @@ fun GameLibraryScreen(
     val listState = rememberLazyListState()
     val gridState = rememberLazyGridState()
     val tabletLandscape = isLandscapeTablet()
+    val tabletScale = tabletLayoutScale()
     val closeSearch: () -> Unit = {
         searchVisible = false
         query = ""
@@ -187,9 +188,9 @@ fun GameLibraryScreen(
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 state = gridState,
-                contentPadding = PaddingValues(horizontal = 18.dp, vertical = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(horizontal = 18.dp * tabletScale, vertical = 16.dp * tabletScale),
+                horizontalArrangement = Arrangement.spacedBy(16.dp * tabletScale),
+                verticalArrangement = Arrangement.spacedBy(16.dp * tabletScale),
                 modifier = Modifier.weight(1f).fillMaxWidth().clipToBounds()
                     .testTag("library_game_list")
             ) {
@@ -212,7 +213,7 @@ fun GameLibraryScreen(
                     }
                 } else {
                     items(filteredEntries, key = { it.id }) { entry ->
-                        GameLibraryPanel(entry, tabletLandscape = true)
+                        GameLibraryPanel(entry, tabletLandscape = true, tabletScale = tabletScale)
                     }
                 }
             }
@@ -248,21 +249,21 @@ fun GameLibraryScreen(
 }
 
 @Composable
-private fun GameLibraryPanel(entry: GameLibraryEntry, tabletLandscape: Boolean = false) {
+private fun GameLibraryPanel(entry: GameLibraryEntry, tabletLandscape: Boolean = false, tabletScale: Float = 1f) {
     val imageWidth = LocalConfiguration.current.screenWidthDp.dp / (if (tabletLandscape) 2 else 1)
     val panelPainter = rememberLibraryImagePainter(entry.panelRes, imageWidth,
-        if (tabletLandscape) 232.dp else 192.5.dp, crop = true)
+        if (tabletLandscape) 232.dp * tabletScale else 192.5.dp, crop = true)
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val reduceAnimations = LocalReduceAnimations.current
     val panelHeight by animateDpAsState(
-        targetValue = if (tabletLandscape) 220.dp else if (pressed && !reduceAnimations) 192.5.dp else 154.dp,
+        targetValue = if (tabletLandscape) 220.dp * tabletScale else if (pressed && !reduceAnimations) 192.5.dp else 154.dp,
         animationSpec = tween(if (reduceAnimations) 0 else 180),
         label = "gamePanelHeight"
     )
     val logoWidth by animateDpAsState(
         targetValue = if (tabletLandscape) {
-            if (pressed && !reduceAnimations) 248.dp else 230.dp
+            if (pressed && !reduceAnimations) 248.dp * tabletScale else 230.dp * tabletScale
         } else if (pressed && !reduceAnimations) 210.dp else 190.dp,
         animationSpec = tween(if (reduceAnimations) 0 else 180),
         label = "gameLogoWidth"
@@ -272,8 +273,8 @@ private fun GameLibraryPanel(entry: GameLibraryEntry, tabletLandscape: Boolean =
         modifier = Modifier
             .fillMaxWidth()
             .height(panelHeight)
-            .then(if (tabletLandscape) Modifier.clip(RoundedCornerShape(10.dp))
-                .border(1.dp, LibraryGoldDark, RoundedCornerShape(10.dp)) else Modifier)
+            .then(if (tabletLandscape) Modifier.clip(RoundedCornerShape(10.dp * tabletScale))
+                .border(1.dp, LibraryGoldDark, RoundedCornerShape(10.dp * tabletScale)) else Modifier)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -300,14 +301,14 @@ private fun GameLibraryPanel(entry: GameLibraryEntry, tabletLandscape: Boolean =
         entry.logoRes?.let { logo ->
             // One decode and one bitmap shared by the logo and both shadow layers.
             val logoPainter = rememberLibraryImagePainter(logo,
-                if (tabletLandscape) 255.dp else 210.dp,
-                if (tabletLandscape) 220.dp else 192.5.dp, crop = false)
+                if (tabletLandscape) 255.dp * tabletScale else 210.dp,
+                if (tabletLandscape) 220.dp * tabletScale else 192.5.dp, crop = false)
             Image(
                 painter = logoPainter,
                 contentDescription = null,
                 modifier = Modifier
                     .width(logoWidth)
-                    .padding(end = 14.dp, bottom = 12.dp)
+                    .padding(end = 14.dp * tabletScale, bottom = 12.dp * tabletScale)
                     .offset(x = 5.dp, y = 6.dp)
                     .blur(6.dp)
                     .alpha(0.68f),
@@ -319,7 +320,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry, tabletLandscape: Boolean =
                 contentDescription = null,
                 modifier = Modifier
                     .width(logoWidth)
-                    .padding(end = 14.dp, bottom = 12.dp)
+                    .padding(end = 14.dp * tabletScale, bottom = 12.dp * tabletScale)
                     .offset(x = 2.dp, y = 3.dp)
                     .blur(2.5.dp)
                     .alpha(0.52f),
@@ -331,7 +332,7 @@ private fun GameLibraryPanel(entry: GameLibraryEntry, tabletLandscape: Boolean =
                 contentDescription = null,
                 modifier = Modifier
                     .width(logoWidth)
-                    .padding(end = 14.dp, bottom = 12.dp),
+                    .padding(end = 14.dp * tabletScale, bottom = 12.dp * tabletScale),
                 contentScale = ContentScale.Fit
             )
         }

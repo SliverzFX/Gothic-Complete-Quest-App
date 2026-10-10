@@ -80,6 +80,7 @@ internal fun HomeScreen(
 ) {
     val reduceAnimations = LocalReduceAnimations.current
     val tabletLandscape = isLandscapeTablet()
+    val tabletScale = tabletLayoutScale()
     val backdrop = backgroundState ?: remember { MenuBackgroundState() }
     val animateBackground = backgroundAnimationEnabled && !reduceAnimations && !tabletLandscape
     // Capture once: finishing the intro does not restart the sequence on recomposition.
@@ -164,24 +165,24 @@ internal fun HomeScreen(
                     .fillMaxWidth().padding(horizontal = 20.dp).alpha(titleOpacity)
                     .onSizeChanged { titleHeight = with(density) { it.height.toDp() } },
                 logoFraction = 0.96f - 0.08f * titlePosition,
-                maxLogoWidth = if (tabletLandscape) 560.dp else 420.dp
+                maxLogoWidth = if (tabletLandscape) 560.dp * tabletScale else 420.dp
             )
             val creditStartY = centeredY + titleHeight + 12.dp
             val creditEndY = (maxHeight - creditHeight - 12.dp).coerceAtLeast(16.dp)
             val creditY = creditStartY + (creditEndY - creditStartY) * titlePosition
             QuestboundCredit(Modifier.align(Alignment.TopCenter).offset(y = creditY)
-                .width(180.dp).alpha(titleOpacity)
+                .width(180.dp * tabletScale).alpha(titleOpacity)
                 .onSizeChanged { creditHeight = with(density) { it.height.toDp() } })
             if (!menuVisible) {
                 Box(Modifier.fillMaxSize().testTag("splash_screen"))
             }
-            Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp, bottom = creditHeight + 32.dp)) {
+            Box(Modifier.fillMaxSize().padding(top = titleHeight + 40.dp * tabletScale, bottom = creditHeight + 32.dp * tabletScale)) {
                 Column(
                     modifier = Modifier.align(Alignment.CenterEnd)
-                        .padding(end = if (tabletLandscape) 44.dp else 24.dp)
+                        .padding(end = if (tabletLandscape) 44.dp * tabletScale else 24.dp)
                         .widthIn(
-                            min = if (tabletLandscape) 330.dp else 235.dp,
-                            max = if (tabletLandscape) 380.dp else 310.dp
+                            min = if (tabletLandscape) 330.dp * tabletScale else 235.dp,
+                            max = if (tabletLandscape) 380.dp * tabletScale else 310.dp
                         )
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.End
@@ -195,14 +196,14 @@ internal fun HomeScreen(
                                     delayMillis = if (reduceAnimations) 0 else index * 65)) { it / 5 }
                         ) {
                             Column(horizontalAlignment = Alignment.End) {
-                                GothicMenuItem(entry, tabletLandscape)
+                                GothicMenuItem(entry, tabletLandscape, tabletScale)
                                 if (index != entries.lastIndex) {
-                                    Spacer(Modifier.height(if (tabletLandscape) 6.dp else 8.dp))
-                                    Box(Modifier.width(if (tabletLandscape) 290.dp else 210.dp).height(1.dp).background(
+                                    Spacer(Modifier.height(if (tabletLandscape) 6.dp * tabletScale else 8.dp))
+                                    Box(Modifier.width(if (tabletLandscape) 290.dp * tabletScale else 210.dp).height(1.dp).background(
                                         Brush.horizontalGradient(listOf(Color.Transparent,
                                             Color(0x66A67C32), Color(0xB8E0BD69),
                                             Color(0x66A67C32), Color.Transparent))))
-                                    Spacer(Modifier.height(if (tabletLandscape) 4.dp else 5.dp))
+                                    Spacer(Modifier.height(if (tabletLandscape) 4.dp * tabletScale else 5.dp))
                                 }
                             }
                         }
@@ -214,7 +215,7 @@ internal fun HomeScreen(
 }
 
 @Composable
-private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = false) {
+private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = false, tabletScale: Float = 1f) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val reduceAnimations = LocalReduceAnimations.current
@@ -224,7 +225,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = fals
         label = "menuTextScale"
     )
     val verticalPadding by animateDpAsState(
-        targetValue = if (pressed && !reduceAnimations) 14.dp else if (tabletLandscape) 6.dp else 5.dp,
+        targetValue = if (pressed && !reduceAnimations) 14.dp else if (tabletLandscape) 6.dp * tabletScale else 5.dp,
         animationSpec = tween(if (reduceAnimations) 0 else 170),
         label = "menuItemSpacing"
     )
@@ -252,26 +253,26 @@ private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = fals
 
     Row(
         modifier = Modifier
-            .then(if (tabletLandscape) Modifier.fillMaxWidth().heightIn(min = 52.dp) else Modifier)
+            .then(if (tabletLandscape) Modifier.fillMaxWidth().heightIn(min = maxOf(48.dp, 52.dp * tabletScale)) else Modifier)
             .scale(scale)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = entry.action
             )
-            .padding(horizontal = if (tabletLandscape) 8.dp else 4.dp, vertical = verticalPadding)
+            .padding(horizontal = if (tabletLandscape) 8.dp * tabletScale else 4.dp, vertical = verticalPadding)
             .testTag(entry.testTag),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (tabletLandscape) androidx.compose.foundation.layout.Arrangement.End
             else androidx.compose.foundation.layout.Arrangement.Start
     ) {
-        GothicSelectionRune(visible = pressed, tabletLandscape = tabletLandscape)
+        GothicSelectionRune(visible = pressed, tabletLandscape = tabletLandscape, tabletScale = tabletScale)
         Box {
             // Keep the shadow separate from the gradient so it is always black.
             Text(
                 text = entry.label,
                 color = Color.Black,
-                fontSize = if (tabletLandscape) 32.sp else 25.sp,
+                fontSize = if (tabletLandscape) (32f * tabletScale).sp else 25.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.0.sp,
                 style = TextStyle(shadow = Shadow(color = Color.Black, blurRadius = shadowBlur)),
@@ -279,7 +280,7 @@ private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = fals
             )
             Text(
                 text = entry.label,
-                fontSize = if (tabletLandscape) 32.sp else 25.sp,
+                fontSize = if (tabletLandscape) (32f * tabletScale).sp else 25.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.0.sp,
                 style = TextStyle(brush = goldBrush)
@@ -289,16 +290,16 @@ private fun GothicMenuItem(entry: HomeMenuEntry, tabletLandscape: Boolean = fals
 }
 
 @Composable
-private fun GothicSelectionRune(visible: Boolean, tabletLandscape: Boolean = false) {
+private fun GothicSelectionRune(visible: Boolean, tabletLandscape: Boolean = false, tabletScale: Float = 1f) {
     Box(
-        modifier = Modifier.widthIn(min = if (tabletLandscape) 30.dp else 25.dp),
+        modifier = Modifier.widthIn(min = if (tabletLandscape) 30.dp * tabletScale else 25.dp),
         contentAlignment = Alignment.Center
     ) {
         if (visible) {
             Text(
                 text = "✦",
                 color = HomeMenuGoldPressed,
-                fontSize = if (tabletLandscape) 20.sp else 16.sp,
+                fontSize = if (tabletLandscape) (20f * tabletScale).sp else 16.sp,
                 style = TextStyle(
                     shadow = Shadow(color = Color.Black, blurRadius = 10f)
                 )

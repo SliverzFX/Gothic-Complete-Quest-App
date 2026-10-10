@@ -22,12 +22,29 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.viewinterop.AndroidView
 
-/** Larger landscape layouts use a dedicated still instead of cropping the portrait movie. */
+/**
+ * Use the tablet layout on both 7-inch and larger tablets in landscape.
+ * The 600dp smallest-width guard excludes landscape phones even when wide.
+ */
+internal fun tabletLandscapeLayout(widthDp: Int, heightDp: Int, smallestWidthDp: Int): Boolean =
+    smallestWidthDp >= 600 && widthDp >= 840 && heightDp >= 500 && widthDp > heightDp
+
+/** A compact 7-inch tablet needs smaller controls relative to its viewport. */
+internal fun compactTabletLayoutScale(widthDp: Int, smallestWidthDp: Int): Float =
+    if (smallestWidthDp >= 720) 1f
+    else (widthDp / 1280f).coerceIn(0.78f, 1f)
+
 @Composable
 internal fun isLandscapeTablet(): Boolean {
     val config = LocalConfiguration.current
-    return config.screenWidthDp >= 840 && config.screenHeightDp >= 600 &&
-        config.screenWidthDp > config.screenHeightDp
+    return tabletLandscapeLayout(config.screenWidthDp, config.screenHeightDp, config.smallestScreenWidthDp)
+}
+
+@Composable
+internal fun tabletLayoutScale(): Float {
+    val config = LocalConfiguration.current
+    return if (isLandscapeTablet()) compactTabletLayoutScale(config.screenWidthDp, config.smallestScreenWidthDp)
+    else 1f
 }
 
 /** Owned above the route crossfade so navigation never replaces the video surface. */
