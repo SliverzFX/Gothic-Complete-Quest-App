@@ -433,8 +433,8 @@ internal object ArcholosChapter2Part2Data {
             prerequisites = "Route: All routes",
             summary = "Collect or resolve the debts owed by Kuno, Dima and Frida.",
             walkthroughSteps = listOf("Speak with Kuno; you can cover his 100-gold debt or report his refusal to Luna.", "Mind Dima’s stall, deal with the drunk mercenary, then use Dima’s key for the customer request.", "Investigate Frida’s problem with the Man With The Scar; fight him or involve Volker/Bradlock.", "Return to Luna after all three debts are accounted for."),
-            reward = "Collect or resolve the debts owed by Kuno, Dima and Frida.",
-            warnings = "",
+            reward = "200 gold and 1,000 XP from Luna after resolving all three debts; returning Frida's bellows honestly can add 200 XP.",
+            warnings = "Finish ALL three debtor leads before visiting Luna for the final reward; the Frida bellows contains 50 gold and can be handed over honestly.",
             searchTags = listOf("REGIONAL SIDE QUESTS — CHAPTERS 1–3", "ARCHOLOS CITY", "All routes", "Canonical side quest"),
         ),
         Quest(
@@ -448,8 +448,8 @@ internal object ArcholosChapter2Part2Data {
             prerequisites = "Route: All routes",
             summary = "Survive Ewald’s fake contract ambush.",
             walkthroughSteps = listOf("Follow Ewald into the alley.", "Refuse the 200-gold protection “contract” if you want to keep your money.", "Fight Ewald and the mercenaries, pulling toward guards if needed.", "Loot/report as the journal directs."),
-            reward = "Survive Ewald’s fake contract ambush.",
-            warnings = "",
+            reward = "Paying Ewald's false 200-gold contract awards 750 XP; refusing and defeating his ambush gives 320 XP but saves your gold.",
+            warnings = "Ewald's supposed Merchants' Guild contract is a SCAM and does not grant faction membership. Choose the high-XP payment or win the fight for less XP.",
             searchTags = listOf("REGIONAL SIDE QUESTS — CHAPTERS 1–3", "ARCHOLOS CITY", "All routes", "Canonical side quest"),
         ),
     )
