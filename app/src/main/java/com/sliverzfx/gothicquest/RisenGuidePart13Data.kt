@@ -92,6 +92,21 @@ internal object RisenGuidePart13Data {
             reward = "Masters' test progression; no separate numeric payout confirmed",
             warnings = "",
             searchTags = listOf("Help the Order Warriors in Harbour Town", "Pallas", "Volcano Keep / monastery", "Chapter 1"),
+        ),
+        Quest(
+            id = "R1-C1-193",
+            chapter = 1,
+            playOrder = 193,
+            title = "Mental Arithmetic!",
+            category = "HARBOUR TOWN — NEUTRAL SIDE QUEST",
+            giver = "Baxter",
+            location = "Harbour Town — butcher's accounting office",
+            prerequisites = "Speak with Baxter near the slaughterhouse and offer to prove you can handle his arithmetic question.",
+            summary = "Answer Baxter's multiplication question correctly.",
+            walkthroughSteps = listOf("Start. Find Baxter at the accounting desk near the Harbour Town slaughterhouse.", "Walkthrough. Ask him to test your mathematical ability. He asks for the result of fourteen multiplied by seventeen.", "Completion. Answer 238 (14 × 17) to earn the experience reward."),
+            reward = "100 XP",
+            warnings = "",
+            searchTags = listOf("Mental Arithmetic!", "Baxter", "14 x 17", "238", "Harbour Town", "Chapter 1"),
         )
     )
 }
