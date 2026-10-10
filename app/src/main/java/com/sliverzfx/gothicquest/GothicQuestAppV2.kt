@@ -1197,7 +1197,7 @@ private fun NavQuestDetailScreen(
                             .testTag("quest_tablet_info_column")
                             .padding(end = 4.dp)
                     ) {
-                        NavQuestDetailHeading(quest, isCompleted, isFavorite, onToggleCompleted, onToggleFavorite)
+                        NavQuestDetailHeading(game, quest, isCompleted, isFavorite, onToggleCompleted, onToggleFavorite)
                         NavQuestDetailMetadata(game, quest, status, onStatusChanged)
                         NavQuestDetailFooter(questKey, neighbors, onAdjacentQuest, onReportCorrection, onBack)
                     }
@@ -1219,7 +1219,7 @@ private fun NavQuestDetailScreen(
                 onHome = onHome,
                 scrollState = readingScrollState
             ) {
-                NavQuestDetailHeading(quest, isCompleted, isFavorite, onToggleCompleted, onToggleFavorite)
+                NavQuestDetailHeading(game, quest, isCompleted, isFavorite, onToggleCompleted, onToggleFavorite)
                 NavQuestDetailMetadata(game, quest, status, onStatusChanged)
                 NavQuestDetailGuide(game, quest)
                 NavQuestDetailFooter(questKey, neighbors, onAdjacentQuest, onReportCorrection, onBack)
@@ -1230,6 +1230,7 @@ private fun NavQuestDetailScreen(
 
 @Composable
 private fun NavQuestDetailHeading(
+    game: GameId,
     quest: Quest,
     isCompleted: Boolean,
     isFavorite: Boolean,
@@ -1247,12 +1248,17 @@ private fun NavQuestDetailHeading(
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
-        Text(
-            if (isCompleted) "✓" else "○",
-            color = if (isCompleted) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
-            fontSize = (30f * tabletScale).sp,
-            modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
-        )
+        if (game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(quest)) {
+            Text("GUIDE", color = LocalGameGuidePalette.current.secondaryAccent,
+                fontSize = 11.sp, fontWeight = FontWeight.Bold)
+        } else {
+            Text(
+                if (isCompleted) "✓" else "○",
+                color = if (isCompleted) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
+                fontSize = (30f * tabletScale).sp,
+                modifier = Modifier.clickable(onClick = onToggleCompleted).padding(6.dp)
+            )
+        }
         Text(
             if (isFavorite) "★" else "☆",
             color = if (isFavorite) LocalGameGuidePalette.current.accent else LocalGameGuidePalette.current.muted,
@@ -1271,7 +1277,13 @@ private fun NavQuestDetailMetadata(
 ) {
     val tabletScale = tabletLayoutScale()
     Spacer(Modifier.height(12.dp * tabletScale))
-    QuestStatusButtons(status, onStatusChanged)
+    if (game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(quest)) {
+        Text("REFERENCE ONLY • Not an independent journal quest",
+            color = LocalGameGuidePalette.current.secondaryAccent, fontSize = 12.sp,
+            fontWeight = FontWeight.Bold)
+    } else {
+        QuestStatusButtons(status, onStatusChanged)
+    }
     if (quest.aliases.isNotEmpty()) {
         Text("Also: ${quest.aliases.joinToString()}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
     }
@@ -1421,7 +1433,12 @@ private fun NavAllQuestsScreen(
     BackHandler(onBack = onBack)
     val display = LocalCompletedDisplay.current
     val completed = LocalCompletedKeys.current
-    val sorted = quests.filter { display.isVisible(navQuestKey(game, it) in completed) }.sortedWith(compareBy<Quest> { it.chapter }.thenBy { it.playOrder })
+    val sorted = quests.filter {
+        (game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(it)) ||
+            display.isVisible(navQuestKey(game, it) in completed)
+    }.sortedWith(compareBy<Quest> {
+        if (game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(it)) 1 else 0
+    }.thenBy { it.chapter }.thenBy { it.playOrder })
     Column(
         Modifier
             .fillMaxSize()
@@ -1433,7 +1450,11 @@ private fun NavAllQuestsScreen(
         NavGuideHeader("‹  BACK TO ${game.sectionLabel}S", onBack, onHome)
         Spacer(Modifier.height(4.dp))
         Text("${game.displayTitle} — ALL QUESTS", color = LocalGameGuidePalette.current.accent, fontSize = 25.sp, fontWeight = FontWeight.Bold)
-        Text("${sorted.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}", color = LocalGameGuidePalette.current.muted, fontSize = 12.sp)
+        Text(
+            if (game == GameId.GOTHIC_3) "${sorted.count { !Gothic3QuestData.isGuideEntry(it) }} QUESTS • ${sorted.count { Gothic3QuestData.isGuideEntry(it) }} REFERENCE GUIDES"
+            else "${sorted.size} QUESTS • CHRONOLOGICAL BY ${game.sectionLabel}",
+            color = LocalGameGuidePalette.current.muted, fontSize = 12.sp
+        )
         Spacer(Modifier.height(18.dp))
         if (sorted.isEmpty() && quests.isNotEmpty()) {
             Text("All quests are completed and hidden. Change Completed quests in Settings to show them.",
