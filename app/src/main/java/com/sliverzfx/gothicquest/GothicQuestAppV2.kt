@@ -796,6 +796,7 @@ private fun NavGameHubScreen(
     BackHandler { if (selectedTab != "quests") selectedTab = "quests" else onBack() }
     val tabletLandscape = isLandscapeTablet()
     val tabletScale = tabletLayoutScale()
+    val compactTablet = isCompactLandscapeTablet()
     val logoRes = when (game) {
         GameId.GOTHIC -> R.drawable.gothic_classic_logo
         GameId.GOTHIC_2_GOLD -> R.drawable.gothic_2_gold_logo
@@ -823,8 +824,10 @@ private fun NavGameHubScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(painterResource(logoRes), contentDescription = game.persistedName,
-                    modifier = Modifier.width(if (tabletLandscape) 300.dp * tabletScale else 260.dp).height(if (tabletLandscape) 70.dp * tabletScale else 70.dp), contentScale = ContentScale.Fit)
-                Spacer(Modifier.height(8.dp * tabletScale))
+                    modifier = Modifier.width(if (compactTablet) 280.dp * tabletScale else if (tabletLandscape) 300.dp * tabletScale else 260.dp)
+                        .height(if (compactTablet) 42.dp else if (tabletLandscape) 70.dp * tabletScale else 70.dp),
+                    contentScale = ContentScale.Fit)
+                Spacer(Modifier.height(if (compactTablet) 2.dp else 8.dp * tabletScale))
                 Row(Modifier.fillMaxWidth().selectableGroup()) {
                     listOf("quests" to "QUESTS", "codes" to "CODES", "tips" to "TIPS")
                         .forEach { (key, label) ->
@@ -838,28 +841,55 @@ private fun NavGameHubScreen(
                             }
                         }
                 }
-                Spacer(Modifier.height(10.dp * tabletScale))
+                Spacer(Modifier.height(if (compactTablet) 3.dp else 10.dp * tabletScale))
                 Box(Modifier.weight(1f).fillMaxWidth()) {
                     if (selectedTab == "quests") {
-                        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                            (1..game.sectionCount).forEach { chapter ->
-                                NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game, tabletLandscape, tabletScale) {
-                                    onChapterSelected(chapter)
+                        if (compactTablet) {
+                            // Fixed bottom utility actions remain visible at 7-inch sizes.
+                            Column(Modifier.fillMaxSize()) {
+                                Column(Modifier.weight(1f).fillMaxWidth()
+                                    .verticalScroll(rememberScrollState())) {
+                                    (1..game.sectionCount).forEach { chapter ->
+                                        NavChapterButton(chapter, game.chapterQuests(chapter),
+                                            completedKeys, game, tabletLandscape, tabletScale, compactTablet) {
+                                            onChapterSelected(chapter)
+                                        }
+                                        if (chapter != game.sectionCount) Spacer(Modifier.height(3.dp))
+                                    }
                                 }
-                                if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp * tabletScale))
+                                if (game.quests().isNotEmpty()) {
+                                    Spacer(Modifier.height(3.dp))
+                                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                        Box(Modifier.weight(1f).testTag("game_all_quests")) {
+                                            NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+                                        }
+                                        Box(Modifier.weight(1f).testTag("game_quest_search")) {
+                                            NavUtilityButton(game, "SEARCH", onSearch)
+                                        }
+                                    }
+                                }
                             }
-                            if (game.quests().isNotEmpty()) {
+                        } else {
+                            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                                (1..game.sectionCount).forEach { chapter ->
+                                    NavChapterButton(chapter, game.chapterQuests(chapter), completedKeys, game, tabletLandscape, tabletScale) {
+                                        onChapterSelected(chapter)
+                                    }
+                                    if (chapter != game.sectionCount) Spacer(Modifier.height(8.dp * tabletScale))
+                                }
+                                if (game.quests().isNotEmpty()) {
+                                    Spacer(Modifier.height(12.dp * tabletScale))
+                                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp * tabletScale)) {
+                                        Box(Modifier.weight(1f).testTag("game_all_quests")) {
+                                            NavUtilityButton(game, "ALL QUESTS", onAllQuests)
+                                        }
+                                        Box(Modifier.weight(1f).testTag("game_quest_search")) {
+                                            NavUtilityButton(game, "SEARCH", onSearch)
+                                        }
+                                    }
+                                }
                                 Spacer(Modifier.height(12.dp * tabletScale))
-                                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp * tabletScale)) {
-                                    Box(Modifier.weight(1f).testTag("game_all_quests")) {
-                                        NavUtilityButton(game, "ALL QUESTS", onAllQuests)
-                                    }
-                                    Box(Modifier.weight(1f).testTag("game_quest_search")) {
-                                        NavUtilityButton(game, "SEARCH", onSearch)
-                                    }
-                                }
                             }
-                            Spacer(Modifier.height(12.dp * tabletScale))
                         }
                     } else {
                         ToolReferenceScreen(
@@ -887,6 +917,7 @@ private fun NavChapterButton(
     game: GameId,
     tabletLandscape: Boolean = false,
     tabletScale: Float = 1f,
+    compactTablet: Boolean = false,
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(6.dp)
@@ -896,7 +927,7 @@ private fun NavChapterButton(
         else -> 1f
     }
     // Take the height reduction from padding so text and progress stay readable.
-    val verticalPadding = (10f - 36f * (1f - heightScale)).dp * tabletScale
+    val verticalPadding = if (compactTablet) 2.dp else (10f - 36f * (1f - heightScale)).dp * tabletScale
     val journalQuests = if (game == GameId.GOTHIC_3) quests.filterNot(Gothic3QuestData::isGuideEntry) else quests
     val questCount = journalQuests.size
     val completedCount = journalQuests.count { navQuestKey(game, it) in completedKeys }
@@ -907,7 +938,7 @@ private fun NavChapterButton(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = maxOf(48.dp, (72f * heightScale).dp * tabletScale))
+            .heightIn(min = if (compactTablet) 48.dp else maxOf(48.dp, (72f * heightScale).dp * tabletScale))
             .testTag("chapter_button_$chapter")
             .border(
                 1.dp,
@@ -927,7 +958,7 @@ private fun NavChapterButton(
                 alpha = NavBoxOpacity
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp * tabletScale, vertical = verticalPadding)
+            .padding(horizontal = if (compactTablet) 10.dp else 20.dp * tabletScale, vertical = verticalPadding)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -936,22 +967,22 @@ private fun NavChapterButton(
         ) {
             Column(Modifier.weight(1f)) {
                 Text("${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent,
-                    fontSize = if (tabletLandscape) (21f * tabletScale).sp else 18.sp, fontWeight = FontWeight.Bold)
+                    fontSize = if (compactTablet) 15.sp else if (tabletLandscape) (21f * tabletScale).sp else 18.sp, fontWeight = FontWeight.Bold)
                 Text(
                     if (game == GameId.GOTHIC_3 && questCount == 0 && quests.isNotEmpty()) "${quests.size} reference guides"
                     else if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
                     else "$completedCount / $questCount completed • $percentage%",
                     color = LocalGameGuidePalette.current.muted,
-                    fontSize = if (tabletLandscape) (13f * tabletScale).sp else 11.sp
+                    fontSize = if (compactTablet) 10.sp else if (tabletLandscape) (13f * tabletScale).sp else 11.sp
                 )
             }
-            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = if (tabletLandscape) (30f * tabletScale).sp else 26.sp)
+            Text("›", color = LocalGameGuidePalette.current.accent, fontSize = if (compactTablet) 20.sp else if (tabletLandscape) (30f * tabletScale).sp else 26.sp)
         }
-        Spacer(Modifier.height(5.dp * tabletScale))
+        Spacer(Modifier.height(if (compactTablet) 2.dp else 5.dp * tabletScale))
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(6.dp * tabletScale)
+                .height(if (compactTablet) 3.dp else 6.dp * tabletScale)
                 .background(LocalGameGuidePalette.current.track, RoundedCornerShape(3.dp))
                 .border(1.dp, navProgressBorder(game), RoundedCornerShape(3.dp))
         ) {
@@ -1947,12 +1978,13 @@ private fun NavCompactToggle(
 @Composable
 private fun NavGuideHeader(backLabel: String, onBack: () -> Unit, onHome: () -> Unit) {
     val tabletScale = tabletLayoutScale()
+    val compactTablet = isCompactLandscapeTablet()
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        TextButton(onClick = onBack, modifier = Modifier.weight(1f).heightIn(min = 56.dp)) {
+        TextButton(onClick = onBack, modifier = Modifier.weight(1f).heightIn(min = if (compactTablet) 48.dp else 56.dp)) {
             Text(backLabel, color = LocalGameGuidePalette.current.accent, fontSize = (16f * tabletScale).sp,
                 modifier = Modifier.fillMaxWidth())
         }
-        TextButton(onClick = onHome, modifier = Modifier.heightIn(min = 56.dp)) {
+        TextButton(onClick = onHome, modifier = Modifier.heightIn(min = if (compactTablet) 48.dp else 56.dp)) {
             Text("HOME", color = LocalGameGuidePalette.current.accent, fontSize = (16f * tabletScale).sp, fontWeight = FontWeight.Bold)
         }
     }
