@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onHome: () -> Unit,
     embedded: Boolean = false, game: GameId = GameId.GOTHIC) {
+    val tabletScale = if (embedded) tabletLayoutScale() else 1f
     val palette = gameGuidePalette(game)
     val gold = palette.accent
     val body = palette.body
@@ -100,8 +101,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             Spacer(Modifier.height(16.dp))
         }
         Row(Modifier.fillMaxWidth()) {
-            Text(section.titleFor(game), color = gold, fontSize = if (embedded) 20.sp else 26.sp,
-                fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).padding(top = 12.dp))
+            Text(section.titleFor(game), color = gold, fontSize = if (embedded) (20f * tabletScale).sp else 26.sp,
+                fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).padding(top = 12.dp * tabletScale))
             if (embedded) TextButton(onClick = {
                 if (searchVisible) closeSearch() else searchVisible = true
             }, modifier = Modifier.heightIn(min = 48.dp).testTag("tools_search_toggle")) {
@@ -168,15 +169,15 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Spacer(Modifier.height(12.dp))
             }
             items(filtered, key = { it.id }) { entry ->
-                val shape = RoundedCornerShape(10.dp)
+                val shape = RoundedCornerShape(10.dp * tabletScale)
                 Column(Modifier.fillMaxWidth().background(palette.surface.copy(alpha = 0.94f), shape)
                     .border(1.dp, gold.copy(alpha = 0.35f), shape)
                     .clickable(role = Role.Button, onClick = { selectedEntryId = entry.id })
-                    .testTag("gothic_reference_${entry.id}").padding(horizontal = 14.dp, vertical = 10.dp)) {
+                    .testTag("gothic_reference_${entry.id}").padding(horizontal = 14.dp * tabletScale, vertical = 10.dp * tabletScale)) {
                     Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 11.sp, letterSpacing = 1.sp)
-                    Spacer(Modifier.height(4.dp))
+                    Spacer(Modifier.height(4.dp * tabletScale))
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(entry.title, color = gold, fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                        Text(entry.title, color = gold, fontSize = maxOf(15f, 18f * tabletScale).sp, fontWeight = FontWeight.Bold,
                             modifier = Modifier.weight(1f))
                         if (codesSection) ToolFavoriteButton(game, entry)
                     }
@@ -193,7 +194,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                         }
                     }
                 }
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp * tabletScale))
             }
             if (filtered.isEmpty()) item {
                 Text("No matching entries. Try another search.", color = body, fontSize = 16.sp)
