@@ -1482,7 +1482,7 @@ private fun NavAllQuestsScreen(
                     .clickable { onQuestSelected(quest) }
                     .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
-                QuestInProgressBadge(game, quest)
+                if (!isGuide) QuestInProgressBadge(game, quest)
                 Text(
                     if (isGuide) "REFERENCE • ${quest.id}" else "${game.sectionLabel} ${quest.chapter}  •  ${quest.id}",
                     color = LocalGameGuidePalette.current.muted, fontSize = 10.sp
