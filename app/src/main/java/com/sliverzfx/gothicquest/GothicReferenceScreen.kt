@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.sp
 internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onHome: () -> Unit,
     embedded: Boolean = false, game: GameId = GameId.GOTHIC) {
     val tabletScale = if (embedded) tabletLayoutScale() else 1f
+    val compactTablet = embedded && isCompactLandscapeTablet()
     val palette = gameGuidePalette(game)
     val gold = palette.accent
     val body = palette.body
@@ -101,8 +102,8 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             Spacer(Modifier.height(16.dp))
         }
         Row(Modifier.fillMaxWidth()) {
-            Text(section.titleFor(game), color = gold, fontSize = if (embedded) (20f * tabletScale).sp else 26.sp,
-                fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).padding(top = 12.dp * tabletScale))
+            Text(section.titleFor(game), color = gold, fontSize = if (compactTablet) 15.sp else if (embedded) (20f * tabletScale).sp else 26.sp,
+                fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f).padding(top = if (compactTablet) 0.dp else 12.dp * tabletScale))
             if (embedded) TextButton(onClick = {
                 if (searchVisible) closeSearch() else searchVisible = true
             }, modifier = Modifier.heightIn(min = 48.dp).testTag("tools_search_toggle")) {
@@ -110,7 +111,7 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             }
         }
         if (!embedded) Text(game.persistedName, color = body, fontSize = 18.sp)
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(if (compactTablet) 1.dp else 6.dp))
         Text(if (game == GameId.ARCHOLOS) {
             "Archolos • stat source v${ArcholosToolsData.sourceVersion}"
         } else if (game == GameId.GOTHIC_3) {
@@ -126,18 +127,18 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
             if (codesSection) "Gold / Night of the Raven • PC Marvin mode"
             else "Gold / Night of the Raven • normal gameplay"
         } else if (codesSection) "Original Gothic • PC Marvin mode"
-            else "Original Gothic • normal gameplay", color = body, fontSize = 13.sp)
+            else "Original Gothic • normal gameplay", color = body, fontSize = if (compactTablet) 11.sp else 13.sp)
         if (codesSection) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth().testTag("code_category_list")) {
                 item {
-                    CodeCategoryChip(game, "All Codes", selectedCategory == null, "code_category_all") {
+                    CodeCategoryChip(game, "All Codes", selectedCategory == null, "code_category_all", compactTablet) {
                         selectedCategory = null
                     }
                 }
                 items(CodeCategory.entries.filter { category -> allEntries.any { it.codeCategory == category } }, key = { it.name }) { category ->
                     CodeCategoryChip(game, category.title, selectedCategory == category,
-                        "code_category_${category.name.lowercase()}") { selectedCategory = category }
+                        "code_category_${category.name.lowercase()}", compactTablet) { selectedCategory = category }
                 }
             }
         }
@@ -150,11 +151,11 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                     focusedBorderColor = gold, unfocusedBorderColor = gold.copy(alpha = 0.5f),
                     focusedLabelColor = gold, unfocusedLabelColor = body, cursorColor = gold))
         } else {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(if (compactTablet) 2.dp else 12.dp))
         }
         LazyColumn(state = listState, modifier = Modifier.weight(1f).testTag("tool_reference_list")) {
             item {
-                Text("${filtered.size} / ${allEntries.size} entries • reference", color = body, fontSize = 13.sp)
+                Text("${filtered.size} / ${allEntries.size} entries • reference", color = body, fontSize = if (compactTablet) 11.sp else 13.sp)
                 if (game == GameId.GOTHIC_3) {
                     Spacer(Modifier.height(6.dp))
                     Text("Equipment versions are labelled per card. Quest Pack, Content Mod and Forsaken Gods are not included.",
@@ -173,28 +174,60 @@ internal fun GothicReferenceScreen(section: ToolSection, onBack: () -> Unit, onH
                 Column(Modifier.fillMaxWidth().background(palette.surface.copy(alpha = 0.94f), shape)
                     .border(1.dp, gold.copy(alpha = 0.35f), shape)
                     .clickable(role = Role.Button, onClick = { selectedEntryId = entry.id })
-                    .testTag("gothic_reference_${entry.id}").padding(horizontal = 14.dp * tabletScale, vertical = 10.dp * tabletScale)) {
-                    Text(entry.group, color = gold.copy(alpha = 0.8f), fontSize = 11.sp, letterSpacing = 1.sp)
-                    Spacer(Modifier.height(4.dp * tabletScale))
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(entry.title, color = gold, fontSize = maxOf(15f, 18f * tabletScale).sp, fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(1f))
-                        if (codesSection) ToolFavoriteButton(game, entry)
-                    }
-                    entry.command?.let { command ->
+                    .testTag("gothic_reference_${entry.id}")
+                    .padding(horizontal = if (compactTablet) 9.dp else 14.dp * tabletScale,
+                        vertical = if (compactTablet) 5.dp else 10.dp * tabletScale)) {
+                    Text(entry.group, color = gold.copy(alpha = 0.8f),
+                        fontSize = if (compactTablet) 10.sp else 11.sp, letterSpacing = 1.sp)
+                    Spacer(Modifier.height(if (compactTablet) 1.dp else 4.dp * tabletScale))
+                    if (compactTablet) {
+                        // One compact row instead of two stacked 48dp action rows.
+                        // Full instructions and long console codes remain available in the detail dialog.
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text(command, color = gold, fontSize = 13.sp, fontFamily = FontFamily.Monospace,
-                                modifier = Modifier.weight(1f))
-                            TextButton(onClick = {
-                                clipboard.setText(AnnotatedString(command))
-                                copiedId = entry.id
-                            }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_copy_${entry.id}")) {
-                                Text(if (copiedId == entry.id && selectedEntryId == null) "COPIED" else "COPY", color = gold, fontSize = 14.sp)
+                            Column(Modifier.weight(1f)) {
+                                Text(entry.title, color = gold, fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold, maxLines = 2,
+                                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                                entry.command?.let { command ->
+                                    Text(command, color = gold, fontSize = 11.sp,
+                                        fontFamily = FontFamily.Monospace, maxLines = 1,
+                                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                                }
+                            }
+                            if (codesSection) ToolFavoriteButton(game, entry)
+                            entry.command?.let { command ->
+                                TextButton(onClick = {
+                                    clipboard.setText(AnnotatedString(command))
+                                    copiedId = entry.id
+                                }, modifier = Modifier.heightIn(min = 48.dp)
+                                    .testTag("tool_copy_${entry.id}")) {
+                                    Text(if (copiedId == entry.id && selectedEntryId == null) "COPIED" else "COPY",
+                                        color = gold, fontSize = 12.sp)
+                                }
+                            }
+                        }
+                    } else {
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text(entry.title, color = gold, fontSize = maxOf(15f, 18f * tabletScale).sp,
+                                fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            if (codesSection) ToolFavoriteButton(game, entry)
+                        }
+                        entry.command?.let { command ->
+                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                Text(command, color = gold, fontSize = 13.sp,
+                                    fontFamily = FontFamily.Monospace, modifier = Modifier.weight(1f))
+                                TextButton(onClick = {
+                                    clipboard.setText(AnnotatedString(command))
+                                    copiedId = entry.id
+                                }, modifier = Modifier.heightIn(min = 48.dp).testTag("tool_copy_${entry.id}")) {
+                                    Text(if (copiedId == entry.id && selectedEntryId == null) "COPIED" else "COPY",
+                                        color = gold, fontSize = 14.sp)
+                                }
                             }
                         }
                     }
                 }
-                Spacer(Modifier.height(8.dp * tabletScale))
+                Spacer(Modifier.height(if (compactTablet) 4.dp else 8.dp * tabletScale))
             }
             if (filtered.isEmpty()) item {
                 Text("No matching entries. Try another search.", color = body, fontSize = 16.sp)
@@ -274,12 +307,13 @@ internal fun ToolReferenceDetailDialog(
 }
 
 @Composable
-private fun CodeCategoryChip(game: GameId, label: String, selected: Boolean, tag: String, onClick: () -> Unit) {
+private fun CodeCategoryChip(game: GameId, label: String, selected: Boolean, tag: String,
+    compactTablet: Boolean = false, onClick: () -> Unit) {
     val palette = gameGuidePalette(game)
     val gold = palette.accent
     FilterChip(selected = selected, onClick = onClick,
-        label = { Text(label, fontSize = 14.sp) },
-        modifier = Modifier.heightIn(min = 48.dp).testTag(tag),
+        label = { Text(label, fontSize = if (compactTablet) 12.sp else 14.sp) },
+        modifier = Modifier.heightIn(min = if (compactTablet) 40.dp else 48.dp).testTag(tag),
         colors = FilterChipDefaults.filterChipColors(
             containerColor = palette.surface.copy(alpha = 0.9f), labelColor = gold,
             selectedContainerColor = palette.selected, selectedLabelColor = palette.highlight))
