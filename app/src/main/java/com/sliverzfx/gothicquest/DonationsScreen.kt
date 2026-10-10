@@ -54,6 +54,30 @@ internal fun DonationsScreen(onBack: () -> Unit) {
     val uriHandler = LocalUriHandler.current
     var linkError by remember { mutableStateOf<String?>(null) }
     val shape = RoundedCornerShape(16.dp)
+    val onWise: () -> Unit = {
+                    linkError = null
+                    try {
+                        uriHandler.openUri(WiseSupportUrl)
+                    } catch (_: IllegalArgumentException) {
+                        linkError = "Could not open Wise. Open wise.com/pay/me/mihag25 in your browser."
+                    } catch (_: SecurityException) {
+                        linkError = "Could not open Wise. Open wise.com/pay/me/mihag25 in your browser."
+                    }
+                }
+    val onKoFi: () -> Unit = {
+                    linkError = null
+                    try {
+                        uriHandler.openUri(KoFiSupportUrl)
+                    } catch (_: IllegalArgumentException) {
+                        linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
+                    } catch (_: SecurityException) {
+                        linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
+                    }
+                }
+    if (isLargeLandscapeTablet()) {
+        LargeTabletDonationsPage(onBack = onBack, onWise = onWise, onKoFi = onKoFi, linkError = linkError)
+        return
+    }
 
     // The shared menu background owns the video, PNG fallback and page dimming.
     Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
@@ -93,16 +117,7 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                 Text("If you'd like to support future Questbound updates, choose Wise or Ko-fi and contribute any amount. Payments are handled on their respective websites.",
                     color = DonationBody, fontSize = 14.sp, lineHeight = 21.sp)
                 Spacer(Modifier.height(18.dp))
-                OutlinedButton(onClick = {
-                    linkError = null
-                    try {
-                        uriHandler.openUri(WiseSupportUrl)
-                    } catch (_: IllegalArgumentException) {
-                        linkError = "Could not open Wise. Open wise.com/pay/me/mihag25 in your browser."
-                    } catch (_: SecurityException) {
-                        linkError = "Could not open Wise. Open wise.com/pay/me/mihag25 in your browser."
-                    }
-                }, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).testTag("donations_wise"),
+                OutlinedButton(onClick = onWise, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).testTag("donations_wise"),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
                     border = BorderStroke(1.dp, DonationGold)) {
@@ -115,16 +130,7 @@ internal fun DonationsScreen(onBack: () -> Unit) {
                     }
                 }
                 Spacer(Modifier.height(12.dp))
-                OutlinedButton(onClick = {
-                    linkError = null
-                    try {
-                        uriHandler.openUri(KoFiSupportUrl)
-                    } catch (_: IllegalArgumentException) {
-                        linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
-                    } catch (_: SecurityException) {
-                        linkError = "Could not open Ko-fi. Visit ko-fi.com/sliverzfx in your browser."
-                    }
-                }, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).testTag("donations_kofi"),
+                OutlinedButton(onClick = onKoFi, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).testTag("donations_kofi"),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
                     border = BorderStroke(1.dp, DonationGold)) {
@@ -152,3 +158,98 @@ internal fun DonationsScreen(onBack: () -> Unit) {
         }
     }
 }
+
+@Composable
+private fun LargeTabletDonationsPage(
+    onBack: () -> Unit,
+    onWise: () -> Unit,
+    onKoFi: () -> Unit,
+    linkError: String?
+) {
+    val cardShape = RoundedCornerShape(12.dp)
+    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
+        .padding(horizontal = 32.dp).testTag("donations_screen")) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("donations_back")) {
+                Text("‹  BACK", color = DonationGold, fontSize = 16.sp)
+            }
+            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp).testTag("donations_home")) {
+                Text("HOME", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+        HorizontalDivider(color = DonationGold.copy(alpha = 0.35f))
+        Text("DONATIONS", color = DonationGold, fontSize = 28.sp, fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp, modifier = Modifier.padding(top = 12.dp))
+        Text("Help the next adventure take shape.", color = DonationBody, fontSize = 15.sp)
+        LargeTabletPageColumns(
+            left = {
+                Column(Modifier.fillMaxWidth()
+                    .background(Brush.verticalGradient(listOf(Color(0xF5241B13), Color(0xF5120F0C))), cardShape)
+                    .border(1.dp, DonationGold.copy(alpha = 0.45f), cardShape).padding(24.dp)) {
+                    Text("SUPPORT QUESTBOUND", color = DonationGold, fontSize = 23.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(6.dp))
+                    Text("BY SLIVERZFX", color = Color(0xFF9E8B70), fontSize = 12.sp, letterSpacing = 1.5.sp)
+                    Spacer(Modifier.height(20.dp))
+                    Text("Questbound grows one guide at a time. Your support helps with continued development and new guides.",
+                        color = DonationBody, fontSize = 17.sp, lineHeight = 25.sp)
+                    Spacer(Modifier.height(18.dp))
+                    HorizontalDivider(color = DonationGold.copy(alpha = 0.25f))
+                    Spacer(Modifier.height(18.dp))
+                    Text("EVERY ADVENTURE STAYS FREE", color = DonationGold, fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Donations are entirely optional. All guides, tools and features remain available without contributing.",
+                        color = DonationBody, fontSize = 15.sp, lineHeight = 22.sp)
+                    Spacer(Modifier.height(18.dp))
+                    Text("Thank you for being part of Questbound.", color = DonationGold, fontSize = 14.sp)
+                }
+            },
+            right = {
+                Column(Modifier.fillMaxWidth().background(Color(0xF515100D), cardShape)
+                    .border(1.dp, DonationGold.copy(alpha = 0.45f), cardShape).padding(24.dp)) {
+                    Text("CHOOSE HOW TO SUPPORT", color = DonationGold,
+                        fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(12.dp))
+                    Text("Contribute any amount using Wise or Ko-fi. Payments are handled by their respective websites.",
+                        color = DonationBody, fontSize = 15.sp, lineHeight = 22.sp)
+                    Spacer(Modifier.height(24.dp))
+                    OutlinedButton(onClick = onWise, modifier = Modifier.fillMaxWidth()
+                        .heightIn(min = 64.dp).testTag("donations_wise"),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
+                        border = BorderStroke(1.dp, DonationGold)) {
+                        Text("SUPPORT WITH", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.width(12.dp))
+                        Box(Modifier.background(Color(0xFF9FE870), RoundedCornerShape(5.dp))
+                            .padding(horizontal = 8.dp, vertical = 7.dp), contentAlignment = Alignment.Center) {
+                            Image(painterResource(R.drawable.wise_logo), contentDescription = "Wise",
+                                modifier = Modifier.width(62.dp).height(15.dp))
+                        }
+                    }
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(onClick = onKoFi, modifier = Modifier.fillMaxWidth()
+                        .heightIn(min = 64.dp).testTag("donations_kofi"),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(containerColor = DonationGold.copy(alpha = 0.1f)),
+                        border = BorderStroke(1.dp, DonationGold)) {
+                        Text("SUPPORT ON", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.width(12.dp))
+                        Image(painterResource(R.drawable.kofi_cup_icon), contentDescription = "Ko-fi",
+                            modifier = Modifier.width(34.dp).height(30.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("KO-FI", color = DonationGold, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
+                    linkError?.let {
+                        Spacer(Modifier.height(14.dp))
+                        Text(it, color = DonationBody, fontSize = 14.sp)
+                    }
+                    Spacer(Modifier.height(20.dp))
+                    Text("An internet connection is required to open Wise or Ko-fi.",
+                        color = Color(0xFF9E8B70), fontSize = 13.sp)
+                }
+            }
+        )
+    }
+}
+
