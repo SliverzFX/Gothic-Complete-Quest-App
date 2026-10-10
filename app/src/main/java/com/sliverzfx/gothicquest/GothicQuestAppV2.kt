@@ -938,7 +938,8 @@ private fun NavChapterButton(
                 Text("${game.sectionLabel} $chapter", color = LocalGameGuidePalette.current.accent,
                     fontSize = if (tabletLandscape) (21f * tabletScale).sp else 18.sp, fontWeight = FontWeight.Bold)
                 Text(
-                    if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
+                    if (game == GameId.GOTHIC_3 && questCount == 0 && quests.isNotEmpty()) "${quests.size} reference guides"
+                    else if ((game == GameId.RISEN_2 || game == GameId.RISEN_3) && questCount == 0) "Quest guide coming soon"
                     else "$completedCount / $questCount completed • $percentage%",
                     color = LocalGameGuidePalette.current.muted,
                     fontSize = if (tabletLandscape) (13f * tabletScale).sp else 11.sp
@@ -1439,6 +1440,7 @@ private fun NavAllQuestsScreen(
     }.sortedWith(compareBy<Quest> {
         if (game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(it)) 1 else 0
     }.thenBy { it.chapter }.thenBy { it.playOrder })
+    val firstGuideIndex = if (game == GameId.GOTHIC_3) sorted.indexOfFirst(Gothic3QuestData::isGuideEntry) else -1
     Column(
         Modifier
             .fillMaxSize()
@@ -1462,6 +1464,14 @@ private fun NavAllQuestsScreen(
             Spacer(Modifier.height(14.dp))
         }
         sorted.forEachIndexed { index, quest ->
+            val isGuide = game == GameId.GOTHIC_3 && Gothic3QuestData.isGuideEntry(quest)
+            if (index == firstGuideIndex) {
+                Spacer(Modifier.height(12.dp))
+                Text("REFERENCE GUIDES • NOT JOURNAL QUESTS",
+                    color = LocalGameGuidePalette.current.secondaryAccent,
+                    fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(12.dp))
+            }
             val shape = RoundedCornerShape(7.dp)
             Column(
                 Modifier
@@ -1473,10 +1483,13 @@ private fun NavAllQuestsScreen(
                     .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {
                 QuestInProgressBadge(game, quest)
-                Text("${game.sectionLabel} ${quest.chapter}  •  ${quest.id}", color = LocalGameGuidePalette.current.muted, fontSize = 10.sp)
+                Text(
+                    if (isGuide) "REFERENCE • ${quest.id}" else "${game.sectionLabel} ${quest.chapter}  •  ${quest.id}",
+                    color = LocalGameGuidePalette.current.muted, fontSize = 10.sp
+                )
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "${index + 1}.  ${quest.title}",
+                        if (isGuide) "REFERENCE • ${quest.title}" else "${index + 1}.  ${quest.title}",
                         color = LocalGameGuidePalette.current.accent,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
