@@ -23,6 +23,7 @@ internal object RisenQuestData {
         addAll(RisenGuidePart12Data.quests)
         addAll(RisenGuidePart13Data.quests)
         addAll(RisenGuidePart14Data.quests)
+        addAll(RisenGuidePart15Data.quests)
     }
 
     private val guideNotes: List<RisenGuideNote> = buildList {
