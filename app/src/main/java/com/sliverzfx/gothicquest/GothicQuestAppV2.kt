@@ -1725,7 +1725,8 @@ private fun NavSettingsScreen(
     onBack: () -> Unit
 ) {
     BackHandler(onBack = onBack)
-    val tablet = isLargeLandscapeTablet()
+    val tablet = isLandscapeTablet()
+    val compactTablet = isCompactLandscapeTablet()
     val shape = RoundedCornerShape(7.dp)
 
     // The same interactive cards are shared by the phone and tablet layouts.
@@ -1735,7 +1736,7 @@ private fun NavSettingsScreen(
                 .fillMaxWidth()
                 .background(Color(0xFF15100D), shape)
                 .border(1.dp, Color(0xFF5F4529), shape)
-                .padding(16.dp)
+                .padding(if (compactTablet) 12.dp else 16.dp)
         ) {
             Text("TEXT SIZE", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(12.dp))
@@ -1789,7 +1790,7 @@ private fun NavSettingsScreen(
                 .fillMaxWidth()
                 .background(Color(0xFF15100D), shape)
                 .border(1.dp, Color(0xFF5F4529), shape)
-                .padding(16.dp)
+                .padding(if (compactTablet) 12.dp else 16.dp)
         ) {
             Text(
                 "BOX OPACITY • $boxOpacity%",
@@ -1848,7 +1849,7 @@ private fun NavSettingsScreen(
             Modifier.fillMaxWidth()
                 .background(Color(0xFF15100D), shape)
                 .border(1.dp, Color(0xFF5F4529), shape)
-                .padding(16.dp)
+                .padding(if (compactTablet) 12.dp else 16.dp)
         ) {
             Text("BACKGROUND BRIGHTNESS • $backgroundBrightness%",
                 color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -1873,7 +1874,7 @@ private fun NavSettingsScreen(
             }
             Spacer(Modifier.height(12.dp))
             Box(
-                Modifier.fillMaxWidth().height(140.dp)
+                Modifier.fillMaxWidth().height(if (compactTablet) 100.dp else 140.dp)
                     .background(Color(0xFF090706), shape)
                     .clip(shape),
                 contentAlignment = Alignment.Center
@@ -1895,7 +1896,7 @@ private fun NavSettingsScreen(
             Modifier.fillMaxWidth()
                 .background(Color(0xFF15100D), shape)
                 .border(1.dp, Color(0xFF5F4529), shape)
-                .padding(16.dp)
+                .padding(if (compactTablet) 12.dp else 16.dp)
         ) {
             Text("COMPLETED QUESTS", color = Color(0xFFD7B06A), fontSize = 16.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(6.dp))
@@ -1948,31 +1949,31 @@ private fun NavSettingsScreen(
 
     if (tablet) {
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()
-            .padding(horizontal = 32.dp).testTag("settings_screen")) {
+            .padding(horizontal = if (compactTablet) 14.dp else 32.dp).testTag("settings_screen")) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween) {
                 NavBackText("‹  BACK TO MAIN MENU", onBack)
-                TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 56.dp)) {
+                TextButton(onClick = onBack, modifier = Modifier.heightIn(min = if (compactTablet) 48.dp else 56.dp)) {
                     Text("HOME", color = Color(0xFFD7B06A),
                         fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
-            Text("SETTINGS", color = Color(0xFFD6B06A), fontSize = 28.sp,
+            Text("SETTINGS", color = Color(0xFFD6B06A), fontSize = if (compactTablet) 23.sp else 28.sp,
                 fontWeight = FontWeight.Bold)
             Text("APP PREFERENCES", color = Color(0xFF9E8B70), fontSize = 12.sp)
             LargeTabletPageColumns(
                 left = {
                     textSizeCard()
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(if (compactTablet) 10.dp else 16.dp))
                     opacityCard()
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(if (compactTablet) 10.dp else 16.dp))
                     brightnessCard()
                 },
                 right = {
                     completedCard()
-                    Spacer(Modifier.height(18.dp))
+                    Spacer(Modifier.height(if (compactTablet) 8.dp else 18.dp))
                     appOptions()
-                    Spacer(Modifier.height(18.dp))
+                    Spacer(Modifier.height(if (compactTablet) 8.dp else 18.dp))
                     backupTools()
                 }
             )
@@ -2008,17 +2009,19 @@ private fun NavCompactToggle(
     tag: String,
     modifier: Modifier = Modifier
 ) {
+    val compact = isCompactLandscapeTablet()
     val shape = RoundedCornerShape(7.dp)
     Column(
-        modifier.heightIn(min = 72.dp)
+        modifier.heightIn(min = if (compact) 58.dp else 72.dp)
             .background(Color(0xFF15100D), shape)
             .border(1.dp, Color(0xFF5F4529), shape)
             .toggleable(value = enabled, role = Role.Switch, onValueChange = onChanged)
             .testTag(tag)
-            .padding(horizontal = 12.dp, vertical = 12.dp)
+            .padding(horizontal = if (compact) 10.dp else 12.dp,
+                vertical = if (compact) 8.dp else 12.dp)
     ) {
-        Text(label, color = Color(0xFFD7B06A), fontSize = 13.sp, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(6.dp))
+        Text(label, color = Color(0xFFD7B06A), fontSize = if (compact) 12.sp else 13.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(if (compact) 3.dp else 6.dp))
         Text(if (enabled) "ON" else "OFF",
             color = if (enabled) Color(0xFFD7B06A) else Color(0xFF8F806A),
             fontSize = 12.sp, fontWeight = FontWeight.Bold)
