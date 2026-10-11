@@ -1,0 +1,3826 @@
+{
+  "retrieved": "2026-10-07",
+  "scope": "Historical original PC Risen 1; exact patch unspecified; no mod/re-release equivalence claim",
+  "item_records": 511,
+  "unique_item_templates": 510,
+  "actor_records": 236,
+  "command_records": 88,
+  "recipes_read": 78,
+  "facts": [
+    {
+      "id": 2,
+      "code": "It_Ring_Gold",
+      "sha256": "855784b8ed0b7cf363d37c43613ee7a994cad8c00e06b30bc31fc2f4bd202f01"
+    },
+    {
+      "id": 3,
+      "code": "It_1H_Club",
+      "sha256": "81a865bb023f2eb31deeb086088f1ed6d8d6e0c4529daa82e7f90ec32eab1d50"
+    },
+    {
+      "id": 4,
+      "code": "It_1H_Knife_Hunting",
+      "sha256": "c12135eebf3b19751ca33169cf93ba97d86a45651d37622f8244e4a7b607f727"
+    },
+    {
+      "id": 5,
+      "code": "It_Shell",
+      "sha256": "0539a78409c6a59162c3529b0d57dcf07e13f5d13709203f70ee94a01806b54e"
+    },
+    {
+      "id": 6,
+      "code": "It_Flute",
+      "sha256": "398128350cf2cdf04fd148438c7e617b8b89c990cee81b39ce3cd8224e8c8105"
+    },
+    {
+      "id": 7,
+      "code": "It_Torch",
+      "sha256": "591a3c15231f5e1be4b52314f29889ada8e9bed071675d3d35cf5b9e72653b96"
+    },
+    {
+      "id": 8,
+      "code": "It_Pearl",
+      "sha256": "7cae938ed79815548edf16c815dd868ec3cbc8ddcf03d92dac06c1f621d0be02"
+    },
+    {
+      "id": 9,
+      "code": "It_Po_Health_01",
+      "sha256": "ed2bc665ecde209e610096251aed9809c1c91f91725b43e17cd963700f389785"
+    },
+    {
+      "id": 10,
+      "code": "It_Chicken_Raw",
+      "sha256": "aa6e6d3f4e6640b4b09039e6644f73a102b57ba31d8614bf46bfbee76e1f0460"
+    },
+    {
+      "id": 11,
+      "code": "It_Fish_Raw",
+      "sha256": "150bd8a472de0226ee6833a6b93d0a2dbc7992a21fff68afe752a80cc87d4f0c"
+    },
+    {
+      "id": 12,
+      "code": "It_Egg",
+      "sha256": "fa8f21f3db65c93e71b16e7860e9a8b86e6f33c33934686ac74ce65178d61952"
+    },
+    {
+      "id": 13,
+      "code": "It_Apple",
+      "sha256": "10990b0a2d0244276ec195b7f4dc1bca502fc8153062e2c9197965d72d52c7ae"
+    },
+    {
+      "id": 14,
+      "code": "It_Rum",
+      "sha256": "2ed8b3874fe1c03fa7e3a3ecff6cab9dc47952c5126599ab957c78cab0753a95"
+    },
+    {
+      "id": 15,
+      "code": "It_Grog",
+      "sha256": "659fb70f3b66d54320bfadc05fde6bbb9675d91dcd9759e8886eec2c7861ce1b"
+    },
+    {
+      "id": 16,
+      "code": "It_Wine",
+      "sha256": "593e28482d03a91d115725965b40511f5628970ea78f9c1fbdf06101d9aa54df"
+    },
+    {
+      "id": 17,
+      "code": "It_Plant",
+      "sha256": "f17862ce307d1ccf13bfaed597571ee016b3c505696504f6590252145c05081f"
+    },
+    {
+      "id": 18,
+      "code": "It_Plant_Mana_03",
+      "sha256": "d242a25b26fec52c2b5dcf9e3a0b10091c48dff7816c0861130ce224b6917940"
+    },
+    {
+      "id": 19,
+      "code": "It_Plant_Mana_02",
+      "sha256": "63ade4168306e8e6df53d0039de5e2cf2c371530089164e2cb6b00964d330a14"
+    },
+    {
+      "id": 20,
+      "code": "It_Meat_Raw",
+      "sha256": "f50e94fc9433c14dc4f675739bbbd6b7538de50a5755b6125021696ffc67867d"
+    },
+    {
+      "id": 21,
+      "code": "It_Plant_Mushroom",
+      "sha256": "5daf7206b412f3581572c707cf711c50dce6375afbf97ba70246f0ab134cf34f"
+    },
+    {
+      "id": 22,
+      "code": "It_1H_Sword_Rusty",
+      "sha256": "228197d8e85dc7694687bc835c89535760d40ec3559aec2abc00830c95428358"
+    },
+    {
+      "id": 23,
+      "code": "It_Shield_Rotten",
+      "sha256": "dce96b286a47f3487b17683d3f4a3ec5cf5659d9e2cfcaff048e19c7da4e3228"
+    },
+    {
+      "id": 24,
+      "code": "It_Plant_Health_03",
+      "sha256": "67c49579d5e735529566aa121ebd6e3df13976d9317e895f5a7aaa37930060a7"
+    },
+    {
+      "id": 25,
+      "code": "It_Staff_Branch",
+      "sha256": "9d6491aa2b51a2eaf741f0234c31dbd9268e63b5ba7f885569cf183e3af2540c"
+    },
+    {
+      "id": 26,
+      "code": "It_Teeth",
+      "sha256": "8a7c00aa3cb05578d4442769e0598ca57dd1573b9f043b37180f1f95a6d50017"
+    },
+    {
+      "id": 27,
+      "code": "It_Beet",
+      "sha256": "bb949baaba573565f1c13faddd1beec7a5815f937982fd1c35f1bb62b856ca34"
+    },
+    {
+      "id": 28,
+      "code": "It_1H_Sickle",
+      "sha256": "cc55fa101dfb009042758652fcc892951ae0c4ef6f39a344981ab6e90b70d8a6"
+    },
+    {
+      "id": 29,
+      "code": "It_Meat_Fried",
+      "sha256": "92aa3b0b042ac8bd0f22369e34e1194f31c218c3d680403064e1aba364b23fb7"
+    },
+    {
+      "id": 30,
+      "code": "It_Plant_Health_01",
+      "sha256": "fe51040e5c7fd7b9fd9044a2c975063168d3e80b55cfd13846f3063469156c9f"
+    },
+    {
+      "id": 31,
+      "code": "It_Fish_Fried",
+      "sha256": "cf60b69fad649c0864651a09184ae837f943188c96ae5d3409746161f95a534b"
+    },
+    {
+      "id": 32,
+      "code": "It_Water",
+      "sha256": "ddc353e8f36975346c504e7a1c21198fcbd9bf360abbd7c617e9f4bf93c79eaa"
+    },
+    {
+      "id": 33,
+      "code": "It_Plant_Mana_01",
+      "sha256": "90d763ab91a4410af27a5a4e0aa7ed3f047186e7c7a3cc24a1eafe67f87d48df"
+    },
+    {
+      "id": 34,
+      "code": "It_Claw",
+      "sha256": "be541009292bbcffbecf969c23d36bd00d5d857d6584083c5b96a29f8bf1e52e"
+    },
+    {
+      "id": 35,
+      "code": "It_Bone",
+      "sha256": "83ea0961a9468c74f9992c6fa0d85067d869375a55ab3827956cee5814860a7e"
+    },
+    {
+      "id": 36,
+      "code": "It_GoldBag_Small",
+      "sha256": "4815a5b8c81f1e916244fe8a2ed86c0f79b3e84964237078e1bd28b62d7f7fd6"
+    },
+    {
+      "id": 37,
+      "code": "It_Lockpick",
+      "sha256": "db39bb10ab287b8883ec7878c440fcac1094c2b071a5a5eedbe30da9ee0ab3d7"
+    },
+    {
+      "id": 38,
+      "code": "It_Bolt",
+      "sha256": "435f7ead3f6d370f831271d54b4acc5a9459fedd3ff4fcabe0b2409d93f41c5e"
+    },
+    {
+      "id": 39,
+      "code": "It_Plant_Health_02",
+      "sha256": "577fcd7d98a2c6c70be26846855b3e3a547816392b49949a610107e921275142"
+    },
+    {
+      "id": 40,
+      "code": "It_EmptyFlask",
+      "sha256": "e612e20cf263d9f57e0b7262f8458da74a7131f95213be28aa4180b3bf7a9249"
+    },
+    {
+      "id": 41,
+      "code": "It_Plant_Berry",
+      "sha256": "59d3302c7cfcd072ef743248b6efadcf361e45047d8784fa7dec48a492161737"
+    },
+    {
+      "id": 42,
+      "code": "It_Plant_Mint",
+      "sha256": "4065583f8917c7a673c66c54d3fb454dc2ca3e592f384680d470ea5577311273"
+    },
+    {
+      "id": 43,
+      "code": "It_Bread",
+      "sha256": "e968c70139c68947fb37363f1dcde8bd5d2dd0cdb3a71350b96cf8bc4b984a84"
+    },
+    {
+      "id": 44,
+      "code": "It_Key_Gamestart_Sara",
+      "sha256": "a3803f42534e77b3d925cec4902af0572746db7d24d9ecddc95d126bf7483383"
+    },
+    {
+      "id": 45,
+      "code": "It_Broom",
+      "sha256": "ece77b75a1dd2bfd18973c6c1f7729beaebea57454ec05d6a08a514bff1e2a60"
+    },
+    {
+      "id": 46,
+      "code": "It_Pan",
+      "sha256": "57b1cba3c32d8471c3befa3117326a950eae8dd7c4f8ed4d6c5802f22770b2f4"
+    },
+    {
+      "id": 47,
+      "code": "It_Milk",
+      "sha256": "b1bea82325bad73a268bd4b50281ff6fc03b47ec63c0a2eb8c14f29716fe7df9"
+    },
+    {
+      "id": 48,
+      "code": "It_Chicken",
+      "sha256": "de9ecfad7fff81d4963617caaefbb09d4cdaccb0fdd8ef6a7f49c9fa3a5fc745"
+    },
+    {
+      "id": 49,
+      "code": "It_Po_Mana_02",
+      "sha256": "05b35499653811d1a68f259da6b184d5b497321862d4533746029d9370e15035"
+    },
+    {
+      "id": 50,
+      "code": "It_Saw",
+      "sha256": "383e12ca983891d45ba3ac47413ec98a40a30d1482a5e77feecd5c6d85735fa6"
+    },
+    {
+      "id": 51,
+      "code": "It_Plant_DEX",
+      "sha256": "6004fddf45b9e4a8a4e97eb51ad5a4a24818d9996c37947b153d41e70ae49599"
+    },
+    {
+      "id": 52,
+      "code": "It_Plant_Speed",
+      "sha256": "c518066a6d9a3c95a479c5cdf87ced1eabf867a7e8e1ef29c25b1d87644dbeba"
+    },
+    {
+      "id": 53,
+      "code": "It_Plant_Transform",
+      "sha256": "9f387afe38790f8d0fca3756fc6bad71cfafb9c69eb0a694ffa90f46e48f0617"
+    },
+    {
+      "id": 54,
+      "code": "It_MothPowder",
+      "sha256": "fdb6069eb81cabe7fe63d614f9f50604e20eda4616c6ee8a4df24a22fe8bdbf5"
+    },
+    {
+      "id": 55,
+      "code": "It_Scr_MinorHeal",
+      "sha256": "126642e8a1ae3ad6f0da3e9c26f2834b7dbe58d1f2882dbb68a094b1c817f363"
+    },
+    {
+      "id": 56,
+      "code": "It_Po_Mana_01",
+      "sha256": "ca475428b1d6633cd3142a9c4a87002d1bfa1da2ec1bd381b7458b53b5915622"
+    },
+    {
+      "id": 57,
+      "code": "It_Key_Gamestart",
+      "sha256": "2429260315e0e5bff1dd49db1013c589a61bd9b828467de51ff58ed695dc64f8"
+    },
+    {
+      "id": 58,
+      "code": "It_Po_Reg",
+      "sha256": "1615d043a161e5f3ec7367ce1940f234a0ecc2ff3bd3eefac32b8c742bed1483"
+    },
+    {
+      "id": 59,
+      "code": "It_1H_Sword",
+      "sha256": "a034d6b6287fcbcc9da6fc79242f498e816a994cfd48742b80c9f2dc3a6c7ea8"
+    },
+    {
+      "id": 60,
+      "code": "It_Arrow",
+      "sha256": "5828124d275b9614e7d07beabd2c7939a5bceb57b7399cb45c0862779b328f86"
+    },
+    {
+      "id": 61,
+      "code": "It_Map_World_OW1",
+      "sha256": "9ca7e4f7b48791bdd0a161a25a51e968be6851ea7f3080fbe3c26b279004de2b"
+    },
+    {
+      "id": 62,
+      "code": "It_Po_Health_03",
+      "sha256": "fd7362ea48deb22c7a3007497185d4b7b52dc7b081050524cecedbe47c755d2d"
+    },
+    {
+      "id": 63,
+      "code": "It_Gold",
+      "sha256": "bb530268c68d4c2f0f78f1fecb1cded367c837fae266561e3b2b3b5648497ed0"
+    },
+    {
+      "id": 64,
+      "code": "It_Plant_STR",
+      "sha256": "44a231986d372424f16e01e0298f063024adf8e190ebd8743b3a34617c845d58"
+    },
+    {
+      "id": 65,
+      "code": "It_Diamond_Small",
+      "sha256": "79e2b1345c79e8fc4d5ba6e6ccca5b3f4e2dc788fc75c534c9fff7f3383f6eb0"
+    },
+    {
+      "id": 66,
+      "code": "It_Beer",
+      "sha256": "937527833e566df290baa32d74fe862e2a5f4dba28480182a1ea7c48b2475fed"
+    },
+    {
+      "id": 67,
+      "code": "It_Joint",
+      "sha256": "ca36fb6281353296947e273d12726baf93416873e7ffa41a16f8422e5f4ea6fe"
+    },
+    {
+      "id": 68,
+      "code": "It_Plant_Corn",
+      "sha256": "891f15f6357bb0e7f22047c5a688989163e166df23cdfbf602b1de06587d1c43"
+    },
+    {
+      "id": 69,
+      "code": "It_Po_Health_02",
+      "sha256": "b7788b573631777ec153d3a6bafccb8dd71e941674dfb2982b6f6d4dd0fa7555"
+    },
+    {
+      "id": 70,
+      "code": "It_Scoop",
+      "sha256": "7c77e6350fc38c31a749deddf2bce96b1b0c88133243ca59f3f622f323acd371"
+    },
+    {
+      "id": 71,
+      "code": "It_Pouch",
+      "sha256": "49b245434a951c3bb69d6a0a2e00131bad7242f59b582b4dfd6ad91110c44bf0"
+    },
+    {
+      "id": 72,
+      "code": "It_Axe_Lumberjack",
+      "sha256": "d6243c03404eabbbb3c7a6b910b24adabf33f237904a251a202ab8e0bd61ed3e"
+    },
+    {
+      "id": 73,
+      "code": "It_Crossbow_Small",
+      "sha256": "7650b7c326ea8318aa0350c199a34a9a35601a7168712f7d3d6ad978b6c38b15"
+    },
+    {
+      "id": 74,
+      "code": "It_Map_Harbour",
+      "sha256": "39d3a4880b994a4f4d8a20459a9b751267f6364a41496ea7f7e37c6c1f2fbbb6"
+    },
+    {
+      "id": 75,
+      "code": "It_Fur_Wolf",
+      "sha256": "53742e810b74686ace562ed3354abbd7aa3eda11e1d9dd2328ef286fe85ead87"
+    },
+    {
+      "id": 76,
+      "code": "It_1H_Machete",
+      "sha256": "ac404930bb1d754585034522ec6ea4ca687112ccd607c4d84a82b5a88fc9e976"
+    },
+    {
+      "id": 77,
+      "code": "It_Bow_Cole",
+      "sha256": "6f9acc277c6d5a49611d1018d34b41fd4a62bf02dda6e75ee0ad06cdeef2089d"
+    },
+    {
+      "id": 78,
+      "code": "It_Shield_Buckler",
+      "sha256": "f3914ce5b935f11c084d85dfae884b35e5682dd734f9483c5a444a22f1158120"
+    },
+    {
+      "id": 79,
+      "code": "It_Armor_Seaman_Officer",
+      "sha256": "4cdca2b71187c92997646cccc6e4e2ec88603846b94959a58aea995efd735a36"
+    },
+    {
+      "id": 80,
+      "code": "It_Scr_Light",
+      "sha256": "854cbde05db9b25c9a4fc63524f98f2595f7da62423fa66ce45350d79f6402e6"
+    },
+    {
+      "id": 81,
+      "code": "It_Scr_EnhancedHeal",
+      "sha256": "9190912111a228297eba59cc94158ae132302eebc45a6264153033ecf659d7dd"
+    },
+    {
+      "id": 82,
+      "code": "It_SmithHammer",
+      "sha256": "baedb3faadf06e64f8e19ea7f4227391c453077bb9c51578fb9450545f1b6517"
+    },
+    {
+      "id": 83,
+      "code": "It_Goldsmith_Hammer",
+      "sha256": "0bdbcc0a0521bc574a1bd14e03f5ba141de49a3ece53e99a15a7c459db009ce2"
+    },
+    {
+      "id": 84,
+      "code": "It_Goldsmith_Tong",
+      "sha256": "065d3ef46edb78ba655ca308c63d7f5d1a08a9ec18488e675d1f3028f8216e3a"
+    },
+    {
+      "id": 85,
+      "code": "It_Necklace_Gold",
+      "sha256": "6de865921c9c363d91a0865abf5c83ba081c89092212425bd4cdceff40a8bb22"
+    },
+    {
+      "id": 86,
+      "code": "It_Potatoes",
+      "sha256": "793b309f8ed53482b78cf4f3e73d3b1906b7a4091c0e9158388219cf85b23d61"
+    },
+    {
+      "id": 87,
+      "code": "It_Onions",
+      "sha256": "8f390b779d2c3172897060c3cb69932623fc4537398a616cc063aa4b80fd9f0e"
+    },
+    {
+      "id": 88,
+      "code": "It_Shark_Fried",
+      "sha256": "4f9d45a4270d46135c8053ada5bbacf5c29cd54aacdc1898ee30ac26438a78d3"
+    },
+    {
+      "id": 89,
+      "code": "It_Bow_Short",
+      "sha256": "720cc53950f7210bb2b5e79ac64c92c325fcdafb4fcb5a31b7872c757eb594d6"
+    },
+    {
+      "id": 90,
+      "code": "It_Recipe_Sting",
+      "sha256": "958ecc0c2c4bf5888b9944574878ff11f9c2ef2621c76ff56b8b3935c2681c51"
+    },
+    {
+      "id": 91,
+      "code": "It_Recipe_Tusk",
+      "sha256": "3f07319f52bdfd3d69cbfc325b7196482a43205b463d5917f2d73adef78ce496"
+    },
+    {
+      "id": 92,
+      "code": "It_List_Belschwur",
+      "sha256": "d3500e639a217fd3844f582194e0dd3641c57dc668d3f12abfe99348a9dee140"
+    },
+    {
+      "id": 93,
+      "code": "It_Coffee",
+      "sha256": "609a19ad68cc95ccc49ca4bfc44752fc1be98855534ab9c88954dc96491fcd99"
+    },
+    {
+      "id": 94,
+      "code": "It_Artifact_Nico",
+      "sha256": "5d6bf7967a0554bd48530d2394e108036b2fb614a0b0cd874655219d66f81951"
+    },
+    {
+      "id": 95,
+      "code": "It_Shark_Raw",
+      "sha256": "1ad8dbb2eee51e75e7f6ec2c03dd7fe56d00b84ab205abf48ea23eccdc5e5be7"
+    },
+    {
+      "id": 96,
+      "code": "It_Plaice_Raw",
+      "sha256": "064215112725a5926176ef6782f97accb97b78a4e631423a0f2405975b5ef374"
+    },
+    {
+      "id": 97,
+      "code": "It_Key_Dick",
+      "sha256": "9fe275a73f3772f9a3e15b0199d607b690b5162366c99ab3c21c03923b761e15"
+    },
+    {
+      "id": 98,
+      "code": "It_Knife",
+      "sha256": "4e0deff034a7b2bbd51f338be997cf4c6b022508eaee0ebd04b194a26f304d2b"
+    },
+    {
+      "id": 99,
+      "code": "It_Casket_Romanov",
+      "sha256": "e23af817ebc8a29fa77a76480f6ddb88ceb033acb8266e600302dba0571a7af3"
+    },
+    {
+      "id": 100,
+      "code": "It_Scr_Illusion",
+      "sha256": "7b1b7908e1945e200ab2e896d73290c9b01fb9bf20ca65800354493efa61f071"
+    },
+    {
+      "id": 101,
+      "code": "It_Key_RomanovsChest",
+      "sha256": "648caae6f644ba8edd3ec4fdb65c96734e21eeb842b774e3c0f9e02f54115e24"
+    },
+    {
+      "id": 102,
+      "code": "It_Goldplate",
+      "sha256": "b795c42447b0440a309797776755627d75f13b05826384b8c5e0956b78e72ac0"
+    },
+    {
+      "id": 103,
+      "code": "It_Scr_Telekinesis",
+      "sha256": "16fc241b03d2a40eb2c4e51f59359ac9c331823fd2eb0076652d8e9c7dd20b20"
+    },
+    {
+      "id": 104,
+      "code": "It_Shovel",
+      "sha256": "8567ba093f4a0bce97130e275c57987587d4de9691372fd1571bd0f74730efa6"
+    },
+    {
+      "id": 105,
+      "code": "It_Shell_Nautilus",
+      "sha256": "30001dcd732e34842169b86f3f3b184b2b1744b7687c71815bf4be217a4dd66c"
+    },
+    {
+      "id": 106,
+      "code": "It_BlackPearl",
+      "sha256": "297d6b8dce7bfd8f68d4557651088469ab1fadd4df36de0269826a947d6f94d3"
+    },
+    {
+      "id": 107,
+      "code": "It_Carrot",
+      "sha256": "5619103037e415b4b701d88ea8b85007b98fafb9dd77d6bca4739bb21739137d"
+    },
+    {
+      "id": 108,
+      "code": "It_Grapes",
+      "sha256": "157aabd0b344ea00bea0e4b08252a1a7a1aedd1b3558b10d1efd40f384580dc7"
+    },
+    {
+      "id": 109,
+      "code": "It_Plate_Silver",
+      "sha256": "3459533b53bddc088e4138ff7006409f92154520daf9594a5d800140849b1b0e"
+    },
+    {
+      "id": 110,
+      "code": "It_Recipe_Health_02",
+      "sha256": "3efde98f1e9f811880cd156cec10e6157d54105855bce78d2fb53014ebf2ee17"
+    },
+    {
+      "id": 111,
+      "code": "It_Recipe_Health_01",
+      "sha256": "5c281bcb11dd85b1ee3012ddb692f5ec56bd086e7022360a4e0badb9316d9c4a"
+    },
+    {
+      "id": 112,
+      "code": "It_Recipe_Mana_02",
+      "sha256": "d824b2d4c0883943d747cbfd5a7b36f45b047bb48a092fa3c38f4efc3ec5b6b2"
+    },
+    {
+      "id": 113,
+      "code": "It_Recipe_Mana_01",
+      "sha256": "c22c6d5a43c682297d15b37e96ad13b55e492ca388623c54e75c52074ae469f3"
+    },
+    {
+      "id": 114,
+      "code": "It_2H_Steel_Raw",
+      "sha256": "c9ae0b6b1a30e73be547cad9e1b6a3be629331f08e7ef509dc701b8862b911e5"
+    },
+    {
+      "id": 115,
+      "code": "It_2H_TwoHandedSword",
+      "sha256": "10fcca4ced7772ca7425a474b2967217d3d2b6004fb2b6fb425fd603beb6d20b"
+    },
+    {
+      "id": 116,
+      "code": "It_BS_BastardSword",
+      "sha256": "c78393c6096f91c194406a3a8b49c6d4c702621c4b43b6fb6aa97747ad4f8437"
+    },
+    {
+      "id": 117,
+      "code": "It_1H_Cutlass",
+      "sha256": "5e2fe30b3189d31972aa9794ba47ef74934413be5aa0a30c95ad77b20495f6b1"
+    },
+    {
+      "id": 118,
+      "code": "It_1H_Saber",
+      "sha256": "2db91a252cffc36f95a2f21555b224eb21e45f10bb378b0c04687363ef9a5c77"
+    },
+    {
+      "id": 119,
+      "code": "It_Staff_Bronco",
+      "sha256": "c2c916d7d99db33ea21c3ad404d60d1d7a4ecdd6e75ba6a2ce698c014fe89063"
+    },
+    {
+      "id": 120,
+      "code": "It_Staff_Spear",
+      "sha256": "7234f928ce7f2032c5884d892d359d7ea8286c16eb45f35a4f309c34eb79a3e6"
+    },
+    {
+      "id": 121,
+      "code": "It_Axe_Light",
+      "sha256": "684e88819e536a59bc7e10005da4855dd78f3952859fd92e58063f2e92c10c84"
+    },
+    {
+      "id": 122,
+      "code": "It_Crossbow_Hunting",
+      "sha256": "85fdcd167c9a119ad9d43ab2da6f4f207cccf31fcf1e36f023750569ec76cfe0"
+    },
+    {
+      "id": 123,
+      "code": "It_Crossbow_Guard",
+      "sha256": "1365f2c27f751f0c43f8e61d77dd877fb2d3534a9b13b9e8f1b6c1b32145b181"
+    },
+    {
+      "id": 124,
+      "code": "It_1H_Steel_Raw",
+      "sha256": "ff5d9be6432881352cc6c82a80675dd08c21d390abe4e585241b93532c870982"
+    },
+    {
+      "id": 125,
+      "code": "It_SpiceBag",
+      "sha256": "40bb98561856b0074d3d22bb41f6f34edbdaa16e37d915bcfaf040d3d25109a8"
+    },
+    {
+      "id": 126,
+      "code": "It_Sausage",
+      "sha256": "720a4ea66a3c94d4f9e8b52e269c70a9f89f5185224e1ce42218187a6f30be7e"
+    },
+    {
+      "id": 127,
+      "code": "It_Cheese",
+      "sha256": "2672a92c4b6ad80e4eddb74f1f973a8e8976cfaa4ea040f739062e5b73b16724"
+    },
+    {
+      "id": 128,
+      "code": "It_Tea",
+      "sha256": "200f5d882de4512b0066ac68ec363d0a4ea61fceff24a1aedfd09a7d5008625f"
+    },
+    {
+      "id": 129,
+      "code": "It_Goblet_Gold",
+      "sha256": "8abf84a0d41aae14bd58c65579719e00b2ffad74c5d8b3388cf1ab58ada865df"
+    },
+    {
+      "id": 130,
+      "code": "It_Candleholder_Silver",
+      "sha256": "c80e3ad188b78d71ad572c548814abd5bf3f183ba57cb3f02faa6449b1ca5edd"
+    },
+    {
+      "id": 131,
+      "code": "It_Wings_Dragonfly",
+      "sha256": "dd6d69ecab741c18cc28fce7019dd14dbae8ce88430de941cb51afcc8f715343"
+    },
+    {
+      "id": 132,
+      "code": "It_Am_DonsRelict",
+      "sha256": "d5f5331681d31cdb3932fbd7f13f6aeedc82bbd59c59bfb88b6dae8b37e5b400"
+    },
+    {
+      "id": 133,
+      "code": "It_Scr_Nautilus",
+      "sha256": "6cc7e99e4570edffc8accd833c01509e8e1e06bed3c7e2528108cbd570aa422b"
+    },
+    {
+      "id": 134,
+      "code": "It_Packet_Meat",
+      "sha256": "ac1ff599a57b6986c6b1a06f0503d07a147a3c107ec3703ec608716d6bb21f94"
+    },
+    {
+      "id": 135,
+      "code": "It_Recipe_StewMeat_01",
+      "sha256": "fccc4f4ffcc42f84f3f473588e9941f11ed4c8bc6b3c90f3f1417e88fd53f86d"
+    },
+    {
+      "id": 136,
+      "code": "It_Purse_Costa",
+      "sha256": "575db411cd72166ce1da2844378da9307a169d9b680c4a79ff37825f6c9e6cd2"
+    },
+    {
+      "id": 137,
+      "code": "It_Goblet_Gold_Carasco",
+      "sha256": "658e62cedb56f5c5acff3287ffefeed634147311de0550620c5b7384a82bdc9e"
+    },
+    {
+      "id": 138,
+      "code": "It_Axe_Sledgehammer",
+      "sha256": "3275c71550b71fb45b8136a1ec0fe0c2c0ba1da6bd451c0371433d0b428de824"
+    },
+    {
+      "id": 139,
+      "code": "It_Key_GregsHouseHarbor",
+      "sha256": "f8d0776b78cbc67bfe1769202e07ca57c47f064a020a86f53c772a208aee35f5"
+    },
+    {
+      "id": 140,
+      "code": "It_List_FirstHintOfGreg",
+      "sha256": "9496deaeb13d11349da98dea2b07f58e4170df56b85e78f0327cf32701f9cdf7"
+    },
+    {
+      "id": 141,
+      "code": "It_2H_TwoHandedSword_Rusty",
+      "sha256": "db5c8a7ee33d30e9bd496dbb28eec0efacc0df755dcc17fccb2c35b3d796fc59"
+    },
+    {
+      "id": 142,
+      "code": "It_Ragout",
+      "sha256": "dc90a651fa3ce0fac2e6316817f7e9acf0d81d095272845ebd2e3e1a2e7ff082"
+    },
+    {
+      "id": 143,
+      "code": "It_Stew",
+      "sha256": "e65080491fd1583b034a4b49873a76c99372cd61887fd38a13cd8af0620f6fd2"
+    },
+    {
+      "id": 144,
+      "code": "It_Packet_DrugsDon",
+      "sha256": "78f9b864e95a4d044732c59edfa0f18ead170b9377e7be3bb8ddb30ce6e75e58"
+    },
+    {
+      "id": 145,
+      "code": "It_Shield_Guard",
+      "sha256": "0a98ec7de6cde25ae6f2d25b46c59e2cb3f0c35d5972bbb7cc0df1c25c165922"
+    },
+    {
+      "id": 146,
+      "code": "It_Candleholder_Gold",
+      "sha256": "5ed068117dc66bbac40a8f54e13c48ae2689edcb7e3b5c680eb5bef71322b94b"
+    },
+    {
+      "id": 147,
+      "code": "It_Key_Buddy",
+      "sha256": "6723b529f7b516ce725bad2bfcbbd78a99c6fab5f346a2da0034eab8c420293b"
+    },
+    {
+      "id": 148,
+      "code": "It_Scr_Joke",
+      "sha256": "d91d43214698de8c6a386d769591e412e1a88ee8e89a8dcb4de6c197dbdd5422"
+    },
+    {
+      "id": 149,
+      "code": "It_Ri_HP_Small",
+      "sha256": "6f04390684bf8c5394449d41d431b72de9abf236fb21b323313ceec57058d991"
+    },
+    {
+      "id": 150,
+      "code": "It_Ri_Crossbow",
+      "sha256": "2945450cc13c938d982cafa8634454cd615a6ee2d21ea71e91c01b7972b11e46"
+    },
+    {
+      "id": 151,
+      "code": "It_Pickaxe",
+      "sha256": "c84c1b42575b06b06f675b7f26decd37ddade1efd81c3f12d63bd4d9cb34de4c"
+    },
+    {
+      "id": 152,
+      "code": "It_Staff_Novice",
+      "sha256": "18e0b396100c8d83d95d47cdd75618eabba2439e225a7c8a7277f301d17e7764"
+    },
+    {
+      "id": 153,
+      "code": "It_1H_Katana",
+      "sha256": "7a94940095f7939d43ae74e06ab787b0b5c8bab3662ebadb69dddece47ea8d59"
+    },
+    {
+      "id": 154,
+      "code": "It_1H_Mace",
+      "sha256": "d353380c54c89af1b662b1e40aa1ed63ea67785631c817f09ecdb3e7622c6f45"
+    },
+    {
+      "id": 155,
+      "code": "It_1H_Mace_Lordly",
+      "sha256": "488b4ef478950eb3f2ab352f380525c8c9d6689efefb490c4e95c70569998c4c"
+    },
+    {
+      "id": 156,
+      "code": "It_1H_Mace",
+      "sha256": "859d6bb44e9e5d1f18ec20ec7920278d7f5658f166ca2a8cd28ec44bab4737e5"
+    },
+    {
+      "id": 157,
+      "code": "It_1H_Obsidian_Dull",
+      "sha256": "10a0cd824a95ae4c2ed9ca4321175ba652821d7b4f8afd2b28cc92ff9dea7e9d"
+    },
+    {
+      "id": 158,
+      "code": "It_1H_Obsidian_Hot",
+      "sha256": "19388b5f9277ba58b1dc6a9ec787e86ba489ebee9b0cb5fab805428196e12b22"
+    },
+    {
+      "id": 159,
+      "code": "It_1H_Obsidian_Raw",
+      "sha256": "775cc283a9b971f0d516dfcd428e02ab72793b8907bf81b1cf729526959b0ae3"
+    },
+    {
+      "id": 160,
+      "code": "It_1H_Obsidian_Shaped",
+      "sha256": "f9acd197a067119a38b43ac1ed132dafc5e54d8072fc128d227be9de58d63567"
+    },
+    {
+      "id": 161,
+      "code": "It_1H_Obsidian_Sharp",
+      "sha256": "facd041aaaec7c0ad0e1de27f09ad2e524a0313beb6506bac9c041bf89e489f9"
+    },
+    {
+      "id": 162,
+      "code": "It_1H_Rapier",
+      "sha256": "0c84873d438d21d605f22940c3c7a42dfce41ab9a9ebb562038e3b645d9dd51d"
+    },
+    {
+      "id": 163,
+      "code": "It_1H_Steel_Dull",
+      "sha256": "fb41d0f4168aab63f8f495683d1f5b561d8e84b368c9cd16fe81da2ea82f1815"
+    },
+    {
+      "id": 164,
+      "code": "It_1H_Steel_Hot",
+      "sha256": "1e9ab0031bce0e3267213b731950fdfbba56a4c54bb2a8b69a1088ed848e3994"
+    },
+    {
+      "id": 165,
+      "code": "It_1H_Steel_Sharp",
+      "sha256": "ba3904bf376d2a7f7b2167cb6caf432874ee9dd118d3b7a6130ada7ab6527045"
+    },
+    {
+      "id": 166,
+      "code": "It_1H_Sword_Lordly",
+      "sha256": "49f4b575ab8cbe5db4df284e32c9c6b00a6723d96c0b52799cf0dbe9ade32329"
+    },
+    {
+      "id": 167,
+      "code": "It_1HS_BadSword",
+      "sha256": "47c092f09d5b96368fae595082c984fbc5cfb31964354bc359ad8c6c9bcba14b"
+    },
+    {
+      "id": 168,
+      "code": "It_1HS_Sword_Bronco",
+      "sha256": "70b92e834431ec3e165f384bc729d6a804988ca7f6a8a586022ec3c479fcaf2f"
+    },
+    {
+      "id": 169,
+      "code": "It_2H_Berserk",
+      "sha256": "c3dfab4b2da9d1eb4d4d0acc68d3c1d2e03fde8caef6882b4ad15801e0261885"
+    },
+    {
+      "id": 170,
+      "code": "It_2H_DemonBlade",
+      "sha256": "b12eb0784c8f99742a4953c5b966a7e9027eb1aa0ce9b5d1bf66d7b1bc3f3bc4"
+    },
+    {
+      "id": 171,
+      "code": "It_2H_Obsidian_Dull",
+      "sha256": "1f6c9d008737913312879d0beb0c2bdb23cd83a81211b1ff80b04cab87b77954"
+    },
+    {
+      "id": 172,
+      "code": "It_2H_Obsidian_Hot",
+      "sha256": "3ea6dff8d0e0f34b2e5f5e26899533079796cf64607d565609a6f22e9cb6c5b9"
+    },
+    {
+      "id": 173,
+      "code": "It_2H_Obsidian_Lizard",
+      "sha256": "2d8e04fc35017e5f2606bfd665811bda70c081bab10381af3db85b6e01e08a12"
+    },
+    {
+      "id": 174,
+      "code": "It_2H_Obsidian_Raw",
+      "sha256": "c28b0bb6621408574ec53cfd3ecefaf004c490b65d075fb459c9998ec3889f18"
+    },
+    {
+      "id": 175,
+      "code": "It_2H_Obsidian_Shaped",
+      "sha256": "a53ce1e5d782d4cddb040c0227360819c53675c1f6824d438df4c6e8606cc85d"
+    },
+    {
+      "id": 176,
+      "code": "It_2H_Obsidian_Sharp",
+      "sha256": "fbf247cd6186edc03041d8f26a68459c34eb62c7cb670966c395cf308d2d6969"
+    },
+    {
+      "id": 177,
+      "code": "It_2H_SoulDrinker_Dull",
+      "sha256": "8b9a8eb504950cfc42439b0c16c8b187d47921abe44be0ea1adc544961da05c1"
+    },
+    {
+      "id": 178,
+      "code": "It_2H_SoulDrinker_Hot",
+      "sha256": "9868a8cc53c2ceead93c116a2a487b9d981582f82a4ac6cbaf539a32d446f9c5"
+    },
+    {
+      "id": 179,
+      "code": "It_2H_SoulDrinker_Raw",
+      "sha256": "b89adf448ce6f6bb9cc732d26721337d7b8f2107a75e7678cfe8ef65ab26d179"
+    },
+    {
+      "id": 180,
+      "code": "It_2H_SoulDrinker_Shaped",
+      "sha256": "6cbb3af3e21064321b57bc35e84817373f16ac34a9f86df051ed025829ae264b"
+    },
+    {
+      "id": 181,
+      "code": "It_2H_SoulDrinker_Sharp",
+      "sha256": "41b5349c6e3ecf4371f995463d95630c1816fdbfb9e96e12ab83ab5acafc7109"
+    },
+    {
+      "id": 182,
+      "code": "It_2H_SoulDrinker_Tip",
+      "sha256": "05c4a8c857023723c65591856a9695f7c03255866b41dbd7190a8e6bdf3df458"
+    },
+    {
+      "id": 183,
+      "code": "It_2H_Steel_Dull",
+      "sha256": "598e4036add6e056fdf7fa847deccb5519ace85a734be150ffc315c8fd79d463"
+    },
+    {
+      "id": 184,
+      "code": "It_2H_Steel_Hot",
+      "sha256": "37d71f0b359522c6c0178f6ec57bb089d5de6bb895ae7bece1615c2de2a7426a"
+    },
+    {
+      "id": 185,
+      "code": "It_2H_Steel_Shaped",
+      "sha256": "c673a6ec42e2534dd2adff51ebc2c45a4eac54db5434b89f0c3f568bf8dd2f8f"
+    },
+    {
+      "id": 186,
+      "code": "It_2H_Steel_Sharp",
+      "sha256": "7d6446456161630f058dea8d61354ffe310a430dc8700e1057b981357832443f"
+    },
+    {
+      "id": 187,
+      "code": "It_2H_TitanWing",
+      "sha256": "b3dc5c4f3706c3c1c35d75e9fe3a63c2661d41ffa5b534bfb62e8059ff50acf5"
+    },
+    {
+      "id": 188,
+      "code": "It_2HS_DonsGoldSword",
+      "sha256": "0990ab4d09e081cc825cc1fc98284f228739da482791a667c42511c5014f6f19"
+    },
+    {
+      "id": 189,
+      "code": "It_2HS_DonsGoldSword_Part",
+      "sha256": "9d857b78fb55a578476d0613545bbf5741ec46c02f88a2fe2e0f6b150c4b3064"
+    },
+    {
+      "id": 190,
+      "code": "It_Am_Amber",
+      "sha256": "d029f3268bf1a06fa04f8d4653870f951e00617abfb93d9cc6b85896d39ac717"
+    },
+    {
+      "id": 191,
+      "code": "It_Am_Antimagic",
+      "sha256": "7fba2281dfa2dacbf9825b3ef50b2806b7a6f390b0e11c3b46d4546235092cc5"
+    },
+    {
+      "id": 192,
+      "code": "It_Am_DEX",
+      "sha256": "fbfb7cf38d0500c34160edb9f8abc35d0da176ba815d1cbc30de897abbbd3cd4"
+    },
+    {
+      "id": 193,
+      "code": "It_Am_Diamond",
+      "sha256": "d8a4d7c7a17bf978176310aa583336b6de9ef40d811ef36b5f5059c4ea060525"
+    },
+    {
+      "id": 194,
+      "code": "It_Am_DonPlacebo",
+      "sha256": "18145b2fee669449bfe91de35ae6018cb4c9e7371398d5f399b1b23c26f3a033"
+    },
+    {
+      "id": 195,
+      "code": "It_Am_Emerald",
+      "sha256": "95adfdf2fdb897fcf6f3e79194c59502f711e1eace1406445759236b17c11b1f"
+    },
+    {
+      "id": 196,
+      "code": "It_Am_HP",
+      "sha256": "4db2530f6ab7791ab1d759645fa70720dfffdae0df006481d3a2d66b60b70eaf"
+    },
+    {
+      "id": 197,
+      "code": "It_Am_Lizard",
+      "sha256": "082a2e9dfc991157abf24855ab6140fc10578cde5715ab5e4460946491cbacdc"
+    },
+    {
+      "id": 198,
+      "code": "It_Am_MP",
+      "sha256": "e9b3d1b21e69d6d9aa7d07436fcbdca4960c947d150b068f9c99c2b5eadef7a4"
+    },
+    {
+      "id": 199,
+      "code": "It_Am_MP_Small",
+      "sha256": "02397dcce8ab7ba402fd9d4dbbc90c50c3b06315aa06a74d80e79e787751e90c"
+    },
+    {
+      "id": 200,
+      "code": "It_Am_Prot",
+      "sha256": "2fffe98480c81cf3426f63517ac825fb77e31a426c46fa244b03863bf0c274cb"
+    },
+    {
+      "id": 201,
+      "code": "It_Am_Prot_Fire",
+      "sha256": "d7bb5d751467a9f1b1e31c83e8c025c201d24240ce8a3198cbd0c12d415b71c6"
+    },
+    {
+      "id": 202,
+      "code": "It_Am_Prot_Ice",
+      "sha256": "b9ebe0f05f6053f91c2db434034b9551c232fba0970874237bfa8b0fbe9b40ff"
+    },
+    {
+      "id": 203,
+      "code": "It_Am_Prot_Magic",
+      "sha256": "28e820c77a9c908293bf552b065051477532692442844cdd1e7d38f2e17d2442"
+    },
+    {
+      "id": 204,
+      "code": "It_Am_Prot_Small",
+      "sha256": "68339397d4214d91383f199eefed10e4a34ca73fbdfd1eaa60baadf685af67b3"
+    },
+    {
+      "id": 205,
+      "code": "It_Am_Ruby",
+      "sha256": "99a5816c86bb52bbd23533a2f12d349851f52f2604347491339a23988caac2e6"
+    },
+    {
+      "id": 206,
+      "code": "It_Am_Rufus",
+      "sha256": "e6921270a0f81b8012dfa0799615316bd19731cb57cfc46b5e8ed7a0be46d163"
+    },
+    {
+      "id": 207,
+      "code": "It_Am_Sapphire",
+      "sha256": "e93d10928e45ba623b2d517658bdae351008516c3f79d48e2ae2cac229513a24"
+    },
+    {
+      "id": 208,
+      "code": "It_Am_STR",
+      "sha256": "e64b05a1f02370cfe32c7123d225506040d729f35adaaf495b057985d8f580fd"
+    },
+    {
+      "id": 209,
+      "code": "It_Am_STR_DEX",
+      "sha256": "c57a00faca2c1fede5b2ab2494340f1b96b21f27b2783b02f68a097c90cddc2e"
+    },
+    {
+      "id": 210,
+      "code": "It_Amber",
+      "sha256": "e50a676cdec5fea8458c26db326f021d9d5d57b77ce09ed06cb249893e0942af"
+    },
+    {
+      "id": 211,
+      "code": "It_Amber_Small",
+      "sha256": "1162e4d0a330baa28a7f6819ca963f1e73a08344b01c764e1ed959beee7da34a"
+    },
+    {
+      "id": 212,
+      "code": "It_AntimagicCrystal",
+      "sha256": "0ca48a6eca78c7e8bcb11493d4c80d0b217637cccfd0488809f366999e04f803"
+    },
+    {
+      "id": 213,
+      "code": "It_AntimagicCrystal_Small",
+      "sha256": "c51a9761f8ffd4013d9981c94cbe066ff571c70decdd83317f03fbf1973446e1"
+    },
+    {
+      "id": 214,
+      "code": "It_Armor_Don",
+      "sha256": "0a56e0f73f218daa48049dd92477b2c0c31cb8469c8ee76fcdafea568d2f6517"
+    },
+    {
+      "id": 215,
+      "code": "It_Armor_Don_Elite",
+      "sha256": "e45656590b8fb8f0b5442d90d4b6acdbce863dbeb6bd089da01d56fd893269de"
+    },
+    {
+      "id": 216,
+      "code": "It_Armor_Don_Fighter",
+      "sha256": "9f2a72e988c755fe5e614d5bf52503c046507acd5a137ed3aec344e4210bbfc0"
+    },
+    {
+      "id": 217,
+      "code": "It_Armor_Don_Hunter",
+      "sha256": "e84fff7a338a5019346aa44cab45299226a4c6782cc3c3703e8292ca710dc0e6"
+    },
+    {
+      "id": 218,
+      "code": "It_Armor_Druid",
+      "sha256": "652915504d9132a6d86ecc10b2b9ac7c85ee1d502804a9b3529f23be52622566"
+    },
+    {
+      "id": 219,
+      "code": "It_Armor_Guard",
+      "sha256": "0777e2879618574448d22695997a0d4d123746a2a9e667ae4720a9993e4a0580"
+    },
+    {
+      "id": 220,
+      "code": "It_Armor_Inq_Guard",
+      "sha256": "e4fd97472aeab78f1b987dd2bc52a9f1f2f0491d95956c3c0f435107ad4f861c"
+    },
+    {
+      "id": 221,
+      "code": "It_Armor_Inq_Mage_High",
+      "sha256": "dc94bd572fe5804c6cc8903dfcbc12376e7ca05b6f65053f78c7eef100b6eb8b"
+    },
+    {
+      "id": 222,
+      "code": "It_Armor_Inq_Novice",
+      "sha256": "33a2d1efe550b640f7460f8198bac47dc6a99c9e4d900dec8111e5718846f5db"
+    },
+    {
+      "id": 223,
+      "code": "It_Armor_Inq_Sentinel",
+      "sha256": "d369db67eb4cc09650fcbba66e878cb0cffea32757fecfa81bb21cf7aac24499"
+    },
+    {
+      "id": 224,
+      "code": "It_Armor_Inquisitor",
+      "sha256": "50d8dc83ac9381b76ab5d09e064a9114f4c3e9e76aa42f08aae40110b3a438ee"
+    },
+    {
+      "id": 225,
+      "code": "It_Armor_Intro_Old",
+      "sha256": "5ef2f851e3baef681ac1c8baae8052c1bdc3221826f852ff8c4e24fc96c2bcd5"
+    },
+    {
+      "id": 226,
+      "code": "It_Armor_Intro_Young",
+      "sha256": "bde35bf3eaa9b550f0c30a7f04ae4627fbbbd77109bde73205e5cfd05d6da6d8"
+    },
+    {
+      "id": 227,
+      "code": "It_Armor_Landlord",
+      "sha256": "1398fb06d138d2c30deb7df66a21b7f1174b4548426aa1efc148415775d12a21"
+    },
+    {
+      "id": 228,
+      "code": "It_Armor_Mage_High",
+      "sha256": "e30acff7d907b7f982f209500f5029fdfad9ed3b587bb117987e1cfe90237e96"
+    },
+    {
+      "id": 229,
+      "code": "It_Armor_Mage_Low",
+      "sha256": "90dbf3a2df30420f5c6554a37168e795b96465ec4d631e408b3abbb478748b7b"
+    },
+    {
+      "id": 230,
+      "code": "It_Armor_Mage_Novice",
+      "sha256": "a218a012e3509e1c69d22ded913406886eff3ddc73e5986fdc3f3fc196290174"
+    },
+    {
+      "id": 231,
+      "code": "It_Armor_Peasant",
+      "sha256": "df2a2f2b8bbcc8dbbc939b32ef390a719cde07017bb31751c7ca30257490698a"
+    },
+    {
+      "id": 232,
+      "code": "It_Armor_Player",
+      "sha256": "eabc38ac99f4d1fc36b69fb78e1a156962a09f9caa3d8cafb8f4293f65291d3e"
+    },
+    {
+      "id": 233,
+      "code": "It_Armor_Seaman_Sailor_01",
+      "sha256": "1206d6b1168b5e135dc604425cc1f0dc71e49d7a2e2e6b0b308a7bf63fb94b5c"
+    },
+    {
+      "id": 234,
+      "code": "It_Armor_Seaman_Sailor_02",
+      "sha256": "d09452eade0b7db94efcc103af6df604ae354660be671db9b893515fbf389a85"
+    },
+    {
+      "id": 235,
+      "code": "It_Armor_Smith",
+      "sha256": "d9493a869ce112b367d0428bd6d83c18eb03dfe6dd6a8e06670b596a872ce6d5"
+    },
+    {
+      "id": 236,
+      "code": "It_Armor_Titanlord",
+      "sha256": "28917ce34578c1cb3fad72845212e3235c96814be17785a9284caba1486f4fba"
+    },
+    {
+      "id": 237,
+      "code": "It_Armor_Trader",
+      "sha256": "3431d72247aa7ea090cf7e3f3fab6a6f012e8195e1be83f67edd301225a851bb"
+    },
+    {
+      "id": 238,
+      "code": "It_Armor_Worker",
+      "sha256": "c846c34e05582c524a96e85267643f81931a29b19c76ff0189379e5e55c05930"
+    },
+    {
+      "id": 239,
+      "code": "It_ArmorPiece_Titanlord_01",
+      "sha256": "dbf23d406f6cac8892edc2c156da639a420e3d49c195964c39918afe9f22393c"
+    },
+    {
+      "id": 240,
+      "code": "It_ArmorPiece_Titanlord_02",
+      "sha256": "c98759177b762dd3f878aba79f6e99f376b18d702f5d0ebd753d07548798a509"
+    },
+    {
+      "id": 241,
+      "code": "It_Artifact_Disc",
+      "sha256": "59c27353c980136354d94e646786713eda823fe75f73b47fca3a7af9b5352245"
+    },
+    {
+      "id": 242,
+      "code": "It_Artifact_Disc_broken",
+      "sha256": "5153b043702c245a18ea08bc00d8ea9ceb468fcd4a5a32e7f7a8111e97e676a0"
+    },
+    {
+      "id": 243,
+      "code": "It_Artifact_Disc_Druid",
+      "sha256": "013225a804c2195a8ffd0d2774c8bd14f186873bff3decc0a4b07bc1316c976b"
+    },
+    {
+      "id": 244,
+      "code": "It_Artifact_Fake_Disc",
+      "sha256": "ab003e2463840e8bf454936e55195c1e6bbdced44ff5382a4b4b7f22291e73cb"
+    },
+    {
+      "id": 245,
+      "code": "It_Axe_Beard",
+      "sha256": "32141ee3b23200f952f264832106e9fb233ce462a02ea473c7656ab2760f5a89"
+    },
+    {
+      "id": 246,
+      "code": "It_Axe_Berserk",
+      "sha256": "d1ecfba29ad725a5f5e8867f954af392d4534f84bbb6e4f3cb1633d8d34dd156"
+    },
+    {
+      "id": 247,
+      "code": "It_Axe_CrowsBeak",
+      "sha256": "0faf1aced2caf9a0d617227e97eaa3ee7b9aecd45183e6a2d54dd26d349f15c1"
+    },
+    {
+      "id": 248,
+      "code": "It_Axe_Ogre",
+      "sha256": "76ac58f6e30905de2dd32ecc3ff84327b6ea6993f5e3b4f389d6699f1e2f211a"
+    },
+    {
+      "id": 249,
+      "code": "It_Axe_StoneCutter",
+      "sha256": "af93cbd4f686418ff817a9a174dec601f035f3eb73fb2bd87c97a246f503fec5"
+    },
+    {
+      "id": 250,
+      "code": "It_Axe_Titan",
+      "sha256": "1deb2c6e26b97cefb104f12eda1d3f860ba710f030f90545da5125aa600b104d"
+    },
+    {
+      "id": 251,
+      "code": "It_Axe_TitanHammer",
+      "sha256": "1d30503db682453891e7f2c354c7b5cc98acc6a659aef4b682a6853a5e2c9f7c"
+    },
+    {
+      "id": 252,
+      "code": "It_Axe_Waraxe",
+      "sha256": "aa5678f87219cd329e2cc023f05040abb06679c5938046ae006b28fe4412476a"
+    },
+    {
+      "id": 253,
+      "code": "It_Axe_Warhammer",
+      "sha256": "9be667a04f8249726e05dc27e5611e111128b4afd2bf36ed7fa44bbd149a3eac"
+    },
+    {
+      "id": 254,
+      "code": "It_Bag",
+      "sha256": "ecda030c30b8003d177fa41349e011b3cebea234b399c0db5f249034c70a3357"
+    },
+    {
+      "id": 255,
+      "code": "It_Bag_Hemlar",
+      "sha256": "d9cdb7cf59e2c94afa3520e81e2290b3c62159f5ea4bfe1c223528998d47c6dc"
+    },
+    {
+      "id": 256,
+      "code": "It_Bag_StolenGoods_Gnomes",
+      "sha256": "127a338a1d792876bfa88f88f71fb7b7ead54f77c1e135475586194285225755"
+    },
+    {
+      "id": 257,
+      "code": "It_Book_Abrax",
+      "sha256": "babe25ff7a2f05b6a0183dbd7868832c15ba33086cfff2d425ae02928d148365"
+    },
+    {
+      "id": 258,
+      "code": "It_Book_MagicCrystals",
+      "sha256": "2d8ed7ccee8218b3816c4a39d90f1ba94bc4b53298a0e0d249490172fd51d285"
+    },
+    {
+      "id": 259,
+      "code": "It_Book_MagicRunes",
+      "sha256": "461db16e9cc7fccc72dc6495641b917fd00e0b84a57ec0a90967f126106c772e"
+    },
+    {
+      "id": 260,
+      "code": "It_Book_Pallas",
+      "sha256": "23aa56d6c661c512d84e61802287656858130dcad0a1d7a18d34c77c2b2f76eb"
+    },
+    {
+      "id": 261,
+      "code": "It_Book_Vitus",
+      "sha256": "b99ffa2c203ed2156103cdd1f26c1625e699bc89b289e3c724cd5999592a6058"
+    },
+    {
+      "id": 262,
+      "code": "It_Bow_Bone",
+      "sha256": "f4ce1d38675150262066a5829c2e25aba6a65ffed60935d0006e11a2968b59c5"
+    },
+    {
+      "id": 263,
+      "code": "It_Bow_Horn",
+      "sha256": "d04317372f112685c3028429cb598f6fc252cbd0bbf612b5c5532215faa77f88"
+    },
+    {
+      "id": 264,
+      "code": "It_Bow_Hunting",
+      "sha256": "0bbbc0cd65ba1ecf54769c34b4e15a1bc066725eb7082103bd3b5f8da65b68f2"
+    },
+    {
+      "id": 265,
+      "code": "It_Bow_Long",
+      "sha256": "dcf3bf7b075dd8ff728c36447282c9d09fc7ed9f737f99113f0c41133f6524f4"
+    },
+    {
+      "id": 266,
+      "code": "It_Bow_Poacher",
+      "sha256": "4b20f3268617526703b8e1089f583330771b57a29580e6531e9ede6a372a86ca"
+    },
+    {
+      "id": 267,
+      "code": "It_Bow_Titan",
+      "sha256": "87ddc3dc13231a5934f460f27a23bc3ebe8e5b586142cf932c28626be55a427a"
+    },
+    {
+      "id": 268,
+      "code": "It_Bow_War",
+      "sha256": "fc2f15e343fd6c5e06847564eb19b9af787722a570cf9ed25ba604262eeee980"
+    },
+    {
+      "id": 269,
+      "code": "It_BS_Obsidian_Dull",
+      "sha256": "d9d0e07476232fd4aba33a9a43b6ba06ec2f02264fe639eb0390dcaa4816f675"
+    },
+    {
+      "id": 270,
+      "code": "It_BS_Obsidian_Hot",
+      "sha256": "f5bc24c665165b44adcd0ec8befa721b83781e1ebb836424a6c2fae80a11fa82"
+    },
+    {
+      "id": 271,
+      "code": "It_BS_Obsidian_Raw",
+      "sha256": "ce66597d1b2e1eefd762312099268f70dafce9dbc7e72d3b13a78668c312e22e"
+    },
+    {
+      "id": 272,
+      "code": "It_BS_Obsidian_Shaped",
+      "sha256": "8f09583c78b9a3079e677b69b68d305039afdcaa19682dd215c89d739a492838"
+    },
+    {
+      "id": 273,
+      "code": "It_BS_Obsidian_Sharp",
+      "sha256": "2d610bbe8f599d9de9686631165fc0cbff8425d8a82613f158154d3889115dbf"
+    },
+    {
+      "id": 274,
+      "code": "It_BS_RuneSword",
+      "sha256": "261ab9a35dcf00262d1f72768bf095946153c55db6000dc291da997ea937a894"
+    },
+    {
+      "id": 275,
+      "code": "It_BS_Special_01",
+      "sha256": "6b4dacc7829208f9bc63e98b6ef70228c24857c6f05eb6c5da0c926353e4b72f"
+    },
+    {
+      "id": 276,
+      "code": "It_BS_Steel_Dull",
+      "sha256": "62696a81c28893d1d2f4fda2f3dfd51834da543c26562394f5f0b895f19c027e"
+    },
+    {
+      "id": 277,
+      "code": "It_BS_Steel_Hot",
+      "sha256": "02358dbdd03106a299b4de5f1ad0d525e26fb8a13398a5e29d98a3cef35af5e6"
+    },
+    {
+      "id": 278,
+      "code": "It_BS_Steel_Raw",
+      "sha256": "c12f349dcedade44e228c05f5d0b3fef93c5aa8e0e2c72886653cb8b265637d6"
+    },
+    {
+      "id": 279,
+      "code": "It_BS_Steel_Shaped",
+      "sha256": "b19cdf48c0191da9cce330aa7220dada0ae6932a7246bace550c5d5206328934"
+    },
+    {
+      "id": 280,
+      "code": "It_BS_Steel_Sharp",
+      "sha256": "7dd08c443f735cf236469206005a81314bbee00f8d9078a2b3f9a422548ea922"
+    },
+    {
+      "id": 281,
+      "code": "It_BS_StormWind_Dull",
+      "sha256": "a9237d80aeb61c7fceab64db3ab083a6efbd539d315cfb7889e8de131ce7d016"
+    },
+    {
+      "id": 282,
+      "code": "It_BS_StormWind_Hot",
+      "sha256": "3e74e7a259187ee51e6a2565853c43e8d06ad8082d13b02110857cf95d84ef04"
+    },
+    {
+      "id": 283,
+      "code": "It_BS_StormWind_Raw",
+      "sha256": "863cc37f38e473f865c247f95a04ec87fb73bb74d4de0a5a45c0f2c52a4bd6b4"
+    },
+    {
+      "id": 284,
+      "code": "It_BS_StormWind_Shaped",
+      "sha256": "c3052b7e4b1f7a20a44e377a0cf625f52801e59100d17c0a908aae828f694109"
+    },
+    {
+      "id": 285,
+      "code": "It_BS_StormWind_Sharp",
+      "sha256": "1cf7c14fe8a08e339b438842e84f2b4f51f51e59f01fcc70bc7deaed7cbd1b95"
+    },
+    {
+      "id": 286,
+      "code": "It_BS_StormWind_Tip",
+      "sha256": "a0152bc9179a5ac0cf28c9fc034012f103747bc7d8641f053c1e0c9ea95b0e05"
+    },
+    {
+      "id": 287,
+      "code": "It_BS_TitanSword",
+      "sha256": "91816052afe2ea91f4eb6d4dec55c8cdfd2f4a24b918be1aba9e1bc56f18c81b"
+    },
+    {
+      "id": 288,
+      "code": "It_BS_TraitorSword",
+      "sha256": "40f167c0c7b28718ddff4680beb71cd376663a62455e132263ccecf8af544fa4"
+    },
+    {
+      "id": 289,
+      "code": "It_Bust_BD_DonCamp",
+      "sha256": "609068d3b17d818168e47047ba66e6ed869282befcacda5656929ebcf4330223"
+    },
+    {
+      "id": 290,
+      "code": "It_Bust_BD_Farm",
+      "sha256": "f6315e8001e340d10ed581c09e62120ecc0c19d8dd4d92da025ef923fa04e454"
+    },
+    {
+      "id": 291,
+      "code": "It_Bust_BD_Vulcan_Left",
+      "sha256": "f158328088580c88a4d550f2e4a8adc9fb9a396335cba05746ad1d73ca2b4344"
+    },
+    {
+      "id": 292,
+      "code": "It_Bust_LizardPriest",
+      "sha256": "44ba6e49bb060c00321b5ef67ac3bba410f028ca1c0a043e692da36c90600bcc"
+    },
+    {
+      "id": 293,
+      "code": "It_Bust_Oldmine",
+      "sha256": "d35980f11531d14f2f3d8814997e9c0270cd17151864cc9552af6db09a232e7c"
+    },
+    {
+      "id": 294,
+      "code": "It_Bust_Titanlord_Chamber",
+      "sha256": "8a011db221aae6fdc4d5ee8c3e2711d72f078eef7a7608ea949b5776b2e9580f"
+    },
+    {
+      "id": 295,
+      "code": "It_Bust_UndeadChambers",
+      "sha256": "3c1f9be09555b3465faf40b349d692634ce3053b10bf7e97c1d66405e3f95387"
+    },
+    {
+      "id": 296,
+      "code": "It_Bust_VulcanTemple_Breakthrough",
+      "sha256": "29924a89cca58a3ec94e4f4f5d1d280b1606f10601261b63da6ebd0cc379eee5"
+    },
+    {
+      "id": 297,
+      "code": "It_Bust_VulcanTemple_MainDoor",
+      "sha256": "efd1bbb7f069f696dcccada8469fa07cdd845809c74e09b3d0a6bd6820a4f6e6"
+    },
+    {
+      "id": 298,
+      "code": "It_CashBox_Baxter",
+      "sha256": "a11458520ccb6e936b85816eb90027bd18e123d8b193489007492aa67f30b8be"
+    },
+    {
+      "id": 299,
+      "code": "It_Casket",
+      "sha256": "d47f774a6b3255be482023e2ea16345ab02f4c6ecf1af470565afc17ccc991ae"
+    },
+    {
+      "id": 300,
+      "code": "It_Casket_Greg",
+      "sha256": "a23d267777e317a754fdd5edde56aa8687842be02ffb03dcece8cf8179988c7c"
+    },
+    {
+      "id": 301,
+      "code": "It_Claw_Rotworm",
+      "sha256": "90f8e101b95ee7fd6382e1206659fdf9389ad1fcf053cc22e9341165ce5a021f"
+    },
+    {
+      "id": 302,
+      "code": "It_Claw_Scorpion",
+      "sha256": "e68d1a6932f530c429b9f5c13fa7331562268f4f054a252169defd50c9718128"
+    },
+    {
+      "id": 303,
+      "code": "It_Cloth_Eldric",
+      "sha256": "b6c78ed6970f0fe0939faa9b2dd0149d9b72371d88097e80e343c2f68e497cf5"
+    },
+    {
+      "id": 304,
+      "code": "It_ColdHeart",
+      "sha256": "9e2c49b52e00096c93a73069c6cbd46a1cbfb081caf56028a57e5dd8b38d533c"
+    },
+    {
+      "id": 305,
+      "code": "It_Crossbow_Titan",
+      "sha256": "3f348cd7772695723b1f5306b95c4cc1af73a86cb8d17bbfa8ebaca8cc86b1c4"
+    },
+    {
+      "id": 306,
+      "code": "It_Crossbow_War",
+      "sha256": "55cf2327ba801eb9969499faec65a3b6bc500e47aec4cd4da345e8150bd89dee"
+    },
+    {
+      "id": 307,
+      "code": "It_Crystal_Fire",
+      "sha256": "daff7b9ec31e89aec9d9239c42f3f36ea73f8afefe01a8a91fbe62ae44a28b07"
+    },
+    {
+      "id": 308,
+      "code": "It_Crystal_Frost",
+      "sha256": "cc4eddf7af318e6b5910c7cf8e2580cd078c0e680230372ff1f712a39317b3bb"
+    },
+    {
+      "id": 309,
+      "code": "It_Crystal_Magic",
+      "sha256": "3c2b7021ea108fa6926b405ee06c3062a65bd3bdff312e2a63cb7463e1f97bf3"
+    },
+    {
+      "id": 310,
+      "code": "It_Diamond",
+      "sha256": "031b1348c696c9232446a7ace6a7042a39c34db553475229b410632f4e43378a"
+    },
+    {
+      "id": 311,
+      "code": "It_DustHeap",
+      "sha256": "97f7bc345b2fc95e32f34f27d011f14b8868d640cb80381967de95e1a1b7a708"
+    },
+    {
+      "id": 312,
+      "code": "It_Emerald",
+      "sha256": "b47f13ae1fb75f2bd47189520b825836569efe461f7b3d1b7468f60ec7d5545c"
+    },
+    {
+      "id": 313,
+      "code": "It_Emerald_Small",
+      "sha256": "2a0908e5120987659172150c104eaf90c364e8c8d99a8f7dac2101a9eb9516a3"
+    },
+    {
+      "id": 314,
+      "code": "It_FriedStew_DEX",
+      "sha256": "0a0b94b19c127319d9733e77c5cf70fbab69fa398b42bb844e2f0352e98a8262"
+    },
+    {
+      "id": 315,
+      "code": "It_FriedStew_HP",
+      "sha256": "cbcfb1ab623ab331655cc9dcd6a000a1eca722175669733e6e735e63c5a744f4"
+    },
+    {
+      "id": 316,
+      "code": "It_FriedStew_MP",
+      "sha256": "cf67a3813e0718a223d360ec72d1116d092d7a4f506df1ce781c163f1932a77d"
+    },
+    {
+      "id": 317,
+      "code": "It_Fur_AshBeast",
+      "sha256": "85ba3ab92415e8d5837b92bda82a6fff44eb1ed4a3198a99df2c0ae0eb91e825"
+    },
+    {
+      "id": 318,
+      "code": "It_Fur_Boar",
+      "sha256": "91eb5c391e3ee9bc0b4a92ef2e6dd2ea2345e0ae648c51e9f61d8e4bf2251999"
+    },
+    {
+      "id": 319,
+      "code": "It_Goblet_Silver",
+      "sha256": "196b5997effb9ce3472b71601bc3d02331e755eba3858d23c204e505e2a076dd"
+    },
+    {
+      "id": 320,
+      "code": "It_GoldBag_Large",
+      "sha256": "da698be69fc5f81d9f4649f99909e2cab0108ee5f14c223f2901bc7c6be76a02"
+    },
+    {
+      "id": 321,
+      "code": "It_GoldBag_Medium",
+      "sha256": "7b4a47eade8e1b5622994c7fe5f41967914b55a7b3c64bd17d04c29150cb5196"
+    },
+    {
+      "id": 322,
+      "code": "It_GoldOre",
+      "sha256": "ed894d6ffeb2c2b3e123a981feef0c94d90b86ba2fa9cbad87730f592fe8197f"
+    },
+    {
+      "id": 323,
+      "code": "It_Goldpile_Big",
+      "sha256": "e51eef9679fb2868475588e376caf0d32b3ca6fcded57a33eb6d74dd141dbeed"
+    },
+    {
+      "id": 324,
+      "code": "It_Goldpile_Small",
+      "sha256": "77d2f6ac2060be2e438c179902118cb4ec885d82049919905588665441a724a0"
+    },
+    {
+      "id": 325,
+      "code": "It_GregsSeamap",
+      "sha256": "5f8a27b73aa3c42a10a3efc91459c64a3fccfd20c7a775aa675b01350d56f481"
+    },
+    {
+      "id": 326,
+      "code": "It_Head_Gyrger",
+      "sha256": "8c5ed26b947489aec4d6a2c5f5554a01d24bf6c005dfc00d314fda089b48b2af"
+    },
+    {
+      "id": 327,
+      "code": "It_Heart_Ashbeast",
+      "sha256": "bf2e47eb673d8609cfb256ea887cff7e6a71152309375a245a514bd283eb0f10"
+    },
+    {
+      "id": 328,
+      "code": "It_Helmet_Guard",
+      "sha256": "5dc8b47b493da83fb79b15ecf525e7b8484a7bfeb98478def8aba35ee90dfd42"
+    },
+    {
+      "id": 329,
+      "code": "It_Helmet_Inq_Sentinel",
+      "sha256": "0e192b62f31504fe731ae437894715d7b18b893bd63b6fa12ddb939ca0c0e691"
+    },
+    {
+      "id": 330,
+      "code": "It_Helmet_Leather",
+      "sha256": "149fc3b63d17272deff02c410dccac450e5f4f3101799a7f716347691e18cf98"
+    },
+    {
+      "id": 331,
+      "code": "It_Helmet_Occular",
+      "sha256": "6042a2d0a34c341f19efef14a02497ea6f773759b4e404527471febba8f90741"
+    },
+    {
+      "id": 332,
+      "code": "It_Helmet_Titanlord",
+      "sha256": "6a5459df7c069e3fd67840656702df8af3c3e8bac6d659e1df7a809666791895"
+    },
+    {
+      "id": 333,
+      "code": "It_Horn_Brontok",
+      "sha256": "012b275b3e0f03108410303dd1e6c0f1953c1b914cbc8b9ef26fb4afd0dffa01"
+    },
+    {
+      "id": 334,
+      "code": "It_IronOre",
+      "sha256": "df80c7b08a75776e42f0af525aa89d70ef2cc6da512fac1d54e6f59cef312d09"
+    },
+    {
+      "id": 335,
+      "code": "It_Key_Alvaro",
+      "sha256": "95aa0895e63988b0ff2ae645d2b2233dd35641d1d09eb7786a3bf25f49fe7ce6"
+    },
+    {
+      "id": 336,
+      "code": "It_Key_Berengir",
+      "sha256": "99913cf52de53455698774be8187bac6d7e533d9cc8b45c25de4f9b53de73f4a"
+    },
+    {
+      "id": 337,
+      "code": "It_Key_Bronco",
+      "sha256": "805e405661c4cb3b7933ca19598f5b2631295daa3ecfee71e109d1844da4528a"
+    },
+    {
+      "id": 338,
+      "code": "It_Key_Cutter",
+      "sha256": "40b626183326eabd7b7840675e5986dfa4b1e874cf26297173140535aaa0bc1e"
+    },
+    {
+      "id": 339,
+      "code": "It_Key_Druidjail",
+      "sha256": "a0f7ad01745de4817751c9450a776d544eb4946508abdd67696825647ef2d0ac"
+    },
+    {
+      "id": 340,
+      "code": "It_Key_Eldric",
+      "sha256": "3a675ed257b37ab34366f1b6b1d754c39d406c4f89e01875c57193f92e8a9401"
+    },
+    {
+      "id": 341,
+      "code": "It_Key_HarbourTunnel",
+      "sha256": "9ee1a3fda938bc8d7f91d51c4fa8d20024bb40dbc0e51fbe708bc657dcb79e85"
+    },
+    {
+      "id": 342,
+      "code": "It_Key_HunterPath",
+      "sha256": "31897eb53f013bb33f07215a7a0f77c544a7cc4276a66cf0250d23eb726a51a8"
+    },
+    {
+      "id": 343,
+      "code": "It_Key_Jack",
+      "sha256": "b6409fe7a12c15550c29fdcf02333de85b26a55e10b59ee9106a8fa6f2a723e8"
+    },
+    {
+      "id": 344,
+      "code": "It_Key_Josh",
+      "sha256": "118cafb012bc41b66a0e87f6c2a98b642799981010aa79c7f57f3229cd481c4b"
+    },
+    {
+      "id": 345,
+      "code": "It_Key_Leonardo",
+      "sha256": "645ad26b5a3e0f37dfbf09937c2c15a20e5e09968ee69363dfb5e468f71a6b42"
+    },
+    {
+      "id": 346,
+      "code": "It_Key_Library",
+      "sha256": "ea141b65190c6807317800178bb5326d6893ca59a5129ee1991156dd16765a7b"
+    },
+    {
+      "id": 347,
+      "code": "It_Key_Monastery",
+      "sha256": "f5d4a496f954239cc884b80626fa94bddd7318f913d11e793391701bab21b416"
+    },
+    {
+      "id": 348,
+      "code": "It_Key_Monastery_Storage",
+      "sha256": "540a0940bcad1e6504858c04c31bd3bf3a8ba5a802f60c9c2a3d27664793e719"
+    },
+    {
+      "id": 349,
+      "code": "It_Key_Monastery_WineCellar",
+      "sha256": "50016bb7321d21ba341f66906fa680eee7b0152a98d67aa9bf14d9a8862c54bc"
+    },
+    {
+      "id": 350,
+      "code": "It_Key_PattysJail",
+      "sha256": "f53b255ae1bd213cacfcb1cc1160dfc3cb77f9a135b045f5f8fa84fa78c22877"
+    },
+    {
+      "id": 351,
+      "code": "It_Key_PattysPassepartout",
+      "sha256": "7192cc58abfeb70751e47a5fa11ba2a3093890fddf90c56e53a043d53c5900c7"
+    },
+    {
+      "id": 352,
+      "code": "It_Key_Ursegor",
+      "sha256": "0e73bdedf8ae31f2ec3dcda985ebb045b4dd43ff5094ab02754eababb75db371"
+    },
+    {
+      "id": 353,
+      "code": "It_Knife_Harlok",
+      "sha256": "606e6bd1af4a83b5f439a3861fdb31fdf85cfc6f0e6a47435bb430a8843c5810"
+    },
+    {
+      "id": 354,
+      "code": "It_Letter_Carlos",
+      "sha256": "f8559a0d0af29755040a6f8556bff3990205a5dd611cd53b5437cbab50740f77"
+    },
+    {
+      "id": 355,
+      "code": "It_Letter_GregHint1",
+      "sha256": "6695d6bc5168ef787b86fd293cb71da345376e15b833074147d7b7a75a84d3ca"
+    },
+    {
+      "id": 356,
+      "code": "It_Letter_GregHint2",
+      "sha256": "97fab1d14b633c4bec012dcbd3a1cafd3e0dc969b0aff9a61dd8bb74f3d56ebf"
+    },
+    {
+      "id": 357,
+      "code": "It_Letter_GregHint3",
+      "sha256": "5a0bd2dd113fc0072b041102c30db8b54f7c37c4bbad2f8a8d8c7c21c595dbd6"
+    },
+    {
+      "id": 358,
+      "code": "It_Letter_GregHint4",
+      "sha256": "421fe1ed76c36b10ad4bc186dc4558a977cf2a0d7a65fcf2c6ea57c43ef77703"
+    },
+    {
+      "id": 359,
+      "code": "It_Letter_GregHint5",
+      "sha256": "4f6e211d78c57c7b3a00be645a02f168ab302b79ee7bf018a322af1f7131f3bf"
+    },
+    {
+      "id": 360,
+      "code": "It_Letter_Patroscon",
+      "sha256": "7e0f2c297b6856c1ed4fd7e656b80c90d53e61c0ad25d28bf3aefde8f0cc45eb"
+    },
+    {
+      "id": 361,
+      "code": "It_List_Abrax",
+      "sha256": "643251cfcedec36f3b016546524e8cf1b00beb0a8852a4e443f368d0c75fd58a"
+    },
+    {
+      "id": 362,
+      "code": "It_List_Brogar",
+      "sha256": "bd86792fbc4d233a426dcebb92b290d6a0910eb81f0bc1ca0261ad1ea84fe099"
+    },
+    {
+      "id": 363,
+      "code": "It_List_Pallas",
+      "sha256": "bc1b013756d50574287a97afa7e3ba01be7f9281ab7d4f3601a8429f3caa347c"
+    },
+    {
+      "id": 364,
+      "code": "It_List_Scribe_Ingredients",
+      "sha256": "f1cf1584104be2f7fe12eaa176b4185404d466c2b875c016819c9165e3ffae27"
+    },
+    {
+      "id": 365,
+      "code": "It_Map_BD_VulcanRight",
+      "sha256": "ae3e102a05626f309ba60888c486e9d9a601359d0b815d8003f218d6b3e4137e"
+    },
+    {
+      "id": 366,
+      "code": "It_Map_BD_Waterfall",
+      "sha256": "e9a6e77c6aeb90e954e8ae543d38ee2fcd856ee261b8d98e6ea00dfe7919d051"
+    },
+    {
+      "id": 367,
+      "code": "It_Map_DonCamp",
+      "sha256": "568e11bb6fe08bccbaea3752762e3411e5efa2534bdca1ff0cca92393939ed9a"
+    },
+    {
+      "id": 368,
+      "code": "It_Map_Druidjail",
+      "sha256": "a0da4a0eb4157d893878fe1fc07481078d43243ee0745f84cc905cd3a80529d5"
+    },
+    {
+      "id": 369,
+      "code": "It_Map_LizardScouts",
+      "sha256": "6d4a797646e0098b918e7403595c2d0e2eaabd87bec97e0388c78a0aa68b98a7"
+    },
+    {
+      "id": 370,
+      "code": "It_Map_Monastery",
+      "sha256": "60052c5a82e53049a29f0993b445bfeeb39a8b8a34ab9c132db8294e149cce90"
+    },
+    {
+      "id": 371,
+      "code": "It_Map_Oldmine",
+      "sha256": "0dcf5b2b95c3fa169457667bd74534a4ff7b0a2e70aaaf1a9f5ba74206361637"
+    },
+    {
+      "id": 372,
+      "code": "It_Map_Vulcan",
+      "sha256": "e6de39c8ad1a09eb63ce55948f77733231fd98fb0bcdddbd5ff71f3ca2659edd"
+    },
+    {
+      "id": 373,
+      "code": "It_Map_World_OW2",
+      "sha256": "2590b6b5dd60936c60d89ceb1b742328317c635b0db2579ea72d753f61de4e2e"
+    },
+    {
+      "id": 374,
+      "code": "It_MessageInABottle",
+      "sha256": "6f58e5f9146663ca6a56b223853e251683ced3539fc5c6ceb148a8fa83db197c"
+    },
+    {
+      "id": 375,
+      "code": "It_Necklace_Pearl",
+      "sha256": "a66bf4e9cbfabacf7e5fbd995243e75b3375b79669869200866f080386cdc7f8"
+    },
+    {
+      "id": 376,
+      "code": "It_Obsidian",
+      "sha256": "8456e85bad41ed5f90d36bb559669bb9aae416ac0d85453904baf34481313229"
+    },
+    {
+      "id": 377,
+      "code": "It_OldCoin",
+      "sha256": "f4c3f4cac932192fd9533262d423136200c17fe401af76d2d28cba72b7bf9766"
+    },
+    {
+      "id": 378,
+      "code": "It_Packet",
+      "sha256": "f6f98c815dbfef3494b9d04944701cfc4f6cb5a0586513f5e0ef1122cc62078a"
+    },
+    {
+      "id": 379,
+      "code": "It_Packet_Abrax",
+      "sha256": "ef9b8058d1a3e087225f7c248bbb0a8f495cbe4d4e87e440966bda2d420bf7bd"
+    },
+    {
+      "id": 380,
+      "code": "It_Packet_Hemlar",
+      "sha256": "8f72501f2d676b4bd1f0bec0b586a13ab0a6db38cafd20a03254eb540cc65162"
+    },
+    {
+      "id": 381,
+      "code": "It_Packet_Scordo",
+      "sha256": "87fbecdad88ef224abcce47521bcfec8e15d4747dc168248ac7b6680664c0b2c"
+    },
+    {
+      "id": 382,
+      "code": "It_Parchment_Empty",
+      "sha256": "87e4eda2a26f2e38650b004636b1603f5b949f4fdbf6caee6f9f044b34f4d3a2"
+    },
+    {
+      "id": 383,
+      "code": "It_Plaice_Fried",
+      "sha256": "0a842c9d86c2d7c2cc1442c27511a5ed06995469df90e7395f13a763a1473790"
+    },
+    {
+      "id": 384,
+      "code": "It_Plant_Perm",
+      "sha256": "bb40ab1764f18a9f5e6bae750f496986ca1e2460b1a2e4187d39f06a27c7269f"
+    },
+    {
+      "id": 385,
+      "code": "It_Plant_Weed",
+      "sha256": "374d0d4a965641f881a41eb79eea09bd7be63cb81f3af957273c3019282f5b58"
+    },
+    {
+      "id": 386,
+      "code": "It_Plate_Gold",
+      "sha256": "e302551a90a089ad80dbba560c0d2d40be8d4ffb7d68261cfdffc3c375d31d9a"
+    },
+    {
+      "id": 387,
+      "code": "It_Po_DEX_Max",
+      "sha256": "1cd0d92a757ab0dd9adbb3c2a3dcc888d6afa10f384d9929570282c16cefadea"
+    },
+    {
+      "id": 388,
+      "code": "It_Po_HP_Max",
+      "sha256": "e164c9991b906f73fa1386c7a68736401ccced14213500e5994f789ac2a0560a"
+    },
+    {
+      "id": 389,
+      "code": "It_Po_Mana_03",
+      "sha256": "c9424e3390ccfc99cbec4e50c7109b83c31f569ed100989c0fb67e577488dc18"
+    },
+    {
+      "id": 390,
+      "code": "It_Po_MP_Max",
+      "sha256": "b2715fcf687f372016e5728eb30666b458ee34f2ce8560db0a32b9e77c8cb60b"
+    },
+    {
+      "id": 391,
+      "code": "It_Po_STR_Max",
+      "sha256": "3bb99c1c8f5dfebee700ff521d884ca2d226286230c5e90ea279ca564ff19f0d"
+    },
+    {
+      "id": 392,
+      "code": "It_Po_XP",
+      "sha256": "ce68f96ec8561c2d183b3dad05362d4d6de59b46524583de270bef8b1c2f60f7"
+    },
+    {
+      "id": 393,
+      "code": "It_Quill",
+      "sha256": "d395789d9fb495c27b77c7c67f89c0323c25da850cb6c9091af54c9b0eb4c18a"
+    },
+    {
+      "id": 394,
+      "code": "It_Rake",
+      "sha256": "3e0cf47df98f12aff0de23d4d3b0a5e4ea73d901486c8c5f7a5e6148ae2d8dbd"
+    },
+    {
+      "id": 395,
+      "code": "It_Recipe_DEX_Max",
+      "sha256": "40857aa517b22e286178f702d510f6f58a2c9ba6196193b789c4c7306270d561"
+    },
+    {
+      "id": 396,
+      "code": "It_Recipe_FriedStew_Dex",
+      "sha256": "c370b8a86c8d0b1a72221f5d89bbc17fb8cd1dcac4fc18041ef36e5f73c9c6a5"
+    },
+    {
+      "id": 397,
+      "code": "It_Recipe_FriedStew_HP",
+      "sha256": "d48f1dda3ee53dc0d6acdc160e57bdc9cf30f064bd8039d003f3bc5b0088ba52"
+    },
+    {
+      "id": 398,
+      "code": "It_Recipe_FriedStew_MP",
+      "sha256": "32914faa6fc404207b259f4743b368124022f189bb93547687059bd997c0c810"
+    },
+    {
+      "id": 399,
+      "code": "It_Recipe_Health_03",
+      "sha256": "8c7c823af5f1bff6a920bfdff13a16cd262644219676ab1f7d31e6ecc92ac4b8"
+    },
+    {
+      "id": 400,
+      "code": "It_Recipe_Horn",
+      "sha256": "06706f3d60df1d3906855e204a734a12eddd5a789f6e1fb5ff8a4650d50b770b"
+    },
+    {
+      "id": 401,
+      "code": "It_Recipe_HP_Max",
+      "sha256": "2141ea74e37cd5c0f2065b91c9e1b720fc9f6834bda1b434c713ab712af5291e"
+    },
+    {
+      "id": 402,
+      "code": "It_Recipe_Mana_03",
+      "sha256": "52fa27c0964234d1d886627fc50a716ffc50c429108f2eadda4f47b23d0a1185"
+    },
+    {
+      "id": 403,
+      "code": "It_Recipe_MP_Max",
+      "sha256": "c9c076dee9758e7b96132701ca851fd01531f804f65f0e80c5ac824affb0e645"
+    },
+    {
+      "id": 404,
+      "code": "It_Recipe_Rotworm",
+      "sha256": "084c59067630f633997fcb92ae3132560150f8fcd55361ce72345c246637f43c"
+    },
+    {
+      "id": 405,
+      "code": "It_Recipe_SoupFish",
+      "sha256": "adb72afdcd9cf075fe64bf77b7008bfbdec5e77b6a2923d1e8090a61debb97b8"
+    },
+    {
+      "id": 406,
+      "code": "It_Recipe_SoupMeat",
+      "sha256": "069897ee1a64947a977ee3b6ee48556021a6588682421ba9f64c67bc363988a7"
+    },
+    {
+      "id": 407,
+      "code": "It_Recipe_StewMeat_02",
+      "sha256": "00bba6cc4ab86957243e8124de17c950a97d8e662bd105b07dda01ec2abfb433"
+    },
+    {
+      "id": 408,
+      "code": "It_Recipe_StewMeat_03",
+      "sha256": "4ceb7897b63a9531cd0a25df12a9ce1f828ffa6b0d82f8e759ce26e22c74ed84"
+    },
+    {
+      "id": 409,
+      "code": "It_Recipe_STR_Max",
+      "sha256": "5dacf4038de0bee19a6a15b6dadec2ed8317f35b9bb03a6d8ffa68ab6bb5acf0"
+    },
+    {
+      "id": 410,
+      "code": "It_Recipe_Wing",
+      "sha256": "4921fd2a535e391f6e348023e0a7d7dda386ddbbec9f3c541f62d10b2f54cfb5"
+    },
+    {
+      "id": 411,
+      "code": "It_Recipe_XP",
+      "sha256": "e3194fee87201ffe9b3f8404d933a3f873e06c8d9271459865dbd3aed1d61ff4"
+    },
+    {
+      "id": 412,
+      "code": "It_Ri_Acrobat",
+      "sha256": "c0d550157ea170959ccc281c16e4ca45686c638e54b7d1b17f8cab8c0a4d1d33"
+    },
+    {
+      "id": 413,
+      "code": "It_Ri_Amber",
+      "sha256": "2574ab4aa04834ffbd9ef1a86f035e7dc749170fb76f761df2712a062c11155b"
+    },
+    {
+      "id": 414,
+      "code": "It_Ri_Antimagic",
+      "sha256": "44bbb9fad0a8b097207cf403e7393983dee80f8afc53d41aa33d632469d101c9"
+    },
+    {
+      "id": 415,
+      "code": "It_Ri_Axe",
+      "sha256": "1b7eed3fc552589440154da2efbb8f1a8946f75ea053fb73b3fb80fb774b1e9d"
+    },
+    {
+      "id": 416,
+      "code": "It_Ri_Barry",
+      "sha256": "1bfe5ef353d81a97d7c2c27c3f860b31760284557c4e1754673cc1c2d59ef788"
+    },
+    {
+      "id": 417,
+      "code": "It_Ri_Bow",
+      "sha256": "f3996121e81208e67d3d29c1f7ab1f082ee6dde7a2efc1f449aa9f57b9f44f62"
+    },
+    {
+      "id": 418,
+      "code": "It_Ri_DEX_Small",
+      "sha256": "adbe46a2b8fa501caa1fd9ecdd7b0005b0f3018c8789a1d6d500740426cca41f"
+    },
+    {
+      "id": 419,
+      "code": "It_Ri_Diamond",
+      "sha256": "256d3bb5d875ab9e00d225cd8bb66120f2fb731a37a7a3f245197d8fe4bef626"
+    },
+    {
+      "id": 420,
+      "code": "It_Ri_Emerald",
+      "sha256": "33a207125521f71a7c46d7d8f6bc909116f741681ddfc0567ff7cb691a57292e"
+    },
+    {
+      "id": 421,
+      "code": "It_Ri_Monastery",
+      "sha256": "7fce3949ee367548b6a9cf089a95a5754d9f2b894ab8eaf9341d8c4a64323a76"
+    },
+    {
+      "id": 422,
+      "code": "It_Ri_MP_Small",
+      "sha256": "823856a1f68d4119d307876c9e1058f57c3d27ff8c97f58bc7f08ac4c0f09ba2"
+    },
+    {
+      "id": 423,
+      "code": "It_Ri_Nelson",
+      "sha256": "9f99477752827ace51b7b374db73f3220c4c02d745b67fdc7fca921e42aa0a37"
+    },
+    {
+      "id": 424,
+      "code": "It_Ri_Prot_Blade_Impact",
+      "sha256": "2141193e0d59a8c128bb7b5b484c89a4bebb7182de2af4010d24a3d3b1562df6"
+    },
+    {
+      "id": 425,
+      "code": "It_Ri_Prot_Missile",
+      "sha256": "06ca403e44e93106e114b1dd0b029e72c02602173a826e075a413384c49fea36"
+    },
+    {
+      "id": 426,
+      "code": "It_Ri_Ruby",
+      "sha256": "ccef4e9f78378cfa962d99233eeeec961cd87709c452ca1a23c8dc847d2caa2b"
+    },
+    {
+      "id": 427,
+      "code": "It_Ri_Sapphire",
+      "sha256": "dc9a095987e6cffb5767d7b928355a14a9e67bba3bdbc7447769ae00d2809b23"
+    },
+    {
+      "id": 428,
+      "code": "It_Ri_Skeletonlord",
+      "sha256": "9ab532d185a851c70610fe3a69980a03884fdde44b07e93e7dc6e12e5d61cc50"
+    },
+    {
+      "id": 429,
+      "code": "It_Ri_Sneak",
+      "sha256": "2223c6ba4a6ea7ba334bdc741182702dfbe39d33dc50c877e91767f52e731d3d"
+    },
+    {
+      "id": 430,
+      "code": "It_Ri_Staff",
+      "sha256": "5078049835813518f7ccd4e646c487075bc813dfdad003a5a2f743ac14f84e41"
+    },
+    {
+      "id": 431,
+      "code": "It_Ri_STR_DEX",
+      "sha256": "96c4e8360b695600fe58e6bf0392b62fc8dc8b7cf46c9aa24838ccf67799792f"
+    },
+    {
+      "id": 432,
+      "code": "It_Ri_STR_Small",
+      "sha256": "d27f57837f45e7cc36ee5b318d9dab217c53bb55f2b6ff5de1ecbb73549ed225"
+    },
+    {
+      "id": 433,
+      "code": "It_Ri_Sword",
+      "sha256": "6e9b3b05a4aecd5539c28d20be297cbb56cfac210e736e819883b45e94bd9670"
+    },
+    {
+      "id": 434,
+      "code": "It_Ru_Beast",
+      "sha256": "c0d38c2a19683f2d6096e75278454ae0721b647c2a6c1ca052dd8b7b27271876"
+    },
+    {
+      "id": 435,
+      "code": "It_Ru_Berserker",
+      "sha256": "78e5297afdb94759f34fceb5767e718d42ec253daa58648e12af71fbd03d8ef6"
+    },
+    {
+      "id": 436,
+      "code": "It_Ru_BlueBarrier",
+      "sha256": "27b780ba6193bc39fbde4fa39809d277ffc78a0ac8b8087eb2d0c38692202a7d"
+    },
+    {
+      "id": 437,
+      "code": "It_Ru_EnhancedHeal",
+      "sha256": "f6d5d8bed928a221d3bf00e4921c8760e558439b9b315042be4365f67ba7eb72"
+    },
+    {
+      "id": 438,
+      "code": "It_Ru_Illusion",
+      "sha256": "9825d4e4688780afe3c837e3cc6d7f0d074ba2dc833c7997508f736fb4227ab7"
+    },
+    {
+      "id": 439,
+      "code": "It_Ru_Inferno",
+      "sha256": "d09b50734501280e4bb8e84d28c9f2f98333e55dbbbf9ae21259f4a2b26ed435"
+    },
+    {
+      "id": 440,
+      "code": "It_Ru_Joke",
+      "sha256": "29ce0c12bba8f9b593ce62a35f80b90a07b7bfd157befe037be0e7e3ef42098f"
+    },
+    {
+      "id": 441,
+      "code": "It_Ru_Levitate",
+      "sha256": "fdeeda16cbfbe540c52aaf64771ed130a4db912c8cdd77ffd593ff0365b40494"
+    },
+    {
+      "id": 442,
+      "code": "It_Ru_Light",
+      "sha256": "f06fc2bc7359c74e4578f83c4bf4fd74090c94ff395c8c7ff4f6e1519d788b35"
+    },
+    {
+      "id": 443,
+      "code": "It_Ru_MediumHeal",
+      "sha256": "5670db8a1e74f6ae26175e84ae310fd350557cda4d220810df72f36603fa3c7f"
+    },
+    {
+      "id": 444,
+      "code": "It_Ru_MinorHeal",
+      "sha256": "7422d71ad5d9aff081f0a324a30932dc83fe2eb543322539d9cd2b8bc8e9a448"
+    },
+    {
+      "id": 445,
+      "code": "It_Ru_Nautilus",
+      "sha256": "e930ccfbab596333a8be3edfc158aa0f7fd4fa0f559c6a7f7bfeea1637fcf7bf"
+    },
+    {
+      "id": 446,
+      "code": "It_Ru_OpenLock",
+      "sha256": "a6dfb3c58191cc418af40f96c2da3642273f00696645b3235cb6e5271cac5023"
+    },
+    {
+      "id": 447,
+      "code": "It_Ru_Protection",
+      "sha256": "cfdea28f1b24e4e8d30c4b00e803406ef0e4e9f55a32146fd6ef87e0bb974a8f"
+    },
+    {
+      "id": 448,
+      "code": "It_Ru_RedBarrier",
+      "sha256": "8f7c809e48cc19620f883bd41aa36e301acb8f0561338b71c727109d8bed85a9"
+    },
+    {
+      "id": 449,
+      "code": "It_Ru_Skeleton",
+      "sha256": "a9571ece4e9b71117759be45da633e66ad2e9829352148dabbf5a2dbfafca951"
+    },
+    {
+      "id": 450,
+      "code": "It_Ru_Speed",
+      "sha256": "17243cc583b42721bb6febe0bf6103f6feac7fbf5b0c05969fe0612ace62ce4a"
+    },
+    {
+      "id": 451,
+      "code": "It_Ru_Telekinesis",
+      "sha256": "e2731f994f582d766a76135865335ac85330f08337421c7817a757b94801b2c9"
+    },
+    {
+      "id": 452,
+      "code": "It_Ru_TeleportDon",
+      "sha256": "362cbe7572a8b67155d5651c969d13a18a343c2de998f71856796d397227dc13"
+    },
+    {
+      "id": 453,
+      "code": "It_Ru_TeleportDruide",
+      "sha256": "71918104f1c03eea44a059e2aa87de0cc251ab2c8d44d653672bce47e49b9f19"
+    },
+    {
+      "id": 454,
+      "code": "It_Ru_TeleportEastCoast",
+      "sha256": "9da5ac19127d8cc503d18334a0fb3f2400148558bb17e272b07de12952ba70ca"
+    },
+    {
+      "id": 455,
+      "code": "It_Ru_TeleportEastLake",
+      "sha256": "9da7b0be3d555129d47ed574ddc98990811bd0b192e99de9860f755160a14dce"
+    },
+    {
+      "id": 456,
+      "code": "It_Ru_TeleportGoldenPortal",
+      "sha256": "a143a1d1e88535f8491fcba42ac76d409b1b10ff76331fa55a671e76d54c48e9"
+    },
+    {
+      "id": 457,
+      "code": "It_Ru_TeleportHarbour",
+      "sha256": "98f1dfbdf909d3d116a3dace89fdbf2658c5b640d843f4e66e71b806c7188c96"
+    },
+    {
+      "id": 458,
+      "code": "It_Ru_TeleportOldmine",
+      "sha256": "9113351971477b72f3baef17b85ec282bb7a27b221ba1bf8c43f45e4625c25d7"
+    },
+    {
+      "id": 459,
+      "code": "It_Ru_TeleportTempleGameStart",
+      "sha256": "a6c2293ca7d88586504fcfcdc6edfd9b77f2f71af9e0234b2e0be1a8a94c406c"
+    },
+    {
+      "id": 460,
+      "code": "It_Ru_TeleportTempleMonasteryCampNorth",
+      "sha256": "a4b9fd5da3f468b3987cdec95b47eb7aaab18ffec401bc36d6da7aa6cd51400c"
+    },
+    {
+      "id": 461,
+      "code": "It_Ru_TeleportTempleMonasteryCampSouth",
+      "sha256": "a1aaaf5b5d6f6a8330bd8baf413d3cb0365290b77b0386ecef669e66e414f73a"
+    },
+    {
+      "id": 462,
+      "code": "It_Ru_TeleportTempleNearDonCamp",
+      "sha256": "d4e7470965c481bc60b25ae8130f53a902e64e3ced6e36300fea0c68d2b52aea"
+    },
+    {
+      "id": 463,
+      "code": "It_Ru_TeleportTempleNearMonastery",
+      "sha256": "f69bbbf1c75aae04a72faf80b90e86b6463ac5e472d04c6c02a6ff5a34217692"
+    },
+    {
+      "id": 464,
+      "code": "It_Ru_TeleportVulcanLeft",
+      "sha256": "3ee41d80647652cd6c39dae00e389eecdba3c88cd211a60227ceaeb414097d44"
+    },
+    {
+      "id": 465,
+      "code": "It_Ru_TeleportVulcanRight",
+      "sha256": "66ef6cbff555df8a4b0fb3e1181f26dd853ebb75860c78023107d3d54bfc1b6b"
+    },
+    {
+      "id": 466,
+      "code": "It_Ruby",
+      "sha256": "b069af57dca2378cb80dbbc04e62c672a297c4b1102b90315dee87e23d68708e"
+    },
+    {
+      "id": 467,
+      "code": "It_Ruby_Small",
+      "sha256": "aa0253bc1f3bd0d6b472f5209ca5deb5f19e607335b3a4ca0d01d33e19992e36"
+    },
+    {
+      "id": 468,
+      "code": "It_Sapphire",
+      "sha256": "17b1e1d751c458cd853f1470f1c88f71374fbbf9789c60128e40445e4c7cdd0b"
+    },
+    {
+      "id": 469,
+      "code": "It_Sapphire_Small",
+      "sha256": "17e029667f8e7006d84451a04200b59f29040e6b5534f69573e0ff954bb4a78a"
+    },
+    {
+      "id": 470,
+      "code": "It_Saringda",
+      "sha256": "8ff1f39b3bbc613d0ece83d21c40f3b1569061c156cf4f7f850f6dfc9ef0f138"
+    },
+    {
+      "id": 471,
+      "code": "It_Saringda_Fiddlestick",
+      "sha256": "f979af534f50b0dcae467de51e3ae09d0108fe7ec4bf55565445444429e6113b"
+    },
+    {
+      "id": 472,
+      "code": "It_Scr_Beast",
+      "sha256": "1797551ed3134a60ef4e9fef67fb2ed70ba3f909c695444f88575154495d4c3d"
+    },
+    {
+      "id": 473,
+      "code": "It_Scr_Berserker",
+      "sha256": "f4ee853192c3012e9d8ad01a814d65da9b9b66f1584f0041b1b8995ca537eadc"
+    },
+    {
+      "id": 474,
+      "code": "It_Scr_BlueBarrier",
+      "sha256": "41f923546819157c0c9ae24947090eb2c29534ee63c698962fa7aa4f7e1b2f4a"
+    },
+    {
+      "id": 475,
+      "code": "It_Scr_Inferno",
+      "sha256": "3cdfbac349baa9662ad79eeed010788a033dbf0b889e0caf9c8beacc2f65d3bf"
+    },
+    {
+      "id": 476,
+      "code": "It_Scr_Levitate",
+      "sha256": "f367a64595e1a8248ccbaaa8a2bdbc33f96cf81d08a4314ca8e94be66323ad80"
+    },
+    {
+      "id": 477,
+      "code": "It_Scr_MediumHeal",
+      "sha256": "6d0f4f172a8cb8bcf619cb0492dec4484b9948a07f4e9b3b3e5d5d2eb8705ce9"
+    },
+    {
+      "id": 478,
+      "code": "It_Scr_OpenLock",
+      "sha256": "66ecece71e9619c324de5ef9ea636331af390dd96689e0430eeea55aca34f57d"
+    },
+    {
+      "id": 479,
+      "code": "It_Scr_Protection",
+      "sha256": "a73803a984e52f1269efecc0a43d37ad24066cfce8f778fa204acb279e1cb094"
+    },
+    {
+      "id": 480,
+      "code": "It_Scr_RedBarrier",
+      "sha256": "e2dc180bb4b738516585c851149199de425c5e46ff682824f38ddb7c84ac50f1"
+    },
+    {
+      "id": 481,
+      "code": "It_Scr_Skeleton",
+      "sha256": "e3ca61bda5a2419231013450e4ed72bbd357bdb67ad873b1c70e299aea045bf1"
+    },
+    {
+      "id": 482,
+      "code": "It_Scr_Speed",
+      "sha256": "84bcac2097073b885af35e89bbf74b831c03991d106af532e050d68437637a30"
+    },
+    {
+      "id": 483,
+      "code": "It_Shield_Round",
+      "sha256": "90a05a629a2670fa420fc712856648ff6d617c14e85f6d35b23eddd962816feb"
+    },
+    {
+      "id": 484,
+      "code": "It_Shield_Rune",
+      "sha256": "3bc569ffca6cc750b7ed88c3fab811b05a94e7367a84fd95e5f0341eab0ffe9f"
+    },
+    {
+      "id": 485,
+      "code": "It_Shield_Titan",
+      "sha256": "f7ad6e5d06ec4fb282bafc4d32eac67bfc9b557446b31a7070f36411cf291dcc"
+    },
+    {
+      "id": 486,
+      "code": "It_Shield_Titanlord",
+      "sha256": "67ea1575512e113f7bc288eeb0d6f2e859b5a5cfd52d2f5275b049ee9b13c76a"
+    },
+    {
+      "id": 487,
+      "code": "It_Skull_Berta",
+      "sha256": "a0b49d22cf0247f051878291e227e74b9ee28e1d5705076e7b3ac42d51fa9968"
+    },
+    {
+      "id": 488,
+      "code": "It_Skull_Titanlord",
+      "sha256": "532245da1825653e3e994c28b0cfb66e6f08e992c950dfe68e6d302f1003fe69"
+    },
+    {
+      "id": 489,
+      "code": "It_Skull_UndeadBeast",
+      "sha256": "4556082b5d10d4a1a9ad26689d7f31588415ea2e2a1921509182f544bcf1f2ed"
+    },
+    {
+      "id": 490,
+      "code": "It_Skull_UndeadPriest",
+      "sha256": "af42617fdf84615a0efcbbd1b063d47ace12e25302038ab0cb9b95bb204fefb9"
+    },
+    {
+      "id": 491,
+      "code": "It_Skull_UndeadWarrior",
+      "sha256": "f9add50a030944ea04fc8a61af8204ef7c50110d4be995224a3a1c41744d1509"
+    },
+    {
+      "id": 492,
+      "code": "It_SoulShard_Titanlord",
+      "sha256": "ac5353f6943530b4fd8febc4586259a043a0fc7d0bac44a9a96f63ac89ac4b1a"
+    },
+    {
+      "id": 493,
+      "code": "It_SoupFish",
+      "sha256": "5de56751de575f7c4b3d5f2cd98535160e3fcbbeffe59be076381d1991a0c168"
+    },
+    {
+      "id": 494,
+      "code": "It_SoupMeat",
+      "sha256": "3a6feba252b14be22454b4bc4ff5a9f162a204ba887d9b6edf62c67b93abf3db"
+    },
+    {
+      "id": 495,
+      "code": "It_Staff_Blade",
+      "sha256": "e67a231b90f50e509e9901a3b1bb5bad8e3280813846e315e39f242e9cb00a1a"
+    },
+    {
+      "id": 496,
+      "code": "It_Staff_Blade_Alvaro",
+      "sha256": "385441e2c338b720508e33589f34a3db1afcaefe9ace78c8035be3aaf0317b22"
+    },
+    {
+      "id": 497,
+      "code": "It_Staff_Druid",
+      "sha256": "f37ac814df74bc2f7747b5a4f75b5d55c4287cb6b401a56a5ed7203bf1932f42"
+    },
+    {
+      "id": 498,
+      "code": "It_Staff_Titan",
+      "sha256": "7ccd95ae923cdb6031ac88faf4294f7716ab710acedcc087330a7a917f8918a3"
+    },
+    {
+      "id": 499,
+      "code": "It_Staff_TitanScepter",
+      "sha256": "e7778881381bf506dfb25d2cbb2dddfd76035aa2175f7329eb1ed9484d9a973c"
+    },
+    {
+      "id": 500,
+      "code": "It_Staff_TwoBladed",
+      "sha256": "154b39179970d2dc2cfb2ac3ec15f8a20a6dafc3f44f2b0648d3c875e84a6887"
+    },
+    {
+      "id": 501,
+      "code": "It_Staff_WarSpear",
+      "sha256": "393f8e918b93eaf806e5b08b1c74f59473c38944776f3c5a67b77d669b7021c9"
+    },
+    {
+      "id": 502,
+      "code": "It_Stew_Harlok",
+      "sha256": "fb2d41c4874060d6f105ed473ca45762e3628efeef3bfe5f8c4f59843e2de3af"
+    },
+    {
+      "id": 503,
+      "code": "It_StewMeat_01",
+      "sha256": "2c2c962ef5a2dd039aa84ed82257509e5dc74531d96f64f02f3b0766434492c9"
+    },
+    {
+      "id": 504,
+      "code": "It_StewMeat_02",
+      "sha256": "42bd4e1b882a58dcce19210ed6ee1b1cd2dc3ce84e7e3c954aa67689fa6d628d"
+    },
+    {
+      "id": 505,
+      "code": "It_StewMeat_03",
+      "sha256": "16fb775a1b66711b674849b33edd92ad4f50d616a5239f64ea558408cc6dc26d"
+    },
+    {
+      "id": 506,
+      "code": "It_Sting",
+      "sha256": "9eca83a380425d1f2a562ae7272c417cef1aaf9a019cb8cd78bf97f24966afbc"
+    },
+    {
+      "id": 507,
+      "code": "It_Sting_Scorpion",
+      "sha256": "48cff86b3f024660a4e957ff183aba51e38ecb14b26c02fe345fcb6bb143a565"
+    },
+    {
+      "id": 508,
+      "code": "It_Stone",
+      "sha256": "db5ccb2fb9397193ad7b3d373144e072015c92bbb85ccce9cebbf82356b1aa8b"
+    },
+    {
+      "id": 509,
+      "code": "It_Stoneplate",
+      "sha256": "c3cd26d045983fde5f4b8022686f13071895fadff66ed226ebe7d65af68d6f9f"
+    },
+    {
+      "id": 510,
+      "code": "It_Turkey",
+      "sha256": "c1d760ec8ec8227de60a7cae69dc8c77aaff494c4a12e266021b3210f01d834a"
+    },
+    {
+      "id": 511,
+      "code": "It_Tusk",
+      "sha256": "df8983bc6982099c2a56369bca8b3c5879ad298f0dca212e81646812bb959d08"
+    },
+    {
+      "id": 512,
+      "code": "It_Wine_Monastery_03",
+      "sha256": "fe6c10bb25176a87bbdc85bc5dcc3d7d26a3081d8b9712df99ed125f3b0a90ed"
+    }
+  ],
+  "additional_sources": [
+    {
+      "file": "monster-1.html",
+      "sha256": "a5f94e92cbebe69aaf6077facd8adcab2520d868ffd873793df1a0bea31838ed"
+    },
+    {
+      "file": "monster-10.html",
+      "sha256": "33453e681e0fa13995a5400fae192ce21453cb237265bd657e047687fcb46c1b"
+    },
+    {
+      "file": "monster-11.html",
+      "sha256": "9ddde0b6bc39672539ec5394eb2f38664a5002beccb6cd38c6330e28d2a54536"
+    },
+    {
+      "file": "monster-12.html",
+      "sha256": "60d83e432999eeec81b96f0cefaa08e8bc67c721ddcb391c1da4d8b6766af7bc"
+    },
+    {
+      "file": "monster-13.html",
+      "sha256": "b6a403df43058469275399527d2d80d1da08ee6caf8bb7d443810f76683d3eff"
+    },
+    {
+      "file": "monster-14.html",
+      "sha256": "5ec6c207e996894e5d443f2375de3312cf55ccc5837c0bad185103245951e011"
+    },
+    {
+      "file": "monster-15.html",
+      "sha256": "ee72fcd4c4bb58e88fdb0140043540964ec9bf4f5adae71de4a9ff57759326ad"
+    },
+    {
+      "file": "monster-16.html",
+      "sha256": "ce161b932670673c4825d6abae54ff7977fa40305e7074500222866fec9d2da4"
+    },
+    {
+      "file": "monster-17.html",
+      "sha256": "c132223d0db1ca9cf72b579f337250b106b96ba9b5733517c4eea8ef7049f79c"
+    },
+    {
+      "file": "monster-18.html",
+      "sha256": "85ca072e4c7488fb264845ae0cb1ea2af8956dd5f60ce59582f8d0ef8010f4e9"
+    },
+    {
+      "file": "monster-19.html",
+      "sha256": "6af6cb79777def15f4949bb7fd97d76d3a6c88bbe6d5967ba16899ca1f1cb0f0"
+    },
+    {
+      "file": "monster-2.html",
+      "sha256": "2dd629b98c1b8fc4c7c313022b8bc1b8e93d4870698676324ff8d3230bfa21c6"
+    },
+    {
+      "file": "monster-20.html",
+      "sha256": "0b5bdedb7dbb8d3cb7b78a34e25c20385651126f2e5827bf13262180d0b53861"
+    },
+    {
+      "file": "monster-21.html",
+      "sha256": "b94c5d4349231bebf37213608373119e3b81dc9866b59a8fa8f18309f319f34c"
+    },
+    {
+      "file": "monster-22.html",
+      "sha256": "6d4ad62cf5e728fa87f75ff23d53125b438d2f1e3b28862f28e80a22fc32f382"
+    },
+    {
+      "file": "monster-23.html",
+      "sha256": "caa8dccd9ead57aafbdee488db6f8c53c1493583fc7f02928d9add2bdaeed9e3"
+    },
+    {
+      "file": "monster-24.html",
+      "sha256": "74375d2918e355f44a160a5eb8aa388c24988c51b4335aa388717edee719b813"
+    },
+    {
+      "file": "monster-25.html",
+      "sha256": "989abd3f01e48ffdac171102bb7bc5807770c3f28a558a5488de03a9341b48da"
+    },
+    {
+      "file": "monster-26.html",
+      "sha256": "ed0d7b5e2fd953e3975dd459980d5b01abbbda0049785ebd6ff599158538b80f"
+    },
+    {
+      "file": "monster-27.html",
+      "sha256": "48086c1a1efb76aec052d475e0d4a79f99004d25286f47725aee010e929ac4cd"
+    },
+    {
+      "file": "monster-28.html",
+      "sha256": "058690f442d20592b1b1ff42d4c6302219263c1fc187edaa16a2ac1d3ec44b42"
+    },
+    {
+      "file": "monster-29.html",
+      "sha256": "d3b35f3b2d93e823d3d529c9e0517d14417339ab4f078957b5ca46cced91758a"
+    },
+    {
+      "file": "monster-3.html",
+      "sha256": "ac9538a2e26ed8f572987d3a7008e36a086036b4eb8c9a3597d57d6095c4dc4e"
+    },
+    {
+      "file": "monster-30.html",
+      "sha256": "57e901e1e6af2305f39aacc4f701d293abb5187a962aca0054b2b686e8549e2e"
+    },
+    {
+      "file": "monster-31.html",
+      "sha256": "cd87b0c8ab022c081499e9b204fcaf22a9d3c04e228e305421e3478d86ba4e2a"
+    },
+    {
+      "file": "monster-32.html",
+      "sha256": "62d16b0ac4f153ed267637c3e29a29a52a5e08b72061d65c4858de95656ad2f8"
+    },
+    {
+      "file": "monster-33.html",
+      "sha256": "8d9eda7d5382d6ef10546754c33275cf522f062f8a17f2722ad4f0ed371bc640"
+    },
+    {
+      "file": "monster-34.html",
+      "sha256": "3fd0f03e588ae4f56018c863b16181e24ef729d33baa74e8f3c7f9979c601047"
+    },
+    {
+      "file": "monster-35.html",
+      "sha256": "b9b799760e33a7c501a2608cce971cfd4aa20743fc37e99294020ca1fc93f824"
+    },
+    {
+      "file": "monster-36.html",
+      "sha256": "7ecbab8452602641d2f24b7586f7a85cb524177a142a82bad3f9e6de6941aaed"
+    },
+    {
+      "file": "monster-37.html",
+      "sha256": "0ab2362cf8efb9ebb41524d0e1bf10d789c69a04379aa1c56d8b6dea9a632b6c"
+    },
+    {
+      "file": "monster-38.html",
+      "sha256": "adafd798a7403dfb280a07aaa9600c029153b68e05997deb75d8b6c9d954885d"
+    },
+    {
+      "file": "monster-39.html",
+      "sha256": "fe875220c74c5fbbd3d5fd5dbda01f67ff42e43669e0caf50c9bbbcf32c54847"
+    },
+    {
+      "file": "monster-4.html",
+      "sha256": "3b48a4c875b34b8d4beebd1c8c42f8ab4da239dd13e16a0074d2631837583af0"
+    },
+    {
+      "file": "monster-40.html",
+      "sha256": "5d940f2d2252e7ecf61a9e83a69d1e99e7e896893a4871b133ca85da42e85ae7"
+    },
+    {
+      "file": "monster-41.html",
+      "sha256": "bd7f82fe2d4fdf6913071bd9b62f4c9cd98b0dca32e0bdef4dfae3bafc5bc989"
+    },
+    {
+      "file": "monster-42.html",
+      "sha256": "d82a97adb67fc3b05d33ad46ba4958df820b89cf4785b12b2352e326b0ccaaf6"
+    },
+    {
+      "file": "monster-43.html",
+      "sha256": "d90e6fce1989c3f95f6f69831edf01045706e13b7649d56a6776aaedf11dc24c"
+    },
+    {
+      "file": "monster-44.html",
+      "sha256": "bc8464e2a8a85934b5b90d5119f428e2f1b8301222751137f16d76ccf2c7b491"
+    },
+    {
+      "file": "monster-45.html",
+      "sha256": "d170f9eb1942d66246d366967432783c47a77584a9ac98650c1c504362fca320"
+    },
+    {
+      "file": "monster-46.html",
+      "sha256": "af544c5f36e630367495bb3bf3fadbb8be8c7ea07e666a0ac1810021ee4ca0b8"
+    },
+    {
+      "file": "monster-47.html",
+      "sha256": "d7a941e1a6361dd09b0719a1cad41d6e3d3d8ff405eac9b5904f16818e0d6437"
+    },
+    {
+      "file": "monster-48.html",
+      "sha256": "aca182fed74921acdad0e22798e80962091d6e31b829a1a42fde1e7a3313aaf8"
+    },
+    {
+      "file": "monster-49.html",
+      "sha256": "d6733e498363ec7d038dcd680f3d6028956ecb3e9ec9d8e7584f780a24e5eb55"
+    },
+    {
+      "file": "monster-5.html",
+      "sha256": "cffb30fbd10aec317f99d9867453e1db5da46e6d2d9a428a284968d09ddc5608"
+    },
+    {
+      "file": "monster-50.html",
+      "sha256": "311bc2aab18de9e974f904b6fd3e99ee05b44637c159c48e019fbbd9c805740f"
+    },
+    {
+      "file": "monster-51.html",
+      "sha256": "b04aa91d277ad89606796ddcf87612ec8dc6009c9e270d5f8b3ef22e7e213b3f"
+    },
+    {
+      "file": "monster-52.html",
+      "sha256": "90c7d857011fe832b019a5b21e803c9135b0d320cbd375e5949a3c86c8b61548"
+    },
+    {
+      "file": "monster-53.html",
+      "sha256": "79c98827c21ad8bccf5039f2e9ec75f3d7898b6dc46ea61667e88f0c8db11467"
+    },
+    {
+      "file": "monster-54.html",
+      "sha256": "876d4fbd8c7448cd36bc1b22708398e228193d64d5f8781ba6394967827044db"
+    },
+    {
+      "file": "monster-55.html",
+      "sha256": "db0705a69be8273ab64fb5839f54e78bd70487e7f4fb41f6b3943a2529ff0b87"
+    },
+    {
+      "file": "monster-56.html",
+      "sha256": "297985d61310799a186d48f5f877c5ae3bcb5a4a8729744e912baa6620dde945"
+    },
+    {
+      "file": "monster-57.html",
+      "sha256": "d4d141aa8acb68ebde2bec0bbc2a1a4e86ce313da40a32eb08f15bec234019a9"
+    },
+    {
+      "file": "monster-58.html",
+      "sha256": "4de261cc04bc1e89c1a91257bf6f28e9b54cebff5d2f9491609d915bbdf25828"
+    },
+    {
+      "file": "monster-59.html",
+      "sha256": "333c43c884a8fca916e9f56ea09921b82b90e7e3f21744563e34ca39e3366867"
+    },
+    {
+      "file": "monster-6.html",
+      "sha256": "d731f5517c9413a4719af39f5b5c2fd3556a626b44791e4c13ede8de76134dd4"
+    },
+    {
+      "file": "monster-60.html",
+      "sha256": "67feb6c686d69486e31244431b4de8923d4eccaf186d622f95586ccf7234df13"
+    },
+    {
+      "file": "monster-61.html",
+      "sha256": "693a2e5df0cf8b305eb232a71042292c861e63422777adf36ec6d1700f1903bd"
+    },
+    {
+      "file": "monster-62.html",
+      "sha256": "4d9f5f7870c236f9b43ce8b75307d4f2180a12740c191da16ef8063d2a6e1381"
+    },
+    {
+      "file": "monster-63.html",
+      "sha256": "dc3e6c0a5761df930075e626363b23709c2af9d53906053feaf92b4df2cd628d"
+    },
+    {
+      "file": "monster-64.html",
+      "sha256": "32075246ee1506a5b6449129e167ed1bb27bbf96414445515a8c8c115b00fd88"
+    },
+    {
+      "file": "monster-65.html",
+      "sha256": "67722dbe1000ed91d733c37ee41bd9103f05dd25c1a0c67806685cf72860e65f"
+    },
+    {
+      "file": "monster-66.html",
+      "sha256": "d7fc92eae5ce2e53663d07d618b56cb1f6f421645fd5b6c4ac86be9299e80d7e"
+    },
+    {
+      "file": "monster-67.html",
+      "sha256": "ee3dcf9a4d10d711013f759ec729b0826d93f3cd0fa6ac99005a680b7f914c26"
+    },
+    {
+      "file": "monster-68.html",
+      "sha256": "2584938974145cd1a7ceb8030ce2fc98b193e0d49570b4cc29b83ad4134a78d7"
+    },
+    {
+      "file": "monster-69.html",
+      "sha256": "02eed892e8554ba077e76a7db6458a2660f659ab3133398e5ceaea8a48c34015"
+    },
+    {
+      "file": "monster-7.html",
+      "sha256": "2c28f17be4da9d338cdb4ede58c1377cf6abe5dc83b7128198fdbffa0ea0a7f4"
+    },
+    {
+      "file": "monster-70.html",
+      "sha256": "c5f41dd5f9548004d53d8a66eeb464e83474913340f14773bafd91ef0d5dd0a5"
+    },
+    {
+      "file": "monster-71.html",
+      "sha256": "c1cc6cb248a18aeab98c6a25efec4c78eeed95f0b60ddcdbd7d2247535aa590f"
+    },
+    {
+      "file": "monster-72.html",
+      "sha256": "eb5111b4b43fbdcbb939fe66ccad2f0e8ac75f6bced6677ed91c3e2cd1c3daf6"
+    },
+    {
+      "file": "monster-73.html",
+      "sha256": "19b07d520a80df2022f0ee93a194764056a85b071dd8333fed70fd6154830603"
+    },
+    {
+      "file": "monster-74.html",
+      "sha256": "fe4b7583e1b660ade6b40c11883d3746956660a539269e61426099cc91f151c6"
+    },
+    {
+      "file": "monster-75.html",
+      "sha256": "e9c674bd850d787f944123a7a72a1e6364cbe91694f0f13696ce1cb904f49339"
+    },
+    {
+      "file": "monster-76.html",
+      "sha256": "59b5347d6a36d7a62c978d0b91b111490f4ab5383084258d89a9ba054f428f0b"
+    },
+    {
+      "file": "monster-77.html",
+      "sha256": "edbd949916fe8c7686d61027202feee37975866d06ea0429bb8a42a86228946a"
+    },
+    {
+      "file": "monster-78.html",
+      "sha256": "3d69d9eaad1f61de0f0fd3509e031dc30151baa79e563c7bf194352fbe7e6c24"
+    },
+    {
+      "file": "monster-79.html",
+      "sha256": "f3c4c4d65b27e0ad385f309ee12c32b841f0bec1081f68bc8def6c25336aa002"
+    },
+    {
+      "file": "monster-8.html",
+      "sha256": "9d528346529b7cae04cee92e65fdde4c8813b04fcf350461c88b70367a6011f5"
+    },
+    {
+      "file": "monster-80.html",
+      "sha256": "033a28dc1dd6003dad0aff83a75ebf81168204f1851418982a11f7f9edbb0d01"
+    },
+    {
+      "file": "monster-81.html",
+      "sha256": "d86718f5e49973aa5cbdfc398ee6746fbe28565d9a0efa8e51df5eed1087de2a"
+    },
+    {
+      "file": "monster-82.html",
+      "sha256": "11c4ff397adc87682a673c299fd6145511cbba122cb3ba28daa12aa4467dc97a"
+    },
+    {
+      "file": "monster-83.html",
+      "sha256": "535629fc460d386d66bb5764e463eafb165bcbaf3faaae63425ed965ea29dc21"
+    },
+    {
+      "file": "monster-84.html",
+      "sha256": "8e0afffb4b61bc24e362fdd64b8d788032ab23d56d3954519ea9a8a979fdddf0"
+    },
+    {
+      "file": "monster-85.html",
+      "sha256": "59073ccdd6a97ab0b92d1a290a854ca0f762d08c4944064adf6b01de4034312f"
+    },
+    {
+      "file": "monster-86.html",
+      "sha256": "28111a37efbcb39c18bc3977f8362aa772418387db2c6185276bbc8428e91eaa"
+    },
+    {
+      "file": "monster-87.html",
+      "sha256": "cea90e8f6cc18f33ffa11235d90d573cf2382a4100d04cef43116040ec0f773a"
+    },
+    {
+      "file": "monster-88.html",
+      "sha256": "dff696736a8e373cff77b36e2735039f0987d5fbf05b5489653e858e5382074e"
+    },
+    {
+      "file": "monster-89.html",
+      "sha256": "75605a611e3fe6a7fae0c0fe9e8db0120a76d7ab5307ed0444e0d0959a610799"
+    },
+    {
+      "file": "monster-9.html",
+      "sha256": "baf594b3f535c7af902ec9276202aad69be6c09b75c3eaa9ad39b1106794cd0c"
+    },
+    {
+      "file": "monster-90.html",
+      "sha256": "1cf039646495e11cb7b33be58f7cb94911715be81258fa7dc969599b0e2af6c6"
+    },
+    {
+      "file": "monster-91.html",
+      "sha256": "7f8491c67ebe8ce0d2e07278bc0de870081230e8529f0ca27fff51a33dfa0977"
+    },
+    {
+      "file": "monster-92.html",
+      "sha256": "869da7007f7fd6357155c6340fc1b392c5b51d9ba9e17ad7ca1b1e003c55b740"
+    },
+    {
+      "file": "monster-93.html",
+      "sha256": "df99ac8b7c0d99b2f7ceb2a1006076389d798eca5af81e666fe92aca6b8a9088"
+    },
+    {
+      "file": "monster-94.html",
+      "sha256": "c15dd79cffb3a12d3b5f1369ab5593b6534c4ea21b95c7571952a26096093979"
+    },
+    {
+      "file": "monster-95.html",
+      "sha256": "a5303a84929582da72bf21f5968749670426ca88bc63b967320a506af4064e43"
+    },
+    {
+      "file": "npcs-1.html",
+      "sha256": "36dd91178ddfaaef00db348756dba4251739a5d9d94fc00bedbe436204af9865"
+    },
+    {
+      "file": "npcs-10.html",
+      "sha256": "786fd6e20dfd9d25c204a218643a333e63486e652bd9b710bc1aa014da41f26e"
+    },
+    {
+      "file": "npcs-100.html",
+      "sha256": "3ec9b4c450d2abdb02053129008861b6a1e48f5b8c65847da69e1b33239545d3"
+    },
+    {
+      "file": "npcs-101.html",
+      "sha256": "d13dc86a2fe5b1822ed34419c9cd26119a59cd646eda4214f1e73d6afd8da552"
+    },
+    {
+      "file": "npcs-102.html",
+      "sha256": "341d460963c2796f43d949c51d55e739cb77dc0be568882e79cd3dd86fa36429"
+    },
+    {
+      "file": "npcs-103.html",
+      "sha256": "774a17a867478e2b2ee3e4637bbb331b128ba3e5d5d9d658ea263898216a0bab"
+    },
+    {
+      "file": "npcs-104.html",
+      "sha256": "c89478f0044693452df572c6340f2576c9854c9f7d63c4c94c8e4f51836e7cea"
+    },
+    {
+      "file": "npcs-105.html",
+      "sha256": "2d62094bad45dac741a2c4df1f14cd91a984b74eaee6d6118c485cf2a4372949"
+    },
+    {
+      "file": "npcs-106.html",
+      "sha256": "4814bb07f3533df70fcbd9383ea7b4c988a1523257cf3b9c6f4313947ee41e24"
+    },
+    {
+      "file": "npcs-107.html",
+      "sha256": "7039cae6e2adf403be51de65ea432b75bc68a52036791671e2cdc8b7faeee3d8"
+    },
+    {
+      "file": "npcs-108.html",
+      "sha256": "d3c593164c483ce23eb3611f32daba808a4e1f83c15ee2e5043ae416ff593fba"
+    },
+    {
+      "file": "npcs-11.html",
+      "sha256": "8b3d7dd780fb49ad3fe0b0e4ab822abaeb2537f199963730a8b87a0daec95e7f"
+    },
+    {
+      "file": "npcs-110.html",
+      "sha256": "7097606a238631c119bcfbc2d794d12750a01a480373aae7303e4539c59b69d9"
+    },
+    {
+      "file": "npcs-111.html",
+      "sha256": "31fd9caafd09cbdfa7436af12f0581d2eac51e79d1f23b41a29d8056a35b7711"
+    },
+    {
+      "file": "npcs-112.html",
+      "sha256": "b568735047b655244b7e1ba95b6ef96917200358b1e828c015b81760fed16de3"
+    },
+    {
+      "file": "npcs-113.html",
+      "sha256": "fb4bf7acf14a139ba4b95e53cd67797b2aa713ca530a3fa10e12fcc549019d5d"
+    },
+    {
+      "file": "npcs-114.html",
+      "sha256": "67f89a6b8d5a045f0ff21678ec100339ac9f9ada00050df3bf8f424f9791a3ce"
+    },
+    {
+      "file": "npcs-115.html",
+      "sha256": "c5d1367939e974d4808deced11c2711b12ce1c7ded12b4118075f69c56d27e22"
+    },
+    {
+      "file": "npcs-116.html",
+      "sha256": "78fe777d5c4b5200d8ab10282fb5cd295315d8663c60ddd3a187bfd9696629c9"
+    },
+    {
+      "file": "npcs-117.html",
+      "sha256": "d96061b81088d2e223fd26d6269251e3f80743f9e6ddea3fc2d7e6bc515cb7de"
+    },
+    {
+      "file": "npcs-118.html",
+      "sha256": "29dc5c807cf6e334e6796a5a576dbf870303a53eb4b2132d3821b966b2dbee61"
+    },
+    {
+      "file": "npcs-119.html",
+      "sha256": "8374cf520429e35b0bea1e2dd637e0bf90322be74d8268939dc4e20f041f725a"
+    },
+    {
+      "file": "npcs-12.html",
+      "sha256": "06d4d444c6d3c9b71337b3998282e1f3599b06062f50137ea4ce2bc8b0d5ce48"
+    },
+    {
+      "file": "npcs-120.html",
+      "sha256": "b29f80d76aa5a5377af8ab40ed16790421f1cd912db892b693e343e45eff444d"
+    },
+    {
+      "file": "npcs-121.html",
+      "sha256": "88d8381a6d2e9ff122883043ace7ceaf44579dfaa8da6a68c5e102269cf775ce"
+    },
+    {
+      "file": "npcs-122.html",
+      "sha256": "28efed71e41b48d28decfd63cbd28d10fb21ebddc0e9a97653d7eba07df51ba9"
+    },
+    {
+      "file": "npcs-123.html",
+      "sha256": "ba0d2687584464a89a5a6ec41772d928f0c5e0b6f3710bd447faf9cd67129683"
+    },
+    {
+      "file": "npcs-124.html",
+      "sha256": "0d64584e712dc19dcfc3da366ae381c5cd1dac2bb6fcabd8a6eb6a5491fc3482"
+    },
+    {
+      "file": "npcs-125.html",
+      "sha256": "7b4dadbf5aeefe4c76f44c1e147797f45cd9e47aff97bbdbd35b49505782ebfd"
+    },
+    {
+      "file": "npcs-126.html",
+      "sha256": "0caae0a59fa19afbc4849d615fcf76351a85b291403c3396140aed978e92c3d3"
+    },
+    {
+      "file": "npcs-127.html",
+      "sha256": "f39175ae9b4f5082385a36ba8ebbde080b5ef1e7b6a3c349c6feab8371c17f0e"
+    },
+    {
+      "file": "npcs-128.html",
+      "sha256": "6a27adb04e68e8ab6ddc262003e474a56e8c6311f37774647eb5cfdab815448b"
+    },
+    {
+      "file": "npcs-129.html",
+      "sha256": "33844a94400e403d8a210c4b906f41c845948594a8dac062ea8fe528757676ea"
+    },
+    {
+      "file": "npcs-13.html",
+      "sha256": "d4df0e8c55f0fdaca9e202ee413d19169386134dd0d1712b0362eb98c96ad2fa"
+    },
+    {
+      "file": "npcs-130.html",
+      "sha256": "7b9f2e1cf2d33bb47660217279676dca26d22f0ae11026703396fc9a47342b28"
+    },
+    {
+      "file": "npcs-131.html",
+      "sha256": "d60bc9ddc3fcadcabad33d80cac23a917caa8248b55b3f4133bea9ddd0eeee35"
+    },
+    {
+      "file": "npcs-132.html",
+      "sha256": "5b5afd145a420eed216a79716c768bbf111ced4407a8bab22ed7c6a4ce21e4f4"
+    },
+    {
+      "file": "npcs-133.html",
+      "sha256": "71a24dea931032d220816e861256d34fa8f7f2e56e79f2dd810bba10b2b4add1"
+    },
+    {
+      "file": "npcs-134.html",
+      "sha256": "84bb5e3dec0d8ef3bc332588fef34062d7210ab299beb5b44d49f84bcb11f731"
+    },
+    {
+      "file": "npcs-135.html",
+      "sha256": "c5d8def418757b4f4d03cf66159d94d9cd4cd7265fb424e596e3cf7bea82be8c"
+    },
+    {
+      "file": "npcs-136.html",
+      "sha256": "a6b34d966f8bb8fb6f0939bf4c4bedc689bd6850049bf987053965d254cabbcb"
+    },
+    {
+      "file": "npcs-137.html",
+      "sha256": "e29afbebf37ddc246b170115a7143b039f0d6eb7b5c0a8e7aeb295c14bdd4e4d"
+    },
+    {
+      "file": "npcs-138.html",
+      "sha256": "57c202b376944f6399998beb168b87adfebb8d20bfb602fffb029031e808ca10"
+    },
+    {
+      "file": "npcs-139.html",
+      "sha256": "656cc825edfd3415a5eb38f7795d66bc63076b1d3857a9e58d576ef85590aa3d"
+    },
+    {
+      "file": "npcs-14.html",
+      "sha256": "631ed93d87b888bff0bb02ec10959c69edfa8e2cef04eec9220d01039b0fec69"
+    },
+    {
+      "file": "npcs-140.html",
+      "sha256": "d79a4475b790e08a21b8a2825f9f5c205c6e1dd3f517a0bf49d887434b4263fa"
+    },
+    {
+      "file": "npcs-141.html",
+      "sha256": "884815224cdafdb39c75c363d182e82c89d368e2ffa1addac3a7c95b92c0e015"
+    },
+    {
+      "file": "npcs-142.html",
+      "sha256": "d50fac75d22f551ea9228616268ef584a89349ffc2c0ffb66d28b8f7196d5e42"
+    },
+    {
+      "file": "npcs-143.html",
+      "sha256": "7f109ba1551508b5358b521d05bc051f8ef9a5401d0dcb01d134b708a1a5e17c"
+    },
+    {
+      "file": "npcs-144.html",
+      "sha256": "3c8be8059232424e3d28af570a01b5f66ac64919a6afda372d45be0143d3e36f"
+    },
+    {
+      "file": "npcs-145.html",
+      "sha256": "66e8f70737a4a0ed4223a35144cc9cf59a516127249efa74324bb8415e73f15d"
+    },
+    {
+      "file": "npcs-146.html",
+      "sha256": "186ea3451b5944db96dcab6c9a28135951a02751aae3cde6a5c9ad16128d3a04"
+    },
+    {
+      "file": "npcs-147.html",
+      "sha256": "eb81033ca47c7c5a0548659b4266fa74d436217d36313f3ada831f41e80e89c8"
+    },
+    {
+      "file": "npcs-148.html",
+      "sha256": "0885b75793169472827d9b5981b8610d82cd868a0a9c72ee98b604d1c0d57952"
+    },
+    {
+      "file": "npcs-149.html",
+      "sha256": "8d9edfa77b569fc9bd9bde2441337bbd1472f269a56ac4d8fcbdde58ad36cf8f"
+    },
+    {
+      "file": "npcs-150.html",
+      "sha256": "732ad76af9fd8a5ea619d5d799128c8c9251b65689aaa33adff7b4e6698af474"
+    },
+    {
+      "file": "npcs-2.html",
+      "sha256": "0d3aaf55c191d734c994ad5218b1d1b10e31be5687062924c6978332fe7c7df5"
+    },
+    {
+      "file": "npcs-20.html",
+      "sha256": "d33ab16b674ffbaa6e0df27adb15f78b59f88cd40a93b65af4bfd52c26419bbe"
+    },
+    {
+      "file": "npcs-22.html",
+      "sha256": "e1f05cee40cb7356ce5e43f0054c63e011f778a124c3110705887fface153e12"
+    },
+    {
+      "file": "npcs-23.html",
+      "sha256": "9660f6f1fdb9ace43d9b5fb3e7d67c33e9789ae6c3cd4eb6d8f37baf602f495e"
+    },
+    {
+      "file": "npcs-24.html",
+      "sha256": "435f47d62c1038cd90578ed7691bc9d4d3bc2681d42f330b5eb7d998f67a1b37"
+    },
+    {
+      "file": "npcs-25.html",
+      "sha256": "41df27a0bb968a1d777d2e2ad35ba255136c334ab38ad712a1385f9435a35811"
+    },
+    {
+      "file": "npcs-26.html",
+      "sha256": "a3632f6e973105f910cf81107e4311eb6e4a6e20ed9bdbd6917745649e2221c2"
+    },
+    {
+      "file": "npcs-27.html",
+      "sha256": "e417b74387153870d14a1b89335994738b9866876d2266b6ebd790bbc5962ff4"
+    },
+    {
+      "file": "npcs-3.html",
+      "sha256": "acf65371f090a7cdc1a7cc30694552d4d3b85618dba90bdc6e0c950536485c1f"
+    },
+    {
+      "file": "npcs-30.html",
+      "sha256": "df22380b827070b84c2854b3959c1f8a144275204aead19befb75bf1501d3380"
+    },
+    {
+      "file": "npcs-31.html",
+      "sha256": "4cf8f4d7db9435428c1fa2076a13a54a882b74f75a7a72892dcca1bac6720929"
+    },
+    {
+      "file": "npcs-32.html",
+      "sha256": "29c191ec740057ed3048bcde1d44d95f6a1a005cb83d4b015e3ff8f5b7976ff9"
+    },
+    {
+      "file": "npcs-33.html",
+      "sha256": "5258d1f2eea4b1be348d104af478b6d521bf8e1e71ecedf98199b27296f5bff7"
+    },
+    {
+      "file": "npcs-34.html",
+      "sha256": "a083cdedeebaff9fcea06143c64ef8575b054183b2851e134df1ff4e7bbf6505"
+    },
+    {
+      "file": "npcs-35.html",
+      "sha256": "06d5b58ea2d6b5a05f73407da23f36ab963470d36a79795138617c6e51d7c618"
+    },
+    {
+      "file": "npcs-36.html",
+      "sha256": "5e54d9e6a2144b5a433855512764e6e97bd298b99f08c7654f14ea9b8db7eac7"
+    },
+    {
+      "file": "npcs-37.html",
+      "sha256": "652ad405ff09f2eb717795c8b46c878ca69d4eb287f4cceffdbfb4f398f13fac"
+    },
+    {
+      "file": "npcs-38.html",
+      "sha256": "fafaef3f91f0ce3295c81d3e0ce465d436a26478dd56dcd3df2cc958aaa5c9d2"
+    },
+    {
+      "file": "npcs-39.html",
+      "sha256": "5b8e2c8cfc00fbdeace7a06e667fe2c73645d452b4014821ad787baa36ddec29"
+    },
+    {
+      "file": "npcs-4.html",
+      "sha256": "9381366535c52d2aeeac29b204d9908171e80a0caa9ece80b178af4270d0543f"
+    },
+    {
+      "file": "npcs-40.html",
+      "sha256": "7bbe4b03beba85245705ab5ba08bb37b839aac01a19332e60f1d1eb07687b103"
+    },
+    {
+      "file": "npcs-41.html",
+      "sha256": "90a13068f6314821c652a4cd4599859276ce4b42eb0c6494a3a1670bf03b3f14"
+    },
+    {
+      "file": "npcs-42.html",
+      "sha256": "b9b18097dae330ae2b4f979b43917d6e2706b868c5b124da3944ed10f6747dea"
+    },
+    {
+      "file": "npcs-43.html",
+      "sha256": "04ef800004c4bf3e11b34cbf4bcd529df1c44551f39a29cb888937723964bb69"
+    },
+    {
+      "file": "npcs-44.html",
+      "sha256": "dcbc17012e7c20be418e2183372ec4345507c6b472f2a40c1b60b090ec4bfdc6"
+    },
+    {
+      "file": "npcs-45.html",
+      "sha256": "e7fa58c706410e603183bbdca6214ac72c3a56ebb7e8f239fa78fa84aae89acc"
+    },
+    {
+      "file": "npcs-46.html",
+      "sha256": "65042de2c34cb4b484f56e264766f2742da19a2826f87084136d61547d3998e1"
+    },
+    {
+      "file": "npcs-47.html",
+      "sha256": "99f13bbacbd18cfcea553b424df7a1114353f1d246f4b0e9b0d4537739420ecc"
+    },
+    {
+      "file": "npcs-48.html",
+      "sha256": "f98fd2a1729d967ceb27d12d468515e070ac204f87922fc76b046e53383c0ed9"
+    },
+    {
+      "file": "npcs-49.html",
+      "sha256": "5d901678e3acb2720baeb730523ad0693aa5201ebdd82161f521fc04ed9ed872"
+    },
+    {
+      "file": "npcs-5.html",
+      "sha256": "682e2e68004762502ad5a52e8b1dc22c5bc3cfeb90ff94dbc22a8ef026a5c52d"
+    },
+    {
+      "file": "npcs-50.html",
+      "sha256": "8c7283cb5ef2dec65af693ae7c544fbf75a1feae8b1c3d54c44d635c645d0833"
+    },
+    {
+      "file": "npcs-51.html",
+      "sha256": "45ce8545df1b339686103fb04586563f9d8d6f5c099c3e04d8030dede0164085"
+    },
+    {
+      "file": "npcs-52.html",
+      "sha256": "50b640e6b5a8e97808483b4ce1700b9a695bb0d24329bf363fedada6ae3b25a0"
+    },
+    {
+      "file": "npcs-53.html",
+      "sha256": "fd16f65aa77c1d56a618e92c18a3232e20581451062b5973beae3a07f824a04d"
+    },
+    {
+      "file": "npcs-54.html",
+      "sha256": "98908a25844a084b8fc7dda0f4ac0ff49f8654ba3d0ce52048e2630d59d68a98"
+    },
+    {
+      "file": "npcs-55.html",
+      "sha256": "36f73436b2a7fd31e5173a1769943f9c2d9be511b44db7f7912a9ad532f79f15"
+    },
+    {
+      "file": "npcs-56.html",
+      "sha256": "9007aac1a226e0008c4556f50b781bc6532401b1bb6290f163b03fe1aa2adecc"
+    },
+    {
+      "file": "npcs-57.html",
+      "sha256": "e1d1efd6c277cb07df875c89aafbdd9a2aac416a8beac0352154494ba33f3613"
+    },
+    {
+      "file": "npcs-58.html",
+      "sha256": "78eaf0a892140af8ff93306b644dde8770a07bfcd08823e0ff4b57f0bf33ea51"
+    },
+    {
+      "file": "npcs-59.html",
+      "sha256": "e45bbf83a419b2affeb5e39bb35de8b54fd0de439ce3cd702810e22e51d0bca4"
+    },
+    {
+      "file": "npcs-6.html",
+      "sha256": "be81594460afa641eb24445dde04d5f6493440df6533f33bff5a3e391f64ff50"
+    },
+    {
+      "file": "npcs-60.html",
+      "sha256": "9ea282c4b45fb4ca95eff3a252881253b4c201c8c4e0f20c05ff3fa189a7dd62"
+    },
+    {
+      "file": "npcs-61.html",
+      "sha256": "828b85df99d04f52380ab592ea7b56b903ba5d16ec5be30ea992ac0c0331206d"
+    },
+    {
+      "file": "npcs-62.html",
+      "sha256": "20e79352947962ad7b133fb940de78de0512256bd87b8a86e7c5b6be5d5add5c"
+    },
+    {
+      "file": "npcs-63.html",
+      "sha256": "0dc25661bee012999f0d21ceb08cfe4702b4402636ed248792226d07c5040c42"
+    },
+    {
+      "file": "npcs-64.html",
+      "sha256": "f110127f94eb958e54371b1be4f7b52ac5df11a1ef898efab58f2ab8b1f4b3bf"
+    },
+    {
+      "file": "npcs-65.html",
+      "sha256": "cf76ef05af58ca4d970ce1775c445a8a5282d6e2654af16053a5b9a17ef20ae5"
+    },
+    {
+      "file": "npcs-66.html",
+      "sha256": "c9ea8b6088a99baeb715726863bb4181b2fb49029c8faeab487656bc9cd987e0"
+    },
+    {
+      "file": "npcs-67.html",
+      "sha256": "8e865d86438730813920fb10e19f679877e3290bd3bdd3ccd491034aa52c4e60"
+    },
+    {
+      "file": "npcs-68.html",
+      "sha256": "4ec36d35edbc368fe6827110346582556e92f1570e2b41bd01050e159f36c2fc"
+    },
+    {
+      "file": "npcs-69.html",
+      "sha256": "c4aa7b69ec8f4d05e90cfa9a86084cc45c9f9afb2c75757743d7208bd72efd01"
+    },
+    {
+      "file": "npcs-7.html",
+      "sha256": "58bdee8cde046ccb467e1ea899e865e47b8b32a640a36efb0dd686983ea0dbec"
+    },
+    {
+      "file": "npcs-70.html",
+      "sha256": "7ced66a3eb362dccedefa312174193a6b86d39dabf360891e6d97841137be53b"
+    },
+    {
+      "file": "npcs-71.html",
+      "sha256": "57c019d78925032ae5b83a1b5699e95d4835fdd9fc05c0db7edf3b09d12453b7"
+    },
+    {
+      "file": "npcs-72.html",
+      "sha256": "4c182e2840593892e9844e5bd687f2ee7dc01c5a6062c42a6aedb2590f204dc8"
+    },
+    {
+      "file": "npcs-73.html",
+      "sha256": "1f7fdccd53abdce87cc80dab1531dc68e2873d5cbe70a84a11b360845eee7f1a"
+    },
+    {
+      "file": "npcs-74.html",
+      "sha256": "f9762d1e3366d6451b416092edfa26a3afaab03e64af7152583e2963ee2c1e2d"
+    },
+    {
+      "file": "npcs-75.html",
+      "sha256": "a377addcd6129199f34f179fcd3c09a7ccad06891389e5e9d4a75295e359cebe"
+    },
+    {
+      "file": "npcs-76.html",
+      "sha256": "db1165c3ec61db6431e4b03f66b57daa3f92cc6c139fe91755423f5d99b809dd"
+    },
+    {
+      "file": "npcs-77.html",
+      "sha256": "17067f945b261e33943fb550ddad830bc4f68f46cedc74d017d4d0fceb68aa5e"
+    },
+    {
+      "file": "npcs-78.html",
+      "sha256": "6cc181673c2a033a6546fd697b47ee11497144a7138917d76c51c7a6f42afc8e"
+    },
+    {
+      "file": "npcs-79.html",
+      "sha256": "b2994b85874f026b75d56aa44b48e9c1e2d4ce312aa421e4dfdee9b247d3a3f9"
+    },
+    {
+      "file": "npcs-8.html",
+      "sha256": "0e8722d34cf3ab6aae9507f51b7a0fe008fbbf38f2341be7c0bcd47a91d1e814"
+    },
+    {
+      "file": "npcs-80.html",
+      "sha256": "dc888d1407ebfe8aa2416ba577eb751cbc13fd7cfc82aedeed9df9b69ef6fe7e"
+    },
+    {
+      "file": "npcs-81.html",
+      "sha256": "fe7cf3d6cf3fe340d441cc77fe8c69086ccc1b2b1d09050adedd0c505449536b"
+    },
+    {
+      "file": "npcs-82.html",
+      "sha256": "8f97054adc328ec8bad9120df0b7ae174f278d15ae6de0af5105606c89c5289e"
+    },
+    {
+      "file": "npcs-83.html",
+      "sha256": "958c85513c8834823bb6fbf9af44e4591d6148e59a43963281b108065c86c410"
+    },
+    {
+      "file": "npcs-84.html",
+      "sha256": "feb465ff737913209f2e96fed814469b8486b5133dd76da4d47d3a1246f3a3ac"
+    },
+    {
+      "file": "npcs-85.html",
+      "sha256": "d1980171ab598a35287200283e4a0e5b52027eed0066456df36cdb331ffc665b"
+    },
+    {
+      "file": "npcs-86.html",
+      "sha256": "b7592c001a3c539517b416ebb034d990bbbe702ebb43346f8033ca3765ee1510"
+    },
+    {
+      "file": "npcs-87.html",
+      "sha256": "c054f87e977e9a52135d5674a2559193e248f02af6e931102db32d4dae4fe110"
+    },
+    {
+      "file": "npcs-88.html",
+      "sha256": "c43a27680f15e73f4a505a79e36749133cfa7aee35470876c2413d83b480b750"
+    },
+    {
+      "file": "npcs-89.html",
+      "sha256": "a55afb910397ccdee590bcb51eafcecaf2275b30191fc1d2f2c6cc4c2006d9ce"
+    },
+    {
+      "file": "npcs-9.html",
+      "sha256": "d2e60ccf29e3775e6d196f62b6c88a5d282312b3e52aea21157493d6f811e580"
+    },
+    {
+      "file": "npcs-90.html",
+      "sha256": "f1d06fd21de418e460cc294078ead5ce59a6f8dbab365c37601d3eefdcce9890"
+    },
+    {
+      "file": "npcs-91.html",
+      "sha256": "820050a1d3f0acaa436470e5733eac77f457663d7c2b9ab02edb6b6c3177eb02"
+    },
+    {
+      "file": "npcs-92.html",
+      "sha256": "e199ffb489ccbfceebdbcb79bfe2b0da1eb2ac15d53b202599fa4dab70fecc5d"
+    },
+    {
+      "file": "npcs-93.html",
+      "sha256": "1cbb17598f61140726e2777aa319dbd6c4fb8975fa3d0c401a59fb2243da66aa"
+    },
+    {
+      "file": "npcs-94.html",
+      "sha256": "de01b5aa5bf5cb4e25ceaeb3c3765028aa609a636c1456cf04a363204613d03e"
+    },
+    {
+      "file": "npcs-95.html",
+      "sha256": "61f00872dc2867ff8059b6b6c44395224fa5c94e39ff046806c07e948942aa2e"
+    },
+    {
+      "file": "npcs-96.html",
+      "sha256": "756bf9c109a2b580d02886ac46db9a186231da1c633429b8e8f43f2b59145b6a"
+    },
+    {
+      "file": "npcs-97.html",
+      "sha256": "d160243906970206a5a959a208d785414046101a0c72161865d02620b8e5999f"
+    },
+    {
+      "file": "npcs-98.html",
+      "sha256": "a6b96feb631590cd51df296158b48cb74557a1375aa23fb3c44ceb1e35b98779"
+    },
+    {
+      "file": "npcs-99.html",
+      "sha256": "bdef1bb795f55d6d8a2c4ca4558cf09d6bc4e97e8df1944f7cbd59980ad35d20"
+    },
+    {
+      "file": "recipe-1.html",
+      "sha256": "37812fea673d77201e29c0cbd21f3aac14ac5b84e5640f5f58ee2616d92e632c"
+    },
+    {
+      "file": "recipe-10.html",
+      "sha256": "42325808321d062fc8dd128146374ad9ea44382b273ace7dc1f2ac1d7a31034d"
+    },
+    {
+      "file": "recipe-11.html",
+      "sha256": "deb10119a076e576a0e7f9689f600a8fca2cf55ffe3be1b9c34f35592b1fef23"
+    },
+    {
+      "file": "recipe-12.html",
+      "sha256": "4645c709bdb6ca18d7464bd970dc401171cd7e93689d3b66fe9ca151b9e5cb37"
+    },
+    {
+      "file": "recipe-13.html",
+      "sha256": "aa8ab168391010a48328747dab002c9755555933e2beb7112a0eba84bdc38abe"
+    },
+    {
+      "file": "recipe-14.html",
+      "sha256": "0a3b3b90fa3e06d0b1953cc65248c1a3fdf82610a933dd49e1d17c54f0410572"
+    },
+    {
+      "file": "recipe-15.html",
+      "sha256": "9154440d44d98b270cdcbb09e8af616d309b1e45af289dfc329745f62172eec6"
+    },
+    {
+      "file": "recipe-16.html",
+      "sha256": "69b5969e3b19e2adb02c615b0286724113af95130639de61a8c707df22dc4983"
+    },
+    {
+      "file": "recipe-17.html",
+      "sha256": "15cb7b5a73b1cf6f9ccf7f02f0e70cab44b1debf64e70eb084bd4c642a33fc29"
+    },
+    {
+      "file": "recipe-18.html",
+      "sha256": "8261bfd4f4337b7d298dc958cbb856f0dc8e673a150bfea85d56f2093bdc43d4"
+    },
+    {
+      "file": "recipe-19.html",
+      "sha256": "cd0f573b4174a46a73ec3acbdaafad3a33a339760bb17cbd8ed65b656c65017a"
+    },
+    {
+      "file": "recipe-2.html",
+      "sha256": "0c56ed84f4996bd29a1f2fdf3dc02b43519cb71fac1b1bc360a79141cabaaa88"
+    },
+    {
+      "file": "recipe-20.html",
+      "sha256": "323c534a2d69f15b4d361b62c3a4a77a081c1b3d6fea02a08bcf407aff8c0fd4"
+    },
+    {
+      "file": "recipe-21.html",
+      "sha256": "ec5f3264ef31eb8ca9a9a39119ce64f68e8bddfa48bd0946d7584afc50f38560"
+    },
+    {
+      "file": "recipe-22.html",
+      "sha256": "69b89d63377e71962e47eb8e73025cf0e775f12f39a7c1d35881f1fe5ef696f0"
+    },
+    {
+      "file": "recipe-23.html",
+      "sha256": "4f8b1bee6685b1fa8e5551d616b5377608024c5307c9da937c7b3f11a1531468"
+    },
+    {
+      "file": "recipe-24.html",
+      "sha256": "f6dd20eb69a7767bf866c29c3afc4354da663f224a0a6cf0092f8563d63a9364"
+    },
+    {
+      "file": "recipe-25.html",
+      "sha256": "5a486e3a4581dcb79426b8b193c458d5f8d9e5a557a0a2bbaa1b39faa7f72cb4"
+    },
+    {
+      "file": "recipe-26.html",
+      "sha256": "f0b29d8b2864fd8fc85b0c71c1ec808556cb3a48fa5c5ead0824ab0732e5411c"
+    },
+    {
+      "file": "recipe-27.html",
+      "sha256": "9f821398abb9d70c383fd77889e54243e2423a9240940c0703535b4fa2c911e0"
+    },
+    {
+      "file": "recipe-28.html",
+      "sha256": "7a48239cb70e65873f0fb08bce47eb5b49f71b54be33ed00f111c9b43908807e"
+    },
+    {
+      "file": "recipe-29.html",
+      "sha256": "e6526fd8b7a0a221228d2544bd042f0bc195bdb6baf681bcd9c8d3800501cea1"
+    },
+    {
+      "file": "recipe-3.html",
+      "sha256": "89680ec70a9987404d41521867687f6a19d6a4255828e823fabdb09ee94619f4"
+    },
+    {
+      "file": "recipe-30.html",
+      "sha256": "e832f058584e3063056ac7107e4ee2c3604201f213efb42f69d31fe06df96495"
+    },
+    {
+      "file": "recipe-31.html",
+      "sha256": "a7ab0b03d6945920d6d524c1adc4a43e4ede845cbad2d30b31a2bd91d1ae15ef"
+    },
+    {
+      "file": "recipe-32.html",
+      "sha256": "4afa768f744e4a8e8982da6f19ed76288fc492983c29ccb69b7406a9a7e0f57c"
+    },
+    {
+      "file": "recipe-33.html",
+      "sha256": "3a1bb64f55cfba44ce07b512cff38bf9d03f26be8d1b838a772613461c7b3a5a"
+    },
+    {
+      "file": "recipe-34.html",
+      "sha256": "41ae764e317b2b7393e0e07ba11be09054e2f4b7a4f9f05dd275a37a68162b00"
+    },
+    {
+      "file": "recipe-35.html",
+      "sha256": "8111a88c1ccaab0a05721ea933381b473b78fba40f2235c920aeb1e93b072c9c"
+    },
+    {
+      "file": "recipe-36.html",
+      "sha256": "96e7596cbe3d2a0d7a9de78025a1570a7c5aac99ee1da4e0d82b37b194d807df"
+    },
+    {
+      "file": "recipe-37.html",
+      "sha256": "c06d794cfcfd3e31752c611a9ccf516158635461d117b7e54764a5d0ec9a5117"
+    },
+    {
+      "file": "recipe-38.html",
+      "sha256": "672b98416620a6fa69e7002ad726dd97c074deded70f1fcc26537ea5c66ead7f"
+    },
+    {
+      "file": "recipe-39.html",
+      "sha256": "1da4866734407599e8dd425612cb385519499a652db4633c4d42b5624be13014"
+    },
+    {
+      "file": "recipe-4.html",
+      "sha256": "2f5e15475efef4bfad5673a23fa3f14a039e9201c48df5493429379bc499bd49"
+    },
+    {
+      "file": "recipe-40.html",
+      "sha256": "ed7d7b659ce8f291051f80aa97e4ef26fbdf72dd689feb0c9383913abb3852fa"
+    },
+    {
+      "file": "recipe-41.html",
+      "sha256": "04c531a2a6fcd2f811cf7c2b3e65b6558a90a7204d5bcab3c39cf9c6be50661e"
+    },
+    {
+      "file": "recipe-42.html",
+      "sha256": "d455dc44d011dd4dcb21e6197dc1829f38d7d2a1f0112717a1c74a6474f4bb1e"
+    },
+    {
+      "file": "recipe-43.html",
+      "sha256": "5a2c28b2f191a14dc5d48638d618bfe21c6a861b91359e219a4b7acd70a7fa1c"
+    },
+    {
+      "file": "recipe-44.html",
+      "sha256": "5097145dceca659d97a93020ec97a50013167159226ffed86848066e75af43a5"
+    },
+    {
+      "file": "recipe-45.html",
+      "sha256": "38ec84d8e220dcf0d9d3632884a7cf469c270b23b5f961a76649cf3fbf3680a2"
+    },
+    {
+      "file": "recipe-46.html",
+      "sha256": "004aff59e0cfc86858fa46abbf6f7354820a5bc71e63be7f0fb36dddcc286c30"
+    },
+    {
+      "file": "recipe-47.html",
+      "sha256": "818484f952769e0b238010f802f6197b597b7d1c5cdb4e43b10665f85206d34d"
+    },
+    {
+      "file": "recipe-48.html",
+      "sha256": "59fa39c9ff76adc957df38ea6ff3b0aac63b2b78c80c017acfcf2772b37aa222"
+    },
+    {
+      "file": "recipe-49.html",
+      "sha256": "d837b82548e4e426eca906a20662ff247a43dd5ff698b2708235614c53d676f3"
+    },
+    {
+      "file": "recipe-5.html",
+      "sha256": "a90e945b5a20ec8e05310ae903dd20d076736e85c28772577571488f5c74b058"
+    },
+    {
+      "file": "recipe-50.html",
+      "sha256": "45bcfe1683555178508740dd6d22154c04c9b86517a6980c01ca2edb725c897e"
+    },
+    {
+      "file": "recipe-51.html",
+      "sha256": "28a5eff32b1e1d3cfe8ede8dfc1aa3e0f27b82c8eb5a5900f964b6f418e6ad1f"
+    },
+    {
+      "file": "recipe-52.html",
+      "sha256": "b172e4d34ce6d83534f4e31fb7d07c98e9fd41a0c0f6e10156e4674032b27747"
+    },
+    {
+      "file": "recipe-53.html",
+      "sha256": "0e859d3393d20284e372f2f1440319cb276364cd5919681409b1494cdbe77881"
+    },
+    {
+      "file": "recipe-54.html",
+      "sha256": "c513243a5e52c84e96770519b5af94382fe9f9c4a4b75dd3b0aa6648b43a9a9b"
+    },
+    {
+      "file": "recipe-55.html",
+      "sha256": "107d07ca3d67c275496ed409f7eaccced0b7c135c573ab427cbae816cba2357b"
+    },
+    {
+      "file": "recipe-56.html",
+      "sha256": "2be9f7452cd6a1150cf2cd7433f79f5a73ab784215b58c8e5c73b558123750e4"
+    },
+    {
+      "file": "recipe-57.html",
+      "sha256": "ed9d97b66ec3be4682aaf356851a92e368d549e15b2c34c697cb68c8f0b05513"
+    },
+    {
+      "file": "recipe-58.html",
+      "sha256": "a734cff037fde38ee0a6c7bbca5122326a006747994499864176c699478f95e7"
+    },
+    {
+      "file": "recipe-59.html",
+      "sha256": "a487ba2404f816d8a282582383bc68b1abb6c4662c9c118c34259f5abacc189e"
+    },
+    {
+      "file": "recipe-6.html",
+      "sha256": "3cf6218b4cd0d6ef20ca866622d736a82272b45ef2443426bcab1d1c98ad6004"
+    },
+    {
+      "file": "recipe-60.html",
+      "sha256": "aa61971c4b0b3199d35a62a6b560414df243fa9cf24185b6d94c65af4e395d61"
+    },
+    {
+      "file": "recipe-61.html",
+      "sha256": "5240e97e60ef8d273168a91ccee3d274dd7832aa1370f3884317bd719569642f"
+    },
+    {
+      "file": "recipe-62.html",
+      "sha256": "0ee5cfc177f203557d9d55c8805880365202dd7ead7bdb5199f1315089d1f442"
+    },
+    {
+      "file": "recipe-63.html",
+      "sha256": "c59227bb19c37a16388b356562c7b70aeeeafbbcaf3d6d5e77a8bfe8e847afc7"
+    },
+    {
+      "file": "recipe-64.html",
+      "sha256": "73fe0288ca65aa65017e8c4fb653acb108050c6f89e63f79c0349521d9c85f1d"
+    },
+    {
+      "file": "recipe-65.html",
+      "sha256": "8c47f51256d66ad64dd7466398546046b42eb9970661c32cd5cd7627ca0c7fe4"
+    },
+    {
+      "file": "recipe-66.html",
+      "sha256": "bb366befed98ccdd31fe2a200636319f735033931843e6e77fca5e795c68db21"
+    },
+    {
+      "file": "recipe-67.html",
+      "sha256": "f6e251685e67bba09ddb85e2e7034bbe85e823eeca0cffae9c726906aa5d49a3"
+    },
+    {
+      "file": "recipe-68.html",
+      "sha256": "73ffc965fe1141b59e244fe4de473d8d46207a8cb4b1c273be85b0efe310d28e"
+    },
+    {
+      "file": "recipe-69.html",
+      "sha256": "97b1e145fa8d890c77ea6a26d1aed63e738b7945f3318dea59d2357838f5c7b6"
+    },
+    {
+      "file": "recipe-7.html",
+      "sha256": "e756468b7ee4b2c6fea11d33579980e8aa52a05ba611c2ceeacd80818133ee8b"
+    },
+    {
+      "file": "recipe-70.html",
+      "sha256": "0ca9b33693365516491bbe290f19c79a6ed3cb04c1a2dc4eb0792b6a3b1504dc"
+    },
+    {
+      "file": "recipe-71.html",
+      "sha256": "57de11def9142491ac7812a42d170af5b12a39f743172d5bd1b1612b5566e8f3"
+    },
+    {
+      "file": "recipe-72.html",
+      "sha256": "766b28f9d4c8e94a5912d2f4f3aa6fe3eb75a89a5504933031fdf176ae19af7a"
+    },
+    {
+      "file": "recipe-73.html",
+      "sha256": "48c21996f405fd12e3eb176c1749d7fc2fac58ab6edbb93b77ab030f5254dc12"
+    },
+    {
+      "file": "recipe-74.html",
+      "sha256": "44609efe8aafa57e3fc59f8423452de85fd9534c8f8a4810eeea0caf3e539fa5"
+    },
+    {
+      "file": "recipe-75.html",
+      "sha256": "f4b35c420009e0b54145660c8660ff1056575dc040612dda0c356077ea37b765"
+    },
+    {
+      "file": "recipe-76.html",
+      "sha256": "9c6995bceb56018bc2dcd4a93748b583fa7e0f53b4047e2e797647bf6dc59805"
+    },
+    {
+      "file": "recipe-77.html",
+      "sha256": "dae1a441d1c0fe7edabc990b9c44922732ffc3cbb69898dd2e4c4ce3e1b94e00"
+    },
+    {
+      "file": "recipe-78.html",
+      "sha256": "6e321098fe3cff8a9e8b399569fbb068e1c5dcb5cd46f261a80e89c7b170e644"
+    },
+    {
+      "file": "recipe-8.html",
+      "sha256": "fa5245c1fb2f0c6168aa54b8c7db7f48a1c4b204f46110be6c8e7348db632552"
+    },
+    {
+      "file": "recipe-9.html",
+      "sha256": "f856f58d63deb588eac860aea4768c2722b6a755d4840694ac9f9d0b31d1c0a9"
+    }
+  ],
+  "console_reference_sha256": "f3985a499b85575ccb606b2a2be10f1429586e67af27f03026058650109885f3",
+  "official_manual_sha256": "bfba99da9fa35e68f545dabe5a76f8739898a75880d05c325052e38bc8fa1c22"
+}

@@ -1,0 +1,135 @@
+{
+  "reviewedPatchVersion": "1.2.11",
+  "statExportVersion": "1.2.2",
+  "reviewDate": "2026-10-07",
+  "counts": {
+    "acquisitionIds": 689,
+    "extraLocationCards": 39,
+    "items": 1314,
+    "tips": 31,
+    "codes": 5557,
+    "clarifiedItemUses": 60
+  },
+  "statDisagreements": [
+    {
+      "name": "Rusty sword",
+      "exportId": "itmw_1h_misc_sword",
+      "locationTableStats": [
+        15,
+        "strength",
+        15
+      ],
+      "decision": "Retain export stats; use acquisition only."
+    },
+    {
+      "name": "The Peacemaker",
+      "exportId": "itmw_1h_peacekeeper",
+      "locationTableStats": [
+        250,
+        "mana",
+        10
+      ],
+      "decision": "Retain export stats; use acquisition only."
+    },
+    {
+      "name": "Light Beechwood Bow",
+      "exportId": "itrw_bow_09_normal",
+      "locationTableStats": [
+        30,
+        "dexterity",
+        30
+      ],
+      "decision": "Retain export stats; use acquisition only.",
+      "kind": "Spelling alias; numeric stats agree."
+    },
+    {
+      "name": "Heavy Southerner's Armor",
+      "exportId": "itar_sth_h",
+      "locationTableStats": [
+        70,
+        75,
+        80,
+        100,
+        20
+      ],
+      "decision": "Retain export stats; use acquisition only."
+    }
+  ],
+  "patches": [
+    {
+      "version": "1.2.3",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3218396987408269215",
+      "date": "2022-05-20T11:00:35+00:00"
+    },
+    {
+      "version": "1.2.4",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3294958655383840622",
+      "date": "2022-05-28T14:00:33+00:00"
+    },
+    {
+      "version": "1.2.5",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/5241644120323512700",
+      "date": "2022-07-17T12:00:51+00:00"
+    },
+    {
+      "version": "1.2.6",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3395173894695725565",
+      "date": "2022-09-18T10:00:56+00:00"
+    },
+    {
+      "version": "1.2.7",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3320866312897985311",
+      "date": "2022-10-07T15:00:36+00:00"
+    },
+    {
+      "version": "1.2.8",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3381668259622337915",
+      "date": "2022-11-13T18:00:53+00:00"
+    },
+    {
+      "version": "1.2.9",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/6808913285533094336",
+      "date": "2023-01-12T20:00:39+00:00"
+    },
+    {
+      "version": "1.2.10",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3642897872751787194",
+      "date": "2023-07-04T11:00:45+00:00"
+    },
+    {
+      "version": "1.2.11",
+      "url": "https://steamcommunity.com/games/1467450/announcements/detail/3891737145573175969",
+      "date": "2023-12-15T13:01:06+00:00"
+    }
+  ],
+  "sources": {
+    "acquisition": "https://docs.google.com/spreadsheets/d/1Z5O00oK-OYpmjtniR5t3s__TxNq8eMuwzn8ftJPeNpQ/edit",
+    "credits": "Tulipan / CrazyRaus; translation: DreXav; contributor: HRY"
+  },
+  "sourceHashes": {
+    "location-one-handed-weapons.html": "dbd7c330cb78d035941e82e87ee99c2e65be2263aec3992284ae244b413bb468",
+    "location-recipes-diagrams.html": "b2e68ac35228dd12c28efaa62f13f784133932f1f3a830f992d5c19ed6f3e56a",
+    "location-item-npc-cheatcodes.html": "514a48565ce7b92c4d2bfff2f395fec72c7c7cb549607175d99932ba31106687",
+    "location-attribute-bonus-potions.html": "332fd3be1289f96f84ec8d1523399e6e3017008f9b461f94fc8b05720aa26d9d",
+    "location-armor.html": "745bd3ee62054f0bc642df7aea9d3562f72ab6b6f2ac1908079c57080845cac5",
+    "location-pickpocketing.html": "3e3e0a33583e8d5a089e77cb1b227a2ab9155415a696cbc3906fde4bcc463ce6",
+    "location-teachers-and-skills.html": "60a824f183eb3235460bdf9ad2042e05354691051f643f6470f6c5bcb35ecefb",
+    "location-introduction.html": "c24cc8ee972bdbd148199ce7db4992cdb0d146b0ea42178f39927c3f173fac52",
+    "location-teleports.html": "6c5c098c6326a83ee059bd1ea06cb93f605d1bd8384f985973c3534673fce0e8",
+    "location-runes.html": "3edd4a9de25d5d27a7feb226658c0e0da7ca2d0aa4594c22f77e0f803e4ab616",
+    "location-ranged-weapons.html": "f9bcd2af278f2078b86c5c82b0b10a354f92f05b947bdc56d9def523d8a6ba69",
+    "location-books.html": "db382cf56d95d1bf6f00a712f284e21d22423420add6a29467ec2dc4dea950f2",
+    "location-item-selling.html": "e852fcf0e8b030c48e7e308f16c53a921dbb43f4486164f035f84287c9630ce6",
+    "location-belts-and-jewelry.html": "4e540acb1d60167de1322724b553acf6660e478c7280dce652b959ecc1ab97da",
+    "location-two-handed-weapons.html": "47726f265b564453c2cfeb5405571a191af4d37859f66f96e582ddf19eacb9a4",
+    "location-attribute-bonus-plants.html": "b0715f974bee4abfa08779f77954d8b580fd906b7f54760d4d47f15270fef71a",
+    "location-other-attribute-bonuses.html": "7b709b95ae93d56fe449f4b03ea84a13a7a3e09926bf8933f4bfc75017bfb431"
+  },
+  "validation": {
+    "kotlin": "2.2.0",
+    "jvmTarget": 17,
+    "junitTests": 20,
+    "preservedNumericFields": 5262,
+    "fullAndroidBuild": false
+  }
+}

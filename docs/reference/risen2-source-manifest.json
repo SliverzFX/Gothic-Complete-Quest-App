@@ -1,0 +1,260 @@
+{
+  "game": "Risen 2: Dark Waters",
+  "source_pc_version": "1.0.1210.0 / Change 201663",
+  "template_ids": 572,
+  "copyable_individual_item_commands": 498,
+  "world_or_unverified_cards_without_command": 74,
+  "numeric_equipment_and_herb_matches": 51,
+  "command_cards": 8,
+  "tips": 18,
+  "sources": [
+    {
+      "url": "https://gamefaqs.gamespot.com/pc/622499-risen-2-dark-waters/faqs/68862",
+      "author": "kamehakid9229",
+      "updated": "2014-02-24"
+    },
+    {
+      "url": "https://gamefaqs.gamespot.com/pc/622499-risen-2-dark-waters/faqs/77368/all-item-console-commands",
+      "author": "ZhirC",
+      "updated": "2019-05-19"
+    },
+    {
+      "url": "https://gamefaqs.gamespot.com/boards/622499-risen-2-dark-waters/62714857",
+      "author": "panthols29 and original PC participants"
+    },
+    {
+      "url": "https://www.risen.cz/risen-2/predmety/",
+      "scope": "populated clothing/herb numeric tables"
+    },
+    {
+      "url": "https://www.supercheats.com/guides/risen-2-dark-waters/legendary-items-sidequests",
+      "author": "CM Boots-Faubert"
+    },
+    {
+      "url": "https://www.supercheats.com/guides/risen-2-dark-waters/the-log-book-in-all-its-glory",
+      "author": "CM Boots-Faubert"
+    },
+    {
+      "url": "https://www.gamepressure.com/risen2/maracai-bay-legendary-items/z93b1c",
+      "scope": "specific collectible quest/effect facts"
+    },
+    {
+      "url": "https://cdn.akamai.steamstatic.com/steam/apps/40390/manuals/Risen2_PC_Manual_EN_ESRB.pdf",
+      "scope": "official PC manual"
+    }
+  ],
+  "corrections": [
+    "It_Bo_Rum trailing backtick removed against original PC report",
+    "Non-ASCII tribal recipe template withheld",
+    "Heavy cloth/leather English translation reversed in RISEN.cz; corrected using Czech headings/template catalogue",
+    "Fat Olga grip title distinguished from duplicated barrel label"
+  ],
+  "cross_checked_template_corrections": {
+    "It_SilverIron-Barrel": "It_SilverIron_Barrel",
+    "It_Rif_Shingle": "It_Rif_Single",
+    "It_At_Fur_Pather": "It_At_Fur_Panther",
+    "It_At_Bandana_Black": "It_Bandana_Black",
+    "It_At_Bandana_Largo": "It_Bandana_Largo",
+    "It_At_Bandana_Red": "It_Bandana_Red",
+    "It_At_Bandana_Striped": "It_Bandana_Striped",
+    "It_At_Bandana_Torn": "It_Bandana_Torn",
+    "It_Bo_PainKiller": "It_Bo_Painkiller",
+    "It_MatchLock": "It_Matchlock"
+  },
+  "excluded_ids": [
+    "It_Am_",
+    "It_Ammo_",
+    "It_Armor_",
+    "It_At_",
+    "It_At_Bandana_",
+    "It_At_GargoyleEgg_",
+    "It_Bicorn_",
+    "It_Blue_",
+    "It_Bo_",
+    "It_Coat_",
+    "It_Dagger_",
+    "It_Ear_",
+    "It_Exp_",
+    "It_GreatCoat",
+    "It_Hat_",
+    "It_HighBoot_",
+    "It_Key_",
+    "It_LowBoot_",
+    "It_Map_",
+    "It_Mask",
+    "It_Ne_",
+    "It_Pants_",
+    "It_Pie_",
+    "It_Pis_",
+    "It_Pl_",
+    "It_Po_",
+    "It_Recipe_",
+    "It_Recipe_Am_Tri̇́be",
+    "It_Ri_",
+    "It_Rif_",
+    "It_Scepter_",
+    "It_ShG_",
+    "It_ShP_",
+    "It_Shirt_",
+    "It_Shoes_",
+    "It_Sla_",
+    "It_Thr_",
+    "It_TreasureMap_",
+    "It_Tricorn_",
+    "It_Vest_",
+    "It_Wll_",
+    "It_Wri_",
+    "It_Wri_Book",
+    "It_Wri_Letter_"
+  ],
+  "raw_evidence": [
+    {
+      "file": "faq-cached-0.txt",
+      "sha256": "9cff30f5c3311cea5c54a1d2cd1cf9f9c8eea954d101e343da06b10b8aa65c80"
+    },
+    {
+      "file": "faq-cached-1.txt",
+      "sha256": "b211160da9db630b5fcdadaf2655366cb1d15379ad120bf0d22f99c15f929ea8"
+    },
+    {
+      "file": "faq-cached-2.txt",
+      "sha256": "a54d99bdcc19d2c7393d20a4ff998d7361a5a9d7c8e15e8054015a79c018ccc1"
+    },
+    {
+      "file": "faq-cached-3.txt",
+      "sha256": "978059e25f0015e2fb22ca75d30e10c5bc52aef26f79ed9c1af8b59ea230c2bb"
+    },
+    {
+      "file": "faq-cached-4.txt",
+      "sha256": "dcb6d9bde39a97dd08e532456f692f6099056b0a33ea2cf8652448b36fc84855"
+    },
+    {
+      "file": "faq-group-0.txt",
+      "sha256": "70375cdbab07e09e336c6a83c43ade9df5d4fcd05d5aa773ea7b59a83749a4e0"
+    },
+    {
+      "file": "faq-group-1.txt",
+      "sha256": "8fc8cf5741e44502896088d0345e82b5d3be5f77359320462ad2178ee1de9895"
+    },
+    {
+      "file": "faq-group-2.txt",
+      "sha256": "8b410cc01a28b17ab1a760782a817119fbd7a404bad5f4dfbd5bdc579d3ea01b"
+    },
+    {
+      "file": "faq-group-3.txt",
+      "sha256": "2483845838781f38c0559cce50da3d20db784eb6f946c8eb78969e2e7069eb8c"
+    },
+    {
+      "file": "faq-misc-full.txt",
+      "sha256": "eabe788b5c18c822a0f2dedb640b0f8e5910723c5747a26ea05c63d95ed7e957"
+    },
+    {
+      "file": "faq-more.txt",
+      "sha256": "dd760177872d0f9d3e5fd2c9a67b7e9a6164d4cfdf2b1137cc60c1953a32579a"
+    },
+    {
+      "file": "faq-nonquest-full.txt",
+      "sha256": "886e58d49a604f4783dc574150d6f2796e500f4ad3ea6251251f0fa00a1fdd8a"
+    },
+    {
+      "file": "cz/risen-2_bestiar.html",
+      "sha256": "ae2722a0a5580ef8279ebfca1ba56cf48549325c8e0c3ce469f8570bcd33f88b"
+    },
+    {
+      "file": "cz/risen-2_kovarstvi.html",
+      "sha256": "68ce4b858d551f58137fb023e3a05ca067c0ba0d500f56ed25041bbca37f8399"
+    },
+    {
+      "file": "cz/risen-2_npc.html",
+      "sha256": "11ce32d5617c8cb788ddf7b62d01d0c22338ddf15feff0840dfca6c24fed6e6b"
+    },
+    {
+      "file": "cz/risen-2_predmety_amulety.html",
+      "sha256": "2f25424a4da55a85a83a84eef112901ea49f0525a9ffa4eefb82b102d9d6fc3c"
+    },
+    {
+      "file": "cz/risen-2_predmety_bodne-zbrane.html",
+      "sha256": "42e861ad2ade83f48b012ac27629f3f21c485d57207da8ae5a21d3db97938a22"
+    },
+    {
+      "file": "cz/risen-2_predmety_boty.html",
+      "sha256": "64b14cd6a72059300d31d9f949ce9acba6e9f2b0a2ef40d82614ab68faa55bc2"
+    },
+    {
+      "file": "cz/risen-2_predmety_cennosti.html",
+      "sha256": "d6ceb9100a5f60a2b1605f725e1d2a040144bdae2735819bffca0fd15416edae"
+    },
+    {
+      "file": "cz/risen-2_predmety_herbar.html",
+      "sha256": "6cc916fe6d99e9469c40593ae54934695dc708143e34ea4e896bf67fbd98bb23"
+    },
+    {
+      "file": "cz/risen-2_predmety_kalhoty.html",
+      "sha256": "3c7b3020c109d3d69d019fb9b2fca0c8b189e59e69748ada331b1e6a32d2a3dc"
+    },
+    {
+      "file": "cz/risen-2_predmety_kosile-plaste.html",
+      "sha256": "48ddc764f3967a793df22b835eb1ef6e16d91b40285edfa67704ac16380ac8ea"
+    },
+    {
+      "file": "cz/risen-2_predmety_legendarni.html",
+      "sha256": "6038b88340a9287f7b090e1ced9c31d5f931f3e6e22c72f93b255d3ae1a62c8a"
+    },
+    {
+      "file": "cz/risen-2_predmety_lektvary.html",
+      "sha256": "08c8a47ea6bd81d489729589ff4ad9304e54ca4c3b7aff373c0f6331c6f25647"
+    },
+    {
+      "file": "cz/risen-2_predmety_nausnice.html",
+      "sha256": "dc535f9a63c43d8dd8c1f71fb74f011e6a36bb172d08e3d8de6e38f464071734"
+    },
+    {
+      "file": "cz/risen-2_predmety_ostatni.html",
+      "sha256": "d6ceb9100a5f60a2b1605f725e1d2a040144bdae2735819bffca0fd15416edae"
+    },
+    {
+      "file": "cz/risen-2_predmety_pistole.html",
+      "sha256": "4ce0c934c6d70616b998cb8ab646198ff05b65668b76c2b81fc7d66fd9a12cd6"
+    },
+    {
+      "file": "cz/risen-2_predmety_pokryvky-hlavy.html",
+      "sha256": "8e8dd7cceaaaef4d74ea56681ecb69ab836c17d70194c0e4426ebeb4f9ea5e24"
+    },
+    {
+      "file": "cz/risen-2_predmety_prsteny.html",
+      "sha256": "42e518be40c5247c4fc0919d1831da6f0beca0862bef6f9bfaffa92b31a52c7c"
+    },
+    {
+      "file": "cz/risen-2_predmety_pusky-brokovnice.html",
+      "sha256": "ec88a4ea5fab74712a91e628209673d43f62523675badab1c19f1ede64bc8bfd"
+    },
+    {
+      "file": "cz/risen-2_predmety_secne-zbrane.html",
+      "sha256": "81aa9b9ac72d00b4883e1aac8005afb146297de53f4268cbc657b12d95c2f28c"
+    },
+    {
+      "file": "cz/risen-2_tipy-a-triky.html",
+      "sha256": "ed3ac83e0e6eee1312c688e0465c034a190384f02602567a8bc499e35ce19095"
+    },
+    {
+      "file": "cz/risen-2_ucitele.html",
+      "sha256": "ec5dbe18e334e9a7c9d6fb61cd6faed5d4d6dba010e0744a276ee4bcd437f127"
+    },
+    {
+      "file": "cz/risen-2_vlastnosti-a-dovednosti.html",
+      "sha256": "252160aaf470830038c40eb3dd6b1eaaa6624e5104bee6f0a777902d79caced8"
+    },
+    {
+      "file": "manual.pdf",
+      "sha256": "4379abfb127dcd5b4c7a1d4c665c3cde21153e8fcb267eea01c7c19b1d75eb49"
+    }
+  ],
+  "limits": [
+    "Public catalogue explicitly incomplete for miscellaneous and engine objects",
+    "No numeric weapon-stat claims from ID-only tables",
+    "No full recipe ingredient or NPC template database claimed",
+    "No Android SDK or phone validation in execution environment",
+    "Map assets deferred"
+  ],
+  "validation": "72 pure Kotlin JUnit data regression tests passed; Android instrumentation tests added but not run"
+}

@@ -1,0 +1,24 @@
+{
+  "exportedItems": 2599,
+  "codes": 2605,
+  "items": 1252,
+  "tips": 15,
+  "categories": {
+    "ARMOR": 238,
+    "ITEMS": 1873,
+    "WEAPONS": 488
+  },
+  "sourceSha256": {
+    "ITM_CAT_POTION.md": "e3797ebd8c9196e3a93b41a9e0b4c9d9dc0df209e0eeb70c85d456076b377fcf",
+    "ITM_CAT_NONE.md": "6fe282ca8c76bb34bc7348689e55967d257f1ea9a7920a8f288df73ab9be4b65",
+    "ITM_CAT_FF.md": "6a398c3576cf4ad6d0c4754ec884ad30286d449b93f300bee61c1800cbe19d5e",
+    "ITM_CAT_MUN.md": "59ba7ee69d6a243246d098a5ebee98d4e0a6f4888177ccc54469e9d827925e80",
+    "ITM_CAT_MAGIC.md": "01cc977f873d3db83f8cea595145d845a9fb69e0ebcd7265f3d506377989be36",
+    "ITM_CAT_ARMOR.md": "fab31d3e40575c93bfad2f0bdf69e839f04f66a55026373e4a4cee679730f567",
+    "ITM_CAT_RUNE.md": "cf4694abf9066ce77ea705dbecd07ae3d8a314149481f7db0d665b0826db6558",
+    "ITM_CAT_FOOD.md": "67e266c16fe075163a00ba80b862f77f2f8d90d8ec6b4baf46e3bbdeb283df4d",
+    "ITM_CAT_NF.md": "dd675bcbcac75b2540b6065228db736204c6b5df55e0fe5fb40b885867c0d02d",
+    "ITM_CAT_LIGHT.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ITM_CAT_DOCS.md": "43408a67653500ce82e68e30b88a2edc1e134b64369ad4e14cb547c578a067ad"
+  }
+}

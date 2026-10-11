@@ -1,0 +1,18 @@
+package com.sliverzfx.gothicquest
+
+internal object Risen3CommandData {
+    val entries: List<ToolReferenceEntry> = listOf(part0()).flatten()
+
+    private fun part0(): List<ToolReferenceEntry> = listOf(
+        ToolReferenceEntry("r3_debug_setup", "SETUP • ORIGINAL PC", "Debug mode compatibility", "PC testmode keyboard shortcuts, not retail console commands.\n\nOriginal PC reports use OC Burner’s WMVCore.dll in the game’s system folder; an earlier Cheat Engine table targets 1.0.90.0. Enhanced Edition support is unverified. The tool is not bundled.\n\nNo verified item-spawn IDs here. Keep a separate save.", command = null, source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/ | https://www.nexusmods.com/risen3/mods/7", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_hud", "DEBUG SHORTCUTS", "Toggle HUD", "Keyboard shortcut; requires active PC testmode.\n\nHide or show the HUD.", command = "Left Ctrl+H", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_free_camera", "DEBUG SHORTCUTS", "Free-flying camera", "Keyboard shortcut; requires active PC testmode.\n\nToggle the free-flying camera.", command = "Left Ctrl+Insert", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_fixed_camera", "DEBUG SHORTCUTS", "Fixed camera", "Keyboard shortcut; requires active PC testmode.\n\nToggle fixed camera.", command = "Left Ctrl+Home", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_levitate", "DEBUG SHORTCUTS", "Levitation", "Keyboard shortcut; requires active PC testmode.\n\nToggle debug levitation.", command = "Left Ctrl+L", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_slow_motion", "DEBUG SHORTCUTS", "Slow motion", "Keyboard shortcut; requires active PC testmode.\n\nToggle slow motion.", command = "F6", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_speed_up", "DEBUG SHORTCUTS", "Speed up", "Keyboard shortcut; requires active PC testmode.\n\nToggle accelerated simulation.", command = "F8", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_time_freeze", "DEBUG SHORTCUTS", "Freeze time", "Keyboard shortcut; requires active PC testmode.\n\nToggle time freeze.", command = "Pause", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_vegetation", "DEBUG SHORTCUTS", "Toggle vegetation", "Keyboard shortcut; requires active PC testmode.\n\nToggle vegetation rendering.", command = "Left Ctrl+V", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+        ToolReferenceEntry("r3_debug_snapshot", "DEBUG SHORTCUTS", "Debug snapshot", "Keyboard shortcut; requires active PC testmode.\n\nTake a debug snapshot. This is not the testmode activation key for the DLL method.", command = "F1", source = "https://steamcommunity.com/app/249230/discussions/0/35221031695469794/", codeCategory = CodeCategory.GENERAL),
+    )
+}
